@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>CVR Canvas Fixture</title>
+<canvas id="fixture" width="800" height="600"></canvas>
+<script>
+  const canvas = document.querySelector('#fixture'); const ctx = canvas.getContext('2d');
+  const image = new Image(); image.onload = () => {
+    ctx.drawImage(image, 0, 0, 800, 600); ctx.save(); ctx.translate(20, 30);
+    const path = new Path2D(); path.moveTo(20, 20); path.lineTo(300, 20); path.bezierCurveTo(340, 50, 340, 180, 300, 220); path.closePath();
+    ctx.clip(path); ctx.fillStyle = '#ff79c6'; ctx.fill(path, 'nonzero'); ctx.strokeStyle = '#282a36'; ctx.lineWidth = 4; ctx.stroke(path); ctx.restore();
+  }; image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+</script>

@@ -1,0 +1,28 @@
+{
+  "name": "canvas-vector-recorder-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "test": "npm run compile && npm run test:frontend && npm run test:rust",
+    "test:frontend": "node --test tests/bridge.test.mjs",
+    "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "compile": "tsc --noEmit",
+    "license:keygen": "node tools/license-keygen.mjs",
+    "license:create": "node tools/license-create.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.7.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.7.0",
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+[[permission]]
+identifier = "allow-studio-commands"
+description = "Studio-only recorder, license, storage, target-window, and export commands."
+commands.allow = [
+  "start_recording", "stop_recording", "list_canvases", "get_canvas_result", "generate_svg",
+  "export_svg", "clear_recording", "get_recording_state", "open_target_url", "close_target_window",
+  "validate_license", "activate_license", "get_license_status", "set_recording"
+]
+
+[[permission]]
+identifier = "allow-record-canvas-events"
+description = "Target WebView may submit only recorder event batches."
+commands.allow = ["record_canvas_events"]

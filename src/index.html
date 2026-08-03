@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Canvas Vector Recorder</title>
+</head>
+
+<body>
+  <main id="app">
+    <section id="activationView" class="view card" hidden>
+      <div class="eyebrow">CANVAS VECTOR RECORDER</div>
+      <h1>Aktivasi lisensi</h1>
+      <p class="muted">Masukkan email pembelian dan kode lisensi Anda.</p>
+      <form id="activationForm">
+        <label>Email<input id="licenseEmail" type="email" autocomplete="email" required></label>
+        <label>Kode lisensi<textarea id="licenseCode" rows="4" spellcheck="false" required></textarea></label>
+        <button class="primary" type="submit">Aktivasi</button>
+      </form>
+      <div id="activationStatus" class="status" role="status"></div>
+      <button id="copyError" class="link-button" type="button" hidden>Salin informasi error</button>
+      <p class="muted small">Belum memiliki lisensi? <a href="https://example.com/buy" target="_blank"
+          rel="noreferrer">Buka halaman pembelian</a> atau hubungi dukungan.</p>
+    </section>
+
+    <section id="workspaceView" class="view workspace-shell" hidden>
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="presentation">
+              <path d="M7 23V9h18v14H7Z" />
+              <path d="m10 20 4-5 3 2 5-6" />
+              <circle cx="10" cy="20" r="1.4" />
+              <circle cx="14" cy="15" r="1.4" />
+              <circle cx="17" cy="17" r="1.4" />
+              <circle cx="22" cy="11" r="1.4" />
+            </svg>
+          </div>
+          <div>
+            <h1>Canvas Vector Recorder</h1>
+            <p>Capture &amp; export canvas artwork ke SVG</p>
+          </div>
+        </div>
+        <div class="actions">
+          <span id="licenseBadge" class="badge"></span>
+          <button id="recordToggle" class="record" type="button">● REC ON</button>
+        </div>
+      </header>
+
+      <div class="workspace-grid">
+        <aside class="panel sidebar">
+          <section class="sidebar-section">
+            <h2 class="section-label">TARGET URL</h2>
+            <div class="target-row">
+              <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
+              <button id="openTarget" class="primary" type="button">Buka</button>
+              <button id="closeTarget" type="button">Tutup</button>
+            </div>
+            <div id="workspaceStatus" class="status status-box" role="status">Siap.</div>
+          </section>
+
+          <div class="panel-divider"></div>
+
+          <section class="surfaces-section">
+            <div class="surface-heading">
+              <h2 class="section-label">DETECTED SURFACES</h2><span id="assetCount" class="surface-count">0 item · 1
+                tab</span>
+            </div>
+            <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
+              <button id="canvasTab" class="asset-tab active" type="button" role="tab"
+                aria-selected="true">Canvas</button>
+              <button id="svgTab" class="asset-tab" type="button" role="tab" aria-selected="false">SVG</button>
+            </div>
+            <div id="canvasList" class="canvas-list">
+              <p class="muted">Belum ada Canvas.</p>
+            </div>
+          </section>
+
+          <div class="panel-divider"></div>
+
+          <details class="export-settings">
+            <summary>EXPORT SETTINGS</summary>
+            <div class="settings-body">
+              <label>Rasio<select id="ratio">
+                  <option value="source">Source</option>
+                  <option>1:1</option>
+                  <option>4:5</option>
+                  <option>3:2</option>
+                  <option>2:3</option>
+                  <option>16:9</option>
+                </select></label>
+              <div class="row"><label>Min MP<input id="minPixels" type="number" min="1" value="15"></label><label>Max
+                  MP<input id="maxPixels" type="number" min="1" value="65"></label></div>
+              <button id="refreshSettings" type="button">Terapkan ukuran</button>
+            </div>
+          </details>
+        </aside>
+
+        <section class="panel preview-panel">
+          <header class="preview-header">
+            <h2 id="previewTitle">Rendered Preview</h2>
+            <button id="refreshPreviewButton" type="button" title="Refresh preview">↻&nbsp; Refresh</button>
+          </header>
+          <div id="preview" class="preview">
+            <p class="muted">Preview akan tampil setelah canvas direkam.</p>
+          </div>
+          <footer class="preview-footer">
+            <div class="preview-file"><strong id="previewFilename">Pilih canvas dari daftar</strong></div>
+            <div class="stats">
+              <div><strong id="shapeCount">—</strong><span>shapes</span></div>
+              <div><strong id="gapCount">—</strong><span>gaps</span></div>
+              <div><strong id="errorCount">—</strong><span>errors</span></div>
+              <div><strong id="artboardSize">—</strong><span>artboard</span></div>
+            </div>
+            <button id="exportSvg" class="primary download-button" type="button" disabled>⇩&nbsp; Download SVG</button>
+          </footer>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div id="downloadToast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="/main.ts"></script>
+</body>
+
+</html>
