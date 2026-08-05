@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
       const link = document.createElement('a'); link.href = url; link.download = lastSvg.filename; document.body.appendChild(link); link.click(); link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showDownloadToast(`Download berhasil dimulai: ${lastSvg.filename}`);
+      showDownloadToast(`Download berhasil : ${lastSvg.filename}`);
       status(workspaceStatus, `SVG berhasil diexport: ${lastSvg.filename}`, 'success');
     } catch (error) { showDownloadToast(`Export gagal: ${String(error)}`); status(workspaceStatus, String(error), 'error'); }
   });
