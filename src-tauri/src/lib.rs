@@ -3,12 +3,31 @@ mod license;
 mod recorder;
 
 use recorder::RecorderStore;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use thiserror::Error;
 
+pub const MAX_TARGET_TABS: usize = 5;
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct TargetTab {
+    pub id: String,
+    pub url: String,
+    pub title: String,
+    #[serde(skip)]
+    pub webview_label: String,
+}
+
+#[derive(Debug, Default)]
+pub struct TargetState {
+    pub session_id: String,
+    pub tabs: Vec<TargetTab>,
+    pub active_id: Option<String>,
+}
+
 pub struct AppState {
     pub recorder: Mutex<RecorderStore>,
+    pub target: Mutex<TargetState>,
 }
 
 #[derive(Debug, Error, Serialize)]
@@ -47,6 +66,7 @@ pub fn run() {
                 recording_enabled: true,
                 ..Default::default()
             }),
+            target: Mutex::new(TargetState::default()),
         })
         .invoke_handler(tauri::generate_handler![
             commands::start_recording,
@@ -60,6 +80,10 @@ pub fn run() {
             commands::get_recording_state,
             commands::set_recording,
             commands::open_target_url,
+            commands::open_target_tab,
+            commands::switch_target_tab,
+            commands::close_target_tab,
+            commands::sync_target_tab,
             commands::close_target_window,
             commands::validate_license,
             commands::activate_license,

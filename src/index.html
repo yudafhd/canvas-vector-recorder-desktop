@@ -10,7 +10,6 @@
 <body>
   <main id="app">
     <section id="activationView" class="view card" hidden>
-      <div class="eyebrow">CANVAS VECTOR RECORDER</div>
       <h1>Aktivasi lisensi</h1>
       <p class="muted">Masukkan email pembelian dan kode lisensi Anda.</p>
       <form id="activationForm">
@@ -20,8 +19,6 @@
       </form>
       <div id="activationStatus" class="status" role="status"></div>
       <button id="copyError" class="link-button" type="button" hidden>Salin informasi error</button>
-      <p class="muted small">Belum memiliki lisensi? <a href="https://example.com/buy" target="_blank"
-          rel="noreferrer">Buka halaman pembelian</a> atau hubungi dukungan.</p>
     </section>
 
     <section id="workspaceView" class="view workspace-shell" hidden>
@@ -54,7 +51,7 @@
             <h2 class="section-label">TARGET URL</h2>
             <div class="target-row">
               <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
-              <button id="openTarget" class="primary" type="button">Buka</button>
+              <button id="openTarget" class="primary" type="button" title="Buka window target" aria-label="Buka window target">Buka</button>
               <button id="closeTarget" type="button">Tutup</button>
             </div>
             <div id="workspaceStatus" class="status status-box" role="status">Siap.</div>
@@ -86,6 +83,7 @@
                   <option value="source">Source</option>
                   <option>1:1</option>
                   <option>4:5</option>
+                  <option>4:3</option>
                   <option>3:2</option>
                   <option>2:3</option>
                   <option>16:9</option>

@@ -27,12 +27,12 @@ Buat keypair offline di mesin pemilik/license server:
 
 ```sh
 npm run license:keygen
-npm run license:create -- --email customer@example.com --days 30 --private-key ./license-keys/private.pem
+npm run license:create -- --email customer@example.com --days 2 --private-key ./license-keys/private.pem
 ```
 
-Tool menandatangani tepat payload-base64url yang diverifikasi Rust: `CVR1.<payload-base64url>.<signature-base64url>`. Private key hanya berada di license server/offline operator. `license:keygen` mencetak nilai `LICENSE_PUBLIC_KEY=...`; gunakan nilai 32-byte Ed25519 base64url itu saat build. Release tanpa public key akan menolak lisensi, bukan bypass menjadi valid.
+Tool menandatangani tepat payload-base64url yang diverifikasi Rust: `CVR1.<payload-base64url>.<signature-base64url>`. Untuk flow offline dua hari, buat kode dengan `--days 2`. Private key hanya berada di license server/offline operator. `license:keygen` mencetak nilai `LICENSE_PUBLIC_KEY=...`; gunakan nilai 32-byte Ed25519 base64url itu saat build. Release tanpa public key akan menolak lisensi, bukan bypass menjadi valid.
 
-Activation default sepenuhnya offline: Rust memverifikasi signature Ed25519, email, product, issued/expiry date, lalu menyimpan status lokal. Lisensi offline tetap aktif sampai `expires_at` dan tidak membutuhkan `LICENSE_SERVER_URL`. Aplikasi mencoba OS keyring melalui crate `keyring`; bila backend keyring tidak tersedia, fallback menyimpan file app-data dengan permission `0600`. Fallback melindungi akses filesystem biasa tetapi tidak setara keyring/Stronghold, sehingga deployment produksi sebaiknya memastikan backend secure storage tersedia. Perubahan waktu mundur ditolak semampunya.
+Activation default sepenuhnya offline: Rust memverifikasi signature Ed25519, email, product, issued/expiry date, lalu menyimpan status lokal. `expires_at` adalah batas waktu kode untuk aktivasi; setelah aktivasi offline berhasil, entitlement menjadi lifetime pada perangkat yang sama. Device fingerprint berbasis identitas instalasi/hardware OS dibandingkan setiap aplikasi dibuka. Aplikasi mencoba OS keyring melalui crate `keyring`; bila backend keyring tidak tersedia, fallback menyimpan file app-data dengan permission `0600`. Fallback melindungi akses filesystem biasa tetapi tidak setara keyring/Stronghold, sehingga deployment produksi sebaiknya memastikan backend secure storage tersedia. Perubahan waktu mundur ditolak semampunya.
 
 `license-server/server.mjs` adalah mock development in-memory dan tidak diperlukan untuk mode offline. Jika ingin mengaktifkan validasi online opsional, set `LICENSE_OFFLINE_ONLY=false` dan `LICENSE_SERVER_URL`; server production harus memverifikasi signature, revocation, max devices, audit, rate limit, TLS, dan penyimpanan durable. Mode offline tidak dapat mencabut lisensi dari jarak jauh atau membatasi satu lisensi ke satu perangkat secara terpusat.
 

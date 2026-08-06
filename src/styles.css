@@ -7,7 +7,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 900px; min-height: 100vh; height: 100vh; overflow: hidden; background: #f1f1f1; }
+body { margin: 0; min-width: 900px; min-height: 100vh; height: 100vh; overflow: hidden; background: #f4f6f8; }
 button, input, textarea, select { font: inherit; color: inherit; }
 button { min-height: 30px; padding: 5px 11px; border: 1px solid #c2c2c2; border-radius: 2px; background: #f7f7f7; cursor: pointer; box-shadow: none; }
 button:hover { background: #fff; border-color: #8d8d8d; }
@@ -19,6 +19,31 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 
 .view { max-width: 2048px; margin: 0 auto; padding: 12px 24px; }
 .card { max-width: 480px; margin: 10vh auto; padding: 24px; background: #f4f4f4; border: 1px solid #d3d3d3; border-radius: 3px; box-shadow: 0 4px 16px #00000012; }
+
+#activationView.card {
+  width: min(520px, calc(100vw - 48px));
+  max-width: none;
+  margin: auto;
+  padding: 32px 34px 28px;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+#activationView .eyebrow { margin-bottom: 10px; font-size: 12px; letter-spacing: .14em; }
+#activationView h1 { margin: 0 0 10px; font-size: 28px; line-height: 1.15; letter-spacing: -.02em; }
+#activationView > p:not(.small) { margin-bottom: 26px; line-height: 1.5; }
+#activationForm { display: flex; flex-direction: column; gap: 17px; }
+#activationForm label { gap: 8px; margin: 0; color: #303944; font-size: 13px; font-weight: 600; }
+#activationForm input, #activationForm textarea { padding: 11px 12px; border-color: #b9c1ca; border-radius: 6px; font-size: 14px; }
+#activationForm input { min-height: 44px; }
+#activationForm textarea { min-height: 116px; line-height: 1.45; resize: vertical; }
+#activationForm button { align-self: flex-start; min-height: 42px; padding: 9px 20px; border-radius: 6px; font-size: 14px; }
+#activationStatus { min-height: 0; margin: 18px 0 0; line-height: 1.45; overflow-wrap: anywhere; }
+#activationStatus:not(:empty) { padding: 12px 14px; border: 1px solid #d9dee5; border-radius: 7px; background: #f8fafc; }
+#activationStatus.error { color: #b42318; border-color: #f2b8b5; background: #fff4f2; }
+#activationStatus.success { color: #176b36; border-color: #b7dfc5; background: #f1fbf4; }
+#copyError { margin-top: 8px; }
+#activationView > .small { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid #e5e8ec; line-height: 1.5; }
 .eyebrow { color: #0067b8; font-size: 11px; letter-spacing: .12em; font-weight: 700; }
 h1, h2, p { margin-top: 0; }
 h1 { font-size: 21px; font-weight: 600; margin: .3rem 0 1.1rem; }
@@ -103,4 +128,10 @@ a { color: #0067b8; }
   .workspace-grid { grid-template-columns: 360px minmax(0, 1fr); }
   .preview-footer { grid-template-columns: 1fr auto; }
   .stats { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+}
+
+@media (max-width: 600px) {
+  body { min-width: 320px; overflow: auto; }
+  #activationView.card { width: calc(100vw - 24px); margin: 24px auto; padding: 26px 20px 22px; }
+  #activationView h1 { font-size: 24px; }
 }

@@ -19,6 +19,8 @@ pub struct LicenseRecord {
     pub max_devices: u32,
     #[serde(default)]
     pub offline: bool,
+    #[serde(default)]
+    pub perpetual: bool,
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct LicenseStatus {
@@ -28,6 +30,7 @@ pub struct LicenseStatus {
     pub expires_at: Option<String>,
     pub last_validated_at: Option<String>,
     pub offline: bool,
+    pub perpetual: bool,
     pub grace_remaining_days: Option<i64>,
     pub message: Option<String>,
 }
@@ -45,7 +48,7 @@ fn online_activation_enabled() -> bool {
 
 pub fn status(app: &AppHandle) -> Result<LicenseStatus, AppError> {
     let record: Option<LicenseRecord> = storage::load(app)?;
-    let Some(record) = record else {
+    let Some(mut record) = record else {
         return Ok(LicenseStatus {
             valid: false,
             email: None,
@@ -53,10 +56,33 @@ pub fn status(app: &AppHandle) -> Result<LicenseStatus, AppError> {
             expires_at: None,
             last_validated_at: None,
             offline: false,
+            perpetual: false,
             grace_remaining_days: None,
             message: Some("Belum ada lisensi yang diaktivasi.".into()),
         });
     };
+    let current_device = machine::device_id();
+    if record.device_id != current_device {
+        if record.device_id == machine::legacy_device_id() {
+            record.device_id = current_device;
+            storage::save(app, &record)?;
+        } else {
+            return Ok(LicenseStatus {
+                valid: false,
+                email: None,
+                license_id: None,
+                expires_at: None,
+                last_validated_at: None,
+                offline: false,
+                perpetual: false,
+                grace_remaining_days: None,
+                message: Some(
+                    "Belum ada lisensi di komputer ini. Masukkan kode lisensi untuk mengaktivasi."
+                        .into(),
+                ),
+            });
+        }
+    }
     let now = Utc::now();
     let expires = DateTime::parse_from_rfc3339(&record.expires_at)
         .map_err(|e| AppError::License(e.to_string()))?
@@ -75,22 +101,36 @@ pub fn status(app: &AppHandle) -> Result<LicenseStatus, AppError> {
         || record.activation_token.starts_with("offline:")
         || record.activation_token.starts_with("dev-local:");
     let clock_ok = now >= validated;
-    let valid = now < expires && clock_ok && (offline_mode || now <= grace_until);
-    let remaining = if offline_mode {
-        (expires - now).num_days().max(0)
+    let valid = clock_ok
+        && if record.perpetual {
+            true
+        } else {
+            now < expires && (offline_mode || now <= grace_until)
+        };
+    let remaining = if record.perpetual {
+        None
+    } else if offline_mode {
+        Some((expires - now).num_days().max(0))
     } else {
-        (grace_until - now).num_days().max(0)
+        Some((grace_until - now).num_days().max(0))
     };
     Ok(LicenseStatus {
         valid,
         email: Some(record.email),
         license_id: Some(record.license_id),
-        expires_at: Some(record.expires_at),
+        expires_at: if record.perpetual {
+            None
+        } else {
+            Some(record.expires_at)
+        },
         last_validated_at: Some(record.last_validated_at),
-        offline: offline_mode || now > validated,
-        grace_remaining_days: Some(remaining),
+        offline: offline_mode,
+        perpetual: record.perpetual,
+        grace_remaining_days: remaining,
         message: if valid {
             None
+        } else if record.perpetual {
+            Some("Waktu komputer tidak valid atau lisensi perlu diaktivasi ulang.".into())
         } else {
             Some("Lisensi perlu divalidasi ulang atau masa berlakunya sudah habis.".into())
         },
@@ -102,6 +142,9 @@ pub async fn refreshed_status(app: &AppHandle) -> Result<LicenseStatus, AppError
     let Some(mut record) = record else {
         return status(app);
     };
+    if record.device_id != machine::device_id() {
+        return status(app);
+    }
     if online_activation_enabled() {
         if let Ok(server) = std::env::var("LICENSE_SERVER_URL") {
             let interval_hours = std::env::var("LICENSE_CHECK_INTERVAL_HOURS")
@@ -116,7 +159,7 @@ pub async fn refreshed_status(app: &AppHandle) -> Result<LicenseStatus, AppError
                     &server,
                     activation::CheckRequest {
                         activation_token: &record.activation_token,
-                        device_id: &record.device_id,
+                        device_id: &machine::device_id(),
                         app_version: option_env!("APP_VERSION").unwrap_or("1.0.0"),
                     },
                 )
@@ -206,6 +249,7 @@ pub async fn activate_license(
         last_validated_at: Utc::now().to_rfc3339(),
         max_devices: verified.payload.max_devices,
         offline,
+        perpetual: offline,
     };
     storage::save(app, &record)?;
     status(app)

@@ -14,6 +14,24 @@ test('bridge is transport-only and does not generate SVG', () => { assert.doesNo
 test('bridge detects DOM canvas, OffscreenCanvas, and inline/external SVG assets', () => {
   assert.match(bridge, /OffscreenCanvas/); assert.match(bridge, /querySelectorAll\('canvas'\)/); assert.match(bridge, /svg_detected/); assert.match(bridge, /canvas_resized/); assert.match(bridge, /img\[src\], object\[data\], embed\[src\]/);
 });
-test('target browser controls support URL navigation', () => {
+test('target controls support native tab navigation without page reloads', () => {
+  assert.match(controls, /__CVR_TARGET_TAB_ID__/);
+  assert.match(controls, /open_target_tab/);
+  assert.match(controls, /switch_target_tab/);
+  assert.match(controls, /close_target_tab/);
+  assert.match(controls, /sync_target_tab/);
   assert.match(controls, /history\.back/); assert.match(controls, /history\.forward/); assert.match(controls, /location\.reload/); assert.match(controls, /location\.href/); assert.match(controls, /https\?:/);
+});
+
+test('target controls keep tabs in one native window', () => {
+  assert.match(controls, /new-tab/);
+  assert.match(controls, /target === '_blank'/);
+  assert.match(controls, /window\.open/);
+  assert.match(controls, /__CVR_SET_TABS__/);
+  assert.match(controls, /data-cvr-target-controls/);
+});
+
+test('target controls enforce a five-tab limit', () => {
+  assert.match(controls, /MAX_TABS = 5/);
+  assert.match(controls, /Maksimal 5 tab/);
 });

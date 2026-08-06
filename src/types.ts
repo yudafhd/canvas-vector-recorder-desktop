@@ -1,4 +1,4 @@
-export type Ratio = 'source' | '1:1' | '4:5' | '3:2' | '2:3' | '16:9';
+export type Ratio = 'source' | '1:1' | '4:5' | '4:3' | '3:2' | '2:3' | '16:9';
 
 export interface MicrostockSettings {
   profile: 'adobe-stock' | 'custom';
@@ -12,6 +12,7 @@ export interface CanvasDetection {
   asset_type?: 'canvas' | 'svg';
   width: number;
   height: number;
+  revision: number;
   shapes: number;
   gap_fillers: number;
   errors: number;
@@ -41,6 +42,7 @@ export interface LicenseStatus {
   expires_at?: string;
   last_validated_at?: string;
   offline: boolean;
+  perpetual: boolean;
   grace_remaining_days?: number;
   message?: string;
 }

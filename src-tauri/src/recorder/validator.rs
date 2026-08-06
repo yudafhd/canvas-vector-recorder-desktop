@@ -63,6 +63,7 @@ pub fn artboard(width: f64, height: f64, settings: &MicrostockSettings) -> (u64,
     let (ratio, ratio_name) = match settings.ratio.as_str() {
         "1:1" => (1.0, "1:1"),
         "4:5" => (0.8, "4:5"),
+        "4:3" => (4.0 / 3.0, "4:3"),
         "3:2" => (1.5, "3:2"),
         "2:3" => (2.0 / 3.0, "2:3"),
         "16:9" => (16.0 / 9.0, "16:9"),
@@ -83,4 +84,22 @@ pub fn artboard(width: f64, height: f64, settings: &MicrostockSettings) -> (u64,
     let output_width = ((h * ratio).ceil() as u64).max(1);
     let output_height = (h.ceil() as u64).max(1);
     (output_width, output_height, ratio_name.into())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn four_by_three_artboard_uses_requested_ratio() {
+        let settings = MicrostockSettings {
+            ratio: "4:3".into(),
+            min_pixels: 12_000_000.0,
+            max_pixels: 65_000_000.0,
+            profile: Some("custom".into()),
+        };
+        let (width, height, ratio) = artboard(1024.0, 1024.0, &settings);
+        assert_eq!(ratio, "4:3");
+        assert_eq!(width as f64 / height as f64, 4.0 / 3.0);
+    }
 }

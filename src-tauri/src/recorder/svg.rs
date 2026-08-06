@@ -300,9 +300,21 @@ pub fn escape_xml(value: &str) -> String {
 
 pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
     let (width, height, ratio) = artboard(data.width, data.height, settings);
-    let scale = (width as f64 / data.width.max(1.0)).min(height as f64 / data.height.max(1.0));
     let background_index = background_shape_index(data);
-    let (ox, oy) = artwork_bounds(data, background_index)
+    let bounds = artwork_bounds(data, background_index);
+    // Fit the visible artwork to the requested artboard instead of scaling
+    // against the full source canvas, which can leave large empty borders.
+    let scale = bounds
+        .map(|bounds| {
+            let artwork_width = (bounds.max_x - bounds.min_x).max(1.0);
+            let artwork_height = (bounds.max_y - bounds.min_y).max(1.0);
+            let fit = (width as f64 / artwork_width).min(height as f64 / artwork_height);
+            fit * 0.94
+        })
+        .unwrap_or_else(|| {
+            (width as f64 / data.width.max(1.0)).min(height as f64 / data.height.max(1.0))
+        });
+    let (ox, oy) = bounds
         .map(|bounds| {
             let (center_x, center_y) = bounds.center();
             (
@@ -443,6 +455,7 @@ mod tests {
             filename: None,
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
-        assert!(svg.contains("translate(1549.2 1549.2)"));
+        assert!(svg.contains("translate(116.19 116.19)"));
+        assert!(svg.contains("scale(182.031)"));
     }
 }
