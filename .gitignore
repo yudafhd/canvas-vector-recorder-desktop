@@ -8,6 +8,7 @@ build/
 *.deb
 *.AppImage
 .env
+BUILD_RELEASE.local.md
 license-keys/
 *.pem
 *.key
