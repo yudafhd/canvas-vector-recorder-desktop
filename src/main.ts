@@ -65,12 +65,24 @@ function showDownloadToast(message: string): void {
 }
 
 function settings(): MicrostockSettings {
-  return { profile: 'custom', ratio: ($<HTMLSelectElement>('ratio').value as MicrostockSettings['ratio']), minPixels: Number($<HTMLInputElement>('minPixels').value) * 1_000_000, maxPixels: Number($<HTMLInputElement>('maxPixels').value) * 1_000_000 };
+  return {
+    profile: 'custom',
+    ratio: ($<HTMLSelectElement>('ratio').value as MicrostockSettings['ratio']),
+    minPixels: Number($<HTMLInputElement>('minPixels').value) * 1_000_000,
+    maxPixels: Number($<HTMLInputElement>('maxPixels').value) * 1_000_000,
+    backgroundColor: $<HTMLInputElement>('backgroundColor').value || '#ffffff',
+    transparentBackground: $<HTMLInputElement>('transparentBackground').checked,
+  };
+}
+
+function syncBackgroundControls(): void {
+  const transparent = $<HTMLInputElement>('transparentBackground').checked;
+  $<HTMLInputElement>('backgroundColor').disabled = transparent;
 }
 
 function thumbnailKey(item: CanvasDetection): string {
   const current = settings();
-  return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels].join('|');
+  return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels, current.backgroundColor, current.transparentBackground].join('|');
 }
 
 function renderLicense(s: LicenseStatus): void {
@@ -154,7 +166,7 @@ function resetDetectedSurfaces(): void {
   setAssetTab('canvas');
   $('preview').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
   $('previewTitle').textContent = 'Rendered Preview';
-  $('previewFilename').textContent = 'Pilih canvas dari daftar';
+  $('previewFilename').textContent = '';
   $('shapeCount').textContent = '—'; $('gapCount').textContent = '—'; $('errorCount').textContent = '—'; $('artboardSize').textContent = '—';
   $('exportSvg').setAttribute('disabled', 'true');
 }
@@ -198,6 +210,7 @@ async function closeTarget(): Promise<void> { await invoke('close_target_window'
 
 document.addEventListener('DOMContentLoaded', () => {
   updateOpenTargetButton();
+  syncBackgroundControls();
   $('activationForm').addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();
     status(activationStatus, 'Memvalidasi dan mengaktifkan perangkat…');
@@ -213,8 +226,12 @@ document.addEventListener('DOMContentLoaded', () => {
   $('canvasTab').addEventListener('click', () => setAssetTab('canvas'));
   $('svgTab').addEventListener('click', () => setAssetTab('svg'));
   $('refreshPreviewButton').addEventListener('click', () => refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('transparentBackground').addEventListener('change', syncBackgroundControls);
   $('recordToggle').addEventListener('click', async () => { recordingEnabled = !recordingEnabled; await invoke('set_recording', { enabled: recordingEnabled }); const button = $('recordToggle'); button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF'; button.classList.toggle('off', !recordingEnabled); });
-  $('refreshSettings').addEventListener('click', () => refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('refreshSettings').addEventListener('click', () => {
+    renderCanvases(detectedAssets);
+    refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+  });
   $('exportSvg').addEventListener('click', async () => {
     if (!lastSvg || !selectedCanvas) return;
     try {

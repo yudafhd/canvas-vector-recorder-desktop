@@ -90,7 +90,11 @@
                 </select></label>
               <div class="row"><label>Min MP<input id="minPixels" type="number" min="1" value="15"></label><label>Max
                   MP<input id="maxPixels" type="number" min="1" value="65"></label></div>
-              <button id="refreshSettings" type="button">Terapkan ukuran</button>
+              <div class="background-settings">
+                <label class="check-label"><input id="transparentBackground" type="checkbox"> Background transparan</label>
+                <label class="color-label">Warna background<input id="backgroundColor" type="color" value="#ffffff"></label>
+              </div>
+              <button id="refreshSettings" type="button">Terapkan pengaturan</button>
             </div>
           </details>
         </aside>
@@ -104,7 +108,7 @@
             <p class="muted">Preview akan tampil setelah canvas direkam.</p>
           </div>
           <footer class="preview-footer">
-            <div class="preview-file"><strong id="previewFilename">Pilih canvas dari daftar</strong></div>
+            <div class="preview-file"><strong id="previewFilename"></strong></div>
             <div class="stats">
               <div><strong id="shapeCount">—</strong><span>shapes</span></div>
               <div><strong id="gapCount">—</strong><span>gaps</span></div>

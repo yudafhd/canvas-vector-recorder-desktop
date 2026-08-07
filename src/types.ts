@@ -5,6 +5,8 @@ export interface MicrostockSettings {
   minPixels: number;
   maxPixels: number;
   ratio: Ratio;
+  backgroundColor: string;
+  transparentBackground: boolean;
 }
 
 export interface CanvasDetection {

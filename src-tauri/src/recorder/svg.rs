@@ -326,6 +326,21 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
             (width as f64 - data.width * scale) / 2.0,
             (height as f64 - data.height * scale) / 2.0,
         ));
+    let background_layer = if settings.transparent_background {
+        String::new()
+    } else {
+        let color = if settings.background_color.trim().is_empty() {
+            "#ffffff"
+        } else {
+            settings.background_color.trim()
+        };
+        format!(
+            "  <g id=\"background\" aria-label=\"Background\">\n    <rect id=\"background-color\" width=\"{}\" height=\"{}\" fill=\"{}\"/>\n  </g>\n",
+            width,
+            height,
+            escape_xml(color)
+        )
+    };
     let clip_defs = data
         .shapes
         .iter()
@@ -378,7 +393,7 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
         })
         .collect::<Vec<_>>()
         .join("\n");
-    let svg = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\" color-interpolation=\"sRGB\">{}\n  <title>Editable vector artwork</title>\n  <g id=\"background\" aria-label=\"White background\">\n    <rect id=\"background-white\" width=\"{}\" height=\"{}\" fill=\"#ffffff\"/>\n  </g>\n  <g id=\"artwork-transform\" aria-label=\"Artwork transform\" transform=\"translate({} {}) scale({})\">\n    <g id=\"artwork\" aria-label=\"Artwork\">\n{}\n    </g>{}\n  </g>\n</svg>", width, height, width, height, defs, width, height, f(ox), f(oy), f(scale), shapes, gap_layer);
+    let svg = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\" color-interpolation=\"sRGB\">{}\n  <title>Editable vector artwork</title>\n{}  <g id=\"artwork-transform\" aria-label=\"Artwork transform\" transform=\"translate({} {}) scale({})\">\n    <g id=\"artwork\" aria-label=\"Artwork\">\n{}\n    </g>{}\n  </g>\n</svg>", width, height, width, height, defs, background_layer, f(ox), f(oy), f(scale), shapes, gap_layer);
     (svg, (width, height, ratio))
 }
 
@@ -430,8 +445,31 @@ mod tests {
         assert!(svg.contains("xmlns=\"http://www.w3.org/2000/svg\""));
         assert!(svg.contains("viewBox=\"0 0"));
         assert!(svg.contains("<g id=\"background\""));
-        assert!(svg.contains("<rect id=\"background-white\""));
+        assert!(svg.contains("<rect id=\"background-color\" width=\""));
+        assert!(svg.contains("fill=\"#ffffff\""));
         assert!(svg.contains("<g id=\"artwork\""));
+    }
+
+    #[test]
+    fn transparent_background_omits_background_layer() {
+        let data = CanvasResult {
+            canvas_id: "c".into(),
+            asset_type: "canvas".into(),
+            width: 100.0,
+            height: 50.0,
+            shapes: vec![],
+            gap_fillers: vec![],
+            errors: 0,
+            operations: vec![],
+            raw_svg: None,
+            filename: None,
+        };
+        let settings = MicrostockSettings {
+            transparent_background: true,
+            ..Default::default()
+        };
+        let (svg, _) = build(&data, &settings);
+        assert!(!svg.contains("id=\"background-color\""));
     }
 
     #[test]

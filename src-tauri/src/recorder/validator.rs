@@ -8,6 +8,14 @@ pub struct MicrostockSettings {
     pub min_pixels: f64,
     pub max_pixels: f64,
     pub ratio: String,
+    #[serde(default = "default_background_color")]
+    pub background_color: String,
+    #[serde(default)]
+    pub transparent_background: bool,
+}
+
+fn default_background_color() -> String {
+    "#ffffff".into()
 }
 
 impl Default for MicrostockSettings {
@@ -17,6 +25,8 @@ impl Default for MicrostockSettings {
             min_pixels: 15_000_000.0,
             max_pixels: 65_000_000.0,
             ratio: "source".into(),
+            background_color: default_background_color(),
+            transparent_background: false,
         }
     }
 }
@@ -97,6 +107,8 @@ mod tests {
             min_pixels: 12_000_000.0,
             max_pixels: 65_000_000.0,
             profile: Some("custom".into()),
+            background_color: default_background_color(),
+            transparent_background: false,
         };
         let (width, height, ratio) = artboard(1024.0, 1024.0, &settings);
         assert_eq!(ratio, "4:3");
