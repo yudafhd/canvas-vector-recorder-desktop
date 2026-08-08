@@ -24,6 +24,7 @@ let lastSvg: SvgResult | null = null;
 let recordingEnabled = true;
 let targetOpen = false;
 const isWindows = /Windows/i.test(navigator.userAgent);
+const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
 type MainTab = 'recorder' | 'target';
 let activeMainTab: MainTab = 'recorder';
@@ -105,7 +106,7 @@ function setMainTab(tab: MainTab): void {
     }
   });
   if (showTarget) targetMainTitle.textContent = targetTabs.find(target => target.id === activeTargetId)?.title || 'Target';
-  if (isWindows) {
+  if (isWindows || isMac) {
     if (showTarget) {
       void invoke('set_target_view_visible', { visible: true }).catch(() => undefined);
       [0, 150, 500, 1000].forEach(delay => setTimeout(syncTargetViewBounds, delay));
@@ -116,7 +117,7 @@ function setMainTab(tab: MainTab): void {
 }
 
 function syncTargetViewBounds(): void {
-  if (!isWindows || targetView.hidden) return;
+  if ((!isWindows && !isMac) || targetView.hidden) return;
   const bounds = targetFrame.getBoundingClientRect();
   void invoke('resize_target_view', {
     x: bounds.left,
@@ -181,7 +182,7 @@ function renderLicense(s: LicenseStatus): void {
       : 'Lisensi belum aktif';
   if (s.valid) {
     activationView.hidden = true;
-    if (isWindows) {
+    if (isWindows || isMac) {
       mainTabs.hidden = false;
       setMainTab(activeMainTab);
     } else {
@@ -293,7 +294,8 @@ async function openTarget(): Promise<void> {
   currentSession = started.session_id;
   await invoke('open_target_url', { url, sessionId: currentSession });
   targetOpen = true;
-  activeMainTab = 'target';
+  if (isMac) setMainTab('target');
+  else activeMainTab = 'target';
   updateOpenTargetButton();
   selectedCanvas = null;
   lastSvg = null;
@@ -304,7 +306,7 @@ async function openTarget(): Promise<void> {
 async function closeTarget(): Promise<void> {
   await invoke('close_target_window');
   targetOpen = false;
-  mainTabs.hidden = !isWindows;
+  mainTabs.hidden = !(isWindows || isMac);
   renderTargetTabs({ active_id: null, tabs: [] });
   setMainTab('recorder');
   updateOpenTargetButton();
@@ -315,8 +317,8 @@ async function closeTarget(): Promise<void> {
 
 document.addEventListener('DOMContentLoaded', () => {
   updateOpenTargetButton();
-  mainTabs.hidden = !isWindows;
-  if (isWindows) setMainTab('recorder');
+  mainTabs.hidden = !(isWindows || isMac);
+  if (isWindows || isMac) setMainTab('recorder');
   syncBackgroundControls();
   $('activationForm').addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();

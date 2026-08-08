@@ -55,6 +55,21 @@ fn open_target_window_with_label(
     Ok(())
 }
 
+pub(crate) fn close_target_views(app: &AppHandle) -> Result<(), AppError> {
+    for (label, window) in app.webview_windows() {
+        if !is_target_window_label(&label) {
+            continue;
+        }
+        for (_, webview) in window.webviews() {
+            let _ = webview.eval("window.__CVR_STOP_RECORDER__ && window.__CVR_STOP_RECORDER__()");
+        }
+        window
+            .close()
+            .map_err(|error| AppError::Window(error.to_string()))?;
+    }
+    Ok(())
+}
+
 pub(crate) fn open_target_tab(
     app: AppHandle,
     state: State<'_, AppState>,
@@ -105,11 +120,7 @@ pub(crate) fn switch_target_tab(
 ) -> Result<(), AppError> {
     {
         let mut target = state.target.lock().map_err(|_| AppError::State)?;
-        if !target
-            .tabs
-            .iter()
-            .any(|tab| tab.id == tab_id)
-        {
+        if !target.tabs.iter().any(|tab| tab.id == tab_id) {
             return Err(AppError::NotFound("Tab target tidak ditemukan.".into()));
         }
         target.active_id = Some(tab_id);

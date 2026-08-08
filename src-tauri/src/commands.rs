@@ -25,13 +25,8 @@ pub fn start_recording(state: State<'_, AppState>) -> Result<StartRecording, App
 
 #[tauri::command]
 pub fn stop_recording(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
-    for (label, window) in app.webview_windows() {
-        if !is_target_window_label(&label) {
-            continue;
-        }
-        for (_, webview) in window.webviews() {
-            let _ = webview.eval("window.__CVR_STOP_RECORDER__ && window.__CVR_STOP_RECORDER__()");
-        }
+    for webview in target_webviews(&app) {
+        let _ = webview.eval("window.__CVR_STOP_RECORDER__ && window.__CVR_STOP_RECORDER__()");
     }
     state.recorder.lock().map_err(|_| AppError::State)?.stop();
     Ok(())
@@ -220,15 +215,10 @@ pub fn set_recording(
         .map_err(|_| AppError::State)?
         .recording_enabled = enabled;
     let payload = if enabled { "true" } else { "false" };
-    for (label, window) in app.webview_windows() {
-        if !is_target_window_label(&label) {
-            continue;
-        }
-        for (_, webview) in window.webviews() {
-            let _ = webview.eval(&format!(
-                "window.postMessage({{type:'cvr-set-recording', enabled:{payload}}}, '*')"
-            ));
-        }
+    for webview in target_webviews(&app) {
+        let _ = webview.eval(&format!(
+            "window.postMessage({{type:'cvr-set-recording', enabled:{payload}}}, '*')"
+        ));
     }
     Ok(())
 }
@@ -244,14 +234,7 @@ pub fn open_target_url(
     if !matches!(parsed.scheme(), "http" | "https") {
         return Err(AppError::InvalidUrl);
     }
-    for (label, window) in app.webview_windows() {
-        if !is_target_window_label(&label) {
-            continue;
-        }
-        window
-            .close()
-            .map_err(|e| AppError::Window(e.to_string()))?;
-    }
+    target_platform::close_target_views(&app)?;
     let tab_id = new_tab_id();
     {
         let mut target = state.target.lock().map_err(|_| AppError::State)?;
@@ -556,17 +539,7 @@ pub fn sync_target_tab(
 
 #[tauri::command]
 pub fn close_target_window(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
-    for (label, window) in app.webview_windows() {
-        if !is_target_window_label(&label) {
-            continue;
-        }
-        for (_, webview) in window.webviews() {
-            let _ = webview.eval("window.__CVR_STOP_RECORDER__ && window.__CVR_STOP_RECORDER__()");
-        }
-        window
-            .close()
-            .map_err(|e| AppError::Window(e.to_string()))?;
-    }
+    target_platform::close_target_views(&app)?;
     *state.target.lock().map_err(|_| AppError::State)? = TargetState::default();
     state.recorder.lock().map_err(|_| AppError::State)?.stop();
     let _ = app.emit("target-closed", ());
@@ -579,6 +552,29 @@ pub(crate) fn new_tab_id() -> String {
 
 pub(crate) fn is_target_window_label(label: &str) -> bool {
     label == "target" || label.starts_with("target-")
+}
+
+pub(crate) fn target_webviews(app: &AppHandle) -> Vec<tauri::Webview> {
+    if cfg!(target_os = "macos") {
+        return app
+            .get_window("main")
+            .map(|window| {
+                window
+                    .webviews()
+                    .into_iter()
+                    .filter(|webview| is_target_window_label(webview.label()))
+                    .collect()
+            })
+            .unwrap_or_default();
+    }
+
+    let mut webviews = Vec::new();
+    for (label, window) in app.webview_windows() {
+        if is_target_window_label(&label) {
+            webviews.extend(window.webviews().into_values());
+        }
+    }
+    webviews
 }
 
 pub(crate) fn target_payload(state: &TargetState) -> serde_json::Value {
@@ -606,7 +602,7 @@ pub(crate) fn target_script(
     };
     let bridge = include_str!("../../src/recorder-bridge.js");
     let target_controls = include_str!("../../src/target-controls.js");
-    let target_mode = if cfg!(target_os = "windows") {
+    let target_mode = if cfg!(target_os = "windows") || cfg!(target_os = "macos") {
         "multi-window"
     } else {
         "tabbed-window"
@@ -620,10 +616,7 @@ pub(crate) fn target_script(
 
 #[cfg(not(target_os = "windows"))]
 pub(crate) fn activate_target_webview(app: &AppHandle, active_label: &str) -> Result<(), AppError> {
-    let window = app
-        .get_window("target")
-        .ok_or_else(|| AppError::Window("Target window tidak ditemukan.".into()))?;
-    for webview in window.webviews() {
+    for webview in target_webviews(app) {
         if webview.label() == active_label {
             webview
                 .show()
@@ -646,16 +639,11 @@ pub(crate) fn broadcast_target_tabs(
         let target = state.target.lock().map_err(|_| AppError::State)?;
         target_payload(&target)
     };
-    let payload = serde_json::to_string(&target_state)
-        .map_err(|e| AppError::InvalidEvent(e.to_string()))?;
-    for (label, window) in app.webview_windows() {
-        if !is_target_window_label(&label) {
-            continue;
-        }
-        let script = format!("window.__CVR_SET_TABS__ && window.__CVR_SET_TABS__({payload});");
-        for (_, webview) in window.webviews() {
-            let _ = webview.eval(&script);
-        }
+    let payload =
+        serde_json::to_string(&target_state).map_err(|e| AppError::InvalidEvent(e.to_string()))?;
+    let script = format!("window.__CVR_SET_TABS__ && window.__CVR_SET_TABS__({payload});");
+    for webview in target_webviews(app) {
+        let _ = webview.eval(&script);
     }
     let _ = app.emit("target-tabs-updated", target_state);
     Ok(())
