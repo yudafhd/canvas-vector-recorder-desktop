@@ -84,5 +84,6 @@ jobs:
           name: canvas-vector-recorder-windows-x64
           if-no-files-found: error
           path: |
+            src-tauri/target/release/canvas-vector-recorder-desktop.exe
             src-tauri/target/release/bundle/nsis/*.exe
             src-tauri/target/release/bundle/msi/*.msi
