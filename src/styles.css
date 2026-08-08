@@ -52,6 +52,13 @@ h2 { font-size: 13px; font-weight: 600; margin-bottom: 11px; }
 .small { font-size: 12px; }
 
 .workspace-shell { max-width: 2048px; height: calc(100vh - 24px); overflow: hidden; }
+.main-tabs { display: flex; gap: 2px; max-width: 2048px; margin: 0 auto; padding: 8px 24px 0; background: #e7e8ea; }
+.main-tab { min-width: 110px; border-radius: 5px 5px 0 0; background: #dfe3e7; }
+.main-tab.active { color: #fff; background: #087dcc; border-color: #0067b8; }
+.target-main-view { height: calc(100vh - 24px); padding-top: 12px; }
+.target-main-panel { display: flex; flex-direction: column; height: 100%; overflow: hidden; background: #f4f4f4; border: 1px solid #d8d8d8; border-radius: 3px; }
+.target-main-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 8px 14px; border-bottom: 1px solid #d8d8d8; }
+#targetFrame { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; background: #fff; }
 .topbar { display: flex; justify-content: space-between; align-items: center; min-height: 58px; padding: 10px 20px; border-bottom: 1px solid #d8d8d8; }
 .brand { display: flex; align-items: center; gap: 11px; }
 .brand-icon { display: grid; place-items: center; width: 34px; height: 34px; background: #087dcc; border-radius: 3px; box-shadow: inset 0 0 0 1px #005a9e; }

@@ -2,7 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "target-recorder-capability",
   "description": "Only permits the target WebView to submit bounded recorder batches.",
-  "windows": ["target"],
+  "windows": ["target", "target-*"],
   "remote": { "urls": ["http://*/*", "https://*/*"] },
   "permissions": ["allow-record-canvas-events", "allow-target-tab-commands"]
 }

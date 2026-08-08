@@ -41,6 +41,7 @@ fn platform_identifier() -> Option<String> {
     None
 }
 
+#[cfg(target_os = "macos")]
 fn output_value(output: &str, key: &str) -> Option<String> {
     output
         .lines()
@@ -78,8 +79,10 @@ pub fn device_id() -> String {
 
 #[cfg(test)]
 mod tests {
+    #[cfg(target_os = "macos")]
     use super::output_value;
 
+    #[cfg(target_os = "macos")]
     #[test]
     fn parses_macos_platform_uuid() {
         let output = r#"    "IOPlatformUUID" = "ABC-123""#;

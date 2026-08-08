@@ -159,7 +159,7 @@ impl RecorderStore {
                     asset_type: canvas.asset_type.clone(),
                     width: canvas.width,
                     height: canvas.height,
-                    revision: canvas.operations.len(),
+                    revision: canvas.revision,
                     shapes: canvas.shapes.len(),
                     gap_fillers: canvas.gap_fillers.len(),
                     errors: canvas.errors,

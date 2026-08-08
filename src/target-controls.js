@@ -5,6 +5,7 @@
 
   var tabId = String(window.__CVR_TARGET_TAB_ID__ || '');
   var tabState = window.__CVR_TARGET_TABS__ || { active_id: tabId, tabs: [] };
+  var multiWindowMode = window.__CVR_TARGET_MODE__ === 'multi-window';
 
   function invoke(name, args) {
     try {
@@ -48,6 +49,8 @@
     invoke('open_target_tab', { url: next }).catch(function () {});
   }
 
+  if (window.top !== window) return;
+
   document.addEventListener('click', interceptNewTab, true);
   document.addEventListener('auxclick', interceptNewTab, true);
   var nativeOpen = window.open;
@@ -59,8 +62,6 @@
     }
     return nativeOpen.apply(window, arguments);
   };
-
-  if (window.top !== window) return;
 
   window.addEventListener('pageshow', syncTab);
   window.addEventListener('load', syncTab);
@@ -98,9 +99,15 @@
     '<div class=\"dialog-title\">Buka tab baru</div><label>URL<input id=\"new-tab-url\" type=\"url\" value=\"https://\" spellcheck=\"false\" autocomplete=\"off\"></label>' +
     '<div id=\"new-tab-error\" class=\"dialog-error\" role=\"status\"></div><div class=\"dialog-actions\"><button id=\"cancel-new-tab\" type=\"button\">Batal</button><button class=\"primary\" type=\"submit\">Buka tab</button></div>' +
     '</form></div></div>';
-  document.documentElement.appendChild(host);
+  function mountHost() {
+    var root = document.documentElement || document.body;
+    if (root) { root.appendChild(host); return; }
+    setTimeout(mountHost, 0);
+  }
+  mountHost();
 
   var tabs = shadow.getElementById('tabs');
+  tabs.hidden = multiWindowMode;
   var urlInput = shadow.getElementById('url');
   var error = shadow.getElementById('error');
   var tabDialog = shadow.getElementById('tab-dialog');

@@ -1,6 +1,7 @@
 mod commands;
 mod license;
 mod recorder;
+mod target_platform;
 
 use recorder::RecorderStore;
 use serde::{Deserialize, Serialize};
@@ -28,6 +29,7 @@ pub struct TargetState {
 pub struct AppState {
     pub recorder: Mutex<RecorderStore>,
     pub target: Mutex<TargetState>,
+    pub last_emit: Mutex<std::time::Instant>,
 }
 
 #[derive(Debug, Error, Serialize)]
@@ -67,6 +69,7 @@ pub fn run() {
                 ..Default::default()
             }),
             target: Mutex::new(TargetState::default()),
+            last_emit: Mutex::new(std::time::Instant::now()),
         })
         .invoke_handler(tauri::generate_handler![
             commands::start_recording,
@@ -76,6 +79,7 @@ pub fn run() {
             commands::get_canvas_result,
             commands::generate_svg,
             commands::export_svg,
+            commands::save_svg,
             commands::clear_recording,
             commands::get_recording_state,
             commands::set_recording,
@@ -83,6 +87,9 @@ pub fn run() {
             commands::open_target_tab,
             commands::switch_target_tab,
             commands::close_target_tab,
+            commands::set_target_view_visible,
+            commands::restore_target_view,
+            commands::resize_target_view,
             commands::sync_target_tab,
             commands::close_target_window,
             commands::validate_license,

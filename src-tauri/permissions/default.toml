@@ -3,7 +3,7 @@ identifier = "allow-studio-commands"
 description = "Studio-only recorder, license, storage, target-window, and export commands."
 commands.allow = [
   "start_recording", "stop_recording", "list_canvases", "get_canvas_result", "generate_svg",
-  "export_svg", "clear_recording", "get_recording_state", "open_target_url", "open_target_tab", "switch_target_tab",
+  "export_svg", "save_svg", "clear_recording", "get_recording_state", "open_target_url", "open_target_tab", "switch_target_tab",
   "close_target_tab", "sync_target_tab", "close_target_window",
   "validate_license", "activate_license", "get_license_status", "set_recording"
 ]

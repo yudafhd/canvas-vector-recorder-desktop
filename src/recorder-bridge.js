@@ -9,7 +9,7 @@
   var frameId = 'frame-' + Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
   var sequence = 0, queue = [], stopped = false, recordingEnabled = true, flushTimer = null;
   var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), svgIds = new WeakMap(), svgSnapshots = new WeakMap(), svgSources = new WeakMap(), svgPendingSources = new WeakMap(), nextCanvas = 1, nextPath = 1, nextSvg = 1;
-  var MAX_BATCH = 100, FLUSH_MS = 75;
+  var MAX_BATCH = 100, FLUSH_MS = 150;
   function invoke(name, args) {
     try { return w.__TAURI_INTERNALS__ && w.__TAURI_INTERNALS__.invoke(name, args); } catch (_) { return Promise.reject(_); }
   }
@@ -246,10 +246,9 @@
   function installSvgDetection() {
     var schedule = function () {
       if (schedule.timer) return;
-      schedule.timer = setTimeout(function () { schedule.timer = null; scanSvgs(); }, 100);
+      schedule.timer = setTimeout(function () { schedule.timer = null; scanSvgs(); }, 350);
     };
-    if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true });
-    scanSvgs();
+    if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['viewBox', 'width', 'height', 'd', 'fill', 'stroke', 'stroke-width', 'transform'] });
     w.addEventListener('DOMContentLoaded', schedule, { once: true });
     setTimeout(schedule, 500);
   }
@@ -263,7 +262,6 @@
       schedule.timer = setTimeout(function () { schedule.timer = null; scanCanvases(); }, 100);
     };
     if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['width', 'height'] });
-    scanCanvases();
     w.addEventListener('DOMContentLoaded', schedule, { once: true });
     setTimeout(schedule, 500);
   }

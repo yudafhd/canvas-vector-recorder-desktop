@@ -11,7 +11,7 @@
   },
   "app": {
     "windows": [{ "label": "main", "title": "Canvas Vector Recorder", "width": 1280, "height": 820, "resizable": true }],
-    "security": { "csp": "default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'" }
+    "security": { "csp": "default-src 'self'; img-src 'self' blob: data:; frame-src http: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'" }
   },
   "bundle": {
     "active": true,

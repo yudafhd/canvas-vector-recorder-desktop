@@ -33,6 +33,8 @@ pub struct CanvasResult {
     pub filename: Option<String>,
 }
 
+const MAX_CANVAS_SHAPES: usize = 5_000;
+
 #[derive(Debug, Clone, Default)]
 pub struct CanvasState {
     pub canvas_id: String,
@@ -44,7 +46,7 @@ pub struct CanvasState {
     pub gap_fillers: Vec<Stroke>,
     pub errors: u64,
     pub current_clip: Option<String>,
-    pub operations: Vec<String>,
+    pub revision: usize,
     pub raw_svg: Option<String>,
     pub filename: Option<String>,
 }
@@ -60,7 +62,7 @@ impl CanvasState {
         }
     }
     pub fn apply(&mut self, event: &RecorderEvent) {
-        self.operations.push(event.event_type.clone());
+        self.revision += 1;
         if let Some(width) = event.width {
             self.width = width.max(1.0);
         }
@@ -99,40 +101,48 @@ impl CanvasState {
                 }
             }
             "fill" => {
-                if let Some(shape) = self.shape_from_event(event, true) {
-                    self.shapes.push(shape);
-                } else {
-                    self.errors += 1;
-                }
-            }
-            "stroke" => {
-                if let Some(path) = event.path_id.as_ref().and_then(|id| self.paths.get(id)) {
-                    if !path.d.is_empty() {
-                        self.gap_fillers.push(Stroke {
-                            d: path.d.clone(),
-                            stroke: event.stroke_style.clone().unwrap_or_else(|| "#000".into()),
-                            width: event.line_width.unwrap_or(1.0),
-                            transform: Matrix::from_slice(event.transform),
-                        });
+                if self.shapes.len() < MAX_CANVAS_SHAPES {
+                    if let Some(shape) = self.shape_from_event(event, true) {
+                        self.shapes.push(shape);
                     } else {
                         self.errors += 1;
                     }
-                } else {
-                    self.errors += 1;
+                }
+            }
+            "stroke" => {
+                if self.gap_fillers.len() < MAX_CANVAS_SHAPES {
+                    if let Some(path) = event.path_id.as_ref().and_then(|id| self.paths.get(id)) {
+                        if !path.d.is_empty() {
+                            self.gap_fillers.push(Stroke {
+                                d: path.d.clone(),
+                                stroke: event.stroke_style.clone().unwrap_or_else(|| "#000".into()),
+                                width: event.line_width.unwrap_or(1.0),
+                                transform: Matrix::from_slice(event.transform),
+                            });
+                        } else {
+                            self.errors += 1;
+                        }
+                    } else {
+                        self.errors += 1;
+                    }
                 }
             }
             "fill_rect" => {
-                if let Some(rect) = rect_shape(event, true) {
-                    self.shapes.push(rect);
-                } else {
-                    self.errors += 1;
+                if self.shapes.len() < MAX_CANVAS_SHAPES {
+                    if let Some(rect) = rect_shape(event, true) {
+                        self.shapes.push(rect);
+                    } else {
+                        self.errors += 1;
+                    }
                 }
             }
             "stroke_rect" => {
-                if let Some(rect) = rect_stroke(event) {
-                    self.gap_fillers.push(rect);
-                } else {
-                    self.errors += 1;
+                if self.gap_fillers.len() < MAX_CANVAS_SHAPES {
+                    if let Some(rect) = rect_stroke(event) {
+                        self.gap_fillers.push(rect);
+                    } else {
+                        self.errors += 1;
+                    }
                 }
             }
             _ => {}
@@ -169,7 +179,7 @@ impl CanvasState {
             shapes: self.shapes.clone(),
             gap_fillers: self.gap_fillers.clone(),
             errors: self.errors,
-            operations: self.operations.clone(),
+            operations: Vec::new(),
             raw_svg: self.raw_svg.clone(),
             filename: self.filename.clone(),
         }

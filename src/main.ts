@@ -7,6 +7,13 @@ import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, Sta
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
+const mainTabs = $('mainTabs');
+const recorderMainTab = $<HTMLButtonElement>('recorderMainTab');
+const targetMainTab = $<HTMLButtonElement>('targetMainTab');
+const targetView = $('targetView');
+const targetFrame = $<HTMLIFrameElement>('targetFrame');
+const targetMainTitle = $('targetMainTitle');
+const closeTargetMainTab = $<HTMLButtonElement>('closeTargetMainTab');
 const activationStatus = $('activationStatus');
 const copyError = $('copyError');
 const workspaceStatus = $('workspaceStatus');
@@ -16,7 +23,10 @@ let selectedCanvas: string | null = null;
 let lastSvg: SvgResult | null = null;
 let recordingEnabled = true;
 let targetOpen = false;
+const isWindows = /Windows/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
+type MainTab = 'recorder' | 'target';
+let activeMainTab: MainTab = 'recorder';
 type AssetTab = 'canvas' | 'svg';
 let activeAssetTab: AssetTab = 'canvas';
 let detectedAssets: CanvasDetection[] = [];
@@ -28,6 +38,12 @@ let previewRequest = 0;
 
 function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
+  if (isWindows) {
+    button.textContent = targetOpen ? 'Buka target lain' : 'Buka target';
+    button.title = 'Buka target di tab utama aplikasi.';
+    button.setAttribute('aria-label', 'Buka target di tab utama aplikasi');
+    return;
+  }
   if (targetOpen) {
     button.textContent = 'Buka tab baru (maks. 5)';
     button.title = 'Klik untuk membuka URL sebagai tab baru di window target yang sama. Maksimal 5 tab.';
@@ -37,6 +53,36 @@ function updateOpenTargetButton(): void {
     button.title = 'Buka window target';
     button.setAttribute('aria-label', 'Buka window target');
   }
+}
+
+function setMainTab(tab: MainTab): void {
+  activeMainTab = tab;
+  const showTarget = tab === 'target' && targetOpen;
+  workspaceView.hidden = showTarget;
+  targetView.hidden = !showTarget;
+  recorderMainTab.classList.toggle('active', !showTarget);
+  recorderMainTab.setAttribute('aria-selected', String(!showTarget));
+  targetMainTab.classList.toggle('active', showTarget);
+  targetMainTab.setAttribute('aria-selected', String(showTarget));
+  if (isWindows) {
+    if (showTarget) {
+      void invoke('set_target_view_visible', { visible: true }).catch(() => undefined);
+      [0, 150, 500, 1000].forEach(delay => setTimeout(syncTargetViewBounds, delay));
+    } else {
+      void invoke('set_target_view_visible', { visible: false }).catch(() => undefined);
+    }
+  }
+}
+
+function syncTargetViewBounds(): void {
+  if (!isWindows || targetView.hidden) return;
+  const bounds = targetFrame.getBoundingClientRect();
+  void invoke('resize_target_view', {
+    x: bounds.left,
+    y: bounds.top,
+    width: bounds.width,
+    height: bounds.height,
+  }).catch(() => undefined);
 }
 
 function status(element: HTMLElement, message: string, tone: 'idle' | 'success' | 'error' = 'idle'): void {
@@ -92,8 +138,23 @@ function renderLicense(s: LicenseStatus): void {
     : s.expires_at
       ? `Lisensi aktif sampai ${new Date(s.expires_at).toLocaleDateString()}`
       : 'Lisensi belum aktif';
-  if (s.valid) { activationView.hidden = true; workspaceView.hidden = false; }
-  else { workspaceView.hidden = true; activationView.hidden = false; status(activationStatus, s.message || 'Lisensi belum aktif.', 'error'); }
+  if (s.valid) {
+    activationView.hidden = true;
+    if (isWindows) {
+      mainTabs.hidden = false;
+      setMainTab(activeMainTab);
+    } else {
+      mainTabs.hidden = true;
+      targetView.hidden = true;
+      workspaceView.hidden = false;
+    }
+  } else {
+    workspaceView.hidden = true;
+    mainTabs.hidden = true;
+    targetView.hidden = true;
+    activationView.hidden = false;
+    status(activationStatus, s.message || 'Lisensi belum aktif.', 'error');
+  }
 }
 
 async function loadLicense(): Promise<void> {
@@ -195,21 +256,38 @@ async function openTarget(): Promise<void> {
   try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
   if (targetOpen) {
     await invoke('open_target_tab', { url });
-    status(workspaceStatus, 'Tab baru dibuka di window target.', 'success');
+    status(workspaceStatus, 'Target baru dibuka.', 'success');
     return;
   }
   await invoke('clear_recording');
   const started = await invoke<StartRecordingResult>('start_recording');
   currentSession = started.session_id;
   await invoke('open_target_url', { url, sessionId: currentSession });
-  targetOpen = true; updateOpenTargetButton(); selectedCanvas = null; lastSvg = null; setAssetTab('canvas'); await refreshCanvases();
-  status(workspaceStatus, 'Target dibuka. Recorder menunggu Canvas atau SVG.', 'success');
+  targetOpen = true;
+  updateOpenTargetButton();
+  selectedCanvas = null;
+  lastSvg = null;
+  setAssetTab('canvas');
+  await refreshCanvases();
+  status(workspaceStatus, 'Target dibuka di window target. Perekam aktif di background.', 'success');
 }
 
-async function closeTarget(): Promise<void> { await invoke('close_target_window'); targetOpen = false; updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); status(workspaceStatus, 'Target ditutup. Detected surfaces direset.'); }
+async function closeTarget(): Promise<void> {
+  await invoke('close_target_window');
+  targetOpen = false;
+  mainTabs.hidden = true;
+  targetMainTab.hidden = true;
+  setMainTab('recorder');
+  updateOpenTargetButton();
+  currentSession = null;
+  resetDetectedSurfaces();
+  status(workspaceStatus, 'Target ditutup. Detected surfaces direset.');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   updateOpenTargetButton();
+  mainTabs.hidden = !isWindows;
+  if (isWindows) setMainTab('recorder');
   syncBackgroundControls();
   $('activationForm').addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();
@@ -221,6 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     catch (error) { const message = errorMessage(error); status(activationStatus, message, 'error'); copyError.hidden = false; copyError.onclick = () => navigator.clipboard.writeText(message); }
   });
+  recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
+  targetMainTab.addEventListener('click', () => setMainTab('target'));
+  closeTargetMainTab.addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  window.addEventListener('resize', syncTargetViewBounds);
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('closeTarget').addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('canvasTab').addEventListener('click', () => setAssetTab('canvas'));
@@ -235,12 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
   $('exportSvg').addEventListener('click', async () => {
     if (!lastSvg || !selectedCanvas) return;
     try {
-      // Download exactly the SVG shown in the preview.
-      const svg = lastSvg.svg;
-      const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-      const link = document.createElement('a'); link.href = url; link.download = lastSvg.filename; document.body.appendChild(link); link.click(); link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showDownloadToast(`Download berhasil : ${lastSvg.filename}`);
+      const savedPath = await invoke<string>('save_svg', { canvasId: selectedCanvas, settings: settings() });
+      showDownloadToast(`Download tersimpan: ${savedPath}`);
       status(workspaceStatus, `SVG berhasil diexport: ${lastSvg.filename}`, 'success');
     } catch (error) { const message = errorMessage(error); showDownloadToast(`Export gagal: ${message}`); status(workspaceStatus, message, 'error'); }
   });

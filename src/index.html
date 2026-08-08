@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Canvas Vector Recorder</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 
 <body>
@@ -20,6 +21,11 @@
       <div id="activationStatus" class="status" role="status"></div>
       <button id="copyError" class="link-button" type="button" hidden>Salin informasi error</button>
     </section>
+
+    <nav id="mainTabs" class="main-tabs" aria-label="Halaman utama" hidden>
+      <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">Recorder</button>
+      <button id="targetMainTab" class="main-tab" type="button" aria-selected="false" hidden>Target</button>
+    </nav>
 
     <section id="workspaceView" class="view workspace-shell" hidden>
       <header class="topbar">
@@ -118,6 +124,16 @@
             <button id="exportSvg" class="primary download-button" type="button" disabled>⇩&nbsp; Download SVG</button>
           </footer>
         </section>
+      </div>
+    </section>
+
+    <section id="targetView" class="view target-main-view" hidden>
+      <div class="target-main-panel">
+        <div class="target-main-toolbar">
+          <strong id="targetMainTitle">Target</strong>
+          <button id="closeTargetMainTab" type="button">Tutup tab</button>
+        </div>
+        <iframe id="targetFrame" title="Target page" referrerpolicy="no-referrer"></iframe>
       </div>
     </section>
   </main>
