@@ -11,7 +11,6 @@ export interface MicrostockSettings {
 
 export interface CanvasDetection {
   canvas_id: string;
-  asset_type?: 'canvas' | 'svg';
   width: number;
   height: number;
   revision: number;
@@ -27,7 +26,6 @@ export interface SvgStats {
   errors: number;
   artboard: { width: number; height: number; pixels: number; ratio: string };
   stock_validation: { valid: boolean; unsupported_fills: number; unsupported_strokes: number; has_strokes: boolean };
-  asset_type?: 'canvas' | 'svg';
 }
 
 export interface SvgResult {
@@ -50,3 +48,14 @@ export interface LicenseStatus {
 }
 
 export interface StartRecordingResult { session_id: string; target_capability: string; }
+
+export interface TargetTabInfo {
+  id: string;
+  url: string;
+  title: string;
+}
+
+export interface TargetTabsState {
+  active_id: string | null;
+  tabs: TargetTabInfo[];
+}

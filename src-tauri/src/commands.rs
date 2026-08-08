@@ -50,7 +50,7 @@ pub fn record_canvas_events(
 
     let should_emit = {
         let mut last = state.last_emit.lock().map_err(|_| AppError::State)?;
-        if last.elapsed() >= std::time::Duration::from_millis(250) {
+        if last.elapsed() >= std::time::Duration::from_millis(500) {
             *last = std::time::Instant::now();
             true
         } else {
@@ -112,9 +112,6 @@ pub fn export_svg(
     settings: Option<MicrostockSettings>,
 ) -> Result<String, AppError> {
     let data = canvas_or_error(&state, &canvas_id)?;
-    if let Some(raw_svg) = data.raw_svg {
-        return Ok(raw_svg);
-    }
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
     Ok(svg)
 }
@@ -127,15 +124,8 @@ pub fn save_svg(
     settings: Option<MicrostockSettings>,
 ) -> Result<String, AppError> {
     let data = canvas_or_error(&state, &canvas_id)?;
-    let (svg, filename) = if let Some(raw_svg) = data.raw_svg {
-        (
-            raw_svg,
-            data.filename.unwrap_or_else(|| "detected.svg".into()),
-        )
-    } else {
-        let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
-        (svg, "vectorized-result.svg".into())
-    };
+    let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
+    let filename = "vectorized-result.svg";
     let downloads = app
         .path()
         .download_dir()
@@ -196,6 +186,16 @@ fn unique_download_path(directory: &Path, filename: &str) -> PathBuf {
 #[tauri::command]
 pub fn clear_recording(state: State<'_, AppState>) -> Result<(), AppError> {
     state.recorder.lock().map_err(|_| AppError::State)?.clear();
+    Ok(())
+}
+
+#[tauri::command]
+pub fn clear_surfaces(state: State<'_, AppState>) -> Result<(), AppError> {
+    state
+        .recorder
+        .lock()
+        .map_err(|_| AppError::State)?
+        .clear_surfaces();
     Ok(())
 }
 
@@ -272,6 +272,7 @@ pub fn open_target_url(
         *state.target.lock().map_err(|_| AppError::State)? = TargetState::default();
         return Err(error);
     }
+    broadcast_target_tabs(&app, &state)?;
     Ok(())
 }
 
@@ -428,7 +429,7 @@ pub fn set_target_view_visible(
     state: State<'_, AppState>,
     visible: bool,
 ) -> Result<(), AppError> {
-    target_platform::set_target_view_visible(&app, state, visible)
+    target_platform::set_target_view_visible(&app, &state, visible)
 }
 
 #[tauri::command]
@@ -641,11 +642,12 @@ pub(crate) fn broadcast_target_tabs(
     app: &AppHandle,
     state: &State<'_, AppState>,
 ) -> Result<(), AppError> {
-    let payload = {
+    let target_state = {
         let target = state.target.lock().map_err(|_| AppError::State)?;
-        serde_json::to_string(&target_payload(&target))
-            .map_err(|e| AppError::InvalidEvent(e.to_string()))?
+        target_payload(&target)
     };
+    let payload = serde_json::to_string(&target_state)
+        .map_err(|e| AppError::InvalidEvent(e.to_string()))?;
     for (label, window) in app.webview_windows() {
         if !is_target_window_label(&label) {
             continue;
@@ -655,6 +657,7 @@ pub(crate) fn broadcast_target_tabs(
             let _ = webview.eval(&script);
         }
     }
+    let _ = app.emit("target-tabs-updated", target_state);
     Ok(())
 }
 

@@ -80,6 +80,7 @@ pub fn run() {
             commands::generate_svg,
             commands::export_svg,
             commands::save_svg,
+            commands::clear_surfaces,
             commands::clear_recording,
             commands::get_recording_state,
             commands::set_recording,

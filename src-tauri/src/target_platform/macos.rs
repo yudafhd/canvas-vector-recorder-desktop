@@ -164,7 +164,7 @@ fn rollback_tab(state: &State<'_, AppState>, tab_id: &str) -> Result<(), AppErro
 
 pub(crate) fn set_target_view_visible(
     _app: &AppHandle,
-    _state: State<'_, AppState>,
+    _state: &State<'_, AppState>,
     _visible: bool,
 ) -> Result<(), AppError> {
     Ok(())

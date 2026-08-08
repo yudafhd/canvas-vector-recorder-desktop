@@ -24,7 +24,7 @@
 
     <nav id="mainTabs" class="main-tabs" aria-label="Halaman utama" hidden>
       <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">Recorder</button>
-      <button id="targetMainTab" class="main-tab" type="button" aria-selected="false" hidden>Target</button>
+      <div id="targetMainTabs" class="target-main-tabs"></div>
     </nav>
 
     <section id="workspaceView" class="view workspace-shell" hidden>
@@ -67,13 +67,11 @@
 
           <section class="surfaces-section">
             <div class="surface-heading">
-              <h2 class="section-label">DETECTED SURFACES</h2><span id="assetCount" class="surface-count">0 item · 1
-                tab</span>
-            </div>
-            <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
-              <button id="canvasTab" class="asset-tab active" type="button" role="tab"
-                aria-selected="true">Canvas</button>
-              <button id="svgTab" class="asset-tab" type="button" role="tab" aria-selected="false">SVG</button>
+              <h2 class="section-label">DETECTED SURFACES</h2>
+              <div class="surface-actions">
+                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset">Refresh</button>
+                <button id="clearSurfacesButton" type="button" title="Hapus daftar Canvas">Clear</button>
+              </div>
             </div>
             <div id="canvasList" class="canvas-list">
               <p class="muted">Belum ada Canvas.</p>
@@ -108,7 +106,6 @@
         <section class="panel preview-panel">
           <header class="preview-header">
             <h2 id="previewTitle">Rendered Preview</h2>
-            <button id="refreshPreviewButton" type="button" title="Refresh preview">↻&nbsp; Refresh</button>
           </header>
           <div id="preview" class="preview">
             <p class="muted">Preview akan tampil setelah canvas direkam.</p>

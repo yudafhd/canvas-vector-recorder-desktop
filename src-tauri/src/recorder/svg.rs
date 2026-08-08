@@ -398,23 +398,6 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
 }
 
 pub fn result(data: &CanvasResult, settings: &MicrostockSettings) -> serde_json::Value {
-    if let Some(raw_svg) = &data.raw_svg {
-        let (width, height, ratio) = artboard(data.width, data.height, settings);
-        let validation = validate(data);
-        return serde_json::json!({
-            "svg": raw_svg,
-            "filename": data.filename.clone().unwrap_or_else(|| "detected.svg".into()),
-            "stats": {
-                "shapes": data.shapes.len(),
-                "gap_fillers": data.gap_fillers.len(),
-                "errors": data.errors,
-                "asset_type": "svg",
-                "artboard": { "width": width, "height": height, "pixels": width * height, "ratio": ratio },
-                "stock_validation": validation
-            },
-            "error": serde_json::Value::Null
-        });
-    }
     let (svg, (width, height, ratio)) = build(data, settings);
     let validation = validate(data);
     serde_json::json!({ "svg": svg, "filename": "vectorized-result.svg", "stats": { "shapes": data.shapes.len(), "gap_fillers": data.gap_fillers.len(), "errors": data.errors, "artboard": { "width": width, "height": height, "pixels": width * height, "ratio": ratio }, "stock_validation": validation }, "error": if validation.valid { serde_json::Value::Null } else { serde_json::Value::String("Peringatan: SVG belum memenuhi pemeriksaan microstock.".into()) } })
@@ -431,15 +414,12 @@ mod tests {
     fn generated_svg_has_namespace_and_artboard() {
         let data = CanvasResult {
             canvas_id: "c".into(),
-            asset_type: "canvas".into(),
             width: 100.0,
             height: 50.0,
             shapes: vec![],
             gap_fillers: vec![],
             errors: 0,
             operations: vec![],
-            raw_svg: None,
-            filename: None,
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
         assert!(svg.contains("xmlns=\"http://www.w3.org/2000/svg\""));
@@ -454,15 +434,12 @@ mod tests {
     fn transparent_background_omits_background_layer() {
         let data = CanvasResult {
             canvas_id: "c".into(),
-            asset_type: "canvas".into(),
             width: 100.0,
             height: 50.0,
             shapes: vec![],
             gap_fillers: vec![],
             errors: 0,
             operations: vec![],
-            raw_svg: None,
-            filename: None,
         };
         let settings = MicrostockSettings {
             transparent_background: true,
@@ -476,7 +453,6 @@ mod tests {
     fn generated_artwork_is_centered_from_its_actual_bounds() {
         let data = CanvasResult {
             canvas_id: "c".into(),
-            asset_type: "canvas".into(),
             width: 100.0,
             height: 100.0,
             shapes: vec![super::super::canvas::Shape {
@@ -489,8 +465,6 @@ mod tests {
             gap_fillers: vec![],
             errors: 0,
             operations: vec![],
-            raw_svg: None,
-            filename: None,
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
         assert!(svg.contains("translate(116.19 116.19)"));

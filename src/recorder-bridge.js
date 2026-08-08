@@ -8,7 +8,7 @@
   if (!sessionId) return;
   var frameId = 'frame-' + Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
   var sequence = 0, queue = [], stopped = false, recordingEnabled = true, flushTimer = null;
-  var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), svgIds = new WeakMap(), svgSnapshots = new WeakMap(), svgSources = new WeakMap(), svgPendingSources = new WeakMap(), nextCanvas = 1, nextPath = 1, nextSvg = 1;
+  var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), nextCanvas = 1, nextPath = 1;
   var MAX_BATCH = 100, FLUSH_MS = 150;
   function invoke(name, args) {
     try { return w.__TAURI_INTERNALS__ && w.__TAURI_INTERNALS__.invoke(name, args); } catch (_) { return Promise.reject(_); }
@@ -24,7 +24,6 @@
     var event = Object.assign({ session_id: sessionId, frame_id: frameId, sequence: ++sequence, type: type }, data || {});
     queue.push(event);
     if (queue.length >= MAX_BATCH) flush();
-    if (type === 'svg_detected') flush();
     if (!flushTimer) flushTimer = setTimeout(function () { flushTimer = null; flush(); }, FLUSH_MS);
   }
   function num(value) { return Number.isFinite(Number(value)) ? Number(value) : 0; }
@@ -57,30 +56,6 @@
     if (!state) { state = { path: null, fill: '#000000', stroke: '#000000', lineWidth: 1 }; contexts.set(ctx, state); }
     if (!state.path) { state.path = { id: frameId + '-path-' + nextPath++, internal: true }; emit('path_created', { path_id: state.path.id, canvas_id: canvasId(ctx.canvas) }); }
     return state.path.id;
-  }
-  function svgNumber(value) { return Number.isFinite(value) ? Number(value.toFixed(4)) : 0; }
-  function svgViewBox(root) {
-    var values = (root.getAttribute('viewBox') || '').trim().split(/[ ,]+/).map(Number);
-    if (values.length === 4 && values.every(function (value) { return Number.isFinite(value); })) return values;
-    var width = Number(root.getAttribute('width')) || 1, height = Number(root.getAttribute('height')) || 1;
-    return [0, 0, width, height];
-  }
-  function centerSvgRoot(root, box) {
-    if (!box || !(box.width > 0) || !(box.height > 0)) return;
-    var viewBox = svgViewBox(root), dx = viewBox[0] + (viewBox[2] - box.width) / 2 - box.x, dy = viewBox[1] + (viewBox[3] - box.height) / 2 - box.y;
-    if (Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01) return;
-    var group = root.ownerDocument.createElementNS('http://www.w3.org/2000/svg', 'g');
-    group.setAttribute('transform', 'translate(' + svgNumber(dx) + ' ' + svgNumber(dy) + ')');
-    Array.prototype.slice.call(root.childNodes).forEach(function (node) {
-      if (node.nodeType !== 1) return;
-      var tag = String(node.localName || node.tagName || '').toLowerCase();
-      if (tag === 'defs' || tag === 'title' || tag === 'desc' || tag === 'metadata' || tag === 'style') return;
-      group.appendChild(node);
-    });
-    root.appendChild(group);
-  }
-  function centerInlineSvg(clone, source) {
-    try { if (source && typeof source.getBBox === 'function') centerSvgRoot(clone, source.getBBox()); } catch (_) {}
   }
   function installPath() {
     var P = w.Path2D;
@@ -149,109 +124,6 @@
       wrapped.__cvr = true; proto[name] = wrapped;
     });
   }
-  function scanInlineSvgs() {
-    if (!document.querySelectorAll || !w.XMLSerializer) return;
-    var elements = document.querySelectorAll('svg');
-    Array.prototype.forEach.call(elements, function (element) {
-      if (element.parentElement && element.parentElement.closest && element.parentElement.closest('svg')) return;
-      try {
-        var clone = element.cloneNode(true);
-        clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        centerInlineSvg(clone, element);
-        var svg = new w.XMLSerializer().serializeToString(clone);
-        if (!svg || svg.length > 900000) return;
-        var id = svgIds.get(element);
-        if (!id) { id = frameId + '-svg-' + nextSvg++; svgIds.set(element, id); }
-        if (svgSnapshots.get(element) === svg) return;
-        svgSnapshots.set(element, svg);
-        var viewBox = (element.getAttribute('viewBox') || '').trim().split(/[ ,]+/).map(Number);
-        var bounds = typeof element.getBoundingClientRect === 'function' ? element.getBoundingClientRect() : { width: 1, height: 1 };
-        var width = Number(element.getAttribute('width')) || (viewBox.length === 4 ? viewBox[2] : bounds.width) || 1;
-        var height = Number(element.getAttribute('height')) || (viewBox.length === 4 ? viewBox[3] : bounds.height) || 1;
-        emit('svg_detected', { canvas_id: id, asset_type: 'svg', width: Math.max(1, width), height: Math.max(1, height), svg: svg, filename: (element.id || 'detected-' + id) + '.svg' });
-      } catch (_) {}
-    });
-  }
-  function svgDimensions(svg, host) {
-    var width = 0, height = 0;
-    try {
-      if (w.DOMParser) {
-        var root = new w.DOMParser().parseFromString(svg, 'image/svg+xml').documentElement;
-        width = Number(root.getAttribute('width')) || 0;
-        height = Number(root.getAttribute('height')) || 0;
-        var viewBox = (root.getAttribute('viewBox') || '').trim().split(/[ ,]+/).map(Number);
-        if ((!width || !height) && viewBox.length === 4 && viewBox.slice(2).every(function (value) { return Number.isFinite(value) && value > 0; })) { width = width || viewBox[2]; height = height || viewBox[3]; }
-      }
-    } catch (_) {}
-    var bounds = host && typeof host.getBoundingClientRect === 'function' ? host.getBoundingClientRect() : { width: 1, height: 1 };
-    return { width: Math.max(1, Math.round(width || bounds.width || 1)), height: Math.max(1, Math.round(height || bounds.height || 1)) };
-  }
-  function svgKey(element, prefix) {
-    var id = svgIds.get(element);
-    if (!id) { id = frameId + '-' + (prefix || 'svg') + '-' + nextSvg++; svgIds.set(element, id); }
-    return id;
-  }
-  function publishSvg(element, id, svg, filename) {
-    if (!svg || svg.length > 900000) return;
-    var normalized = svg;
-    try {
-      if (w.DOMParser && w.XMLSerializer && document.body) {
-        var root = new w.DOMParser().parseFromString(svg, 'image/svg+xml').documentElement;
-        var holder = document.createElement('div');
-        holder.style.cssText = 'position:absolute;left:-100000px;top:-100000px;width:1px;height:1px;overflow:hidden;visibility:hidden';
-        var rendered = document.importNode(root, true);
-        holder.appendChild(rendered); document.body.appendChild(holder);
-        if (typeof rendered.getBBox === 'function') centerSvgRoot(root, rendered.getBBox());
-        normalized = new w.XMLSerializer().serializeToString(root);
-        holder.remove();
-      }
-    } catch (_) {}
-    if (normalized.length > 900000 || svgSnapshots.get(element) === normalized) return;
-    svgSnapshots.set(element, normalized);
-    var dimensions = svgDimensions(normalized, element);
-    emit('svg_detected', { canvas_id: id, asset_type: 'svg', width: dimensions.width, height: dimensions.height, svg: normalized, filename: filename || id + '.svg' });
-  }
-  function externalSvgSource(element) {
-    var tagName = String(element.tagName || '').toLowerCase();
-    if (tagName === 'object') return element.getAttribute('data') || '';
-    return element.currentSrc || element.getAttribute('src') || '';
-  }
-  function isSvgSource(source) { return /^data:image\/svg\+xml[;,]/i.test(source) || /\.svg(?:[?#].*)?$/i.test(source); }
-  function decodeSvgDataUrl(source) {
-    var comma = source.indexOf(',');
-    if (comma < 0) return null;
-    try { return /;base64/i.test(source.slice(0, comma)) ? w.atob(source.slice(comma + 1)) : decodeURIComponent(source.slice(comma + 1)); } catch (_) { return null; }
-  }
-  function scanExternalSvgs() {
-    if (!document.querySelectorAll) return;
-    Array.prototype.forEach.call(document.querySelectorAll('img[src], object[data], embed[src]'), function (element) {
-      var source = externalSvgSource(element);
-      if (!isSvgSource(source)) return;
-      var id = svgKey(element, 'svg-file');
-      if (svgSources.get(element) === source || svgPendingSources.get(element) === source) return;
-      svgSources.set(element, source);
-      var dataSvg = /^data:image\/svg\+xml/i.test(source) ? decodeSvgDataUrl(source) : null;
-      if (dataSvg) { publishSvg(element, id, dataSvg, id + '.svg'); return; }
-      try {
-        var url = new w.URL(source, location.href);
-        if (url.origin !== location.origin || !w.fetch) return;
-        svgPendingSources.set(element, source);
-        w.fetch(url.href, { credentials: 'include' }).then(function (response) { return response.ok ? response.text() : ''; }).then(function (text) {
-          if (text && svgSources.get(element) === source) { var parts = url.pathname.split('/'); var filename = decodeURIComponent(parts[parts.length - 1] || id + '.svg'); publishSvg(element, id, text, filename); }
-        }).catch(function () {}).finally(function () { svgPendingSources.delete(element); });
-      } catch (_) {}
-    });
-  }
-  function scanSvgs() { scanInlineSvgs(); scanExternalSvgs(); }
-  function installSvgDetection() {
-    var schedule = function () {
-      if (schedule.timer) return;
-      schedule.timer = setTimeout(function () { schedule.timer = null; scanSvgs(); }, 350);
-    };
-    if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['viewBox', 'width', 'height', 'd', 'fill', 'stroke', 'stroke-width', 'transform'] });
-    w.addEventListener('DOMContentLoaded', schedule, { once: true });
-    setTimeout(schedule, 500);
-  }
   function scanCanvases() {
     if (!document.querySelectorAll) return;
     Array.prototype.forEach.call(document.querySelectorAll('canvas'), function (canvas) { canvasId(canvas); });
@@ -266,7 +138,7 @@
     setTimeout(schedule, 500);
   }
   var P2D = w.Path2D;
-  installPath(); installContext(); emit('session_start', {}); installCanvasDetection(); installSvgDetection();
+  installPath(); installContext(); emit('session_start', {}); installCanvasDetection();
   w.__CVR_STOP_RECORDER__ = function () { if (stopped) return; emit('session_end', {}); stopped = true; if (flushTimer) clearTimeout(flushTimer); flush(); };
   w.addEventListener('message', function (event) { if (event.source !== w || !event.data) return; if (event.data.type === 'cvr-stop') w.__CVR_STOP_RECORDER__(); if (event.data.type === 'cvr-set-recording') recordingEnabled = Boolean(event.data.enabled); });
 }());

@@ -94,6 +94,7 @@ pub(crate) fn open_target_tab(
         target.active_id = target.tabs.last().map(|tab| tab.id.clone());
         return Err(error);
     }
+    set_target_view_visible(&app, &state, true)?;
     broadcast_target_tabs(&app, &state)
 }
 
@@ -102,21 +103,18 @@ pub(crate) fn switch_target_tab(
     state: State<'_, AppState>,
     tab_id: String,
 ) -> Result<(), AppError> {
-    let webview_label = {
+    {
         let mut target = state.target.lock().map_err(|_| AppError::State)?;
-        let label = target
+        if !target
             .tabs
             .iter()
-            .find(|tab| tab.id == tab_id)
-            .map(|tab| tab.webview_label.clone())
-            .ok_or_else(|| AppError::NotFound("Tab target tidak ditemukan.".into()))?;
+            .any(|tab| tab.id == tab_id)
+        {
+            return Err(AppError::NotFound("Tab target tidak ditemukan.".into()));
+        }
         target.active_id = Some(tab_id);
-        label
-    };
-    if let Some(window) = app.get_webview_window(&webview_label) {
-        let _ = window.show();
-        let _ = window.set_focus();
     }
+    set_target_view_visible(&app, &state, true)?;
     broadcast_target_tabs(&app, &state)
 }
 
@@ -157,32 +155,32 @@ pub(crate) fn close_target_tab(
             target.active_id = Some(next_id.clone());
         }
     }
-    let next_label = state
-        .target
-        .lock()
-        .map_err(|_| AppError::State)?
-        .tabs
-        .iter()
-        .find(|tab| tab.id == next_id)
-        .map(|tab| tab.webview_label.clone())
-        .ok_or_else(|| AppError::NotFound("Tab target berikutnya tidak ditemukan.".into()))?;
-    if let Some(window) = app.get_webview_window(&next_label) {
-        let _ = window.show();
-        let _ = window.set_focus();
-    }
+    set_target_view_visible(&app, &state, true)?;
     broadcast_target_tabs(&app, &state)
 }
 
 pub(crate) fn set_target_view_visible(
     app: &AppHandle,
-    _state: State<'_, AppState>,
+    state: &State<'_, AppState>,
     visible: bool,
 ) -> Result<(), AppError> {
-    if let Some(window) = app.get_webview_window(TARGET_WINDOW_LABEL) {
-        if visible {
+    let active_label = {
+        let target = state.target.lock().map_err(|_| AppError::State)?;
+        target
+            .active_id
+            .as_ref()
+            .and_then(|id| target.tabs.iter().find(|tab| &tab.id == id))
+            .map(|tab| tab.webview_label.clone())
+    };
+    for (label, window) in app.webview_windows() {
+        if !is_target_window_label(&label) {
+            continue;
+        }
+        if visible && active_label.as_deref() == Some(label.as_str()) {
             window
                 .show()
                 .map_err(|error| AppError::Window(error.to_string()))?;
+            let _ = window.set_focus();
         } else {
             window
                 .hide()

@@ -6,7 +6,6 @@ pub struct RecorderEvent {
     pub session_id: String,
     pub frame_id: Option<String>,
     pub canvas_id: Option<String>,
-    pub asset_type: Option<String>,
     pub sequence: u64,
     #[serde(rename = "type")]
     pub event_type: String,
@@ -21,8 +20,6 @@ pub struct RecorderEvent {
     pub line_width: Option<f64>,
     pub fill_rule: Option<String>,
     pub value: Option<Value>,
-    pub svg: Option<String>,
-    pub filename: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

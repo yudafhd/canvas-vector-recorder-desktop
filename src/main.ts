@@ -2,14 +2,14 @@ import './styles.css';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
-import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, StartRecordingResult } from './types';
+import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
 const recorderMainTab = $<HTMLButtonElement>('recorderMainTab');
-const targetMainTab = $<HTMLButtonElement>('targetMainTab');
+const targetMainTabs = $('targetMainTabs');
 const targetView = $('targetView');
 const targetFrame = $<HTMLIFrameElement>('targetFrame');
 const targetMainTitle = $('targetMainTitle');
@@ -27,8 +27,8 @@ const isWindows = /Windows/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
 type MainTab = 'recorder' | 'target';
 let activeMainTab: MainTab = 'recorder';
-type AssetTab = 'canvas' | 'svg';
-let activeAssetTab: AssetTab = 'canvas';
+let activeTargetId: string | null = null;
+let targetTabs: TargetTabInfo[] = [];
 let detectedAssets: CanvasDetection[] = [];
 let thumbnailGeneration = 0;
 const thumbnailUrls = new Map<string, string>();
@@ -38,16 +38,10 @@ let previewRequest = 0;
 
 function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
-  if (isWindows) {
-    button.textContent = targetOpen ? 'Buka target lain' : 'Buka target';
-    button.title = 'Buka target di tab utama aplikasi.';
-    button.setAttribute('aria-label', 'Buka target di tab utama aplikasi');
-    return;
-  }
   if (targetOpen) {
-    button.textContent = 'Buka tab baru (maks. 5)';
-    button.title = 'Klik untuk membuka URL sebagai tab baru di window target yang sama. Maksimal 5 tab.';
-    button.setAttribute('aria-label', 'Buka tab baru di window target');
+    button.textContent = 'Buka tab baru';
+    button.title = 'Buka URL sebagai tab target baru.';
+    button.setAttribute('aria-label', 'Buka tab target baru');
   } else {
     button.textContent = 'Buka';
     button.title = 'Buka window target';
@@ -55,15 +49,62 @@ function updateOpenTargetButton(): void {
   }
 }
 
+function renderTargetTabs(state: TargetTabsState): void {
+  targetTabs = state.tabs;
+  activeTargetId = state.active_id;
+  targetOpen = targetTabs.length > 0;
+  targetMainTabs.replaceChildren();
+  targetMainTabs.hidden = !targetTabs.length;
+  targetTabs.forEach(tab => {
+    const wrapper = document.createElement('span');
+    wrapper.className = 'target-tab-wrap';
+    const button = document.createElement('button');
+    button.className = `main-tab target-main-tab${activeMainTab === 'target' && tab.id === activeTargetId ? ' active' : ''}`;
+    button.type = 'button';
+    button.dataset.targetId = tab.id;
+    button.textContent = tab.title || tab.url || 'Target';
+    button.title = tab.url;
+    button.setAttribute('aria-selected', String(activeMainTab === 'target' && tab.id === activeTargetId));
+    button.addEventListener('click', () => {
+      activeTargetId = tab.id;
+      setMainTab('target');
+      void invoke('switch_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+    });
+    const close = document.createElement('button');
+    close.className = 'target-tab-close';
+    close.type = 'button';
+    close.textContent = '×';
+    close.title = 'Tutup target';
+    close.setAttribute('aria-label', `Tutup ${tab.title || 'target'}`);
+    close.addEventListener('click', event => {
+      event.stopPropagation();
+      void invoke('close_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+    });
+    wrapper.append(button, close);
+    targetMainTabs.append(wrapper);
+  });
+  updateOpenTargetButton();
+  if (activeMainTab === 'target' && activeTargetId) {
+    targetMainTitle.textContent = targetTabs.find(tab => tab.id === activeTargetId)?.title || 'Target';
+    setMainTab('target');
+  }
+}
+
 function setMainTab(tab: MainTab): void {
   activeMainTab = tab;
-  const showTarget = tab === 'target' && targetOpen;
+  const showTarget = tab === 'target' && targetOpen && Boolean(activeTargetId);
   workspaceView.hidden = showTarget;
   targetView.hidden = !showTarget;
   recorderMainTab.classList.toggle('active', !showTarget);
   recorderMainTab.setAttribute('aria-selected', String(!showTarget));
-  targetMainTab.classList.toggle('active', showTarget);
-  targetMainTab.setAttribute('aria-selected', String(showTarget));
+  targetTabs.forEach(target => {
+    const button = targetMainTabs.querySelector<HTMLButtonElement>(`button[data-target-id="${target.id}"]`);
+    if (button) {
+      button.classList.toggle('active', showTarget && target.id === activeTargetId);
+      button.setAttribute('aria-selected', String(showTarget && target.id === activeTargetId));
+    }
+  });
+  if (showTarget) targetMainTitle.textContent = targetTabs.find(target => target.id === activeTargetId)?.title || 'Target';
   if (isWindows) {
     if (showTarget) {
       void invoke('set_target_view_visible', { visible: true }).catch(() => undefined);
@@ -162,13 +203,6 @@ async function loadLicense(): Promise<void> {
   catch (error) { activationView.hidden = false; workspaceView.hidden = true; status(activationStatus, `Gagal membaca status lisensi: ${errorMessage(error)}`, 'error'); }
 }
 
-function setAssetTab(tab: AssetTab): void {
-  activeAssetTab = tab;
-  $('canvasTab').classList.toggle('active', tab === 'canvas'); $('canvasTab').setAttribute('aria-selected', String(tab === 'canvas'));
-  $('svgTab').classList.toggle('active', tab === 'svg'); $('svgTab').setAttribute('aria-selected', String(tab === 'svg'));
-  renderCanvases(detectedAssets);
-}
-
 function renderCanvases(items: CanvasDetection[]): void {
   detectedAssets = items;
   const activeIds = new Set(items.map(item => item.canvas_id));
@@ -180,18 +214,13 @@ function renderCanvases(items: CanvasDetection[]): void {
       thumbnailKeys.delete(id);
     }
   });
-  const filtered = items.filter(item => {
-    if ((item.asset_type || 'canvas') !== activeAssetTab) return false;
-    return activeAssetTab === 'svg' || item.shapes > 0 || item.gap_fillers > 0;
-  });
-  $('assetCount').textContent = `${filtered.length} item · 1 tab`;
+  const filtered = items.filter(item => item.shapes > 0 || item.gap_fillers > 0);
   if (!filtered.length) {
-    const label = activeAssetTab === 'canvas' ? 'Canvas' : 'SVG';
-    canvasList.innerHTML = `<p class="muted">Belum ada ${label}. Buka target dan tunggu asset dimuat.</p>`;
+    canvasList.innerHTML = '<p class="muted">Belum ada Canvas. Buka target dan tunggu asset dimuat.</p>';
     return;
   }
   const generation = ++thumbnailGeneration;
-  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail ${activeAssetTab}">` : '<span>Memuat thumbnail…</span>'}</div><strong>${activeAssetTab === 'svg' ? 'SVG' : 'Canvas'} · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
+  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : '<span>Memuat thumbnail…</span>'}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
   canvasList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     selectedCanvas = item.dataset.canvas || null; renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
@@ -208,7 +237,7 @@ async function loadThumbnails(items: CanvasDetection[], generation: number): Pro
       thumbnailUrls.set(item.canvas_id, url);
       thumbnailKeys.set(item.canvas_id, thumbnailKey(item));
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
-      if (slot) { const image = document.createElement('img'); image.src = url; image.alt = `Thumbnail ${activeAssetTab}`; slot.replaceChildren(image); }
+      if (slot) { const image = document.createElement('img'); image.src = url; image.alt = 'Thumbnail Canvas'; slot.replaceChildren(image); }
     } catch (_) {
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
       if (slot && generation === thumbnailGeneration) slot.textContent = 'Preview tidak tersedia';
@@ -224,7 +253,6 @@ function resetDetectedSurfaces(): void {
   selectedCanvas = null;
   lastSvg = null;
   detectedAssets = [];
-  setAssetTab('canvas');
   $('preview').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
   $('previewTitle').textContent = 'Rendered Preview';
   $('previewFilename').textContent = '';
@@ -256,6 +284,7 @@ async function openTarget(): Promise<void> {
   try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
   if (targetOpen) {
     await invoke('open_target_tab', { url });
+    setMainTab('target');
     status(workspaceStatus, 'Target baru dibuka.', 'success');
     return;
   }
@@ -264,10 +293,10 @@ async function openTarget(): Promise<void> {
   currentSession = started.session_id;
   await invoke('open_target_url', { url, sessionId: currentSession });
   targetOpen = true;
+  activeMainTab = 'target';
   updateOpenTargetButton();
   selectedCanvas = null;
   lastSvg = null;
-  setAssetTab('canvas');
   await refreshCanvases();
   status(workspaceStatus, 'Target dibuka di window target. Perekam aktif di background.', 'success');
 }
@@ -275,8 +304,8 @@ async function openTarget(): Promise<void> {
 async function closeTarget(): Promise<void> {
   await invoke('close_target_window');
   targetOpen = false;
-  mainTabs.hidden = true;
-  targetMainTab.hidden = true;
+  mainTabs.hidden = !isWindows;
+  renderTargetTabs({ active_id: null, tabs: [] });
   setMainTab('recorder');
   updateOpenTargetButton();
   currentSession = null;
@@ -300,14 +329,19 @@ document.addEventListener('DOMContentLoaded', () => {
     catch (error) { const message = errorMessage(error); status(activationStatus, message, 'error'); copyError.hidden = false; copyError.onclick = () => navigator.clipboard.writeText(message); }
   });
   recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
-  targetMainTab.addEventListener('click', () => setMainTab('target'));
   closeTargetMainTab.addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   window.addEventListener('resize', syncTargetViewBounds);
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('closeTarget').addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
-  $('canvasTab').addEventListener('click', () => setAssetTab('canvas'));
-  $('svgTab').addEventListener('click', () => setAssetTab('svg'));
-  $('refreshPreviewButton').addEventListener('click', () => refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('refreshSurfacesButton').addEventListener('click', () => refreshCanvases().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('clearSurfacesButton').addEventListener('click', async () => {
+    try {
+      await invoke('clear_surfaces');
+      resetDetectedSurfaces();
+      await refreshCanvases();
+      status(workspaceStatus, 'Daftar Canvas dibersihkan.', 'success');
+    } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
+  });
   $('transparentBackground').addEventListener('change', syncBackgroundControls);
   $('recordToggle').addEventListener('click', async () => { recordingEnabled = !recordingEnabled; await invoke('set_recording', { enabled: recordingEnabled }); const button = $('recordToggle'); button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF'; button.classList.toggle('off', !recordingEnabled); });
   $('refreshSettings').addEventListener('click', () => {
@@ -323,7 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) { const message = errorMessage(error); showDownloadToast(`Export gagal: ${message}`); status(workspaceStatus, message, 'error'); }
   });
   void listen<CanvasDetection[]>('canvases-updated', event => renderCanvases(event.payload));
+  void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
   void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
-  void listen('target-closed', () => { targetOpen = false; updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); });
+  void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });
   void loadLicense();
 });

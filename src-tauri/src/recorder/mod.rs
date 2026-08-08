@@ -19,7 +19,6 @@ const MAX_BATCH_BYTES: usize = 2_000_000;
 #[derive(Debug, Clone, Serialize)]
 pub struct CanvasDetection {
     pub canvas_id: String,
-    pub asset_type: String,
     pub width: f64,
     pub height: f64,
     pub revision: usize,
@@ -75,6 +74,20 @@ impl RecorderStore {
         self.active_session = None;
         self.sessions.clear();
     }
+    pub fn clear_surfaces(&mut self) {
+        let Some(session_id) = self.active_session.clone() else {
+            self.clear();
+            return;
+        };
+        if let Some(session) = self.sessions.get_mut(&session_id) {
+            session.canvases.clear();
+            session.paths.clear();
+            session.event_count = 0;
+            session.ended = false;
+        } else {
+            self.clear();
+        }
+    }
     pub fn record(&mut self, session_id: &str, events: Vec<RecorderEvent>) -> Result<(), AppError> {
         if events.is_empty() {
             return Ok(());
@@ -126,7 +139,7 @@ impl RecorderStore {
                 }
             }
             let key = event.canvas_key().to_string();
-            if event.event_type == "canvas_created" || event.event_type == "svg_detected" {
+            if event.event_type == "canvas_created" {
                 session.canvases.entry(key.clone()).or_insert_with(|| {
                     CanvasState::new(
                         &key,
@@ -156,7 +169,6 @@ impl RecorderStore {
             .flat_map(|session| {
                 session.canvases.values().map(|canvas| CanvasDetection {
                     canvas_id: canvas.canvas_id.clone(),
-                    asset_type: canvas.asset_type.clone(),
                     width: canvas.width,
                     height: canvas.height,
                     revision: canvas.revision,
@@ -197,7 +209,6 @@ mod tests {
             session_id: session.into(),
             frame_id: None,
             canvas_id: Some("canvas-1".into()),
-            asset_type: None,
             sequence,
             event_type: event_type.into(),
             width: Some(100.0),
@@ -211,8 +222,6 @@ mod tests {
             line_width: None,
             fill_rule: None,
             value: None,
-            svg: None,
-            filename: None,
         }
     }
     #[test]
@@ -265,20 +274,17 @@ mod tests {
     }
 
     #[test]
-    fn inline_svg_is_detected_and_preserved() {
+    fn clear_surfaces_keeps_active_session_recording() {
         let mut store = RecorderStore::default();
         let id = store.start();
-        let mut detected = event(&id, 1, "svg_detected");
-        detected.svg = Some("<svg xmlns=\"http://www.w3.org/2000/svg\"/>".into());
-        detected.filename = Some("artwork.svg".into());
-        store.record(&id, vec![detected]).unwrap();
-        let listed = store.list();
-        assert_eq!(listed[0].asset_type, "svg");
-        let result = store.canvas("canvas-1").unwrap();
-        assert_eq!(
-            result.raw_svg.as_deref(),
-            Some("<svg xmlns=\"http://www.w3.org/2000/svg\"/>")
-        );
-        assert_eq!(result.filename.as_deref(), Some("artwork.svg"));
+        store
+            .record(&id, vec![event(&id, 1, "canvas_created")])
+            .unwrap();
+        store.clear_surfaces();
+        assert!(store.list().is_empty());
+        store
+            .record(&id, vec![event(&id, 2, "canvas_created")])
+            .unwrap();
+        assert_eq!(store.list().len(), 1);
     }
 }

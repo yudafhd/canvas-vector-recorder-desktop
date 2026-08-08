@@ -22,15 +22,12 @@ pub struct Stroke {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CanvasResult {
     pub canvas_id: String,
-    pub asset_type: String,
     pub width: f64,
     pub height: f64,
     pub shapes: Vec<Shape>,
     pub gap_fillers: Vec<Stroke>,
     pub errors: u64,
     pub operations: Vec<String>,
-    pub raw_svg: Option<String>,
-    pub filename: Option<String>,
 }
 
 const MAX_CANVAS_SHAPES: usize = 5_000;
@@ -38,7 +35,6 @@ const MAX_CANVAS_SHAPES: usize = 5_000;
 #[derive(Debug, Clone, Default)]
 pub struct CanvasState {
     pub canvas_id: String,
-    pub asset_type: String,
     pub width: f64,
     pub height: f64,
     pub paths: HashMap<String, PathData>,
@@ -47,15 +43,12 @@ pub struct CanvasState {
     pub errors: u64,
     pub current_clip: Option<String>,
     pub revision: usize,
-    pub raw_svg: Option<String>,
-    pub filename: Option<String>,
 }
 
 impl CanvasState {
     pub fn new(id: &str, width: f64, height: f64) -> Self {
         Self {
             canvas_id: id.into(),
-            asset_type: "canvas".into(),
             width: width.max(1.0),
             height: height.max(1.0),
             ..Default::default()
@@ -70,11 +63,6 @@ impl CanvasState {
             self.height = height.max(1.0);
         }
         match event.event_type.as_str() {
-            "svg_detected" => {
-                self.asset_type = "svg".into();
-                self.raw_svg = event.svg.clone();
-                self.filename = event.filename.clone();
-            }
             "path_created" => {
                 if let Some(id) = &event.path_id {
                     self.paths.entry(id.clone()).or_default();
@@ -173,15 +161,12 @@ impl CanvasState {
     pub fn result(&self) -> CanvasResult {
         CanvasResult {
             canvas_id: self.canvas_id.clone(),
-            asset_type: self.asset_type.clone(),
             width: self.width,
             height: self.height,
             shapes: self.shapes.clone(),
             gap_fillers: self.gap_fillers.clone(),
             errors: self.errors,
             operations: Vec::new(),
-            raw_svg: self.raw_svg.clone(),
-            filename: self.filename.clone(),
         }
     }
 }
