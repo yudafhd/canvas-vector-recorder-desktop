@@ -110,6 +110,7 @@ function setMainTab(tab: MainTab): void {
   const showTarget = tab === 'target' && targetOpen && Boolean(activeTargetId);
   workspaceView.hidden = showTarget;
   targetView.hidden = !showTarget;
+  targetView.classList.toggle('mac-target-view', isMac && showTarget);
   recorderMainTab.classList.toggle('active', !showTarget);
   recorderMainTab.setAttribute('aria-selected', String(!showTarget));
   targetTabs.forEach(target => {

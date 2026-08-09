@@ -47,6 +47,12 @@ test('main macOS tabs provide reload controls and stay compact', () => {
   assert.match(styles, /\.target-tab-wrap \.target-main-tab \{ min-width: 100px; max-width: 180px;/);
 });
 
+test('macOS target view puts the native webview at the top of the tab content', () => {
+  assert.match(main, /mac-target-view/);
+  assert.match(styles, /\.target-main-view\.mac-target-view \{ padding-top: 46px; \}/);
+  assert.match(styles, /\.target-main-view\.mac-target-view \.target-main-toolbar \{ display: none; \}/);
+});
+
 test('preview provides artwork scale controls used by SVG settings', () => {
   assert.match(main, /artworkScaleDown/);
   assert.match(main, /artworkScaleUp/);
