@@ -76,12 +76,12 @@
     ':host{all:initial;position:fixed;inset:0 0 auto 0;height:34px;z-index:2147483647;display:block;font:13px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}' +
     '.chrome{height:34px;box-sizing:border-box;background:#181920;color:#f8f8f2;border-bottom:1px solid #ffffff24;box-shadow:0 2px 10px #0006}' +
     '.tabs{height:34px;display:flex;align-items:stretch;gap:3px;padding:4px 6px 0;overflow:hidden;background:#101116}' +
-    '.tab{display:flex;align-items:center;min-width:120px;max-width:240px;padding:0 5px 0 11px;border:1px solid #ffffff1f;border-bottom:0;border-radius:6px 6px 0 0;background:#20232c;color:#bfc3cb;cursor:pointer}' +
+    '.tab{display:flex;align-items:center;min-width:100px;max-width:200px;padding:0 4px 0 8px;border:1px solid #ffffff1f;border-bottom:0;border-radius:6px 6px 0 0;background:#20232c;color:#bfc3cb;cursor:pointer}' +
     '.tab.active{background:#2d313c;color:#fff;border-color:#ffffff30}' +
     '.tab:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #8be9fd;outline-offset:1px}' +
     '.tab-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
-    '.tab-close,.new-tab{width:25px;min-width:25px;height:25px;padding:0;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;font:16px inherit}' +
-    '.tab-close:hover,.new-tab:hover{background:#ffffff1c}' +
+    '.tab-close,.tab-reload{width:22px;min-width:22px;height:24px;padding:0;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;font:15px inherit}' +
+    '.tab-close:hover,.tab-reload:hover,.new-tab:hover{background:#ffffff1c}' +
     '.new-tab{margin:0 0 0 2px;color:#d9dce3;font-size:19px}' +
     'button{height:32px;min-width:32px;padding:0 9px;border:1px solid #ffffff24;border-radius:6px;background:#ffffff0d;color:#f8f8f2;cursor:pointer;font:inherit}' +
     'button:hover{background:#ffffff20}button:disabled{opacity:.4;cursor:default}' +
@@ -124,6 +124,18 @@
       var label = document.createElement('span');
       label.className = 'tab-label';
       label.textContent = tab.title || tab.url;
+      var reload = document.createElement('button');
+      reload.className = 'tab-reload';
+      reload.type = 'button';
+      reload.title = 'Muat ulang tab';
+      reload.setAttribute('aria-label', 'Muat ulang tab');
+      reload.textContent = '↻';
+      reload.addEventListener('click', function (event) {
+        event.stopPropagation();
+        invoke('reload_target_tab', { tabId: tab.id }).catch(function (result) {
+          showError(result && result.message ? result.message : 'Tab tidak dapat dimuat ulang.');
+        });
+      });
       var close = document.createElement('button');
       close.className = 'tab-close';
       close.type = 'button';
@@ -137,6 +149,7 @@
         });
       });
       tabButton.appendChild(label);
+      tabButton.appendChild(reload);
       tabButton.appendChild(close);
       tabButton.addEventListener('click', function () {
         invoke('switch_target_tab', { tabId: tab.id }).catch(function (result) {

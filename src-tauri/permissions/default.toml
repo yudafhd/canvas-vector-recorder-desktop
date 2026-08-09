@@ -4,7 +4,7 @@ description = "Studio-only recorder, license, storage, target-window, and export
 commands.allow = [
   "start_recording", "stop_recording", "list_canvases", "get_canvas_result", "generate_svg",
   "export_svg", "save_svg", "clear_recording", "clear_surfaces", "get_recording_state", "open_target_url", "open_target_tab", "switch_target_tab",
-  "close_target_tab", "sync_target_tab", "close_target_window", "set_target_view_visible", "restore_target_view", "resize_target_view",
+  "close_target_tab", "reload_target_tab", "sync_target_tab", "close_target_window", "set_target_view_visible", "restore_target_view", "resize_target_view",
   "validate_license", "activate_license", "get_license_status", "set_recording"
 ]
 
@@ -16,4 +16,4 @@ commands.allow = ["record_canvas_events"]
 [[permission]]
 identifier = "allow-target-tab-commands"
 description = "Target WebViews may manage tabs in their existing target window."
-commands.allow = ["open_target_tab", "switch_target_tab", "close_target_tab", "sync_target_tab"]
+commands.allow = ["open_target_tab", "switch_target_tab", "close_target_tab", "reload_target_tab", "sync_target_tab"]

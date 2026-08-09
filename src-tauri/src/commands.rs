@@ -407,6 +407,15 @@ pub fn close_target_tab(
 }
 
 #[tauri::command]
+pub fn reload_target_tab(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    tab_id: String,
+) -> Result<(), AppError> {
+    target_platform::reload_target_tab(&app, &state, &tab_id)
+}
+
+#[tauri::command]
 pub fn set_target_view_visible(
     app: AppHandle,
     state: State<'_, AppState>,

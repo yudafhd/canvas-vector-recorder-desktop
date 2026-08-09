@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 
 const bridge = await readFile(new URL('../src/recorder-bridge.js', import.meta.url), 'utf8');
 const controls = await readFile(new URL('../src/target-controls.js', import.meta.url), 'utf8');
+const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
+const styles = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8');
 test('bridge batches events and flushes by timer or count', () => {
   assert.match(bridge, /MAX_BATCH = 100/); assert.match(bridge, /FLUSH_MS = 150/); assert.match(bridge, /queue\.length >= MAX_BATCH/); assert.match(bridge, /record_canvas_events/);
 });
@@ -30,6 +32,25 @@ test('target controls keep tabs in one native window', () => {
   assert.match(controls, /window\.open/);
   assert.match(controls, /__CVR_SET_TABS__/);
   assert.match(controls, /data-cvr-target-controls/);
+});
+
+test('target controls provide a reload button for every target tab', () => {
+  assert.match(controls, /tab-reload/);
+  assert.match(controls, /Muat ulang tab/);
+  assert.match(controls, /reload_target_tab/);
+  assert.doesNotMatch(controls, /handleMacReloadShortcut|location\.reload/);
+});
+
+test('main macOS tabs provide reload controls and stay compact', () => {
+  assert.match(main, /target-tab-reload/);
+  assert.match(main, /reload_target_tab/);
+  assert.match(styles, /\.target-tab-wrap \.target-main-tab \{ min-width: 100px; max-width: 180px;/);
+});
+
+test('preview provides artwork scale controls used by SVG settings', () => {
+  assert.match(main, /artworkScaleDown/);
+  assert.match(main, /artworkScaleUp/);
+  assert.match(main, /artworkScale/);
 });
 
 test('target controls enforce a five-tab limit', () => {

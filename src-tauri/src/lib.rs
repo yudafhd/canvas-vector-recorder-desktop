@@ -88,6 +88,7 @@ pub fn run() {
             commands::open_target_tab,
             commands::switch_target_tab,
             commands::close_target_tab,
+            commands::reload_target_tab,
             commands::set_target_view_visible,
             commands::restore_target_view,
             commands::resize_target_view,

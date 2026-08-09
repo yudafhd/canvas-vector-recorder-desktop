@@ -36,6 +36,10 @@ const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
 let previewUrl: string | null = null;
 let previewRequest = 0;
+const ARTWORK_SCALE_MIN = 0.5;
+const ARTWORK_SCALE_MAX = 3;
+const ARTWORK_SCALE_STEP = 0.1;
+let artworkScale = 1;
 
 function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
@@ -71,6 +75,16 @@ function renderTargetTabs(state: TargetTabsState): void {
       setMainTab('target');
       void invoke('switch_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
     });
+    const reload = document.createElement('button');
+    reload.className = 'target-tab-reload';
+    reload.type = 'button';
+    reload.textContent = '↻';
+    reload.title = 'Muat ulang target';
+    reload.setAttribute('aria-label', `Muat ulang ${tab.title || 'target'}`);
+    reload.addEventListener('click', event => {
+      event.stopPropagation();
+      void invoke('reload_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+    });
     const close = document.createElement('button');
     close.className = 'target-tab-close';
     close.type = 'button';
@@ -81,7 +95,7 @@ function renderTargetTabs(state: TargetTabsState): void {
       event.stopPropagation();
       void invoke('close_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
     });
-    wrapper.append(button, close);
+    wrapper.append(button, reload, close);
     targetMainTabs.append(wrapper);
   });
   updateOpenTargetButton();
@@ -160,7 +174,23 @@ function settings(): MicrostockSettings {
     maxPixels: Number($<HTMLInputElement>('maxPixels').value) * 1_000_000,
     backgroundColor: $<HTMLInputElement>('backgroundColor').value || '#ffffff',
     transparentBackground: $<HTMLInputElement>('transparentBackground').checked,
+    artworkScale,
   };
+}
+
+function updateArtworkScaleControl(): void {
+  const value = $<HTMLSpanElement>('artworkScaleValue');
+  value.textContent = `${Math.round(artworkScale * 100)}%`;
+  $<HTMLButtonElement>('artworkScaleDown').disabled = artworkScale <= ARTWORK_SCALE_MIN;
+  $<HTMLButtonElement>('artworkScaleUp').disabled = artworkScale >= ARTWORK_SCALE_MAX;
+}
+
+function setArtworkScale(delta: number): void {
+  const next = Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, artworkScale + delta));
+  artworkScale = Math.round(next * 100) / 100;
+  updateArtworkScaleControl();
+  renderCanvases(detectedAssets);
+  refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
 }
 
 function syncBackgroundControls(): void {
@@ -170,7 +200,7 @@ function syncBackgroundControls(): void {
 
 function thumbnailKey(item: CanvasDetection): string {
   const current = settings();
-  return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels, current.backgroundColor, current.transparentBackground].join('|');
+  return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels, current.backgroundColor, current.transparentBackground, current.artworkScale].join('|');
 }
 
 function renderLicense(s: LicenseStatus): void {
@@ -252,6 +282,8 @@ function resetDetectedSurfaces(): void {
   previewRequest += 1;
   if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
   selectedCanvas = null;
+  artworkScale = 1;
+  updateArtworkScaleControl();
   lastSvg = null;
   detectedAssets = [];
   $('preview').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
@@ -298,6 +330,8 @@ async function openTarget(): Promise<void> {
   else activeMainTab = 'target';
   updateOpenTargetButton();
   selectedCanvas = null;
+  artworkScale = 1;
+  updateArtworkScaleControl();
   lastSvg = null;
   await refreshCanvases();
   status(workspaceStatus, 'Target dibuka di window target. Perekam aktif di background.', 'success');
@@ -320,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
   mainTabs.hidden = !(isWindows || isMac);
   if (isWindows || isMac) setMainTab('recorder');
   syncBackgroundControls();
+  updateArtworkScaleControl();
   $('activationForm').addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();
     status(activationStatus, 'Memvalidasi dan mengaktifkan perangkat…');
@@ -345,6 +380,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
   });
   $('transparentBackground').addEventListener('change', syncBackgroundControls);
+  $('artworkScaleDown').addEventListener('click', () => setArtworkScale(-ARTWORK_SCALE_STEP));
+  $('artworkScaleUp').addEventListener('click', () => setArtworkScale(ARTWORK_SCALE_STEP));
   $('recordToggle').addEventListener('click', async () => { recordingEnabled = !recordingEnabled; await invoke('set_recording', { enabled: recordingEnabled }); const button = $('recordToggle'); button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF'; button.classList.toggle('off', !recordingEnabled); });
   $('refreshSettings').addEventListener('click', () => {
     renderCanvases(detectedAssets);

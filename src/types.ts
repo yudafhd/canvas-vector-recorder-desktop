@@ -7,6 +7,7 @@ export interface MicrostockSettings {
   ratio: Ratio;
   backgroundColor: string;
   transparentBackground: boolean;
+  artworkScale: number;
 }
 
 export interface CanvasDetection {

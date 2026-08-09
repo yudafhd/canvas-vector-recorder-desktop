@@ -34,13 +34,6 @@ impl Bounds {
         self.include(other.max_x, other.max_y);
     }
 
-    fn center(self) -> (f64, f64) {
-        (
-            (self.min_x + self.max_x) / 2.0,
-            (self.min_y + self.max_y) / 2.0,
-        )
-    }
-
     fn area(self) -> f64 {
         (self.max_x - self.min_x).max(0.0) * (self.max_y - self.min_y).max(0.0)
     }
@@ -258,17 +251,24 @@ fn is_axis_aligned_rectangle(value: &str) -> bool {
 }
 
 fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>) -> Option<Bounds> {
-    data.shapes
+    let shape_bounds = data
+        .shapes
         .iter()
         .enumerate()
         .filter(|(index, _)| Some(*index) != excluded_shape)
         .map(|(_, shape)| shape)
         .filter_map(|shape| path_bounds(&shape.d, shape.transform))
-        .chain(
-            data.gap_fillers
-                .iter()
-                .filter_map(|stroke| path_bounds(&stroke.d, stroke.transform)),
-        )
+        .reduce(|mut bounds, next| {
+            bounds.merge(next);
+            bounds
+        });
+    if shape_bounds.is_some() {
+        return shape_bounds;
+    }
+    data.gap_fillers
+        .iter()
+        .filter(|stroke| stroke.clip_path.is_none())
+        .filter_map(|stroke| path_bounds(&stroke.d, stroke.transform))
         .reduce(|mut bounds, next| {
             bounds.merge(next);
             bounds
@@ -301,30 +301,28 @@ pub fn escape_xml(value: &str) -> String {
 pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
     let (width, height, ratio) = artboard(data.width, data.height, settings);
     let background_index = background_shape_index(data);
-    let bounds = artwork_bounds(data, background_index);
-    // Fit the visible artwork to the requested artboard instead of scaling
-    // against the full source canvas, which can leave large empty borders.
-    let scale = bounds
+    // Keep the original canvas coordinate system. Gap-filler strokes can
+    // extend beyond the artwork (and are clipped in the source canvas); using
+    // their bounds here would make the entire preview appear tiny or shifted.
+    let source_width = data.width.max(1.0);
+    let source_height = data.height.max(1.0);
+    let base_scale = (width as f64 / source_width).min(height as f64 / source_height);
+    let artwork_scale = if settings.artwork_scale.is_finite() {
+        settings.artwork_scale.clamp(0.5, 3.0)
+    } else {
+        1.0
+    };
+    let scale = base_scale * artwork_scale;
+    let (ox, oy) = artwork_bounds(data, background_index)
         .map(|bounds| {
-            let artwork_width = (bounds.max_x - bounds.min_x).max(1.0);
-            let artwork_height = (bounds.max_y - bounds.min_y).max(1.0);
-            let fit = (width as f64 / artwork_width).min(height as f64 / artwork_height);
-            fit * 0.94
-        })
-        .unwrap_or_else(|| {
-            (width as f64 / data.width.max(1.0)).min(height as f64 / data.height.max(1.0))
-        });
-    let (ox, oy) = bounds
-        .map(|bounds| {
-            let (center_x, center_y) = bounds.center();
             (
-                width as f64 / 2.0 - center_x * scale,
-                height as f64 / 2.0 - center_y * scale,
+                width as f64 / 2.0 - ((bounds.min_x + bounds.max_x) / 2.0) * scale,
+                height as f64 / 2.0 - ((bounds.min_y + bounds.max_y) / 2.0) * scale,
             )
         })
         .unwrap_or((
-            (width as f64 - data.width * scale) / 2.0,
-            (height as f64 - data.height * scale) / 2.0,
+            (width as f64 - source_width * scale) / 2.0,
+            (height as f64 - source_height * scale) / 2.0,
         ));
     let background_layer = if settings.transparent_background {
         String::new()
@@ -341,59 +339,58 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
             escape_xml(color)
         )
     };
-    let clip_defs = data
-        .shapes
-        .iter()
-        .enumerate()
-        .filter_map(|(i, shape)| {
-            shape.clip_path.as_ref().map(|path| {
-                format!(
-                    "    <clipPath id=\"clip-{}\"><path d=\"{}\"/></clipPath>",
-                    i + 1,
-                    escape_xml(path)
-                )
-            })
-        })
-        .collect::<Vec<_>>()
-        .join("\n");
-    let strokes = data.gap_fillers.iter().enumerate().map(|(i, stroke)| format!("    <path id=\"gap-filler-{}\" d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"{}\" transform=\"{}\"/>", i + 1, escape_xml(&stroke.d), escape_xml(&stroke.stroke), f(stroke.width), stroke.transform.svg())).collect::<Vec<_>>().join("\n");
-    let defs = if clip_defs.is_empty() {
-        String::new()
-    } else {
-        format!("\n  <defs>\n{}\n  </defs>", clip_defs)
-    };
-    let gap_layer = if strokes.is_empty() {
-        String::new()
-    } else {
+    let render_shape = |i: usize, shape: &super::canvas::Shape| {
         format!(
-            "\n    <g id=\"gap-fillers\" aria-label=\"Gap fillers (outline strokes before submission)\">\n{}\n    </g>",
-            strokes
+            "    <path id=\"shape-{}\" d=\"{}\" fill=\"{}\" fill-rule=\"{}\" transform=\"{}\"/>",
+            i + 1,
+            escape_xml(&shape.d),
+            escape_xml(&shape.fill),
+            escape_xml(&shape.fill_rule),
+            shape.transform.svg()
         )
     };
-    let shapes = data
-        .shapes
-        .iter()
-        .enumerate()
-        .filter(|(index, _)| Some(*index) != background_index)
-        .map(|(i, shape)| {
-            let clip = if shape.clip_path.is_some() {
-                format!(" clip-path=\"url(#clip-{})\"", i + 1)
-            } else {
-                String::new()
-            };
-            format!(
-                "    <path id=\"shape-{}\" d=\"{}\" fill=\"{}\" fill-rule=\"{}\" transform=\"{}\"{}/>",
-                i + 1,
-                escape_xml(&shape.d),
-                escape_xml(&shape.fill),
-                escape_xml(&shape.fill_rule),
-                shape.transform.svg(),
-                clip
+    let render_stroke = |i: usize, stroke: &super::canvas::Stroke| {
+        format!(
+            "    <path id=\"gap-filler-{}\" d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"{}\" transform=\"{}\"/>",
+            i + 1,
+            escape_xml(&stroke.d),
+            escape_xml(&stroke.stroke),
+            f(stroke.width),
+            stroke.transform.svg()
+        )
+    };
+    let paint_order = if data.operations.is_empty() {
+        data.shapes
+            .iter()
+            .enumerate()
+            .filter(|(index, _)| Some(*index) != background_index)
+            .map(|(i, shape)| render_shape(i, shape))
+            .chain(
+                data.gap_fillers
+                    .iter()
+                    .enumerate()
+                    .map(|(i, stroke)| render_stroke(i, stroke)),
             )
-        })
-        .collect::<Vec<_>>()
-        .join("\n");
-    let svg = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\" color-interpolation=\"sRGB\">{}\n  <title>Editable vector artwork</title>\n{}  <g id=\"artwork-transform\" aria-label=\"Artwork transform\" transform=\"translate({} {}) scale({})\">\n    <g id=\"artwork\" aria-label=\"Artwork\">\n{}\n    </g>{}\n  </g>\n</svg>", width, height, width, height, defs, background_layer, f(ox), f(oy), f(scale), shapes, gap_layer);
+            .collect::<Vec<_>>()
+    } else {
+        data.operations
+            .iter()
+            .filter_map(|operation| match operation {
+                super::canvas::PaintOperation::Shape(index) if Some(*index) != background_index => {
+                    data.shapes
+                        .get(*index)
+                        .map(|shape| render_shape(*index, shape))
+                }
+                super::canvas::PaintOperation::Stroke(index) => data
+                    .gap_fillers
+                    .get(*index)
+                    .map(|stroke| render_stroke(*index, stroke)),
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+    }
+    .join("\n");
+    let svg = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\" color-interpolation=\"sRGB\">\n  <title>Editable vector artwork</title>\n{}  <g id=\"artwork-transform\" aria-label=\"Artwork transform\" transform=\"translate({} {}) scale({})\">\n    <g id=\"artwork\" aria-label=\"Artwork\">\n{}\n    </g>\n  </g>\n</svg>", width, height, width, height, background_layer, f(ox), f(oy), f(scale), paint_order);
     (svg, (width, height, ratio))
 }
 
@@ -450,7 +447,7 @@ mod tests {
     }
 
     #[test]
-    fn generated_artwork_is_centered_from_its_actual_bounds() {
+    fn generated_artwork_is_scaled_from_the_source_canvas() {
         let data = CanvasResult {
             canvas_id: "c".into(),
             width: 100.0,
@@ -467,7 +464,117 @@ mod tests {
             operations: vec![],
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
-        assert!(svg.contains("translate(116.19 116.19)"));
-        assert!(svg.contains("scale(182.031)"));
+        assert!(svg.contains("translate(1549.2 1549.2) scale(38.73)"));
+    }
+
+    #[test]
+    fn artwork_scale_multiplies_the_centered_source_scale() {
+        let data = CanvasResult {
+            canvas_id: "c".into(),
+            width: 100.0,
+            height: 100.0,
+            shapes: vec![],
+            gap_fillers: vec![],
+            errors: 0,
+            operations: vec![],
+        };
+        let settings = MicrostockSettings {
+            artwork_scale: 2.0,
+            ..Default::default()
+        };
+        let (svg, _) = build(&data, &settings);
+        assert!(svg.contains("translate(-1936.5 -1936.5) scale(77.46)"));
+    }
+
+    #[test]
+    fn generated_svg_keeps_canvas_paint_order() {
+        let data = CanvasResult {
+            canvas_id: "c".into(),
+            width: 100.0,
+            height: 100.0,
+            shapes: vec![super::super::canvas::Shape {
+                d: "M 0 0 h 20 v 20 h -20 Z".into(),
+                fill: "#f00".into(),
+                fill_rule: "nonzero".into(),
+                transform: Matrix::default(),
+                clip_path: None,
+            }],
+            gap_fillers: vec![super::super::canvas::Stroke {
+                d: "M 0 0 h 20 v 20 h -20 Z".into(),
+                stroke: "#000".into(),
+                width: 1.0,
+                transform: Matrix::default(),
+                clip_path: None,
+            }],
+            errors: 0,
+            operations: vec![
+                super::super::canvas::PaintOperation::Stroke(0),
+                super::super::canvas::PaintOperation::Shape(0),
+            ],
+        };
+        let (svg, _) = build(&data, &MicrostockSettings::default());
+        let stroke_position = svg.find("id=\"gap-filler-1\"").unwrap();
+        let shape_position = svg.find("id=\"shape-1\"").unwrap();
+        assert!(stroke_position < shape_position);
+    }
+
+    #[test]
+    fn generated_svg_does_not_reintroduce_canvas_clips() {
+        let data = CanvasResult {
+            canvas_id: "c".into(),
+            width: 100.0,
+            height: 100.0,
+            shapes: vec![],
+            gap_fillers: vec![super::super::canvas::Stroke {
+                d: "M -20 50 L 120 50".into(),
+                stroke: "#000".into(),
+                width: 1.0,
+                transform: Matrix::default(),
+                clip_path: Some(super::super::canvas::ClipPath {
+                    d: "M 0 0 h 100 v 100 h -100 Z".into(),
+                    transform: Matrix::default(),
+                }),
+            }],
+            errors: 0,
+            operations: vec![super::super::canvas::PaintOperation::Stroke(0)],
+        };
+        let (svg, _) = build(&data, &MicrostockSettings::default());
+        assert!(svg.contains("id=\"gap-filler-1\""));
+        assert!(!svg.contains("<clipPath"));
+        assert!(!svg.contains("clip-path="));
+    }
+
+    #[test]
+    fn clipped_strokes_do_not_expand_artwork_bounds() {
+        let data = CanvasResult {
+            canvas_id: "c".into(),
+            width: 100.0,
+            height: 100.0,
+            shapes: vec![super::super::canvas::Shape {
+                d: "M 0 0 h 20 v 20 h -20 Z".into(),
+                fill: "#f00".into(),
+                fill_rule: "nonzero".into(),
+                transform: Matrix::default(),
+                clip_path: None,
+            }],
+            gap_fillers: vec![super::super::canvas::Stroke {
+                d: "M -1000 -1000 L 1000 1000".into(),
+                stroke: "#000".into(),
+                width: 1.0,
+                transform: Matrix::default(),
+                clip_path: Some(super::super::canvas::ClipPath {
+                    d: "M 0 0 h 100 v 100 h -100 Z".into(),
+                    transform: Matrix::default(),
+                }),
+            }],
+            errors: 0,
+            operations: vec![
+                super::super::canvas::PaintOperation::Shape(0),
+                super::super::canvas::PaintOperation::Stroke(0),
+            ],
+        };
+        let (svg, _) = build(&data, &MicrostockSettings::default());
+        assert!(svg.contains("translate(1549.2 1549.2) scale(38.73)"));
+        assert!(!svg.contains("clip-path="));
     }
 }
