@@ -611,13 +611,19 @@ pub(crate) fn target_script(
     };
     let bridge = include_str!("../../src/recorder-bridge.js");
     let target_controls = include_str!("../../src/target-controls.js");
+    let recording_enabled = state
+        .recorder
+        .lock()
+        .map_err(|_| AppError::State)?
+        .recording_enabled;
     let target_mode = if cfg!(target_os = "windows") || cfg!(target_os = "macos") {
         "multi-window"
     } else {
         "tabbed-window"
     };
     Ok(format!(
-        "window.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode};\n{target_controls}\n{bridge}",
+        "window.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode}; window.__CVR_RECORDING_ENABLED__ = {recording_enabled};\n{target_controls}\n{bridge}",
+        recording_enabled = if recording_enabled { "true" } else { "false" },
         target_mode = serde_json::to_string(target_mode)
             .map_err(|e| AppError::InvalidEvent(e.to_string()))?
     ))

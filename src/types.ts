@@ -1,4 +1,4 @@
-export type Ratio = 'source' | '1:1' | '4:5' | '4:3' | '3:2' | '2:3' | '16:9';
+export type Ratio = 'source' | '1:1' | '4:5' | '4:3' | '3:2' | '2:3' | '16:9' | (string & {});
 
 export interface MicrostockSettings {
   profile: 'adobe-stock' | 'custom';

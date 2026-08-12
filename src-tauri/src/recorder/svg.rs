@@ -12,6 +12,11 @@ struct Bounds {
     max_y: f64,
 }
 
+// Keep a visible breathing room around the artwork in the exported artboard.
+// The user scale control can still deliberately enlarge the artwork, but the
+// neutral 100% setting must not place it directly against the edge.
+const ARTWORK_SAFE_AREA: f64 = 0.90;
+
 impl Bounds {
     fn point(x: f64, y: f64) -> Self {
         Self {
@@ -306,7 +311,8 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
     // their bounds here would make the entire preview appear tiny or shifted.
     let source_width = data.width.max(1.0);
     let source_height = data.height.max(1.0);
-    let base_scale = (width as f64 / source_width).min(height as f64 / source_height);
+    let base_scale = ((width as f64 * ARTWORK_SAFE_AREA) / source_width)
+        .min((height as f64 * ARTWORK_SAFE_AREA) / source_height);
     let artwork_scale = if settings.artwork_scale.is_finite() {
         settings.artwork_scale.clamp(0.5, 3.0)
     } else {
@@ -464,7 +470,7 @@ mod tests {
             operations: vec![],
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
-        assert!(svg.contains("translate(1549.2 1549.2) scale(38.73)"));
+        assert!(svg.contains("translate(1587.93 1587.93) scale(34.857)"));
     }
 
     #[test]
@@ -483,7 +489,7 @@ mod tests {
             ..Default::default()
         };
         let (svg, _) = build(&data, &settings);
-        assert!(svg.contains("translate(-1936.5 -1936.5) scale(77.46)"));
+        assert!(svg.contains("translate(-1549.2 -1549.2) scale(69.714)"));
     }
 
     #[test]
@@ -574,7 +580,7 @@ mod tests {
             ],
         };
         let (svg, _) = build(&data, &MicrostockSettings::default());
-        assert!(svg.contains("translate(1549.2 1549.2) scale(38.73)"));
+        assert!(svg.contains("translate(1587.93 1587.93) scale(34.857)"));
         assert!(!svg.contains("clip-path="));
     }
 }

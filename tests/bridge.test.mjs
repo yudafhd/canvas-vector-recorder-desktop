@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 const bridge = await readFile(new URL('../src/recorder-bridge.js', import.meta.url), 'utf8');
 const controls = await readFile(new URL('../src/target-controls.js', import.meta.url), 'utf8');
 const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
+const index = await readFile(new URL('../src/index.html', import.meta.url), 'utf8');
 const styles = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8');
 test('bridge batches events and flushes by timer or count', () => {
   assert.match(bridge, /MAX_BATCH = 100/); assert.match(bridge, /FLUSH_MS = 150/); assert.match(bridge, /queue\.length >= MAX_BATCH/); assert.match(bridge, /record_canvas_events/);
@@ -57,6 +58,19 @@ test('preview provides artwork scale controls used by SVG settings', () => {
   assert.match(main, /artworkScaleDown/);
   assert.match(main, /artworkScaleUp/);
   assert.match(main, /artworkScale/);
+});
+
+test('export settings provide custom ratio fields and persist all user settings', () => {
+  assert.match(index, /id="exportSettingsForm"/);
+  assert.match(index, /value="custom">Custom/);
+  assert.match(index, /id="customRatioWidth"/);
+  assert.match(index, /id="customRatioHeight"/);
+  assert.match(main, /selectedRatioForBackend/);
+  assert.match(main, /syncRatioInputsFromSelection/);
+  assert.match(main, /ratioSelect\.value = 'custom'/);
+  assert.match(main, /localStorage\.setItem/);
+  assert.match(main, /localStorage\.getItem/);
+  assert.match(main, /SETTINGS_STORAGE_KEY/);
 });
 
 test('target controls enforce a five-tab limit', () => {
