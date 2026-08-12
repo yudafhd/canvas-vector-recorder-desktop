@@ -39,7 +39,31 @@ let previewRequest = 0;
 const ARTWORK_SCALE_MIN = 0.5;
 const ARTWORK_SCALE_MAX = 3;
 const ARTWORK_SCALE_STEP = 0.1;
+const SETTINGS_STORAGE_KEY = 'canvas-vector-recorder.settings.v1';
+const RATIO_PRESETS = new Set(['source', '1:1', '4:5', '4:3', '3:2', '2:3', '16:9']);
+const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  '1:1': { width: 1, height: 1 },
+  '4:5': { width: 4, height: 5 },
+  '4:3': { width: 4, height: 3 },
+  '3:2': { width: 3, height: 2 },
+  '2:3': { width: 2, height: 3 },
+  '16:9': { width: 16, height: 9 },
+};
+const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
 let artworkScale = 1;
+
+interface PersistedSettings {
+  ratio: string;
+  customRatioWidth: number;
+  customRatioHeight: number;
+  minPixels: number;
+  maxPixels: number;
+  backgroundColor: string;
+  transparentBackground: boolean;
+  artworkScale: number;
+  targetUrl: string;
+  recordingEnabled: boolean;
+}
 
 function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
@@ -167,16 +191,140 @@ function showDownloadToast(message: string): void {
   downloadToastTimer = setTimeout(() => { toast.hidden = true; }, 3500);
 }
 
+function selectedRatioForBackend(): string {
+  const selected = $<HTMLSelectElement>('ratio').value;
+  if (selected !== 'custom') return selected || 'source';
+  const width = Number($<HTMLInputElement>('customRatioWidth').value);
+  const height = Number($<HTMLInputElement>('customRatioHeight').value);
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) return 'source';
+  return `${width}:${height}`;
+}
+
 function settings(): MicrostockSettings {
   return {
     profile: 'custom',
-    ratio: ($<HTMLSelectElement>('ratio').value as MicrostockSettings['ratio']),
+    ratio: selectedRatioForBackend(),
     minPixels: Number($<HTMLInputElement>('minPixels').value) * 1_000_000,
     maxPixels: Number($<HTMLInputElement>('maxPixels').value) * 1_000_000,
     backgroundColor: $<HTMLInputElement>('backgroundColor').value || '#ffffff',
     transparentBackground: $<HTMLInputElement>('transparentBackground').checked,
     artworkScale,
   };
+}
+
+function settingValidationError(): string | null {
+  const ratio = $<HTMLSelectElement>('ratio').value;
+  const minPixels = Number($<HTMLInputElement>('minPixels').value);
+  const maxPixels = Number($<HTMLInputElement>('maxPixels').value);
+  if (!Number.isFinite(minPixels) || minPixels <= 0) return 'Min MP harus lebih besar dari 0.';
+  if (!Number.isFinite(maxPixels) || maxPixels <= 0) return 'Max MP harus lebih besar dari 0.';
+  if (maxPixels <= minPixels) return 'Max MP harus lebih besar daripada Min MP.';
+  if (ratio !== 'custom') return null;
+  const width = Number($<HTMLInputElement>('customRatioWidth').value);
+  const height = Number($<HTMLInputElement>('customRatioHeight').value);
+  if (!Number.isInteger(width) || width < 1 || width > 10_000) return 'Lebar rasio custom harus berupa bilangan bulat 1–10.000.';
+  if (!Number.isInteger(height) || height < 1 || height > 10_000) return 'Tinggi rasio custom harus berupa bilangan bulat 1–10.000.';
+  return null;
+}
+
+function updateRatioControls(): void {
+  const custom = $<HTMLSelectElement>('ratio').value === 'custom';
+  const fields = $<HTMLDivElement>('customRatioFields');
+  fields.hidden = false;
+  fields.classList.toggle('is-custom', custom);
+  const dimensions = custom
+    ? { width: $<HTMLInputElement>('customRatioWidth').value, height: $<HTMLInputElement>('customRatioHeight').value }
+    : PRESET_RATIO_DIMENSIONS[$<HTMLSelectElement>('ratio').value] || sourceRatioDimensions();
+  $('ratioHelp').textContent = custom
+    ? 'Masukkan dua bilangan bulat positif, misalnya 7 : 5. Rasio output akan dipertahankan exact.'
+    : `Rasio ${dimensions.width} : ${dimensions.height}. Ubah salah satu nilai untuk beralih ke Custom.`;
+}
+
+function ratioDimensions(width: number, height: number): { width: number; height: number } {
+  let left = Math.max(1, Math.round(width));
+  let right = Math.max(1, Math.round(height));
+  while (right !== 0) {
+    const remainder = left % right;
+    left = right;
+    right = remainder;
+  }
+  const divisor = Math.max(1, left);
+  return { width: Math.round(width) / divisor, height: Math.round(height) / divisor };
+}
+
+function sourceRatioDimensions(): { width: number; height: number } {
+  const canvas = (selectedCanvas && detectedAssets.find(item => item.canvas_id === selectedCanvas)) || detectedAssets[0];
+  return canvas && Number.isFinite(canvas.width) && Number.isFinite(canvas.height)
+    ? ratioDimensions(canvas.width, canvas.height)
+    : DEFAULT_CUSTOM_RATIO;
+}
+
+function syncRatioInputsFromSelection(): void {
+  const selected = $<HTMLSelectElement>('ratio').value;
+  if (selected === 'custom') return;
+  const dimensions = selected === 'source' ? sourceRatioDimensions() : PRESET_RATIO_DIMENSIONS[selected] || DEFAULT_CUSTOM_RATIO;
+  $<HTMLInputElement>('customRatioWidth').value = String(dimensions.width);
+  $<HTMLInputElement>('customRatioHeight').value = String(dimensions.height);
+}
+
+function persistedSettings(): PersistedSettings {
+  return {
+    ratio: $<HTMLSelectElement>('ratio').value || 'source',
+    customRatioWidth: Number($<HTMLInputElement>('customRatioWidth').value) || DEFAULT_CUSTOM_RATIO.width,
+    customRatioHeight: Number($<HTMLInputElement>('customRatioHeight').value) || DEFAULT_CUSTOM_RATIO.height,
+    minPixels: Number($<HTMLInputElement>('minPixels').value),
+    maxPixels: Number($<HTMLInputElement>('maxPixels').value),
+    backgroundColor: $<HTMLInputElement>('backgroundColor').value || '#ffffff',
+    transparentBackground: $<HTMLInputElement>('transparentBackground').checked,
+    artworkScale,
+    targetUrl: $<HTMLInputElement>('targetUrl').value,
+    recordingEnabled,
+  };
+}
+
+function persistSettingsSilently(): void {
+  if (settingValidationError()) return;
+  try { localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(persistedSettings())); } catch (_) { /* Storage may be disabled by the host. */ }
+}
+
+function loadPersistedSettings(): void {
+  let stored: Partial<PersistedSettings> = {};
+  try {
+    const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (raw) stored = JSON.parse(raw) as Partial<PersistedSettings>;
+  } catch (_) { stored = {}; }
+
+  const storedRatio = typeof stored.ratio === 'string' ? stored.ratio : 'source';
+  const customRatio = storedRatio === 'custom' || /^\d+:\d+$/.test(storedRatio);
+  const ratioSelect = $<HTMLSelectElement>('ratio');
+  ratioSelect.value = customRatio ? 'custom' : RATIO_PRESETS.has(storedRatio) ? storedRatio : 'source';
+  if (customRatio) {
+    const parts = storedRatio.split(':');
+    const width = Number(stored.customRatioWidth) || Number(parts[0]) || DEFAULT_CUSTOM_RATIO.width;
+    const height = Number(stored.customRatioHeight) || Number(parts[1]) || DEFAULT_CUSTOM_RATIO.height;
+    $<HTMLInputElement>('customRatioWidth').value = String(Math.min(10_000, Math.max(1, Math.round(width))));
+    $<HTMLInputElement>('customRatioHeight').value = String(Math.min(10_000, Math.max(1, Math.round(height))));
+  }
+  const minPixels = Number(stored.minPixels);
+  const maxPixels = Number(stored.maxPixels);
+  if (Number.isFinite(minPixels) && minPixels > 0) $<HTMLInputElement>('minPixels').value = String(minPixels);
+  if (Number.isFinite(maxPixels) && maxPixels > 0) $<HTMLInputElement>('maxPixels').value = String(maxPixels);
+  if (typeof stored.backgroundColor === 'string' && /^#[0-9a-f]{6}$/i.test(stored.backgroundColor)) {
+    $<HTMLInputElement>('backgroundColor').value = stored.backgroundColor;
+  }
+  if (typeof stored.transparentBackground === 'boolean') $<HTMLInputElement>('transparentBackground').checked = stored.transparentBackground;
+  if (typeof stored.artworkScale === 'number' && Number.isFinite(stored.artworkScale)) {
+    artworkScale = Math.round(Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, stored.artworkScale)) * 100) / 100;
+  }
+  if (typeof stored.targetUrl === 'string') $<HTMLInputElement>('targetUrl').value = stored.targetUrl;
+  if (typeof stored.recordingEnabled === 'boolean') recordingEnabled = stored.recordingEnabled;
+  syncRatioInputsFromSelection();
+  updateRatioControls();
+  syncBackgroundControls();
+  updateArtworkScaleControl();
+  const recordButton = $<HTMLButtonElement>('recordToggle');
+  recordButton.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF';
+  recordButton.classList.toggle('off', !recordingEnabled);
 }
 
 function updateArtworkScaleControl(): void {
@@ -189,6 +337,7 @@ function updateArtworkScaleControl(): void {
 function setArtworkScale(delta: number): void {
   const next = Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, artworkScale + delta));
   artworkScale = Math.round(next * 100) / 100;
+  persistSettingsSilently();
   updateArtworkScaleControl();
   renderCanvases(detectedAssets);
   refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
@@ -237,6 +386,7 @@ async function loadLicense(): Promise<void> {
 
 function renderCanvases(items: CanvasDetection[]): void {
   detectedAssets = items;
+  if ($<HTMLSelectElement>('ratio').value === 'source') syncRatioInputsFromSelection();
   const activeIds = new Set(items.map(item => item.canvas_id));
   const currentKeys = new Map(items.map(item => [item.canvas_id, thumbnailKey(item)]));
   thumbnailUrls.forEach((url, id) => {
@@ -283,8 +433,6 @@ function resetDetectedSurfaces(): void {
   previewRequest += 1;
   if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
   selectedCanvas = null;
-  artworkScale = 1;
-  updateArtworkScaleControl();
   lastSvg = null;
   detectedAssets = [];
   $('preview').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
@@ -325,17 +473,16 @@ async function openTarget(): Promise<void> {
   await invoke('clear_recording');
   const started = await invoke<StartRecordingResult>('start_recording');
   currentSession = started.session_id;
+  await invoke('set_recording', { enabled: recordingEnabled });
   await invoke('open_target_url', { url, sessionId: currentSession });
   targetOpen = true;
   if (isMac) setMainTab('target');
   else activeMainTab = 'target';
   updateOpenTargetButton();
   selectedCanvas = null;
-  artworkScale = 1;
-  updateArtworkScaleControl();
   lastSvg = null;
   await refreshCanvases();
-  status(workspaceStatus, 'Target dibuka di window target. Perekam aktif di background.', 'success');
+  status(workspaceStatus, 'Perekam aktif di background.', 'success');
 }
 
 async function closeTarget(): Promise<void> {
@@ -351,11 +498,11 @@ async function closeTarget(): Promise<void> {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadPersistedSettings();
   updateOpenTargetButton();
   mainTabs.hidden = !(isWindows || isMac);
   if (isWindows || isMac) setMainTab('recorder');
-  syncBackgroundControls();
-  updateArtworkScaleControl();
+  void invoke('set_recording', { enabled: recordingEnabled }).catch(() => undefined);
   $('activationForm').addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();
     status(activationStatus, 'Memvalidasi dan mengaktifkan perangkat…');
@@ -380,13 +527,43 @@ document.addEventListener('DOMContentLoaded', () => {
       status(workspaceStatus, 'Daftar Canvas dibersihkan.', 'success');
     } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
   });
-  $('transparentBackground').addEventListener('change', syncBackgroundControls);
+  $('ratio').addEventListener('change', () => {
+    syncRatioInputsFromSelection();
+    updateRatioControls();
+    persistSettingsSilently();
+  });
+  ['customRatioWidth', 'customRatioHeight', 'minPixels', 'maxPixels', 'backgroundColor', 'transparentBackground'].forEach(id => {
+    $(id).addEventListener('input', () => {
+      if (id === 'customRatioWidth' || id === 'customRatioHeight') {
+        const ratioSelect = $<HTMLSelectElement>('ratio');
+        if (ratioSelect.value !== 'custom') {
+          ratioSelect.value = 'custom';
+          updateRatioControls();
+        }
+      }
+      persistSettingsSilently();
+    });
+    $(id).addEventListener('change', () => { syncBackgroundControls(); persistSettingsSilently(); });
+  });
   $('artworkScaleDown').addEventListener('click', () => setArtworkScale(-ARTWORK_SCALE_STEP));
   $('artworkScaleUp').addEventListener('click', () => setArtworkScale(ARTWORK_SCALE_STEP));
-  $('recordToggle').addEventListener('click', async () => { recordingEnabled = !recordingEnabled; await invoke('set_recording', { enabled: recordingEnabled }); const button = $('recordToggle'); button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF'; button.classList.toggle('off', !recordingEnabled); });
-  $('refreshSettings').addEventListener('click', () => {
+  $('targetUrl').addEventListener('input', () => persistSettingsSilently());
+  $('recordToggle').addEventListener('click', async () => {
+    recordingEnabled = !recordingEnabled;
+    const button = $<HTMLButtonElement>('recordToggle');
+    button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF';
+    button.classList.toggle('off', !recordingEnabled);
+    persistSettingsSilently();
+    await invoke('set_recording', { enabled: recordingEnabled });
+  });
+  $('exportSettingsForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const validationError = settingValidationError();
+    if (validationError) { status(workspaceStatus, validationError, 'error'); return; }
+    persistSettingsSilently();
     renderCanvases(detectedAssets);
     refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+    status(workspaceStatus, 'Pengaturan disimpan dan diterapkan.', 'success');
   });
   $('exportSvg').addEventListener('click', async () => {
     if (!lastSvg || !selectedCanvas) return;
@@ -400,5 +577,6 @@ document.addEventListener('DOMContentLoaded', () => {
   void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
   void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
   void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });
+  window.addEventListener('beforeunload', persistSettingsSilently);
   void loadLicense();
 });

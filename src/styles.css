@@ -105,6 +105,10 @@ input:focus, textarea:focus, select:focus { outline: 2px solid #0067b833; border
 .export-settings summary::after { float: right; content: "⌄"; color: #666; font-size: 18px; line-height: 12px; }
 .export-settings:not([open]) summary::after { content: "›"; }
 .settings-body { padding-top: 18px; }
+.custom-ratio-fields { display: flex; align-items: end; gap: 8px; }
+.custom-ratio-fields label { margin-bottom: 12px; }
+.ratio-separator { padding-bottom: 20px; color: #4f4f4f; font-size: 15px; font-weight: 600; }
+.field-help { margin: -4px 0 13px; color: #737373; font-size: 11px; line-height: 1.35; }
 .background-settings { display: flex; align-items: end; gap: 10px; }
 .check-label { flex-direction: row; align-items: center; gap: 7px; margin: 0 0 12px; white-space: nowrap; }
 .check-label input { width: auto; margin: 0; }

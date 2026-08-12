@@ -57,7 +57,8 @@
             <h2 class="section-label">TARGET URL</h2>
             <div class="target-row">
               <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
-              <button id="openTarget" class="primary" type="button" title="Buka window target" aria-label="Buka window target">Buka</button>
+              <button id="openTarget" class="primary" type="button" title="Buka window target"
+                aria-label="Buka window target">Buka</button>
               <button id="closeTarget" type="button">Tutup</button>
             </div>
             <div id="workspaceStatus" class="status status-box" role="status">Siap.</div>
@@ -83,22 +84,35 @@
           <details class="export-settings">
             <summary>EXPORT SETTINGS</summary>
             <div class="settings-body">
-              <label>Rasio<select id="ratio">
-                  <option value="source">Source</option>
-                  <option>1:1</option>
-                  <option>4:5</option>
-                  <option>4:3</option>
-                  <option>3:2</option>
-                  <option>2:3</option>
-                  <option>16:9</option>
-                </select></label>
-              <div class="row"><label>Min MP<input id="minPixels" type="number" min="1" value="15"></label><label>Max
-                  MP<input id="maxPixels" type="number" min="1" value="65"></label></div>
-              <div class="background-settings">
-                <label class="check-label"><input id="transparentBackground" type="checkbox"> Background transparan</label>
-                <label class="color-label">Warna background<input id="backgroundColor" type="color" value="#ffffff"></label>
-              </div>
-              <button id="refreshSettings" type="button">Terapkan pengaturan</button>
+              <form id="exportSettingsForm">
+                <label>Rasio<select id="ratio">
+                    <option value="source">Source</option>
+                    <option value="1:1">1:1</option>
+                    <option value="4:5">4:5</option>
+                    <option value="4:3">4:3</option>
+                    <option value="3:2">3:2</option>
+                    <option value="2:3">2:3</option>
+                    <option value="16:9">16:9</option>
+                    <option value="custom">Custom</option>
+                  </select></label>
+                <div id="customRatioFields" class="custom-ratio-fields">
+                  <label>Lebar rasio<input id="customRatioWidth" type="number" min="1" max="10000" step="1" value="1"
+                      inputmode="numeric"></label>
+                  <span class="ratio-separator" aria-hidden="true">:</span>
+                  <label>Tinggi rasio<input id="customRatioHeight" type="number" min="1" max="10000" step="1" value="1"
+                      inputmode="numeric"></label>
+                </div>
+                <p id="ratioHelp" class="field-help">Source mempertahankan perbandingan Canvas asli.</p>
+                <div class="row"><label>Min MP<input id="minPixels" type="number" min="1" value="15"></label><label>Max
+                    MP<input id="maxPixels" type="number" min="1" value="65"></label></div>
+                <div class="background-settings">
+                  <label class="check-label"><input id="transparentBackground" type="checkbox"> Background
+                    transparan</label>
+                  <label class="color-label">Warna background<input id="backgroundColor" type="color"
+                      value="#ffffff"></label>
+                </div>
+                <button id="refreshSettings" type="submit">Simpan &amp; terapkan pengaturan</button>
+              </form>
             </div>
           </details>
         </aside>
@@ -107,9 +121,11 @@
           <header class="preview-header">
             <h2 id="previewTitle">Rendered Preview</h2>
             <div class="artwork-scale-control" aria-label="Atur skala artwork">
-              <button id="artworkScaleDown" type="button" title="Perkecil artwork" aria-label="Perkecil artwork">−</button>
+              <button id="artworkScaleDown" type="button" title="Perkecil artwork"
+                aria-label="Perkecil artwork">−</button>
               <span id="artworkScaleValue" aria-live="polite">100%</span>
-              <button id="artworkScaleUp" type="button" title="Perbesar artwork" aria-label="Perbesar artwork">+</button>
+              <button id="artworkScaleUp" type="button" title="Perbesar artwork"
+                aria-label="Perbesar artwork">+</button>
             </div>
           </header>
           <div id="preview" class="preview">

@@ -160,7 +160,7 @@ pub async fn refreshed_status(app: &AppHandle) -> Result<LicenseStatus, AppError
                     activation::CheckRequest {
                         activation_token: &record.activation_token,
                         device_id: &machine::device_id(),
-                        app_version: option_env!("APP_VERSION").unwrap_or("1.0.0"),
+                        app_version: option_env!("APP_VERSION").unwrap_or("1.1.0"),
                     },
                 )
                 .await
@@ -204,7 +204,7 @@ pub async fn activate_license(
 ) -> Result<LicenseStatus, AppError> {
     let verified = validate_code(email, code)?;
     let device = machine::device_id();
-    let version = option_env!("APP_VERSION").unwrap_or("1.0.0");
+    let version = option_env!("APP_VERSION").unwrap_or("1.1.0");
     let (token, expires, offline) = if online_activation_enabled() {
         if let Ok(server) = std::env::var("LICENSE_SERVER_URL") {
             let response = activation::activate(

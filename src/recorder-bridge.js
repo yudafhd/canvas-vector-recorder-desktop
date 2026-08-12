@@ -7,7 +7,7 @@
   var sessionId = String(w.__CVR_SESSION_TOKEN__ || '');
   if (!sessionId) return;
   var frameId = 'frame-' + Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
-  var sequence = 0, queue = [], stopped = false, recordingEnabled = true, flushTimer = null;
+  var sequence = 0, queue = [], stopped = false, recordingEnabled = w.__CVR_RECORDING_ENABLED__ !== false, flushTimer = null;
   var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), nextCanvas = 1, nextPath = 1;
   var MAX_BATCH = 100, FLUSH_MS = 150;
   function invoke(name, args) {
