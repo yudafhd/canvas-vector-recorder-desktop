@@ -123,6 +123,9 @@ test('activation screen hides workspace navigation and provides submit feedback'
   assert.match(index, /class="view activation-shell"/);
   assert.match(index, /label for="licenseEmail"/);
   assert.match(index, /label for="licenseCode"/);
+  assert.match(styles, /#activationView #activationForm label \{ display: flex; flex-direction: column; width: 100%;/);
+  assert.match(styles, /#activationView #activationForm input, #activationView #activationForm textarea \{ display: block; width: 100%;/);
+  assert.match(styles, /\.topbar \{[^}]*padding: 10px 20px;/);
   assert.match(main, /activationSubmit\.disabled = true/);
   assert.match(main, /activationSubmit\.textContent = 'Mengaktifkan…'/);
 });
