@@ -5,7 +5,10 @@ use crate::{
 };
 use serde::Serialize;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 use tauri::{AppHandle, Emitter, Manager, State};
+
+const MAHES_APP_URL: &str = "https://mahes.app";
 
 #[derive(Debug, Serialize)]
 pub struct StartRecording {
@@ -14,7 +17,11 @@ pub struct StartRecording {
 }
 
 #[tauri::command]
-pub fn start_recording(state: State<'_, AppState>) -> Result<StartRecording, AppError> {
+pub fn start_recording(
+    app: AppHandle,
+    state: State<'_, AppState>,
+) -> Result<StartRecording, AppError> {
+    license::require_valid(&app)?;
     let mut recorder = state.recorder.lock().map_err(|_| AppError::State)?;
     let session_id = recorder.start();
     Ok(StartRecording {
@@ -39,6 +46,7 @@ pub fn record_canvas_events(
     session_id: String,
     events: Vec<RecorderEvent>,
 ) -> Result<(), AppError> {
+    license::require_valid(&app)?;
     let mut recorder = state.recorder.lock().map_err(|_| AppError::State)?;
     recorder.record(&session_id, events)?;
     drop(recorder);
@@ -61,16 +69,20 @@ pub fn record_canvas_events(
 
 #[tauri::command]
 pub fn list_canvases(
+    app: AppHandle,
     state: State<'_, AppState>,
 ) -> Result<Vec<recorder::CanvasDetection>, AppError> {
+    license::require_valid(&app)?;
     Ok(state.recorder.lock().map_err(|_| AppError::State)?.list())
 }
 
 #[tauri::command]
 pub fn get_canvas_result(
+    app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
 ) -> Result<Option<recorder::canvas::CanvasResult>, AppError> {
+    license::require_valid(&app)?;
     Ok(state
         .recorder
         .lock()
@@ -92,20 +104,24 @@ fn canvas_or_error(
 
 #[tauri::command]
 pub fn generate_svg(
+    app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
     settings: Option<MicrostockSettings>,
 ) -> Result<serde_json::Value, AppError> {
+    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     Ok(recorder::svg::result(&data, &settings.unwrap_or_default()))
 }
 
 #[tauri::command]
 pub fn export_svg(
+    app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
     settings: Option<MicrostockSettings>,
 ) -> Result<String, AppError> {
+    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
     Ok(svg)
@@ -117,10 +133,12 @@ pub fn save_svg(
     state: State<'_, AppState>,
     canvas_id: String,
     settings: Option<MicrostockSettings>,
+    filename: Option<String>,
 ) -> Result<String, AppError> {
+    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
-    let filename = "vectorized-result.svg";
+    let filename = filename.as_deref().unwrap_or("vectorized-result.svg");
     let downloads = app
         .path()
         .download_dir()
@@ -179,47 +197,20 @@ fn unique_download_path(directory: &Path, filename: &str) -> PathBuf {
 }
 
 #[tauri::command]
-pub fn clear_recording(state: State<'_, AppState>) -> Result<(), AppError> {
+pub fn clear_recording(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
+    license::require_valid(&app)?;
     state.recorder.lock().map_err(|_| AppError::State)?.clear();
     Ok(())
 }
 
 #[tauri::command]
-pub fn clear_surfaces(state: State<'_, AppState>) -> Result<(), AppError> {
+pub fn clear_surfaces(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
+    license::require_valid(&app)?;
     state
         .recorder
         .lock()
         .map_err(|_| AppError::State)?
         .clear_surfaces();
-    Ok(())
-}
-
-#[tauri::command]
-pub fn get_recording_state(state: State<'_, AppState>) -> Result<bool, AppError> {
-    Ok(state
-        .recorder
-        .lock()
-        .map_err(|_| AppError::State)?
-        .recording_enabled)
-}
-
-#[tauri::command]
-pub fn set_recording(
-    app: AppHandle,
-    state: State<'_, AppState>,
-    enabled: bool,
-) -> Result<(), AppError> {
-    state
-        .recorder
-        .lock()
-        .map_err(|_| AppError::State)?
-        .recording_enabled = enabled;
-    let payload = if enabled { "true" } else { "false" };
-    for webview in target_webviews(&app) {
-        let _ = webview.eval(&format!(
-            "window.postMessage({{type:'cvr-set-recording', enabled:{payload}}}, '*')"
-        ));
-    }
     Ok(())
 }
 
@@ -230,6 +221,7 @@ pub fn open_target_url(
     session_id: String,
     url: String,
 ) -> Result<(), AppError> {
+    license::require_valid(&app)?;
     let parsed = url::Url::parse(&url).map_err(|_| AppError::InvalidUrl)?;
     if !matches!(parsed.scheme(), "http" | "https") {
         return Err(AppError::InvalidUrl);
@@ -260,11 +252,32 @@ pub fn open_target_url(
 }
 
 #[tauri::command]
+pub fn open_mahes_app(app: AppHandle) -> Result<(), AppError> {
+    license::require_valid(&app)?;
+
+    #[cfg(target_os = "macos")]
+    let result = Command::new("open").arg(MAHES_APP_URL).spawn();
+
+    #[cfg(target_os = "windows")]
+    let result = Command::new("cmd")
+        .args(["/C", "start", "", MAHES_APP_URL])
+        .spawn();
+
+    #[cfg(all(unix, not(target_os = "macos")))]
+    let result = Command::new("xdg-open").arg(MAHES_APP_URL).spawn();
+
+    result
+        .map(|_| ())
+        .map_err(|error| AppError::Window(format!("Unable to open mahes.app: {error}")))
+}
+
+#[tauri::command]
 pub fn open_target_tab(
     app: AppHandle,
     state: State<'_, AppState>,
     url: String,
 ) -> Result<(), AppError> {
+    license::require_valid(&app)?;
     target_platform::open_target_tab(app, state, url)
 }
 
@@ -403,6 +416,23 @@ pub fn close_target_tab(
     state: State<'_, AppState>,
     tab_id: String,
 ) -> Result<(), AppError> {
+    let (tab_exists, closes_last_tab) = {
+        let target = state.target.lock().map_err(|_| AppError::State)?;
+        (
+            target.tabs.iter().any(|tab| tab.id == tab_id),
+            target.tabs.len() == 1,
+        )
+    };
+    if !tab_exists {
+        return Err(AppError::NotFound("Tab target tidak ditemukan.".into()));
+    }
+    if closes_last_tab {
+        target_platform::close_target_views(&app)?;
+        *state.target.lock().map_err(|_| AppError::State)? = TargetState::default();
+        state.recorder.lock().map_err(|_| AppError::State)?.stop();
+        let _ = app.emit("target-closed", ());
+        return Ok(());
+    }
     target_platform::close_target_tab(app, state, tab_id)
 }
 
@@ -611,19 +641,13 @@ pub(crate) fn target_script(
     };
     let bridge = include_str!("../../src/recorder-bridge.js");
     let target_controls = include_str!("../../src/target-controls.js");
-    let recording_enabled = state
-        .recorder
-        .lock()
-        .map_err(|_| AppError::State)?
-        .recording_enabled;
     let target_mode = if cfg!(target_os = "windows") || cfg!(target_os = "macos") {
         "multi-window"
     } else {
         "tabbed-window"
     };
     Ok(format!(
-        "window.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode}; window.__CVR_RECORDING_ENABLED__ = {recording_enabled};\n{target_controls}\n{bridge}",
-        recording_enabled = if recording_enabled { "true" } else { "false" },
+        "window.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode};\n{target_controls}\n{bridge}",
         target_mode = serde_json::to_string(target_mode)
             .map_err(|e| AppError::InvalidEvent(e.to_string()))?
     ))
@@ -670,31 +694,19 @@ pub fn validate_license(
     email: String,
     license_code: String,
 ) -> Result<license::LicenseStatus, AppError> {
-    let verified = license::validate_code(&email, &license_code)?;
-    let _ = app;
-    Ok(license::LicenseStatus {
-        valid: true,
-        email: Some(verified.payload.email),
-        license_id: Some(verified.payload.license_id),
-        expires_at: Some(verified.payload.expires_at),
-        last_validated_at: None,
-        offline: false,
-        perpetual: false,
-        grace_remaining_days: None,
-        message: None,
-    })
+    license::validate_code(&app, &email, &license_code)
 }
 
 #[tauri::command]
-pub async fn activate_license(
+pub fn activate_license(
     app: AppHandle,
     email: String,
     license_code: String,
 ) -> Result<license::LicenseStatus, AppError> {
-    license::activate_license(&app, &email, &license_code).await
+    license::activate_license(&app, &email, &license_code)
 }
 
 #[tauri::command]
-pub async fn get_license_status(app: AppHandle) -> Result<license::LicenseStatus, AppError> {
-    license::refreshed_status(&app).await
+pub fn get_license_status(app: AppHandle) -> Result<license::LicenseStatus, AppError> {
+    license::status(&app)
 }

@@ -6,6 +6,27 @@
   var tabId = String(window.__CVR_TARGET_TAB_ID__ || '');
   var tabState = window.__CVR_TARGET_TABS__ || { active_id: tabId, tabs: [] };
   var multiWindowMode = window.__CVR_TARGET_MODE__ === 'multi-window';
+  var lucidePaths = {
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+    rotate: '<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>',
+    close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'
+  };
+
+  function icon(name) {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.innerHTML = lucidePaths[name] || '';
+    return svg;
+  }
 
   function invoke(name, args) {
     try {
@@ -79,7 +100,7 @@
     '.tab{display:flex;align-items:center;min-width:100px;max-width:200px;padding:0 4px 0 8px;border:1px solid #ffffff1f;border-bottom:0;border-radius:6px 6px 0 0;background:#20232c;color:#bfc3cb;cursor:pointer}' +
     '.tab.active{background:#2d313c;color:#fff;border-color:#ffffff30}' +
     '.tab:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #8be9fd;outline-offset:1px}' +
-    '.tab-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
+    '.tab-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.icon{display:block;width:15px;height:15px;flex:none}' +
     '.tab-close,.tab-reload{width:22px;min-width:22px;height:24px;padding:0;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;font:15px inherit}' +
     '.tab-close:hover,.tab-reload:hover,.new-tab:hover{background:#ffffff1c}' +
     '.new-tab{margin:0 0 0 2px;color:#d9dce3;font-size:19px}' +
@@ -87,7 +108,7 @@
     'button:hover{background:#ffffff20}button:disabled{opacity:.4;cursor:default}' +
     'form{display:flex;flex:1;min-width:0;gap:6px}input{height:32px;min-width:0;flex:1;padding:0 10px;border:1px solid #ffffff24;border-radius:6px;background:#101116;color:#f8f8f2;outline:none;font:inherit}input:focus{border-color:#8be9fd}.error{color:#ff8b8b;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
     '.dialog[hidden]{display:none}.dialog{position:fixed;inset:0;display:grid;place-items:start center;padding-top:52px;background:#0008}.dialog-card{display:flex;flex-direction:column;gap:12px;width:min(460px,calc(100vw - 32px));padding:18px;border:1px solid #ffffff26;border-radius:10px;background:#242732;box-shadow:0 12px 35px #0008}.dialog-title{font-size:15px;font-weight:600}.dialog-card label{display:flex;flex-direction:column;gap:6px;color:#d9dce3}.dialog-card input{width:100%;box-sizing:border-box;background:#101116}.dialog-actions{display:flex;justify-content:flex-end;gap:8px}.dialog-actions .primary{background:#087dcc;border-color:#087dcc}.dialog-actions .primary:hover{background:#0b91e6}.dialog-error{min-height:16px;color:#ff8b8b}' +
-    '</style><div class=\"chrome\"><div id=\"tabs\" class=\"tabs\" role=\"tablist\" aria-label=\"Target tabs\"><button id=\"new-tab\" class=\"new-tab\" type=\"button\" title=\"Tab baru\" aria-label=\"Tab baru\">+</button></div>' +
+    '</style><div class=\"chrome\"><div id=\"tabs\" class=\"tabs\" role=\"tablist\" aria-label=\"Target tabs\"><button id=\"new-tab\" class=\"new-tab\" type=\"button\" title=\"Tab baru\" aria-label=\"Tab baru\"></button></div>' +
     '' +
     '<div id=\"tab-dialog\" class=\"dialog\" hidden><form id=\"new-tab-form\" class=\"dialog-card\">' +
     '<div class=\"dialog-title\">Buka tab baru</div><label>URL<input id=\"new-tab-url\" type=\"url\" value=\"https://\" spellcheck=\"false\" autocomplete=\"off\"></label>' +
@@ -107,6 +128,7 @@
   var newTabUrl = shadow.getElementById('new-tab-url');
   var newTabError = shadow.getElementById('new-tab-error');
   var newTabButton = shadow.getElementById('new-tab');
+  newTabButton.appendChild(icon('plus'));
   var MAX_TABS = 5;
 
   function showError(message) { newTabError.textContent = message || ''; }
@@ -121,6 +143,7 @@
       tabButton.setAttribute('role', 'tab');
       tabButton.setAttribute('tabindex', '0');
       tabButton.setAttribute('aria-selected', String(tab.id === tabState.active_id));
+      tabButton.appendChild(icon('globe'));
       var label = document.createElement('span');
       label.className = 'tab-label';
       label.textContent = tab.title || tab.url;
@@ -129,7 +152,7 @@
       reload.type = 'button';
       reload.title = 'Muat ulang tab';
       reload.setAttribute('aria-label', 'Muat ulang tab');
-      reload.textContent = '↻';
+      reload.appendChild(icon('rotate'));
       reload.addEventListener('click', function (event) {
         event.stopPropagation();
         invoke('reload_target_tab', { tabId: tab.id }).catch(function (result) {
@@ -141,7 +164,7 @@
       close.type = 'button';
       close.title = 'Tutup tab';
       close.setAttribute('aria-label', 'Tutup tab');
-      close.textContent = '×';
+      close.appendChild(icon('close'));
       close.addEventListener('click', function (event) {
         event.stopPropagation();
         invoke('close_target_tab', { tabId: tab.id }).catch(function (result) {

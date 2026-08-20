@@ -19,7 +19,25 @@ npm run tauri:dev
 
 `npm run compile` memeriksa TypeScript. `npm run test` menjalankan compile frontend lalu `cargo test --manifest-path src-tauri/Cargo.toml`. Build installer lintas platform memakai `npm run tauri:build`; Tauri hanya menghasilkan target untuk environment/toolchain yang tersedia.
 
-Environment dibaca pada saat build Rust. Salin `.env.example` menjadi `.env` untuk dokumentasi lokal, lalu export variabelnya sebelum `npm run tauri:build`; jangan commit `.env` atau key.
+Environment dibaca pada saat build Rust. Salin `.env.example` menjadi `.env`; build Rust dan generator lisensi akan membacanya otomatis, sementara environment shell memiliki prioritas lebih tinggi. Jangan commit `.env` atau key. `LICENSE_PRODUCT_CODE` wajib diisi dan harus sama saat membuat token maupun build aplikasi, misalnya `LICENSE_PRODUCT_CODE=canvas-vector-recorder`.
+
+Saat startup, aplikasi menampilkan landing screen selama 2 detik sebelum memeriksa lisensi dan membuka activation screen atau workspace. UI menggunakan Plus Jakarta Sans variable font yang dibundel lokal di `src/assets/fonts`, sehingga tidak membutuhkan koneksi internet untuk memuat font.
+
+## Tauri updater
+
+Updater memakai key pair terpisah dari key lisensi Guardian. Public key updater
+disimpan di `src-tauri/tauri.conf.json`, sedangkan private key tidak boleh masuk
+repository. Untuk publish release, tambahkan GitHub Actions secrets berikut:
+
+- `TAURI_SIGNING_PRIVATE_KEY`: isi private key updater dari Bitwarden.
+- `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`: password private key updater.
+- `LICENSE_PUBLIC_KEY`: public key lisensi yang dipakai saat build.
+
+Workflow `.github/workflows/publish-desktop.yml` berjalan melalui `workflow_dispatch`
+atau push ke branch `release`. Workflow membuat artifact updater bertanda tangan
+dan GitHub Release yang dibaca aplikasi melalui `latest.json`. Naikkan versi di
+`package.json`, `src-tauri/Cargo.toml`, dan `src-tauri/tauri.conf.json` sebelum
+mempublish update berikutnya.
 
 ## Lisensi
 
@@ -27,14 +45,14 @@ Buat keypair offline di mesin pemilik/license server:
 
 ```sh
 npm run license:keygen
-npm run license:create -- --email customer@example.com --days 2 --private-key ./license-keys/private.pem
+npm run license:create -- --email customer@example.com --days 2 --perpetual --private-key ./license-keys/private.pem
 ```
 
-Tool menandatangani tepat payload-base64url yang diverifikasi Rust: `CVR1.<payload-base64url>.<signature-base64url>`. Untuk flow offline dua hari, buat kode dengan `--days 2`. Private key hanya berada di license server/offline operator. `license:keygen` mencetak nilai `LICENSE_PUBLIC_KEY=...`; gunakan nilai 32-byte Ed25519 base64url itu saat build. Release tanpa public key akan menolak lisensi, bukan bypass menjadi valid.
+Flow lisensi menggunakan crate `guardian-core` dari GitHub. Untuk subscription, ganti `--perpetual` dengan `--duration-days 365` atau `--years 1`. Tool menandatangani token `<LICENSE_PRODUCT_CODE>.<payload-base64url>.<signature-base64url>`; prefix berasal dari `LICENSE_PRODUCT_CODE` dan ikut diverifikasi dari signed payload. Token lama dengan prefix `SLC1` tetap dapat diverifikasi untuk kompatibilitas. `--days` adalah activation window; durasi subscription dimulai saat aktivasi pertama, bukan saat token diterbitkan. Private key hanya berada di license server/offline operator. `license:keygen` mencetak nilai `LICENSE_PUBLIC_KEY=...`; gunakan nilai 32-byte Ed25519 base64url itu saat build. Release tanpa public key akan menolak aktivasi, bukan bypass menjadi valid.
 
-Activation default sepenuhnya offline: Rust memverifikasi signature Ed25519, email, product, issued/expiry date, lalu menyimpan status lokal. `expires_at` adalah batas waktu kode untuk aktivasi; setelah aktivasi offline berhasil, entitlement menjadi lifetime pada perangkat yang sama. Device fingerprint berbasis identitas instalasi/hardware OS dibandingkan setiap aplikasi dibuka. Aplikasi mencoba OS keyring melalui crate `keyring`; bila backend keyring tidak tersedia, fallback menyimpan file app-data dengan permission `0600`. Fallback melindungi akses filesystem biasa tetapi tidak setara keyring/Stronghold, sehingga deployment produksi sebaiknya memastikan backend secure storage tersedia. Perubahan waktu mundur ditolak semampunya.
+Saat aktivasi, Guardian memverifikasi signature, schema, email, product, activation window, lalu menyimpan signed license code dan device binding ke `guardian-license.json` di app-data dengan permission `0600`. Pengecekan waktu aplikasi memakai endpoint HTTPS `time.now/developer/api/timezone/Asia/Jakarta` dan cache lima menit; endpoint ini mengembalikan waktu UTC tanpa API key. Jika endpoint tidak tersedia, aplikasi mempertahankan mode offline dengan cache atau waktu sistem dan tetap menerapkan pemeriksaan clock rollback. Setiap status check memverifikasi ulang token, menghitung ulang expiry dari payload, serta menolak device berbeda dan perubahan record lokal. Lifetime hanya dapat berasal dari payload bertanda tangan; tidak ada flag lokal yang dapat mengubah subscription menjadi lifetime. Command recorder, preview, dan export juga memanggil `require_valid` di Rust sehingga UI bukan satu-satunya enforcement point.
 
-`license-server/server.mjs` adalah mock development in-memory dan tidak diperlukan untuk mode offline. Jika ingin mengaktifkan validasi online opsional, set `LICENSE_OFFLINE_ONLY=false` dan `LICENSE_SERVER_URL`; server production harus memverifikasi signature, revocation, max devices, audit, rate limit, TLS, dan penyimpanan durable. Mode offline tidak dapat mencabut lisensi dari jarak jauh atau membatasi satu lisensi ke satu perangkat secara terpusat.
+`license-server/server.mjs` tetap menjadi mock development terpisah. Aktivasi lisensi tetap dilakukan offline melalui `LicenseManager::activate`, sedangkan aplikasi mengambil UTC dari Time.now ketika tersedia. Pencegahan replay lintas perangkat, revocation, dan max-device global memerlukan `ActivationAuthority`/service atomik sesuai dokumentasi Guardian dan belum diaktifkan oleh aplikasi ini.
 
 ## Testing dan fixture
 

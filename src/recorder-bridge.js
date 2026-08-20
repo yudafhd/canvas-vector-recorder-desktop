@@ -7,7 +7,7 @@
   var sessionId = String(w.__CVR_SESSION_TOKEN__ || '');
   if (!sessionId) return;
   var frameId = 'frame-' + Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
-  var sequence = 0, queue = [], stopped = false, recordingEnabled = w.__CVR_RECORDING_ENABLED__ !== false, flushTimer = null;
+  var sequence = 0, queue = [], stopped = false, flushTimer = null;
   var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), nextCanvas = 1, nextPath = 1;
   var MAX_BATCH = 100, FLUSH_MS = 150;
   function invoke(name, args) {
@@ -20,7 +20,7 @@
     if (queue.length) flush();
   }
   function emit(type, data) {
-    if (stopped || !recordingEnabled) return;
+    if (stopped) return;
     var event = Object.assign({ session_id: sessionId, frame_id: frameId, sequence: ++sequence, type: type }, data || {});
     queue.push(event);
     if (queue.length >= MAX_BATCH) flush();
@@ -140,5 +140,5 @@
   var P2D = w.Path2D;
   installPath(); installContext(); emit('session_start', {}); installCanvasDetection();
   w.__CVR_STOP_RECORDER__ = function () { if (stopped) return; emit('session_end', {}); stopped = true; if (flushTimer) clearTimeout(flushTimer); flush(); };
-  w.addEventListener('message', function (event) { if (event.source !== w || !event.data) return; if (event.data.type === 'cvr-stop') w.__CVR_STOP_RECORDER__(); if (event.data.type === 'cvr-set-recording') recordingEnabled = Boolean(event.data.enabled); });
+  w.addEventListener('message', function (event) { if (event.source !== w || !event.data) return; if (event.data.type === 'cvr-stop') w.__CVR_STOP_RECORDER__(); });
 }());

@@ -1,10 +1,10 @@
 [package]
 name = "canvas-vector-recorder-desktop"
-version = "1.1.0"
+version = "1.1.1"
 description = "Canvas Vector Recorder desktop application"
 authors = ["Canvas Vector Recorder"]
 edition = "2021"
-rust-version = "1.77"
+rust-version = "1.77.2"
 
 [lib]
 name = "canvas_vector_recorder_desktop_lib"
@@ -15,16 +15,13 @@ tauri-build = { version = "2.3", features = [] }
 
 [dependencies]
 tauri = { version = "2.6", features = ["unstable", "devtools"] }
+guardian-core = { git = "https://github.com/yudafhd/guardian-core", rev = "db6ba26a84447baff26fdcde195afbf1aeeb8e34" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde", "clock"] }
-base64 = "0.22"
-ed25519-dalek = { version = "2", features = ["rand_core"] }
-sha2 = "0.10"
-keyring = "3"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.13.4", default-features = false, features = ["blocking", "json", "rustls"] }
 url = "2"
 
 [profile.release]
@@ -33,3 +30,6 @@ codegen-units = 1
 lto = true
 opt-level = "s"
 strip = true
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"

@@ -10,20 +10,61 @@
 
 <body>
   <main id="app">
-    <section id="activationView" class="view card" hidden>
-      <h1>Aktivasi lisensi</h1>
-      <p class="muted">Masukkan email pembelian dan kode lisensi Anda.</p>
-      <form id="activationForm">
-        <label>Email<input id="licenseEmail" type="email" autocomplete="email" required></label>
-        <label>Kode lisensi<textarea id="licenseCode" rows="4" spellcheck="false" required></textarea></label>
-        <button class="primary" type="submit">Aktivasi</button>
-      </form>
-      <div id="activationStatus" class="status" role="status"></div>
-      <button id="copyError" class="link-button" type="button" hidden>Salin informasi error</button>
+    <section id="landingView" class="view landing-shell" aria-label="Memuat Canvas Vector Recorder">
+      <div class="landing-content">
+        <div class="landing-brand">
+          <div class="landing-brand-copy">
+            <strong class="landing-title">Canvas Vector Recorder</strong>
+            <span class="landing-caption">Menyiapkan workspace</span>
+          </div>
+        </div>
+        <div class="landing-loading">
+          <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
+          <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="activationView" class="view activation-shell" hidden>
+      <div class="activation-card">
+        <div class="activation-brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="presentation">
+              <path d="M7 23V9h18v14H7Z" />
+              <path d="m10 20 4-5 3 2 5-6" />
+              <circle cx="10" cy="20" r="1.4" />
+              <circle cx="14" cy="15" r="1.4" />
+              <circle cx="17" cy="17" r="1.4" />
+              <circle cx="22" cy="11" r="1.4" />
+            </svg>
+          </div>
+          <span class="eyebrow">CANVAS VECTOR RECORDER</span>
+        </div>
+        <div class="activation-copy">
+          <h1>Aktivasi lisensi</h1>
+          <p class="muted">Masukkan email pembelian dan kode lisensi untuk membuka workspace Anda.</p>
+        </div>
+        <form id="activationForm">
+          <label for="licenseEmail">Email pembelian
+            <input id="licenseEmail" type="email" autocomplete="email" placeholder="nama@contoh.com" required>
+          </label>
+          <label for="licenseCode">Kode lisensi
+            <textarea id="licenseCode" rows="4" spellcheck="false" placeholder="Tempel kode lisensi Anda di sini"
+              aria-describedby="licenseCodeHelp" required></textarea>
+          </label>
+          <p id="licenseCodeHelp" class="field-help activation-help">Kode lisensi diverifikasi secara lokal di perangkat
+            ini.</p>
+          <button class="primary activation-submit" type="submit">Aktivasi sekarang</button>
+        </form>
+        <div id="activationStatus" class="status" role="status" aria-live="polite"></div>
+        <button id="copyError" class="link-button" type="button" hidden>Salin informasi error</button>
+      </div>
     </section>
 
     <nav id="mainTabs" class="main-tabs" aria-label="Halaman utama" hidden>
-      <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">Recorder</button>
+      <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">
+        <i data-lucide="monitor-play" aria-hidden="true"></i><span>Recorder</span>
+      </button>
       <div id="targetMainTabs" class="target-main-tabs"></div>
     </nav>
 
@@ -42,12 +83,20 @@
           </div>
           <div>
             <h1>Canvas Vector Recorder</h1>
-            <p>Capture &amp; export canvas artwork ke SVG</p>
+            <p><a id="mahesLink" class="brand-link" href="https://mahes.app" target="_blank"
+                rel="noopener noreferrer">tools by
+                mahes.app</a>
+            </p>
           </div>
         </div>
         <div class="actions">
+          <button id="checkForUpdates" class="topbar-update" type="button" title="Periksa update" aria-label="Periksa update">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i><span>Update</span>
+          </button>
           <span id="licenseBadge" class="badge"></span>
-          <button id="recordToggle" class="record" type="button">● REC ON</button>
+          <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
+            aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span
+              class="theme-toggle-label">Dark mode</span></button>
         </div>
       </header>
 
@@ -58,8 +107,10 @@
             <div class="target-row">
               <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
               <button id="openTarget" class="primary" type="button" title="Buka window target"
-                aria-label="Buka window target">Buka</button>
-              <button id="closeTarget" type="button">Tutup</button>
+                aria-label="Buka window target"><i data-lucide="external-link"
+                  aria-hidden="true"></i><span>Buka</span></button>
+              <button id="closeTarget" type="button"><i data-lucide="x"
+                  aria-hidden="true"></i><span>Tutup</span></button>
             </div>
             <div id="workspaceStatus" class="status status-box" role="status">Siap.</div>
           </section>
@@ -68,10 +119,12 @@
 
           <section class="surfaces-section">
             <div class="surface-heading">
-              <h2 class="section-label">DETECTED SURFACES</h2>
+              <h2 class="section-label">DETECTED</h2>
               <div class="surface-actions">
-                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset">Refresh</button>
-                <button id="clearSurfacesButton" type="button" title="Hapus daftar Canvas">Clear</button>
+                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset"><i
+                    data-lucide="refresh-cw" aria-hidden="true"></i><span>Refresh</span></button>
+                <button id="clearSurfacesButton" type="button" title="Hapus daftar Canvas"><i data-lucide="trash-2"
+                    aria-hidden="true"></i><span>Clear</span></button>
               </div>
             </div>
             <div id="canvasList" class="canvas-list">
@@ -82,7 +135,8 @@
           <div class="panel-divider"></div>
 
           <details class="export-settings">
-            <summary>EXPORT SETTINGS</summary>
+            <summary><i data-lucide="settings-2" aria-hidden="true"></i><span>EXPORT SETTINGS</span><i
+                class="summary-chevron" data-lucide="chevron-down" aria-hidden="true"></i></summary>
             <div class="settings-body">
               <form id="exportSettingsForm">
                 <label>Rasio<select id="ratio">
@@ -105,6 +159,14 @@
                 <p id="ratioHelp" class="field-help">Source mempertahankan perbandingan Canvas asli.</p>
                 <div class="row"><label>Min MP<input id="minPixels" type="number" min="1" value="15"></label><label>Max
                     MP<input id="maxPixels" type="number" min="1" value="65"></label></div>
+                <div class="artwork-scale-setting" aria-label="Atur ukuran aset">
+                  <div class="artwork-scale-setting-header">
+                    <span>Atur ukuran aset</span>
+                    <output id="artworkScaleValue" aria-live="polite">100%</output>
+                  </div>
+                  <input id="artworkScaleSlider" type="range" min="0.5" max="3" step="0.1" value="1"
+                    aria-label="Atur ukuran aset">
+                </div>
                 <div class="background-settings">
                   <label class="check-label"><input id="transparentBackground" type="checkbox"> Background
                     transparan</label>
@@ -120,26 +182,52 @@
         <section class="panel preview-panel">
           <header class="preview-header">
             <h2 id="previewTitle">Rendered Preview</h2>
-            <div class="artwork-scale-control" aria-label="Atur skala artwork">
-              <button id="artworkScaleDown" type="button" title="Perkecil artwork"
-                aria-label="Perkecil artwork">−</button>
-              <span id="artworkScaleValue" aria-live="polite">100%</span>
-              <button id="artworkScaleUp" type="button" title="Perbesar artwork"
-                aria-label="Perbesar artwork">+</button>
+            <div class="preview-tools" aria-label="Kontrol preview">
+              <div class="preview-tool-group preview-zoom-control" aria-label="Zoom canvas">
+                <span class="preview-tool-label">Zoom canvas</span>
+                <div class="preview-tool-row">
+                  <input id="previewZoomSlider" type="range" min="0.5" max="3" step="0.1" value="1"
+                    aria-label="Zoom canvas">
+                  <output id="previewZoomValue" class="preview-tool-value" aria-live="polite">100%</output>
+                </div>
+              </div>
             </div>
           </header>
           <div id="preview" class="preview">
-            <p class="muted">Preview akan tampil setelah canvas direkam.</p>
+            <div id="previewStage" class="preview-stage">
+              <p class="muted">Preview akan tampil setelah canvas direkam.</p>
+            </div>
           </div>
           <footer class="preview-footer">
-            <div class="preview-file"><strong id="previewFilename"></strong></div>
-            <div class="stats">
+            <div class="preview-file">
+              <div class="preview-file-row">
+                <strong id="previewFilename"></strong>
+                <button id="editFilename" class="icon-button preview-file-edit" type="button" disabled
+                  aria-label="Edit nama file" title="Edit nama file">
+                  <i data-lucide="pencil" aria-hidden="true"></i>
+                </button>
+              </div>
+              <form id="previewFilenameEditor" class="preview-file-editor" hidden>
+                <input id="previewFilenameInput" type="text" aria-label="Nama file SVG" autocomplete="off"
+                  spellcheck="false">
+                <button class="primary icon-button" type="submit" aria-label="Simpan nama file"
+                  title="Simpan nama file">
+                  <i data-lucide="check" aria-hidden="true"></i>
+                </button>
+                <button id="cancelFilename" class="icon-button" type="button" aria-label="Batal edit nama file"
+                  title="Batal edit nama file">
+                  <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+              </form>
+            </div>
+            <div class="stats" aria-label="Ringkasan hasil">
               <div><strong id="shapeCount">—</strong><span>shapes</span></div>
               <div><strong id="gapCount">—</strong><span>gaps</span></div>
               <div><strong id="errorCount">—</strong><span>errors</span></div>
               <div><strong id="artboardSize">—</strong><span>artboard</span></div>
             </div>
-            <button id="exportSvg" class="primary download-button" type="button" disabled>⇩&nbsp; Download SVG</button>
+            <button id="exportSvg" class="primary download-button" type="button" disabled><i data-lucide="download"
+                aria-hidden="true"></i><span>Download SVG</span></button>
           </footer>
         </section>
       </div>
@@ -149,7 +237,8 @@
       <div class="target-main-panel">
         <div class="target-main-toolbar">
           <strong id="targetMainTitle">Target</strong>
-          <button id="closeTargetMainTab" type="button">Tutup tab</button>
+          <button id="closeTargetMainTab" type="button"><i data-lucide="x" aria-hidden="true"></i><span>Tutup
+              tab</span></button>
         </div>
         <iframe id="targetFrame" title="Target page" referrerpolicy="no-referrer"></iframe>
       </div>

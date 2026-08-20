@@ -32,7 +32,6 @@ pub struct CanvasDetection {
 pub struct RecorderStore {
     pub active_session: Option<String>,
     pub sessions: HashMap<String, SessionState>,
-    pub recording_enabled: bool,
 }
 #[derive(Debug)]
 pub struct SessionState {
@@ -59,7 +58,6 @@ impl RecorderStore {
             },
         );
         self.active_session = Some(id.clone());
-        self.recording_enabled = true;
         id
     }
     pub fn stop(&mut self) {

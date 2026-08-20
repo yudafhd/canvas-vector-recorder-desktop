@@ -2,7 +2,7 @@
 
 ## `POST /v1/activate`
 
-Request: `{ "email": "customer@example.com", "license_code": "CVR1...", "device_id": "sha256...", "app_version": "1.0.0" }`
+Request: `{ "email": "customer@example.com", "license_code": "product-code.<payload>.<signature>", "device_id": "sha256...", "app_version": "1.0.0" }`
 
 Success: `{ "ok": true, "activation_token": "signed-server-token", "expires_at": "2026-09-03T00:00:00Z", "next_check_at": "2026-08-10T00:00:00Z" }`.
 

@@ -1,6 +1,6 @@
 {
   "name": "canvas-vector-recorder-desktop",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,7 +17,9 @@
     "license:create": "node tools/license-create.mjs"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.7.0"
+    "@tauri-apps/api": "^2.7.0",
+    "@tauri-apps/plugin-updater": "^2.10.1",
+    "lucide": "^1.33.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.7.0",

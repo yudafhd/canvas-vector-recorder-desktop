@@ -1,10 +1,56 @@
 import './styles.css';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
+import { check } from '@tauri-apps/plugin-updater';
+import {
+  Check,
+  Download,
+  ExternalLink,
+  Globe,
+  Moon,
+  MonitorPlay,
+  Pencil,
+  Plus,
+  RefreshCw,
+  RotateCw,
+  Settings2,
+  Sun,
+  Trash2,
+  X,
+  createIcons,
+} from 'lucide';
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
+const lucideIcons = { Check, Download, ExternalLink, Globe, Moon, MonitorPlay, Pencil, Plus, RefreshCw, RotateCw, Settings2, Sun, Trash2, X };
+
+function iconPlaceholder(name: string): HTMLElement {
+  const element = document.createElement('i');
+  element.dataset.lucide = name;
+  element.setAttribute('aria-hidden', 'true');
+  return element;
+}
+
+function renderIcons(root: Element | Document | DocumentFragment = document): void {
+  createIcons({ icons: lucideIcons, root });
+}
+
+function setIconButtonContent(button: HTMLButtonElement, icon: string, label: string): void {
+  button.replaceChildren(iconPlaceholder(icon), document.createElement('span'));
+  button.lastElementChild!.textContent = label;
+  renderIcons(button);
+}
+
+function handleRefreshShortcut(event: KeyboardEvent): void {
+  if (event.key.toLowerCase() !== 'r' || event.altKey || event.shiftKey) return;
+  if (!event.metaKey && !event.ctrlKey) return;
+  event.preventDefault();
+  event.stopPropagation();
+  window.location.reload();
+}
+
+const landingView = $('landingView');
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
@@ -21,7 +67,6 @@ const canvasList = $('canvasList');
 let currentSession: string | null = null;
 let selectedCanvas: string | null = null;
 let lastSvg: SvgResult | null = null;
-let recordingEnabled = true;
 let targetOpen = false;
 const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
@@ -36,9 +81,13 @@ const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
 let previewUrl: string | null = null;
 let previewRequest = 0;
+let previewFilenameCanvasId: string | null = null;
+let previewFilenameOverride: string | null = null;
+let filenameOverrides: Record<string, string> = {};
 const ARTWORK_SCALE_MIN = 0.5;
 const ARTWORK_SCALE_MAX = 3;
-const ARTWORK_SCALE_STEP = 0.1;
+const PREVIEW_ZOOM_MIN = 0.5;
+const PREVIEW_ZOOM_MAX = 3;
 const SETTINGS_STORAGE_KEY = 'canvas-vector-recorder.settings.v1';
 const RATIO_PRESETS = new Set(['source', '1:1', '4:5', '4:3', '3:2', '2:3', '16:9']);
 const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }> = {
@@ -50,7 +99,22 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
   '16:9': { width: 16, height: 9 },
 };
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
+const LANDING_DURATION_MS = 2_000;
+const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
 let artworkScale = 1;
+let previewZoom = 1;
+let previewPanX = 0;
+let previewPanY = 0;
+let darkMode = false;
+
+interface PreviewPointer {
+  x: number;
+  y: number;
+}
+
+const previewPointers = new Map<number, PreviewPointer>();
+let previewPanStart: { x: number; y: number; panX: number; panY: number } | null = null;
+let previewPinchStart: { distance: number; centerX: number; centerY: number; zoom: number; panX: number; panY: number } | null = null;
 
 interface PersistedSettings {
   ratio: string;
@@ -62,20 +126,42 @@ interface PersistedSettings {
   transparentBackground: boolean;
   artworkScale: number;
   targetUrl: string;
-  recordingEnabled: boolean;
+  filenameOverrides: Record<string, string>;
 }
 
 function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
   if (targetOpen) {
-    button.textContent = 'Buka tab baru';
+    setIconButtonContent(button, 'plus', 'Buka tab baru');
     button.title = 'Buka URL sebagai tab target baru.';
     button.setAttribute('aria-label', 'Buka tab target baru');
   } else {
-    button.textContent = 'Buka';
+    setIconButtonContent(button, 'external-link', 'Buka');
     button.title = 'Buka window target';
     button.setAttribute('aria-label', 'Buka window target');
   }
+}
+
+function applyTheme(dark: boolean): void {
+  darkMode = dark;
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  const button = $<HTMLButtonElement>('themeToggle');
+  const label = dark ? 'Aktifkan light mode' : 'Aktifkan dark mode';
+  setIconButtonContent(button, dark ? 'sun' : 'moon', label);
+  button.lastElementChild?.classList.add('theme-toggle-label');
+  button.title = label;
+  button.setAttribute('aria-label', label);
+  button.setAttribute('aria-pressed', String(dark));
+}
+
+function loadTheme(): void {
+  let storedTheme = '';
+  try { storedTheme = localStorage.getItem(THEME_STORAGE_KEY) || ''; } catch (_) { /* Storage may be disabled by the host. */ }
+  applyTheme(storedTheme === 'dark');
+}
+
+function persistTheme(): void {
+  try { localStorage.setItem(THEME_STORAGE_KEY, darkMode ? 'dark' : 'light'); } catch (_) { /* Storage may be disabled by the host. */ }
 }
 
 function renderTargetTabs(state: TargetTabsState): void {
@@ -91,7 +177,9 @@ function renderTargetTabs(state: TargetTabsState): void {
     button.className = `main-tab target-main-tab${activeMainTab === 'target' && tab.id === activeTargetId ? ' active' : ''}`;
     button.type = 'button';
     button.dataset.targetId = tab.id;
-    button.textContent = tab.title || tab.url || 'Target';
+    button.append(iconPlaceholder('globe'), document.createElement('span'));
+    button.lastElementChild!.textContent = tab.title || tab.url || 'Target';
+    renderIcons(button);
     button.title = tab.url;
     button.setAttribute('aria-selected', String(activeMainTab === 'target' && tab.id === activeTargetId));
     button.addEventListener('click', () => {
@@ -102,7 +190,8 @@ function renderTargetTabs(state: TargetTabsState): void {
     const reload = document.createElement('button');
     reload.className = 'target-tab-reload';
     reload.type = 'button';
-    reload.textContent = '↻';
+    reload.appendChild(iconPlaceholder('rotate-cw'));
+    renderIcons(reload);
     reload.title = 'Muat ulang target';
     reload.setAttribute('aria-label', `Muat ulang ${tab.title || 'target'}`);
     reload.addEventListener('click', event => {
@@ -112,7 +201,8 @@ function renderTargetTabs(state: TargetTabsState): void {
     const close = document.createElement('button');
     close.className = 'target-tab-close';
     close.type = 'button';
-    close.textContent = '×';
+    close.appendChild(iconPlaceholder('x'));
+    renderIcons(close);
     close.title = 'Tutup target';
     close.setAttribute('aria-label', `Tutup ${tab.title || 'target'}`);
     close.addEventListener('click', event => {
@@ -183,6 +273,57 @@ function errorMessage(error: unknown): string {
   return String(error);
 }
 
+let updateInProgress = false;
+
+async function checkForUpdates(): Promise<void> {
+  if (updateInProgress) return;
+  const button = $<HTMLButtonElement>('checkForUpdates');
+  updateInProgress = true;
+  button.disabled = true;
+  button.classList.add('is-loading');
+  setIconButtonContent(button, 'refresh-cw', 'Memeriksa…');
+  try {
+    status(workspaceStatus, 'Memeriksa update…');
+    const update = await check({ timeout: 15_000 });
+    if (!update) {
+      status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
+      return;
+    }
+
+    const notes = update.body?.trim();
+    const summary = notes ? `\n\nCatatan:\n${notes.slice(0, 500)}` : '';
+    if (!window.confirm(`Update ${update.version} tersedia.${summary}\n\nInstall sekarang?`)) {
+      status(workspaceStatus, 'Update tersedia, tetapi belum diinstal.');
+      return;
+    }
+
+    let downloadedBytes = 0;
+    await update.downloadAndInstall(event => {
+      if (event.event === 'Started') {
+        downloadedBytes = 0;
+        status(workspaceStatus, 'Menyiapkan download update…');
+      } else if (event.event === 'Progress') {
+        downloadedBytes += event.data.chunkLength;
+        status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`);
+      } else if (event.event === 'Finished') {
+        status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
+      }
+    });
+  } catch (error) {
+    const message = errorMessage(error);
+    if (/valid release JSON|latest\.json|release/i.test(message)) {
+      status(workspaceStatus, 'Belum ada release updater yang dipublish di GitHub.', 'idle');
+    } else {
+      status(workspaceStatus, `Gagal memeriksa update: ${message}`, 'error');
+    }
+  } finally {
+    updateInProgress = false;
+    button.disabled = false;
+    button.classList.remove('is-loading');
+    setIconButtonContent(button, 'refresh-cw', 'Update');
+  }
+}
+
 function showDownloadToast(message: string): void {
   const toast = $('downloadToast');
   toast.textContent = message;
@@ -236,8 +377,7 @@ function updateRatioControls(): void {
     ? { width: $<HTMLInputElement>('customRatioWidth').value, height: $<HTMLInputElement>('customRatioHeight').value }
     : PRESET_RATIO_DIMENSIONS[$<HTMLSelectElement>('ratio').value] || sourceRatioDimensions();
   $('ratioHelp').textContent = custom
-    ? 'Masukkan dua bilangan bulat positif, misalnya 7 : 5. Rasio output akan dipertahankan exact.'
-    : `Rasio ${dimensions.width} : ${dimensions.height}. Ubah salah satu nilai untuk beralih ke Custom.`;
+    ? '' : `Rasio ${dimensions.width} : ${dimensions.height}. Ubah salah satu nilai untuk beralih ke Custom.`;
 }
 
 function ratioDimensions(width: number, height: number): { width: number; height: number } {
@@ -278,7 +418,7 @@ function persistedSettings(): PersistedSettings {
     transparentBackground: $<HTMLInputElement>('transparentBackground').checked,
     artworkScale,
     targetUrl: $<HTMLInputElement>('targetUrl').value,
-    recordingEnabled,
+    filenameOverrides: { ...filenameOverrides },
   };
 }
 
@@ -317,25 +457,145 @@ function loadPersistedSettings(): void {
     artworkScale = Math.round(Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, stored.artworkScale)) * 100) / 100;
   }
   if (typeof stored.targetUrl === 'string') $<HTMLInputElement>('targetUrl').value = stored.targetUrl;
-  if (typeof stored.recordingEnabled === 'boolean') recordingEnabled = stored.recordingEnabled;
+  filenameOverrides = {};
+  if (stored.filenameOverrides && typeof stored.filenameOverrides === 'object') {
+    Object.entries(stored.filenameOverrides).forEach(([canvasId, filename]) => {
+      const normalized = typeof filename === 'string' ? normalizedFilename(filename) : null;
+      if (normalized) filenameOverrides[canvasId] = normalized;
+    });
+  }
   syncRatioInputsFromSelection();
   updateRatioControls();
   syncBackgroundControls();
   updateArtworkScaleControl();
-  const recordButton = $<HTMLButtonElement>('recordToggle');
-  recordButton.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF';
-  recordButton.classList.toggle('off', !recordingEnabled);
+  updatePreviewZoomControl();
+}
+
+function updatePreviewZoomControl(): void {
+  const value = $<HTMLOutputElement>('previewZoomValue');
+  value.textContent = `${Math.round(previewZoom * 100)}%`;
+  $<HTMLInputElement>('previewZoomSlider').value = String(previewZoom);
+  const image = $('previewStage').querySelector<HTMLImageElement>('img');
+  if (image) image.style.transform = `translate3d(${previewPanX}px, ${previewPanY}px, 0) scale(${previewZoom})`;
+}
+
+function setPreviewZoomValue(value: number): void {
+  const next = Math.min(PREVIEW_ZOOM_MAX, Math.max(PREVIEW_ZOOM_MIN, value));
+  previewZoom = Math.round(next * 100) / 100;
+  updatePreviewZoomControl();
+}
+
+function normalizedFilename(value: string): string | null {
+  const trimmed = value.trim().split(/[\\/]/).pop()?.trim() || '';
+  const safe = trimmed.replace(/[\u0000-\u001f<>:"/\\|?*]/g, '_');
+  if (!safe || safe === '.' || safe === '..') return null;
+  return /\.svg$/i.test(safe) ? safe : `${safe}.svg`;
+}
+
+function displayedFilename(): string {
+  return previewFilenameOverride || lastSvg?.filename || '';
+}
+
+function updateFilenameDisplay(): void {
+  const filename = displayedFilename();
+  $('previewFilename').textContent = filename;
+  const editButton = $<HTMLButtonElement>('editFilename');
+  editButton.disabled = !filename;
+  editButton.hidden = false;
+}
+
+function closeFilenameEditor(): void {
+  const editor = $<HTMLFormElement>('previewFilenameEditor');
+  editor.hidden = true;
+  $<HTMLButtonElement>('editFilename').hidden = false;
+}
+
+function openFilenameEditor(): void {
+  const filename = displayedFilename();
+  if (!filename) return;
+  const editor = $<HTMLFormElement>('previewFilenameEditor');
+  const input = $<HTMLInputElement>('previewFilenameInput');
+  input.value = filename;
+  editor.hidden = false;
+  $<HTMLButtonElement>('editFilename').hidden = true;
+  input.focus();
+  input.select();
+}
+
+function commitFilenameEdit(): void {
+  const filename = normalizedFilename($<HTMLInputElement>('previewFilenameInput').value);
+  if (!filename) {
+    status(workspaceStatus, 'Nama file tidak boleh kosong.', 'error');
+    return;
+  }
+  previewFilenameOverride = filename;
+  if (previewFilenameCanvasId) filenameOverrides[previewFilenameCanvasId] = filename;
+  if (lastSvg) lastSvg = { ...lastSvg, filename };
+  persistSettingsSilently();
+  updateFilenameDisplay();
+  closeFilenameEditor();
+  status(workspaceStatus, `Nama file diubah menjadi ${filename}.`, 'success');
+}
+
+function pointerDistance(first: PreviewPointer, second: PreviewPointer): number {
+  return Math.hypot(second.x - first.x, second.y - first.y);
+}
+
+function pointerCenter(first: PreviewPointer, second: PreviewPointer): { x: number; y: number } {
+  return { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 };
+}
+
+function startPreviewGesture(): void {
+  const pointers = Array.from(previewPointers.values());
+  if (pointers.length === 1) {
+    const [pointer] = pointers;
+    previewPanStart = { x: pointer.x, y: pointer.y, panX: previewPanX, panY: previewPanY };
+    previewPinchStart = null;
+  } else if (pointers.length >= 2) {
+    const [first, second] = pointers;
+    const center = pointerCenter(first, second);
+    previewPinchStart = {
+      distance: Math.max(1, pointerDistance(first, second)),
+      centerX: center.x,
+      centerY: center.y,
+      zoom: previewZoom,
+      panX: previewPanX,
+      panY: previewPanY,
+    };
+    previewPanStart = null;
+  }
+}
+
+function updatePreviewGesture(): void {
+  const pointers = Array.from(previewPointers.values());
+  if (pointers.length >= 2 && previewPinchStart) {
+    const [first, second] = pointers;
+    const center = pointerCenter(first, second);
+    const distance = Math.max(1, pointerDistance(first, second));
+    const nextZoom = Math.min(PREVIEW_ZOOM_MAX, Math.max(PREVIEW_ZOOM_MIN, previewPinchStart.zoom * distance / previewPinchStart.distance));
+    previewZoom = Math.round(nextZoom * 100) / 100;
+    previewPanX = previewPinchStart.panX + center.x - previewPinchStart.centerX;
+    previewPanY = previewPinchStart.panY + center.y - previewPinchStart.centerY;
+    updatePreviewZoomControl();
+    return;
+  }
+  if (pointers.length === 1 && previewPanStart) {
+    const [pointer] = pointers;
+    previewPanX = previewPanStart.panX + pointer.x - previewPanStart.x;
+    previewPanY = previewPanStart.panY + pointer.y - previewPanStart.y;
+    updatePreviewZoomControl();
+  }
 }
 
 function updateArtworkScaleControl(): void {
-  const value = $<HTMLSpanElement>('artworkScaleValue');
+  const value = $<HTMLOutputElement>('artworkScaleValue');
   value.textContent = `${Math.round(artworkScale * 100)}%`;
-  $<HTMLButtonElement>('artworkScaleDown').disabled = artworkScale <= ARTWORK_SCALE_MIN;
-  $<HTMLButtonElement>('artworkScaleUp').disabled = artworkScale >= ARTWORK_SCALE_MAX;
+  $<HTMLInputElement>('artworkScaleSlider').value = String(artworkScale);
 }
 
-function setArtworkScale(delta: number): void {
-  const next = Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, artworkScale + delta));
+function setArtworkScaleValue(value: number): void {
+  const next = Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, value));
+  if (Math.round(next * 100) / 100 === artworkScale) return;
   artworkScale = Math.round(next * 100) / 100;
   persistSettingsSilently();
   updateArtworkScaleControl();
@@ -356,7 +616,7 @@ function thumbnailKey(item: CanvasDetection): string {
 function renderLicense(s: LicenseStatus): void {
   const badge = $('licenseBadge');
   badge.textContent = s.perpetual
-    ? 'Lisensi aktif selamanya'
+    ? s.email || 'Lisensi aktif'
     : s.expires_at
       ? `Lisensi aktif sampai ${new Date(s.expires_at).toLocaleDateString()}`
       : 'Lisensi belum aktif';
@@ -404,7 +664,16 @@ function renderCanvases(items: CanvasDetection[]): void {
   const generation = ++thumbnailGeneration;
   canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : '<span>Memuat thumbnail…</span>'}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
   canvasList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
-    selectedCanvas = item.dataset.canvas || null; renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+    const nextCanvas = item.dataset.canvas || null;
+    if (nextCanvas !== selectedCanvas) {
+      selectedCanvas = nextCanvas;
+      lastSvg = null;
+      previewFilenameCanvasId = nextCanvas;
+      previewFilenameOverride = nextCanvas ? filenameOverrides[nextCanvas] || null : null;
+      closeFilenameEditor();
+      updateFilenameDisplay();
+    }
+    renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
   void loadThumbnails(filtered, generation);
 }
@@ -434,10 +703,20 @@ function resetDetectedSurfaces(): void {
   if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
   selectedCanvas = null;
   lastSvg = null;
+  previewFilenameCanvasId = null;
+  previewFilenameOverride = null;
   detectedAssets = [];
-  $('preview').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
+  previewZoom = 1;
+  previewPanX = 0;
+  previewPanY = 0;
+  previewPointers.clear();
+  previewPanStart = null;
+  previewPinchStart = null;
+  $('previewStage').innerHTML = '<p class="muted">Preview akan tampil setelah canvas direkam.</p>';
+  updatePreviewZoomControl();
   $('previewTitle').textContent = 'Rendered Preview';
-  $('previewFilename').textContent = '';
+  closeFilenameEditor();
+  updateFilenameDisplay();
   $('shapeCount').textContent = '—'; $('gapCount').textContent = '—'; $('errorCount').textContent = '—'; $('artboardSize').textContent = '—';
   $('exportSvg').setAttribute('disabled', 'true');
 }
@@ -448,13 +727,19 @@ async function refreshPreview(): Promise<void> {
   const request = ++previewRequest;
   const result = await invoke<SvgResult>('generate_svg', { canvasId, settings: settings() });
   if (request !== previewRequest || selectedCanvas !== canvasId) return;
-  lastSvg = result;
+  if (previewFilenameCanvasId !== canvasId) {
+    previewFilenameCanvasId = canvasId;
+    previewFilenameOverride = filenameOverrides[canvasId] || null;
+  }
+  const filename = previewFilenameOverride || result.filename;
+  lastSvg = { ...result, filename };
   const blob = new Blob([result.svg], { type: 'image/svg+xml' });
   const url = URL.createObjectURL(blob);
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewUrl = url;
-  $('preview').innerHTML = `<img src="${url}" alt="SVG preview">`;
-  $('previewTitle').textContent = 'Preview SVG'; $('previewFilename').textContent = result.filename;
+  $('previewStage').innerHTML = `<img src="${url}" alt="SVG preview">`;
+  updatePreviewZoomControl();
+  $('previewTitle').textContent = 'Preview SVG'; updateFilenameDisplay();
   $('shapeCount').textContent = String(result.stats.shapes); $('gapCount').textContent = String(result.stats.gap_fillers); $('errorCount').textContent = String(result.stats.errors);
   $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
   $('exportSvg').removeAttribute('disabled');
@@ -473,7 +758,6 @@ async function openTarget(): Promise<void> {
   await invoke('clear_recording');
   const started = await invoke<StartRecordingResult>('start_recording');
   currentSession = started.session_id;
-  await invoke('set_recording', { enabled: recordingEnabled });
   await invoke('open_target_url', { url, sessionId: currentSession });
   targetOpen = true;
   if (isMac) setMainTab('target');
@@ -481,6 +765,10 @@ async function openTarget(): Promise<void> {
   updateOpenTargetButton();
   selectedCanvas = null;
   lastSvg = null;
+  previewFilenameCanvasId = null;
+  previewFilenameOverride = null;
+  closeFilenameEditor();
+  updateFilenameDisplay();
   await refreshCanvases();
   status(workspaceStatus, 'Perekam aktif di background.', 'success');
 }
@@ -494,17 +782,23 @@ async function closeTarget(): Promise<void> {
   updateOpenTargetButton();
   currentSession = null;
   resetDetectedSurfaces();
-  status(workspaceStatus, 'Target ditutup. Detected surfaces direset.');
+  status(workspaceStatus, 'Target ditutup. Detected direset.');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderIcons();
+  window.addEventListener('keydown', handleRefreshShortcut);
+  loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
   mainTabs.hidden = !(isWindows || isMac);
   if (isWindows || isMac) setMainTab('recorder');
-  void invoke('set_recording', { enabled: recordingEnabled }).catch(() => undefined);
-  $('activationForm').addEventListener('submit', async event => {
+  const activationForm = $<HTMLFormElement>('activationForm');
+  const activationSubmit = activationForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+  activationForm.addEventListener('submit', async event => {
     event.preventDefault(); copyError.hidden = true; const email = normalizedEmail($<HTMLInputElement>('licenseEmail').value); const code = $<HTMLTextAreaElement>('licenseCode').value.trim();
+    activationForm.setAttribute('aria-busy', 'true');
+    if (activationSubmit) { activationSubmit.disabled = true; activationSubmit.classList.add('is-loading'); activationSubmit.textContent = 'Mengaktifkan…'; }
     status(activationStatus, 'Memvalidasi dan mengaktifkan perangkat…');
     try {
       const activated = await activateLicense(email, code);
@@ -512,8 +806,18 @@ document.addEventListener('DOMContentLoaded', () => {
       renderLicense(activated);
     }
     catch (error) { const message = errorMessage(error); status(activationStatus, message, 'error'); copyError.hidden = false; copyError.onclick = () => navigator.clipboard.writeText(message); }
+    finally { activationForm.removeAttribute('aria-busy'); if (activationSubmit) { activationSubmit.disabled = false; activationSubmit.classList.remove('is-loading'); activationSubmit.textContent = 'Aktivasi sekarang'; } }
   });
   recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
+  $('themeToggle').addEventListener('click', () => {
+    applyTheme(!darkMode);
+    persistTheme();
+  });
+  $('checkForUpdates').addEventListener('click', () => { void checkForUpdates(); });
+  $('mahesLink').addEventListener('click', event => {
+    event.preventDefault();
+    void invoke('open_mahes_app').catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+  });
   closeTargetMainTab.addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   window.addEventListener('resize', syncTargetViewBounds);
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
@@ -545,17 +849,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     $(id).addEventListener('change', () => { syncBackgroundControls(); persistSettingsSilently(); });
   });
-  $('artworkScaleDown').addEventListener('click', () => setArtworkScale(-ARTWORK_SCALE_STEP));
-  $('artworkScaleUp').addEventListener('click', () => setArtworkScale(ARTWORK_SCALE_STEP));
-  $('targetUrl').addEventListener('input', () => persistSettingsSilently());
-  $('recordToggle').addEventListener('click', async () => {
-    recordingEnabled = !recordingEnabled;
-    const button = $<HTMLButtonElement>('recordToggle');
-    button.textContent = recordingEnabled ? '● REC ON' : '○ REC OFF';
-    button.classList.toggle('off', !recordingEnabled);
-    persistSettingsSilently();
-    await invoke('set_recording', { enabled: recordingEnabled });
+  $('previewZoomSlider').addEventListener('input', event => {
+    setPreviewZoomValue(Number((event.currentTarget as HTMLInputElement).value));
   });
+  $('editFilename').addEventListener('click', openFilenameEditor);
+  $('previewFilenameEditor').addEventListener('submit', event => {
+    event.preventDefault();
+    commitFilenameEdit();
+  });
+  $('cancelFilename').addEventListener('click', closeFilenameEditor);
+  const previewStage = $('previewStage');
+  previewStage.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    previewStage.setPointerCapture(event.pointerId);
+    previewPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    startPreviewGesture();
+    previewStage.classList.add('is-interacting');
+  });
+  previewStage.addEventListener('pointermove', event => {
+    if (!previewPointers.has(event.pointerId)) return;
+    event.preventDefault();
+    previewPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    updatePreviewGesture();
+  });
+  const endPreviewPointer = (event: PointerEvent) => {
+    previewPointers.delete(event.pointerId);
+    if (previewStage.hasPointerCapture(event.pointerId)) previewStage.releasePointerCapture(event.pointerId);
+    if (previewPointers.size === 1) startPreviewGesture();
+    else if (previewPointers.size === 0) {
+      previewPanStart = null;
+      previewPinchStart = null;
+      previewStage.classList.remove('is-interacting');
+    }
+  };
+  previewStage.addEventListener('pointerup', endPreviewPointer);
+  previewStage.addEventListener('pointercancel', endPreviewPointer);
+  previewStage.addEventListener('wheel', event => {
+    if (!event.ctrlKey) return;
+    event.preventDefault();
+    setPreviewZoomValue(previewZoom - event.deltaY * 0.005);
+  }, { passive: false });
+  $('artworkScaleSlider').addEventListener('input', event => {
+    setArtworkScaleValue(Number((event.currentTarget as HTMLInputElement).value));
+  });
+  $('targetUrl').addEventListener('input', () => persistSettingsSilently());
   $('exportSettingsForm').addEventListener('submit', event => {
     event.preventDefault();
     const validationError = settingValidationError();
@@ -568,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('exportSvg').addEventListener('click', async () => {
     if (!lastSvg || !selectedCanvas) return;
     try {
-      const savedPath = await invoke<string>('save_svg', { canvasId: selectedCanvas, settings: settings() });
+      const savedPath = await invoke<string>('save_svg', { canvasId: selectedCanvas, settings: settings(), filename: lastSvg.filename });
       showDownloadToast(`Download tersimpan: ${savedPath}`);
       status(workspaceStatus, `SVG berhasil diexport: ${lastSvg.filename}`, 'success');
     } catch (error) { const message = errorMessage(error); showDownloadToast(`Export gagal: ${message}`); status(workspaceStatus, message, 'error'); }
@@ -578,5 +915,8 @@ document.addEventListener('DOMContentLoaded', () => {
   void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
   void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });
   window.addEventListener('beforeunload', persistSettingsSilently);
-  void loadLicense();
+  window.setTimeout(() => {
+    landingView.hidden = true;
+    void loadLicense();
+  }, LANDING_DURATION_MS);
 });

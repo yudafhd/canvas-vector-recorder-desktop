@@ -38,13 +38,16 @@ export interface SvgResult {
 
 export interface LicenseStatus {
   valid: boolean;
+  activated: boolean;
+  product?: string;
   email?: string;
   license_id?: string;
+  activation_expires_at?: string;
   expires_at?: string;
-  last_validated_at?: string;
-  offline: boolean;
   perpetual: boolean;
-  grace_remaining_days?: number;
+  device_bound: boolean;
+  activated_at?: string;
+  last_validated_at?: string;
   message?: string;
 }
 

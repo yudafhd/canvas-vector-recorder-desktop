@@ -63,11 +63,14 @@ pub enum AppError {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .setup(|app| {
+            #[cfg(desktop)]
+            app.handle()
+                .plugin(tauri_plugin_updater::Builder::new().build())?;
+            Ok(())
+        })
         .manage(AppState {
-            recorder: Mutex::new(RecorderStore {
-                recording_enabled: true,
-                ..Default::default()
-            }),
+            recorder: Mutex::new(RecorderStore::default()),
             target: Mutex::new(TargetState::default()),
             last_emit: Mutex::new(std::time::Instant::now()),
         })
@@ -82,9 +85,8 @@ pub fn run() {
             commands::save_svg,
             commands::clear_surfaces,
             commands::clear_recording,
-            commands::get_recording_state,
-            commands::set_recording,
             commands::open_target_url,
+            commands::open_mahes_app,
             commands::open_target_tab,
             commands::switch_target_tab,
             commands::close_target_tab,
