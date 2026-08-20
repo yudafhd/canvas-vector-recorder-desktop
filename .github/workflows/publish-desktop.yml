@@ -50,6 +50,21 @@ jobs:
           test -n "$TAURI_SIGNING_PRIVATE_KEY"
           test -n "$TAURI_SIGNING_PRIVATE_KEY_PASSWORD"
 
+      - name: Validate Guardian public key format
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          const value = process.env.LICENSE_PUBLIC_KEY.trim();
+          if (!/^[A-Za-z0-9_-]+$/.test(value)) {
+            throw new Error('LICENSE_PUBLIC_KEY must be raw base64url without a prefix, PEM header, padding, or whitespace');
+          }
+          const bytes = Buffer.from(value, 'base64url');
+          if (value.length !== 43 || bytes.length !== 32) {
+            throw new Error(`LICENSE_PUBLIC_KEY must be 43 base64url characters / 32 bytes; received ${value.length} characters / ${bytes.length} bytes`);
+          }
+          console.log(`LICENSE_PUBLIC_KEY format OK (${value.length} characters / ${bytes.length} bytes)`);
+          NODE
+
       - name: Install dependencies
         run: npm ci
 
