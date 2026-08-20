@@ -124,7 +124,7 @@ fn map_error(error: LicenseError) -> AppError {
 
 pub fn validate_code(app: &AppHandle, email: &str, code: &str) -> Result<LicenseStatus, AppError> {
     manager(app)?
-        .preview(code, email, trusted_now())
+        .preview(code, email, Utc::now())
         .map_err(map_error)
 }
 
@@ -139,9 +139,5 @@ pub fn activate_license(
 }
 
 pub fn status(app: &AppHandle) -> Result<LicenseStatus, AppError> {
-    manager(app)?.status(trusted_now()).map_err(map_error)
-}
-
-pub fn require_valid(app: &AppHandle) -> Result<LicenseStatus, AppError> {
-    manager(app)?.require_valid(trusted_now()).map_err(map_error)
+    manager(app)?.status(Utc::now()).map_err(map_error)
 }

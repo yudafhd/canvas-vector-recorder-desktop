@@ -18,10 +18,8 @@ pub struct StartRecording {
 
 #[tauri::command]
 pub fn start_recording(
-    app: AppHandle,
     state: State<'_, AppState>,
 ) -> Result<StartRecording, AppError> {
-    license::require_valid(&app)?;
     let mut recorder = state.recorder.lock().map_err(|_| AppError::State)?;
     let session_id = recorder.start();
     Ok(StartRecording {
@@ -46,7 +44,6 @@ pub fn record_canvas_events(
     session_id: String,
     events: Vec<RecorderEvent>,
 ) -> Result<(), AppError> {
-    license::require_valid(&app)?;
     let mut recorder = state.recorder.lock().map_err(|_| AppError::State)?;
     recorder.record(&session_id, events)?;
     drop(recorder);
@@ -69,20 +66,18 @@ pub fn record_canvas_events(
 
 #[tauri::command]
 pub fn list_canvases(
-    app: AppHandle,
+    _app: AppHandle,
     state: State<'_, AppState>,
 ) -> Result<Vec<recorder::CanvasDetection>, AppError> {
-    license::require_valid(&app)?;
     Ok(state.recorder.lock().map_err(|_| AppError::State)?.list())
 }
 
 #[tauri::command]
 pub fn get_canvas_result(
-    app: AppHandle,
+    _app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
 ) -> Result<Option<recorder::canvas::CanvasResult>, AppError> {
-    license::require_valid(&app)?;
     Ok(state
         .recorder
         .lock()
@@ -104,24 +99,22 @@ fn canvas_or_error(
 
 #[tauri::command]
 pub fn generate_svg(
-    app: AppHandle,
+    _app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
     settings: Option<MicrostockSettings>,
 ) -> Result<serde_json::Value, AppError> {
-    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     Ok(recorder::svg::result(&data, &settings.unwrap_or_default()))
 }
 
 #[tauri::command]
 pub fn export_svg(
-    app: AppHandle,
+    _app: AppHandle,
     state: State<'_, AppState>,
     canvas_id: String,
     settings: Option<MicrostockSettings>,
 ) -> Result<String, AppError> {
-    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
     Ok(svg)
@@ -135,7 +128,6 @@ pub fn save_svg(
     settings: Option<MicrostockSettings>,
     filename: Option<String>,
 ) -> Result<String, AppError> {
-    license::require_valid(&app)?;
     let data = canvas_or_error(&state, &canvas_id)?;
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
     let filename = filename.as_deref().unwrap_or("vectorized-result.svg");
@@ -197,15 +189,13 @@ fn unique_download_path(directory: &Path, filename: &str) -> PathBuf {
 }
 
 #[tauri::command]
-pub fn clear_recording(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
-    license::require_valid(&app)?;
+pub fn clear_recording(_app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
     state.recorder.lock().map_err(|_| AppError::State)?.clear();
     Ok(())
 }
 
 #[tauri::command]
-pub fn clear_surfaces(app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
-    license::require_valid(&app)?;
+pub fn clear_surfaces(_app: AppHandle, state: State<'_, AppState>) -> Result<(), AppError> {
     state
         .recorder
         .lock()
@@ -221,7 +211,6 @@ pub fn open_target_url(
     session_id: String,
     url: String,
 ) -> Result<(), AppError> {
-    license::require_valid(&app)?;
     let parsed = url::Url::parse(&url).map_err(|_| AppError::InvalidUrl)?;
     if !matches!(parsed.scheme(), "http" | "https") {
         return Err(AppError::InvalidUrl);
@@ -252,9 +241,7 @@ pub fn open_target_url(
 }
 
 #[tauri::command]
-pub fn open_mahes_app(app: AppHandle) -> Result<(), AppError> {
-    license::require_valid(&app)?;
-
+pub fn open_mahes_app(_app: AppHandle) -> Result<(), AppError> {
     #[cfg(target_os = "macos")]
     let result = Command::new("open").arg(MAHES_APP_URL).spawn();
 
@@ -277,7 +264,6 @@ pub fn open_target_tab(
     state: State<'_, AppState>,
     url: String,
 ) -> Result<(), AppError> {
-    license::require_valid(&app)?;
     target_platform::open_target_tab(app, state, url)
 }
 

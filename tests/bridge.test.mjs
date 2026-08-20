@@ -60,7 +60,15 @@ test('main macOS tabs provide reload controls and stay compact', () => {
   assert.match(main, /reload_target_tab/);
   assert.match(styles, /\.target-tab-wrap \.target-main-tab \{ min-width: 100px; max-width: 180px;/);
   assert.match(styles, /\.target-tab-wrap \.target-main-tab \{ justify-content: flex-start; text-align: left; \}/);
-  assert.match(styles, /\.target-tab-wrap \.target-main-tab > span \{ flex: 1 1 auto; min-width: 0;/);
+  assert.match(styles, /\.target-tab-wrap \.target-main-tab > \.target-tab-label \{ flex: 1 1 auto; min-width: 0;/);
+  assert.match(index, /id="targetTabsCount"/);
+  assert.match(main, /targetTabsCount\.textContent/);
+  assert.match(main, /target-tab-index/);
+  assert.match(main, /event\.button !== 1/);
+  assert.match(main, /event\.key === 'Tab'/);
+  assert.match(main, /event\.key\.toLowerCase\(\) === 'w'/);
+  assert.match(styles, /\.target-tab-wrap:hover \.target-tab-close/);
+  assert.match(styles, /\.target-main-tab\.active \{ box-shadow: inset 0 3px/);
 });
 
 test('macOS target view puts the native webview at the top of the tab content', () => {
@@ -72,6 +80,12 @@ test('macOS target view puts the native webview at the top of the tab content', 
 test('preview provides artwork scale controls used by SVG settings', () => {
   assert.match(main, /artworkScale/);
   assert.match(main, /previewZoomSlider/);
+  assert.match(index, /id="resetPreview"/);
+  assert.match(index, /id="previewZoomSlider"[^>]*max="4"/);
+  assert.match(main, /setPreviewZoomValue\(previewZoom - event\.deltaY \* 0\.001\)/);
+  assert.match(main, /resetPreviewView/);
+  assert.match(main, /draggable="false"/);
+  assert.match(main, /dragstart/);
   assert.match(main, /artworkScaleSlider/);
   assert.match(main, /pointerdown/);
   assert.match(main, /pointermove/);
@@ -82,6 +96,7 @@ test('preview provides artwork scale controls used by SVG settings', () => {
   assert.doesNotMatch(index, /class="preview-tools"[\s\S]*artwork-scale-control/);
   assert.match(index, /<div id="preview" class="preview">[\s\S]*id="previewStage"/);
   assert.match(styles, /\.preview-tools \{ position: static;[\s\S]*\.preview-tool-group/);
+  assert.match(styles, /\.preview-stage\.is-interacting img \{ transition: none; \}/);
   assert.match(styles, /\.artwork-scale-setting input\[type="range"\]/);
   assert.match(main, /\$\('previewStage'\)\.innerHTML/);
   assert.doesNotMatch(main, /\$\('preview'\)\.innerHTML/);
@@ -125,7 +140,7 @@ test('activation screen hides workspace navigation and provides submit feedback'
   assert.match(index, /label for="licenseCode"/);
   assert.match(styles, /#activationView #activationForm label \{ display: flex; flex-direction: column; width: 100%;/);
   assert.match(styles, /#activationView #activationForm input, #activationView #activationForm textarea \{ display: block; width: 100%;/);
-  assert.match(styles, /\.topbar \{[^}]*padding: 10px 20px;/);
+  assert.match(styles, /\.topbar \{[^}]*padding: 8px 0px;/);
   assert.match(main, /activationSubmit\.disabled = true/);
   assert.match(main, /activationSubmit\.textContent = 'Mengaktifkan…'/);
 });
@@ -172,6 +187,15 @@ test('workspace brand links to mahes.app', () => {
   assert.match(styles, /\.brand-link/);
 });
 
+test('workspace shows the application version beside the brand title', () => {
+  assert.match(index, /id="appVersion" class="brand-version"/);
+  assert.match(main, /import packageJson from '\.\.\/package\.json'/);
+  assert.match(main, /appVersion\.textContent = `v\$\{packageJson\.version\}`/);
+  assert.match(styles, /\.brand-title-row/);
+  assert.doesNotMatch(index, /<header class="topbar">[\s\S]*?class="brand-icon"/);
+  assert.match(styles, /\.badge \{[^}]*font-size: 12px;/);
+});
+
 test('workspace provides a persistent accessible dark mode toggle', () => {
   assert.match(index, /id="themeToggle"/);
   assert.match(index, /id="licenseBadge"[\s\S]*id="themeToggle"/);
@@ -181,7 +205,8 @@ test('workspace provides a persistent accessible dark mode toggle', () => {
   assert.match(main, /localStorage\.setItem\(THEME_STORAGE_KEY/);
   assert.match(styles, /:root\[data-theme="dark"\]/);
   assert.match(styles, /#202124/);
-  assert.match(styles, /\.theme-toggle[\s\S]*width: 46px[\s\S]*border: 0/);
+  assert.match(styles, /\.theme-toggle[\s\S]*width: 36px[\s\S]*border: 0/);
+  assert.match(styles, /\.topbar-update, \.theme-toggle[\s\S]*background: #f1f3f4[\s\S]*border: 0/);
   assert.doesNotMatch(styles, /\.theme-toggle:hover[^}]*border-color/);
 });
 
@@ -192,9 +217,19 @@ test('workspace updater uses signed Tauri releases', () => {
   assert.match(tauriConfig.plugins.updater.endpoints[0], /github\.com\/yudafhd\/canvas-vector-recorder-desktop/);
   assert.deepEqual(desktopCapability.permissions, ['updater:default']);
   assert.match(index, /id="checkForUpdates"/);
+  assert.match(index, /id="updateIndicator" class="update-indicator"/);
+  assert.match(styles, /\.update-indicator[\s\S]*border-radius: 50%/);
   assert.match(main, /from '@tauri-apps\/plugin-updater'/);
   assert.match(main, /downloadAndInstall/);
+  assert.match(main, /setUpdateAvailable\(true\)/);
   assert.match(main, /Belum ada release updater yang dipublish di GitHub/);
+});
+
+test('workspace checks for releases at most once per day', () => {
+  assert.match(main, /UPDATE_CHECK_INTERVAL_MS = 24 \* 60 \* 60 \* 1000/);
+  assert.match(main, /UPDATE_CHECK_STORAGE_KEY/);
+  assert.match(main, /checkForUpdatesOncePerDay\(\)/);
+  assert.match(main, /checkForUpdates\(\{ automatic: true \}\)/);
 });
 
 test('license time source stays in Rust without a clock widget', () => {
@@ -203,8 +238,18 @@ test('license time source stays in Rust without a clock widget', () => {
   assert.doesNotMatch(commands, /get_clock_status/);
   assert.match(licenseRust, /TIME_NOW_URL/);
   assert.match(licenseRust, /fn time_now\(\)/);
+  assert.match(licenseRust, /\.activate\(code, email, trusted_now\(\)\)/);
+  assert.match(licenseRust, /manager\(app\)\?\.status\(Utc::now\(\)\)/);
   assert.doesNotMatch(licenseRust, /timeapi\.world/);
   assert.doesNotMatch(styles, /\.clock-status/);
+});
+
+test('license gating happens before workspace rendering on the landing page', () => {
+  assert.doesNotMatch(commands, /license::require_valid/);
+  assert.match(main, /landingStatus.textContent = 'Memeriksa lisensi/);
+  assert.match(main, /landingView.hidden = true/);
+  assert.match(main, /landingView.hidden = false/);
+  assert.match(main, /void loadLicense\(\)/);
 });
 
 test('recorder is always active and perpetual licenses show the email', () => {

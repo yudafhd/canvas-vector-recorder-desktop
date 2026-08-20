@@ -1,10 +1,12 @@
 import './styles.css';
+import packageJson from '../package.json';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { check } from '@tauri-apps/plugin-updater';
 import {
   Check,
   Download,
+  DownloadCloud,
   ExternalLink,
   Globe,
   Moon,
@@ -23,7 +25,7 @@ import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
-const lucideIcons = { Check, Download, ExternalLink, Globe, Moon, MonitorPlay, Pencil, Plus, RefreshCw, RotateCw, Settings2, Sun, Trash2, X };
+const lucideIcons = { Check, Download, DownloadCloud, ExternalLink, Globe, Moon, MonitorPlay, Pencil, Plus, RefreshCw, RotateCw, Settings2, Sun, Trash2, X };
 
 function iconPlaceholder(name: string): HTMLElement {
   const element = document.createElement('i');
@@ -36,26 +38,46 @@ function renderIcons(root: Element | Document | DocumentFragment = document): vo
   createIcons({ icons: lucideIcons, root });
 }
 
-function setIconButtonContent(button: HTMLButtonElement, icon: string, label: string): void {
-  button.replaceChildren(iconPlaceholder(icon), document.createElement('span'));
-  button.lastElementChild!.textContent = label;
+function setIconButtonContent(button: HTMLButtonElement, icon: string, label: string, showLabel = true): void {
+  const children: Node[] = [iconPlaceholder(icon)];
+  if (showLabel) {
+    const labelElement = document.createElement('span');
+    labelElement.textContent = label;
+    children.push(labelElement);
+  }
+  button.replaceChildren(...children);
+  button.setAttribute('aria-label', label);
   renderIcons(button);
 }
 
 function handleRefreshShortcut(event: KeyboardEvent): void {
-  if (event.key.toLowerCase() !== 'r' || event.altKey || event.shiftKey) return;
-  if (!event.metaKey && !event.ctrlKey) return;
+  if (event.altKey || event.shiftKey || (!event.metaKey && !event.ctrlKey)) return;
+  if (event.key === 'Tab' && targetTabs.length) {
+    event.preventDefault();
+    event.stopPropagation();
+    cycleTargetTab();
+    return;
+  }
+  if (event.key.toLowerCase() === 'w' && activeMainTab === 'target' && activeTargetId) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeTargetTabFromUi(activeTargetId);
+    return;
+  }
+  if (event.key.toLowerCase() !== 'r') return;
   event.preventDefault();
   event.stopPropagation();
   window.location.reload();
 }
 
 const landingView = $('landingView');
+const landingStatus = $('landingStatus');
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
 const recorderMainTab = $<HTMLButtonElement>('recorderMainTab');
 const targetMainTabs = $('targetMainTabs');
+const targetTabsCount = $('targetTabsCount');
 const targetView = $('targetView');
 const targetFrame = $<HTMLIFrameElement>('targetFrame');
 const targetMainTitle = $('targetMainTitle');
@@ -63,7 +85,10 @@ const closeTargetMainTab = $<HTMLButtonElement>('closeTargetMainTab');
 const activationStatus = $('activationStatus');
 const copyError = $('copyError');
 const workspaceStatus = $('workspaceStatus');
+const updateIndicator = $('updateIndicator');
 const canvasList = $('canvasList');
+const appVersion = $('appVersion');
+appVersion.textContent = `v${packageJson.version}`;
 let currentSession: string | null = null;
 let selectedCanvas: string | null = null;
 let lastSvg: SvgResult | null = null;
@@ -72,6 +97,7 @@ const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
 type MainTab = 'recorder' | 'target';
+const MAX_TARGET_TABS = 5;
 let activeMainTab: MainTab = 'recorder';
 let activeTargetId: string | null = null;
 let targetTabs: TargetTabInfo[] = [];
@@ -79,6 +105,14 @@ let detectedAssets: CanvasDetection[] = [];
 let thumbnailGeneration = 0;
 const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
+const thumbnailJobs = new Map<string, string>();
+const THUMBNAIL_REFRESH_MS = 1200;
+let thumbnailRefreshTimer: number | null = null;
+let pendingThumbnailItems: CanvasDetection[] | null = null;
+let renderedCanvasListKey = '\0';
+let openTargetInProgress = false;
+let refreshCanvasesInProgress = false;
+let reloadTargetInProgress = false;
 let previewUrl: string | null = null;
 let previewRequest = 0;
 let previewFilenameCanvasId: string | null = null;
@@ -87,7 +121,7 @@ let filenameOverrides: Record<string, string> = {};
 const ARTWORK_SCALE_MIN = 0.5;
 const ARTWORK_SCALE_MAX = 3;
 const PREVIEW_ZOOM_MIN = 0.5;
-const PREVIEW_ZOOM_MAX = 3;
+const PREVIEW_ZOOM_MAX = 4;
 const SETTINGS_STORAGE_KEY = 'canvas-vector-recorder.settings.v1';
 const RATIO_PRESETS = new Set(['source', '1:1', '4:5', '4:3', '3:2', '2:3', '16:9']);
 const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }> = {
@@ -101,6 +135,8 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
 const LANDING_DURATION_MS = 2_000;
 const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
+const UPDATE_CHECK_STORAGE_KEY = 'canvas-vector-recorder.update-check.v1';
+const UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
 let artworkScale = 1;
 let previewZoom = 1;
 let previewPanX = 0;
@@ -164,29 +200,52 @@ function persistTheme(): void {
   try { localStorage.setItem(THEME_STORAGE_KEY, darkMode ? 'dark' : 'light'); } catch (_) { /* Storage may be disabled by the host. */ }
 }
 
+function selectTargetTab(tabId: string): void {
+  activeTargetId = tabId;
+  setMainTab('target');
+  void invoke('switch_target_tab', { tabId }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+}
+
+function closeTargetTabFromUi(tabId: string): void {
+  const operation = targetTabs.length <= 1
+    ? closeTarget()
+    : invoke('close_target_tab', { tabId });
+  void operation.catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+}
+
+function cycleTargetTab(): void {
+  if (!targetTabs.length) return;
+  const currentIndex = targetTabs.findIndex(tab => tab.id === activeTargetId);
+  const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % targetTabs.length;
+  selectTargetTab(targetTabs[nextIndex].id);
+}
+
 function renderTargetTabs(state: TargetTabsState): void {
   targetTabs = state.tabs;
   activeTargetId = state.active_id;
   targetOpen = targetTabs.length > 0;
   targetMainTabs.replaceChildren();
   targetMainTabs.hidden = !targetTabs.length;
-  targetTabs.forEach(tab => {
+  targetTabsCount.textContent = `${targetTabs.length}/${MAX_TARGET_TABS}`;
+  targetTabsCount.hidden = !targetTabs.length;
+  targetTabs.forEach((tab, index) => {
     const wrapper = document.createElement('span');
     wrapper.className = 'target-tab-wrap';
     const button = document.createElement('button');
     button.className = `main-tab target-main-tab${activeMainTab === 'target' && tab.id === activeTargetId ? ' active' : ''}`;
     button.type = 'button';
     button.dataset.targetId = tab.id;
-    button.append(iconPlaceholder('globe'), document.createElement('span'));
-    button.lastElementChild!.textContent = tab.title || tab.url || 'Target';
+    const tabIndex = document.createElement('span');
+    tabIndex.className = 'target-tab-index';
+    tabIndex.textContent = String(index + 1);
+    const tabLabel = document.createElement('span');
+    tabLabel.className = 'target-tab-label';
+    tabLabel.textContent = tab.title || tab.url || 'Target';
+    button.append(tabIndex, iconPlaceholder('globe'), tabLabel);
     renderIcons(button);
-    button.title = tab.url;
+    button.title = tab.title ? `${tab.title} — ${tab.url}` : tab.url;
     button.setAttribute('aria-selected', String(activeMainTab === 'target' && tab.id === activeTargetId));
-    button.addEventListener('click', () => {
-      activeTargetId = tab.id;
-      setMainTab('target');
-      void invoke('switch_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
-    });
+    button.addEventListener('click', () => selectTargetTab(tab.id));
     const reload = document.createElement('button');
     reload.className = 'target-tab-reload';
     reload.type = 'button';
@@ -196,7 +255,12 @@ function renderTargetTabs(state: TargetTabsState): void {
     reload.setAttribute('aria-label', `Muat ulang ${tab.title || 'target'}`);
     reload.addEventListener('click', event => {
       event.stopPropagation();
-      void invoke('reload_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+      if (reloadTargetInProgress) return;
+      reloadTargetInProgress = true;
+      reload.disabled = true;
+      void invoke('reload_target_tab', { tabId: tab.id })
+        .catch(error => status(workspaceStatus, errorMessage(error), 'error'))
+        .finally(() => { reloadTargetInProgress = false; reload.disabled = false; });
     });
     const close = document.createElement('button');
     close.className = 'target-tab-close';
@@ -207,7 +271,13 @@ function renderTargetTabs(state: TargetTabsState): void {
     close.setAttribute('aria-label', `Tutup ${tab.title || 'target'}`);
     close.addEventListener('click', event => {
       event.stopPropagation();
-      void invoke('close_target_tab', { tabId: tab.id }).catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+      closeTargetTabFromUi(tab.id);
+    });
+    wrapper.addEventListener('auxclick', event => {
+      if (event.button !== 1) return;
+      event.preventDefault();
+      event.stopPropagation();
+      closeTargetTabFromUi(tab.id);
     });
     wrapper.append(button, reload, close);
     targetMainTabs.append(wrapper);
@@ -274,22 +344,50 @@ function errorMessage(error: unknown): string {
 }
 
 let updateInProgress = false;
+let updateAvailable = false;
 
-async function checkForUpdates(): Promise<void> {
+interface UpdateCheckOptions { automatic?: boolean }
+
+function setUpdateAvailable(available: boolean): void {
+  updateAvailable = available;
+  updateIndicator.hidden = !available;
+  $('checkForUpdates').setAttribute('aria-label', available ? 'Update tersedia. Periksa update' : 'Periksa update');
+}
+
+function markUpdateCheckTime(): void {
+  try { localStorage.setItem(UPDATE_CHECK_STORAGE_KEY, String(Date.now())); } catch (_) { /* Storage may be disabled by the host. */ }
+}
+
+function checkForUpdatesOncePerDay(): void {
+  let lastCheck = 0;
+  try { lastCheck = Number(localStorage.getItem(UPDATE_CHECK_STORAGE_KEY) || 0); } catch (_) { /* Storage may be disabled by the host. */ }
+  if (Number.isFinite(lastCheck) && Date.now() - lastCheck < UPDATE_CHECK_INTERVAL_MS) return;
+  markUpdateCheckTime();
+  void checkForUpdates({ automatic: true });
+}
+
+async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): Promise<void> {
   if (updateInProgress) return;
   const button = $<HTMLButtonElement>('checkForUpdates');
+  const showProgress = !automatic;
   updateInProgress = true;
-  button.disabled = true;
-  button.classList.add('is-loading');
-  setIconButtonContent(button, 'refresh-cw', 'Memeriksa…');
+  markUpdateCheckTime();
+  if (showProgress) {
+    button.disabled = true;
+    button.classList.add('is-loading');
+    setIconButtonContent(button, 'refresh-cw', 'Memeriksa update…', false);
+  }
   try {
-    status(workspaceStatus, 'Memeriksa update…');
+    if (showProgress) status(workspaceStatus, 'Memeriksa update…');
     const update = await check({ timeout: 15_000 });
     if (!update) {
-      status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
+      setUpdateAvailable(false);
+      if (showProgress) status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
       return;
     }
 
+    setUpdateAvailable(true);
+    if (automatic) return;
     const notes = update.body?.trim();
     const summary = notes ? `\n\nCatatan:\n${notes.slice(0, 500)}` : '';
     if (!window.confirm(`Update ${update.version} tersedia.${summary}\n\nInstall sekarang?`)) {
@@ -309,18 +407,24 @@ async function checkForUpdates(): Promise<void> {
         status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
       }
     });
+    setUpdateAvailable(false);
   } catch (error) {
     const message = errorMessage(error);
-    if (/valid release JSON|latest\.json|release/i.test(message)) {
-      status(workspaceStatus, 'Belum ada release updater yang dipublish di GitHub.', 'idle');
-    } else {
-      status(workspaceStatus, `Gagal memeriksa update: ${message}`, 'error');
+    if (!automatic) {
+      if (/valid release JSON|latest\.json|release/i.test(message)) {
+        status(workspaceStatus, 'Belum ada release updater yang dipublish di GitHub.', 'idle');
+      } else {
+        status(workspaceStatus, `Gagal memeriksa update: ${message}`, 'error');
+      }
     }
   } finally {
     updateInProgress = false;
-    button.disabled = false;
-    button.classList.remove('is-loading');
-    setIconButtonContent(button, 'refresh-cw', 'Update');
+    if (showProgress) {
+      button.disabled = false;
+      button.classList.remove('is-loading');
+      setIconButtonContent(button, 'download-cloud', 'Periksa update', false);
+      setUpdateAvailable(updateAvailable);
+    }
   }
 }
 
@@ -371,13 +475,14 @@ function settingValidationError(): string | null {
 function updateRatioControls(): void {
   const custom = $<HTMLSelectElement>('ratio').value === 'custom';
   const fields = $<HTMLDivElement>('customRatioFields');
-  fields.hidden = false;
+  const help = $('ratioHelp');
+  fields.hidden = !custom;
   fields.classList.toggle('is-custom', custom);
   const dimensions = custom
     ? { width: $<HTMLInputElement>('customRatioWidth').value, height: $<HTMLInputElement>('customRatioHeight').value }
     : PRESET_RATIO_DIMENSIONS[$<HTMLSelectElement>('ratio').value] || sourceRatioDimensions();
-  $('ratioHelp').textContent = custom
-    ? '' : `Rasio ${dimensions.width} : ${dimensions.height}. Ubah salah satu nilai untuk beralih ke Custom.`;
+  help.hidden = custom;
+  help.textContent = `Rasio ${dimensions.width} : ${dimensions.height}. Ubah salah satu nilai untuk beralih ke Custom.`;
 }
 
 function ratioDimensions(width: number, height: number): { width: number; height: number } {
@@ -482,6 +587,15 @@ function updatePreviewZoomControl(): void {
 function setPreviewZoomValue(value: number): void {
   const next = Math.min(PREVIEW_ZOOM_MAX, Math.max(PREVIEW_ZOOM_MIN, value));
   previewZoom = Math.round(next * 100) / 100;
+  updatePreviewZoomControl();
+}
+
+function resetPreviewView(): void {
+  previewZoom = 1;
+  previewPanX = 0;
+  previewPanY = 0;
+  previewPanStart = null;
+  previewPinchStart = null;
   updatePreviewZoomControl();
 }
 
@@ -613,6 +727,24 @@ function thumbnailKey(item: CanvasDetection): string {
   return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels, current.backgroundColor, current.transparentBackground, current.artworkScale].join('|');
 }
 
+function canvasListKey(items: CanvasDetection[]): string {
+  return [selectedCanvas, ...items
+    .filter(item => item.shapes > 0 || item.gap_fillers > 0)
+    .map(item => [item.canvas_id, item.width, item.height, item.shapes, item.gap_fillers, item.errors, item.state].join(':'))]
+    .join('|');
+}
+
+function scheduleThumbnailRefresh(items: CanvasDetection[]): void {
+  pendingThumbnailItems = items;
+  if (thumbnailRefreshTimer) return;
+  thumbnailRefreshTimer = window.setTimeout(() => {
+    thumbnailRefreshTimer = null;
+    const latest = pendingThumbnailItems;
+    pendingThumbnailItems = null;
+    if (latest) renderCanvases(latest, { generateThumbnails: true });
+  }, THUMBNAIL_REFRESH_MS);
+}
+
 function renderLicense(s: LicenseStatus): void {
   const badge = $('licenseBadge');
   badge.textContent = s.perpetual
@@ -621,6 +753,7 @@ function renderLicense(s: LicenseStatus): void {
       ? `Lisensi aktif sampai ${new Date(s.expires_at).toLocaleDateString()}`
       : 'Lisensi belum aktif';
   if (s.valid) {
+    landingView.hidden = true;
     activationView.hidden = true;
     if (isWindows || isMac) {
       mainTabs.hidden = false;
@@ -630,7 +763,10 @@ function renderLicense(s: LicenseStatus): void {
       targetView.hidden = true;
       workspaceView.hidden = false;
     }
+    checkForUpdatesOncePerDay();
   } else {
+    landingView.hidden = false;
+    landingStatus.textContent = s.message || 'Lisensi belum aktif. Silakan aktivasi untuk melanjutkan.';
     workspaceView.hidden = true;
     mainTabs.hidden = true;
     targetView.hidden = true;
@@ -640,28 +776,50 @@ function renderLicense(s: LicenseStatus): void {
 }
 
 async function loadLicense(): Promise<void> {
+  landingStatus.textContent = 'Memeriksa lisensi…';
   try { renderLicense(await licenseStatus()); }
-  catch (error) { activationView.hidden = false; workspaceView.hidden = true; status(activationStatus, `Gagal membaca status lisensi: ${errorMessage(error)}`, 'error'); }
+  catch (error) {
+    landingView.hidden = false;
+    landingStatus.textContent = `Gagal memeriksa lisensi: ${errorMessage(error)}`;
+    activationView.hidden = false;
+    workspaceView.hidden = true;
+    mainTabs.hidden = true;
+    targetView.hidden = true;
+    status(activationStatus, `Gagal membaca status lisensi: ${errorMessage(error)}`, 'error');
+  }
 }
 
-function renderCanvases(items: CanvasDetection[]): void {
+function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?: boolean } = {}): void {
+  const generateThumbnails = options.generateThumbnails ?? true;
   detectedAssets = items;
   if ($<HTMLSelectElement>('ratio').value === 'source') syncRatioInputsFromSelection();
   const activeIds = new Set(items.map(item => item.canvas_id));
-  const currentKeys = new Map(items.map(item => [item.canvas_id, thumbnailKey(item)]));
   thumbnailUrls.forEach((url, id) => {
-    if (!activeIds.has(id) || thumbnailKeys.get(id) !== currentKeys.get(id)) {
+    if (!activeIds.has(id)) {
       URL.revokeObjectURL(url);
       thumbnailUrls.delete(id);
       thumbnailKeys.delete(id);
     }
   });
   const filtered = items.filter(item => item.shapes > 0 || item.gap_fillers > 0);
+  $('detectedCount').textContent = String(filtered.length);
+  const nextListKey = canvasListKey(items);
+  const listChanged = nextListKey !== renderedCanvasListKey;
   if (!filtered.length) {
+    if (!listChanged) return;
+    renderedCanvasListKey = nextListKey;
     canvasList.innerHTML = '<p class="muted">Belum ada Canvas. Buka target dan tunggu asset dimuat.</p>';
     return;
   }
-  const generation = ++thumbnailGeneration;
+  if (!listChanged) {
+    if (generateThumbnails) {
+      const generation = ++thumbnailGeneration;
+      void loadThumbnails(filtered, generation);
+    }
+    return;
+  }
+  renderedCanvasListKey = nextListKey;
+  const generation = generateThumbnails ? ++thumbnailGeneration : thumbnailGeneration;
   canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : '<span>Memuat thumbnail…</span>'}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
   canvasList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     const nextCanvas = item.dataset.canvas || null;
@@ -675,30 +833,46 @@ function renderCanvases(items: CanvasDetection[]): void {
     }
     renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
-  void loadThumbnails(filtered, generation);
+  if (generateThumbnails) void loadThumbnails(filtered, generation);
 }
 
 async function loadThumbnails(items: CanvasDetection[], generation: number): Promise<void> {
-  await Promise.all(items.filter(item => thumbnailKeys.get(item.canvas_id) !== thumbnailKey(item)).map(async item => {
+  const itemsToLoad = items.filter(item => thumbnailKeys.get(item.canvas_id) !== thumbnailKey(item) && !thumbnailJobs.has(item.canvas_id));
+  await Promise.all(itemsToLoad.map(async item => {
+    const itemKey = thumbnailKey(item);
+    thumbnailJobs.set(item.canvas_id, itemKey);
     try {
       const result = await invoke<SvgResult>('generate_svg', { canvasId: item.canvas_id, settings: settings() });
       const url = URL.createObjectURL(new Blob([result.svg], { type: 'image/svg+xml' }));
       const current = detectedAssets.find(asset => asset.canvas_id === item.canvas_id);
-      if (generation !== thumbnailGeneration || !current || thumbnailKey(current) !== thumbnailKey(item)) { URL.revokeObjectURL(url); return; }
+      if (generation !== thumbnailGeneration || !current || thumbnailKey(current) !== itemKey) { URL.revokeObjectURL(url); return; }
+      const previousUrl = thumbnailUrls.get(item.canvas_id);
+      if (previousUrl && previousUrl !== url) URL.revokeObjectURL(previousUrl);
       thumbnailUrls.set(item.canvas_id, url);
-      thumbnailKeys.set(item.canvas_id, thumbnailKey(item));
+      thumbnailKeys.set(item.canvas_id, itemKey);
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
       if (slot) { const image = document.createElement('img'); image.src = url; image.alt = 'Thumbnail Canvas'; slot.replaceChildren(image); }
     } catch (_) {
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
-      if (slot && generation === thumbnailGeneration) slot.textContent = 'Preview tidak tersedia';
+      if (slot && generation === thumbnailGeneration && !thumbnailUrls.has(item.canvas_id)) slot.textContent = 'Preview tidak tersedia';
+    } finally {
+      if (thumbnailJobs.get(item.canvas_id) === itemKey) thumbnailJobs.delete(item.canvas_id);
     }
   }));
 }
 
-async function refreshCanvases(): Promise<void> { renderCanvases(await invoke<CanvasDetection[]>('list_canvases')); }
+async function refreshCanvases(): Promise<void> {
+  if (refreshCanvasesInProgress) return;
+  refreshCanvasesInProgress = true;
+  try { renderCanvases(await invoke<CanvasDetection[]>('list_canvases')); }
+  finally { refreshCanvasesInProgress = false; }
+}
 
 function resetDetectedSurfaces(): void {
+  if (thumbnailRefreshTimer) window.clearTimeout(thumbnailRefreshTimer);
+  thumbnailRefreshTimer = null;
+  pendingThumbnailItems = null;
+  renderedCanvasListKey = '\0';
   previewRequest += 1;
   if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
   selectedCanvas = null;
@@ -737,7 +911,7 @@ async function refreshPreview(): Promise<void> {
   const url = URL.createObjectURL(blob);
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewUrl = url;
-  $('previewStage').innerHTML = `<img src="${url}" alt="SVG preview">`;
+  $('previewStage').innerHTML = `<img src="${url}" alt="SVG preview" draggable="false">`;
   updatePreviewZoomControl();
   $('previewTitle').textContent = 'Preview SVG'; updateFilenameDisplay();
   $('shapeCount').textContent = String(result.stats.shapes); $('gapCount').textContent = String(result.stats.gap_fillers); $('errorCount').textContent = String(result.stats.errors);
@@ -747,30 +921,39 @@ async function refreshPreview(): Promise<void> {
 }
 
 async function openTarget(): Promise<void> {
-  const url = $<HTMLInputElement>('targetUrl').value.trim();
-  try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
-  if (targetOpen) {
-    await invoke('open_target_tab', { url });
-    setMainTab('target');
-    status(workspaceStatus, 'Target baru dibuka.', 'success');
-    return;
+  if (openTargetInProgress) return;
+  openTargetInProgress = true;
+  const button = $<HTMLButtonElement>('openTarget');
+  button.disabled = true;
+  try {
+    const url = $<HTMLInputElement>('targetUrl').value.trim();
+    try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
+    if (targetOpen) {
+      await invoke('open_target_tab', { url });
+      setMainTab('target');
+      status(workspaceStatus, 'Target baru dibuka.', 'success');
+      return;
+    }
+    await invoke('clear_recording');
+    const started = await invoke<StartRecordingResult>('start_recording');
+    currentSession = started.session_id;
+    await invoke('open_target_url', { url, sessionId: currentSession });
+    targetOpen = true;
+    if (isMac) setMainTab('target');
+    else activeMainTab = 'target';
+    updateOpenTargetButton();
+    selectedCanvas = null;
+    lastSvg = null;
+    previewFilenameCanvasId = null;
+    previewFilenameOverride = null;
+    closeFilenameEditor();
+    updateFilenameDisplay();
+    await refreshCanvases();
+    status(workspaceStatus, 'Perekam aktif di background.', 'success');
+  } finally {
+    openTargetInProgress = false;
+    button.disabled = false;
   }
-  await invoke('clear_recording');
-  const started = await invoke<StartRecordingResult>('start_recording');
-  currentSession = started.session_id;
-  await invoke('open_target_url', { url, sessionId: currentSession });
-  targetOpen = true;
-  if (isMac) setMainTab('target');
-  else activeMainTab = 'target';
-  updateOpenTargetButton();
-  selectedCanvas = null;
-  lastSvg = null;
-  previewFilenameCanvasId = null;
-  previewFilenameOverride = null;
-  closeFilenameEditor();
-  updateFilenameDisplay();
-  await refreshCanvases();
-  status(workspaceStatus, 'Perekam aktif di background.', 'success');
 }
 
 async function closeTarget(): Promise<void> {
@@ -861,6 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const previewStage = $('previewStage');
   previewStage.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.preventDefault();
     previewStage.setPointerCapture(event.pointerId);
     previewPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     startPreviewGesture();
@@ -884,11 +1068,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   previewStage.addEventListener('pointerup', endPreviewPointer);
   previewStage.addEventListener('pointercancel', endPreviewPointer);
+  previewStage.addEventListener('dragstart', event => event.preventDefault());
   previewStage.addEventListener('wheel', event => {
-    if (!event.ctrlKey) return;
+    if (!previewStage.querySelector('img')) return;
     event.preventDefault();
-    setPreviewZoomValue(previewZoom - event.deltaY * 0.005);
+    setPreviewZoomValue(previewZoom - event.deltaY * 0.001);
   }, { passive: false });
+  $('resetPreview').addEventListener('click', resetPreviewView);
   $('artworkScaleSlider').addEventListener('input', event => {
     setArtworkScaleValue(Number((event.currentTarget as HTMLInputElement).value));
   });
@@ -910,13 +1096,15 @@ document.addEventListener('DOMContentLoaded', () => {
       status(workspaceStatus, `SVG berhasil diexport: ${lastSvg.filename}`, 'success');
     } catch (error) { const message = errorMessage(error); showDownloadToast(`Export gagal: ${message}`); status(workspaceStatus, message, 'error'); }
   });
-  void listen<CanvasDetection[]>('canvases-updated', event => renderCanvases(event.payload));
+  void listen<CanvasDetection[]>('canvases-updated', event => {
+    renderCanvases(event.payload, { generateThumbnails: false });
+    scheduleThumbnailRefresh(event.payload);
+  });
   void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
   void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
   void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });
   window.addEventListener('beforeunload', persistSettingsSilently);
   window.setTimeout(() => {
-    landingView.hidden = true;
     void loadLicense();
   }, LANDING_DURATION_MS);
 });

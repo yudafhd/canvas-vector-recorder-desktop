@@ -82,3 +82,21 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Read published release tag
+        if: matrix.platform == 'windows-latest'
+        id: release_version
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          "tag=v$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Upload Windows portable executable
+        if: matrix.platform == 'windows-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_version.outputs.tag }}
+          files: src-tauri/target/release/canvas-vector-recorder-desktop.exe
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -66,23 +66,17 @@
         <i data-lucide="monitor-play" aria-hidden="true"></i><span>Recorder</span>
       </button>
       <div id="targetMainTabs" class="target-main-tabs"></div>
+      <span id="targetTabsCount" class="target-tabs-count" role="status" aria-label="Jumlah tab target" hidden></span>
     </nav>
 
     <section id="workspaceView" class="view workspace-shell" hidden>
       <header class="topbar">
         <div class="brand">
-          <div class="brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" role="presentation">
-              <path d="M7 23V9h18v14H7Z" />
-              <path d="m10 20 4-5 3 2 5-6" />
-              <circle cx="10" cy="20" r="1.4" />
-              <circle cx="14" cy="15" r="1.4" />
-              <circle cx="17" cy="17" r="1.4" />
-              <circle cx="22" cy="11" r="1.4" />
-            </svg>
-          </div>
           <div>
-            <h1>Canvas Vector Recorder</h1>
+            <div class="brand-title-row">
+              <h1>Canvas Vector Recorder</h1>
+              <span id="appVersion" class="brand-version" aria-label="Versi aplikasi"></span>
+            </div>
             <p><a id="mahesLink" class="brand-link" href="https://mahes.app" target="_blank"
                 rel="noopener noreferrer">tools by
                 mahes.app</a>
@@ -90,13 +84,13 @@
           </div>
         </div>
         <div class="actions">
-          <button id="checkForUpdates" class="topbar-update" type="button" title="Periksa update" aria-label="Periksa update">
-            <i data-lucide="refresh-cw" aria-hidden="true"></i><span>Update</span>
-          </button>
           <span id="licenseBadge" class="badge"></span>
           <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
             aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span
-              class="theme-toggle-label">Dark mode</span></button>
+            class="theme-toggle-label">Dark mode</span></button>
+          <button id="checkForUpdates" class="topbar-update" type="button" title="Periksa update" aria-label="Periksa update">
+            <i data-lucide="download-cloud" aria-hidden="true"></i><span id="updateIndicator" class="update-indicator" aria-hidden="true" hidden></span>
+          </button>
         </div>
       </header>
 
@@ -119,7 +113,7 @@
 
           <section class="surfaces-section">
             <div class="surface-heading">
-              <h2 class="section-label">DETECTED</h2>
+              <h2 class="section-label">DETECTED <span id="detectedCount" class="section-count">0</span></h2>
               <div class="surface-actions">
                 <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset"><i
                     data-lucide="refresh-cw" aria-hidden="true"></i><span>Refresh</span></button>
@@ -183,10 +177,13 @@
           <header class="preview-header">
             <h2 id="previewTitle">Rendered Preview</h2>
             <div class="preview-tools" aria-label="Kontrol preview">
+              <button id="resetPreview" class="preview-reset-button" type="button" title="Reset zoom dan posisi canvas">
+                <i data-lucide="rotate-cw" aria-hidden="true"></i><span>Reset</span>
+              </button>
               <div class="preview-tool-group preview-zoom-control" aria-label="Zoom canvas">
                 <span class="preview-tool-label">Zoom canvas</span>
                 <div class="preview-tool-row">
-                  <input id="previewZoomSlider" type="range" min="0.5" max="3" step="0.1" value="1"
+                  <input id="previewZoomSlider" type="range" min="0.5" max="4" step="0.1" value="1"
                     aria-label="Zoom canvas">
                   <output id="previewZoomValue" class="preview-tool-value" aria-live="polite">100%</output>
                 </div>

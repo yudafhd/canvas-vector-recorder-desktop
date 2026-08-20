@@ -28,12 +28,6 @@ fn open_target_window_with_label(
             .close()
             .map_err(|error| AppError::Window(error.to_string()))?;
     }
-    let offset = app
-        .webview_windows()
-        .keys()
-        .filter(|window_label| is_target_window_label(window_label))
-        .count() as f64
-        * 32.0;
     let app = app.clone();
     let script_on_load = script.clone();
     std::thread::spawn(move || {
@@ -45,8 +39,8 @@ fn open_target_window_with_label(
                     let _ = webview.eval(&script_on_load);
                 }
             })
-            .position(48.0 + offset, 48.0 + offset)
             .inner_size(900.0, 650.0)
+            .center()
             .build();
         if let Err(error) = result {
             eprintln!("Gagal membuat window target Windows: {error}");

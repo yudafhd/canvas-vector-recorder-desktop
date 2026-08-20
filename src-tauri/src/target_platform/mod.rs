@@ -32,8 +32,11 @@ pub(crate) fn reload_target_tab(
         .find(|tab| tab.id == tab_id)
         .map(|tab| tab.webview_label.clone())
         .ok_or_else(|| AppError::NotFound("Tab target tidak ditemukan.".into()))?;
-    app.get_webview(&webview_label)
-        .ok_or_else(|| AppError::Window("WebView target tidak ditemukan.".into()))?
+    let webview = app
+        .get_webview(&webview_label)
+        .ok_or_else(|| AppError::Window("WebView target tidak ditemukan.".into()))?;
+    let _ = webview.eval("window.__CVR_STOP_RECORDER__ && window.__CVR_STOP_RECORDER__()");
+    webview
         .reload()
         .map_err(|error| AppError::Window(error.to_string()))
 }
