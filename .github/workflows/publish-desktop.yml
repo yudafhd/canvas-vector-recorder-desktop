@@ -3,11 +3,15 @@ name: Publish desktop update
 on:
   workflow_dispatch:
   push:
-    branches:
-      - release
+    tags:
+      - 'v*.*.*'
 
 permissions:
   contents: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
