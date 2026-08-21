@@ -5,12 +5,11 @@ use crate::{
     },
     AppError, AppState, TargetTab, MAX_TARGET_TABS,
 };
-#[cfg(target_os = "macos")]
-use tauri::LogicalSize;
 #[cfg(not(target_os = "macos"))]
 use tauri::WebviewWindowBuilder;
 use tauri::{
-    webview::PageLoadEvent, AppHandle, LogicalPosition, Manager, State, WebviewBuilder, WebviewUrl,
+    webview::PageLoadEvent, AppHandle, LogicalPosition, LogicalSize, Manager, State,
+    WebviewBuilder, WebviewUrl,
 };
 use url::Url;
 
