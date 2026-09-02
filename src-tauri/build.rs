@@ -1,6 +1,6 @@
 use std::{env, fs, path::{Path, PathBuf}};
 
-const DOTENV_KEYS: [&str; 3] = ["LICENSE_PRODUCT_CODE", "LICENSE_PUBLIC_KEY", "APP_VERSION"];
+const DOTENV_KEYS: [&str; 2] = ["LICENSE_PRODUCT_CODE", "LICENSE_PUBLIC_KEY"];
 
 fn dotenv_value(value: &str) -> String {
     let value = value.trim();
@@ -40,7 +40,6 @@ fn load_dotenv(path: &Path) {
 fn main() {
     println!("cargo:rerun-if-env-changed=LICENSE_PUBLIC_KEY");
     println!("cargo:rerun-if-env-changed=LICENSE_PRODUCT_CODE");
-    println!("cargo:rerun-if-env-changed=APP_VERSION");
     let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     load_dotenv(&manifest_dir.join(".env"));
     if let Some(project_dir) = manifest_dir.parent() {

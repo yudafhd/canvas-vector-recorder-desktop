@@ -19,10 +19,11 @@ test('bridge batches events and flushes by timer or count', () => {
 test('bridge has duplicate-injection and stop behavior', () => {
   assert.match(bridge, /__CVR_CANVAS_BRIDGE_V1__/); assert.match(bridge, /__CVR_STOP_RECORDER__/); assert.match(bridge, /session_start/); assert.match(bridge, /session_end/);
 });
-test('bridge is transport-only and does not generate SVG', () => { assert.doesNotMatch(bridge, /<svg|buildSvg|escapeXml|license/i); });
-test('bridge detects Canvas assets without capturing SVG files', () => {
+test('bridge is transport-only and does not generate SVG', () => { assert.doesNotMatch(bridge, /buildSvg|escapeXml|license/i); });
+test('bridge detects Canvas assets and serializes meaningful SVG assets', () => {
   assert.match(bridge, /OffscreenCanvas/); assert.match(bridge, /querySelectorAll\('canvas'\)/); assert.match(bridge, /canvas_resized/);
-  assert.doesNotMatch(bridge, /svg_detected|querySelectorAll\('svg'\)|img\[src\], object\[data\], embed\[src\]/);
+  assert.match(bridge, /querySelectorAll\('svg'\)/); assert.match(bridge, /XMLSerializer/); assert.match(bridge, /record_svg_asset/);
+  assert.doesNotMatch(bridge, /img\[src\], object\[data\], embed\[src\]/);
 });
 test('target controls omit the browser navigation toolbar', () => {
   assert.match(controls, /__CVR_TARGET_TAB_ID__/);
@@ -56,6 +57,8 @@ test('closing the last target tab returns to the recorder', () => {
 });
 
 test('main macOS tabs provide reload controls and stay compact', () => {
+  assert.match(index, /id="newTargetMainTab"[^>]*aria-label="Buka tab target baru"/);
+  assert.match(main, /\$\('newTargetMainTab'\)\.addEventListener\('click', \(\) => openTarget\(\)/);
   assert.match(main, /target-tab-reload/);
   assert.match(main, /reload_target_tab/);
   assert.match(styles, /\.target-tab-wrap \.target-main-tab \{ min-width: 100px; max-width: 180px;/);
@@ -112,7 +115,7 @@ test('preview filename can be edited and is used for export', () => {
   assert.match(main, /save_svg', \{ canvasId: selectedCanvas, settings: settings\(\), filename: lastSvg\.filename \}/);
   assert.match(commands, /filename: Option<String>/);
   assert.match(commands, /safe_svg_filename\(&filename\)/);
-  assert.match(styles, /#workspaceView #refreshSettings \{ width: 100%; margin-top: 2px; color: inherit;/);
+  assert.match(styles, /#workspaceView #refreshSettings \{ width: 100%; margin-top: 12px; color: inherit;/);
 });
 
 test('export settings provide custom ratio fields and persist all user settings', () => {
@@ -145,13 +148,17 @@ test('activation screen hides workspace navigation and provides submit feedback'
   assert.match(main, /activationSubmit\.textContent = 'Mengaktifkan…'/);
 });
 
-test('startup shows a two-second landing screen with a local Jakarta font', () => {
+test('startup shows an eight-second landing screen with a local Jakarta font', () => {
   assert.match(index, /id="landingView" class="view landing-shell"/);
-  assert.match(index, /class="landing-title">Canvas Vector Recorder/);
-  assert.doesNotMatch(index, /class="landing-copy"/);
-  assert.match(main, /const LANDING_DURATION_MS = 2_000/);
+  assert.match(index, /class="landing-mark" src="\.\/assets\/brand\/recorder-brand\.png"/);
+  assert.match(index, /id="landingQuote" class="landing-quote"/);
+  assert.match(main, /const LANDING_DURATION_MS = 8_000/);
+  assert.match(main, /const LANDING_QUOTES = \[/);
+  assert.match(main, /function showRandomLandingQuote/);
+  assert.match(main, /LAST_LANDING_QUOTE_KEY/);
   assert.match(main, /landingView\.hidden = true/);
-  assert.match(styles, /width: min\(100%, 380px\)/);
+  assert.match(styles, /#landingView\.landing-shell \{[\s\S]*background: #121b22;/);
+  assert.match(styles, /#landingView \.landing-quote/);
   assert.match(styles, /@font-face/);
   assert.match(styles, /assets\/fonts\/plus-jakarta-sans-variable\.ttf/);
 });
@@ -192,7 +199,7 @@ test('workspace shows the application version beside the brand title', () => {
   assert.match(main, /import packageJson from '\.\.\/package\.json'/);
   assert.match(main, /appVersion\.textContent = `v\$\{packageJson\.version\}`/);
   assert.match(styles, /\.brand-title-row/);
-  assert.doesNotMatch(index, /<header class="topbar">[\s\S]*?class="brand-icon"/);
+  assert.match(index, /<header class="topbar">[\s\S]*?<img class="brand-icon" src="\.\/assets\/brand\/recorder-brand\.png" alt="">/);
   assert.match(styles, /\.badge \{[^}]*font-size: 12px;/);
 });
 

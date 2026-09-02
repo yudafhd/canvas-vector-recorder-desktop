@@ -12,6 +12,7 @@ import {
   Moon,
   MonitorPlay,
   Pencil,
+  Pipette,
   Plus,
   RefreshCw,
   RotateCw,
@@ -22,10 +23,10 @@ import {
   createIcons,
 } from 'lucide';
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
-import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
+import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgAsset, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
-const lucideIcons = { Check, Download, DownloadCloud, ExternalLink, Globe, Moon, MonitorPlay, Pencil, Plus, RefreshCw, RotateCw, Settings2, Sun, Trash2, X };
+const lucideIcons = { Check, Download, DownloadCloud, ExternalLink, Globe, Moon, MonitorPlay, Pencil, Pipette, Plus, RefreshCw, RotateCw, Settings2, Sun, Trash2, X };
 
 function iconPlaceholder(name: string): HTMLElement {
   const element = document.createElement('i');
@@ -72,6 +73,7 @@ function handleRefreshShortcut(event: KeyboardEvent): void {
 
 const landingView = $('landingView');
 const landingStatus = $('landingStatus');
+const landingQuote = $('landingQuote');
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
@@ -87,10 +89,12 @@ const copyError = $('copyError');
 const workspaceStatus = $('workspaceStatus');
 const updateIndicator = $('updateIndicator');
 const canvasList = $('canvasList');
+const svgList = $('svgList');
 const appVersion = $('appVersion');
 appVersion.textContent = `v${packageJson.version}`;
 let currentSession: string | null = null;
 let selectedCanvas: string | null = null;
+let selectedSvg: string | null = null;
 let lastSvg: SvgResult | null = null;
 let targetOpen = false;
 const isWindows = /Windows/i.test(navigator.userAgent);
@@ -102,10 +106,15 @@ let activeMainTab: MainTab = 'recorder';
 let activeTargetId: string | null = null;
 let targetTabs: TargetTabInfo[] = [];
 let detectedAssets: CanvasDetection[] = [];
+let detectedSvgAssets: SvgAsset[] = [];
+type AssetTab = 'canvas' | 'svg';
+let activeAssetTab: AssetTab = 'canvas';
 let thumbnailGeneration = 0;
 const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
 const thumbnailJobs = new Map<string, string>();
+const svgThumbnailUrls = new Map<string, string>();
+const svgThumbnailKeys = new Map<string, string>();
 const THUMBNAIL_REFRESH_MS = 1200;
 let thumbnailRefreshTimer: number | null = null;
 let pendingThumbnailItems: CanvasDetection[] | null = null;
@@ -133,7 +142,110 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
   '16:9': { width: 16, height: 9 },
 };
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
-const LANDING_DURATION_MS = 2_000;
+const LANDING_DURATION_MS = 8_000;
+const LANDING_QUOTES = [
+  ['Tidak ada yang akan berhasil kecuali kamu mulai mengerjakannya.', 'Maya Angelou'],
+  ['Rintangan bagi tindakan justru memajukan tindakan. Yang menghalangi jalan menjadi jalan.', 'Marcus Aurelius'],
+  ['Sendiri kita dapat melakukan sedikit; bersama kita dapat melakukan banyak.', 'Helen Keller'],
+  ['Hidup seperti mengendarai sepeda. Agar seimbang, kamu harus terus bergerak.', 'Albert Einstein'],
+  ['Pendidikan adalah senjata paling ampuh untuk mengubah dunia.', 'Nelson Mandela'],
+  ['Tidak ada yang perlu ditakuti dalam hidup; yang perlu dilakukan adalah memahaminya.', 'Marie Curie'],
+  ['Ketika seluruh dunia diam, satu suara pun bisa menjadi kuat.', 'Malala Yousafzai'],
+  ['Masa depan bergantung pada apa yang kamu lakukan hari ini.', 'Mahatma Gandhi'],
+  ['Satu-satunya cara melakukan pekerjaan hebat adalah mencintai pekerjaan itu.', 'Steve Jobs'],
+  ['Kesempatan tidak terjadi begitu saja. Kamulah yang menciptakannya.', 'Chris Grosser'],
+  ['Mulailah dari tempatmu berada. Gunakan yang kamu punya. Lakukan yang kamu bisa.', 'Arthur Ashe'],
+  ['Keberhasilan adalah jumlah dari upaya kecil yang diulang setiap hari.', 'Robert Collier'],
+  ['Tidak pernah terlambat untuk menjadi dirimu yang seharusnya.', 'George Eliot'],
+  ['Keunggulan bukan tindakan, melainkan kebiasaan.', 'Will Durant'],
+  ['Kebahagiaan hidupmu bergantung pada kualitas pikiranmu.', 'Marcus Aurelius'],
+  ['Tidak ada yang bisa meredupkan cahaya yang bersinar dari dalam diri.', 'Maya Angelou'],
+  ['Keberanian adalah harga yang dituntut kehidupan untuk memberi kedamaian.', 'Amelia Earhart'],
+  ['Tugas kita bukan melihat samar di kejauhan, tetapi melakukan yang jelas di dekat kita.', 'Thomas Carlyle'],
+  ['Kita menjadi apa yang kita lakukan berulang kali.', 'Aristoteles'],
+  ['Bersikaplah setia pada hal-hal kecil, karena di sanalah kekuatanmu berada.', 'Bunda Teresa'],
+  ['Mimpi tidak bekerja kecuali kamu bekerja.', 'John C. Maxwell'],
+  ['Kegagalan hanyalah kesempatan untuk memulai lagi dengan lebih cerdas.', 'Henry Ford'],
+  ['Jangan berhenti ketika lelah; berhentilah ketika selesai.', 'Marilyn Monroe'],
+  ['Jika kamu mengubah cara memandang sesuatu, sesuatu yang kamu pandang ikut berubah.', 'Wayne Dyer'],
+  ['Keberhasilan bukan akhir, kegagalan bukan kehancuran; keberanian untuk melanjutkanlah yang penting.', 'Winston Churchill'],
+  ['Lakukan satu hal setiap hari yang membuatmu takut.', 'Eleanor Roosevelt'],
+  ['Harapan adalah hal berbulu yang bertengger di jiwa.', 'Emily Dickinson'],
+  ['Jalani hidup yang telah kamu bayangkan dengan penuh keyakinan.', 'Henry David Thoreau'],
+  ['Tidak ada pencapaian besar tanpa antusiasme.', 'Ralph Waldo Emerson'],
+  ['Wajahilah matahari, dan bayangan akan jatuh di belakangmu.', 'Walt Whitman'],
+  ['Kita adalah apa yang kita yakini.', 'C. S. Lewis'],
+  ['Hidup bukan soal menemukan dirimu; hidup soal menciptakan dirimu.', 'George Bernard Shaw'],
+  ['Jadilah dirimu sendiri; orang lain sudah ada yang memiliki.', 'Oscar Wilde'],
+  ['Rahasia untuk maju adalah memulai.', 'Mark Twain'],
+  ['Keraguan kita hari ini dapat membatasi pencapaian kita esok hari.', 'William Shakespeare'],
+  ['Tidak ada yang baik atau buruk, pikiranlah yang membuatnya demikian.', 'William Shakespeare'],
+  ['Jangan biarkan apa yang tidak bisa kamu lakukan mengganggu apa yang bisa kamu lakukan.', 'John Wooden'],
+  ['Sukses adalah kemampuan untuk berpindah dari kegagalan ke kegagalan tanpa kehilangan semangat.', 'Winston Churchill'],
+  ['Apa yang kamu lakukan berbicara begitu keras hingga aku tak mendengar apa yang kamu katakan.', 'Ralph Waldo Emerson'],
+  ['Jika ingin mengangkat dirimu, angkatlah orang lain.', 'Booker T. Washington'],
+  ['Kita tidak dapat memecahkan masalah dengan cara pikir yang sama saat menciptakannya.', 'Albert Einstein'],
+  ['Jangan menilai setiap hari dari panenmu, melainkan dari benih yang kamu tanam.', 'Robert Louis Stevenson'],
+  ['Jika kamu dapat memimpikannya, kamu dapat mewujudkannya.', 'Walt Disney'],
+  ['Kamu tidak harus hebat untuk memulai, tetapi harus memulai untuk menjadi hebat.', 'Zig Ziglar'],
+  ['Satu-satunya batas untuk pencapaian esok adalah keraguan hari ini.', 'Franklin D. Roosevelt'],
+  ['Hidup adalah petualangan berani atau bukan apa-apa.', 'Helen Keller'],
+  ['Jangan menunggu. Waktunya tidak akan pernah benar-benar tepat.', 'Napoleon Hill'],
+  ['Seseorang yang tidak pernah salah berarti tidak pernah mencoba hal baru.', 'Albert Einstein'],
+  ['Semua impian dapat terwujud jika kita berani mengejarnya.', 'Walt Disney'],
+  ['Kesulitan sering menyiapkan orang biasa untuk takdir luar biasa.', 'C. S. Lewis'],
+  ['Belajarlah dari kemarin, hiduplah untuk hari ini, berharaplah untuk esok.', 'Albert Einstein'],
+  ['Saat kamu tahu lebih baik, lakukan lebih baik.', 'Maya Angelou'],
+  ['Keberanian dimulai dengan hadir dan membiarkan diri terlihat.', 'Brené Brown'],
+  ['Apa pun yang dapat dipikirkan dan diyakini pikiran, dapat dicapai.', 'Napoleon Hill'],
+  ['Buatlah setiap hari menjadi karya agungmu.', 'John Wooden'],
+  ['Semakin keras kamu bekerja untuk sesuatu, semakin besar rasanya saat berhasil.', 'Cristiano Ronaldo'],
+  ['Jangan biarkan kemarin mengambil terlalu banyak hari ini.', 'Will Rogers'],
+  ['Masa depan adalah milik mereka yang percaya pada keindahan mimpi mereka.', 'Eleanor Roosevelt'],
+  ['Kamu lebih berani daripada yang kamu kira, lebih kuat daripada yang terlihat, dan lebih cerdas dari yang kamu pikirkan.', 'A. A. Milne'],
+  ['Tidak ada jalan pintas menuju tempat mana pun yang layak dituju.', 'Beverly Sills'],
+  ['Kamu tidak pernah terlalu tua untuk menetapkan tujuan baru.', 'C. S. Lewis'],
+  ['Satu tindakan kebaikan dapat menyalakan senyum di banyak hati.', 'William Wordsworth'],
+  ['Hidup menyusut atau mengembang sebanding dengan keberanian seseorang.', 'Anaïs Nin'],
+  ['Jadilah perubahan yang ingin kamu lihat di dunia.', 'Mahatma Gandhi'],
+  ['Ubah lukamu menjadi kebijaksanaan.', 'Oprah Winfrey'],
+  ['Jangan pernah menyerah pada sesuatu yang tidak bisa kamu lewati sehari tanpa memikirkannya.', 'Winston Churchill'],
+  ['Kamu tidak bisa kembali dan mengubah awal, tetapi bisa mulai sekarang dan mengubah akhir.', 'C. S. Lewis'],
+  ['Bekerjalah dengan gembira dan nikmati apa yang kamu lakukan.', 'Earl Nightingale'],
+  ['Masa depan dimulai hari ini, bukan besok.', 'Paus Yohanes Paulus II'],
+  ['Setiap ahli pernah menjadi pemula.', 'Helen Hayes'],
+  ['Keberhasilan paling sering datang kepada mereka yang terlalu sibuk untuk mencarinya.', 'Henry David Thoreau'],
+  ['Kamu kehilangan seratus persen peluang yang tidak kamu ambil.', 'Wayne Gretzky'],
+  ['Bukan gunung yang kita taklukkan, melainkan diri kita sendiri.', 'Edmund Hillary'],
+  ['Usahakan menjadi bernilai, bukan sekadar sukses.', 'Albert Einstein'],
+  ['Kamu tidak harus melihat seluruh tangga; cukup ambil langkah pertama.', 'Martin Luther King Jr.'],
+  ['Untuk mencapai hal besar, kita harus bermimpi sekaligus bertindak.', 'Anatole France'],
+  ['Satu-satunya perjalanan yang mustahil adalah yang tidak pernah kamu mulai.', 'Tony Robbins'],
+  ['Lakukan yang terbaik sampai kamu tahu lebih baik. Setelah itu, lakukan lebih baik.', 'Maya Angelou'],
+  ['Jadilah begitu baik hingga mereka tidak bisa mengabaikanmu.', 'Steve Martin'],
+  ['Yang terpenting adalah terus bertanya.', 'Albert Einstein'],
+  ['Kesempurnaan tercapai bukan saat tak ada lagi yang ditambah, melainkan saat tak ada lagi yang bisa diambil.', 'Antoine de Saint-Exupéry'],
+  ['Jika ada kesempatan tidak mengetuk, bangunlah pintu.', 'Milton Berle'],
+  ['Semua yang pernah kamu inginkan ada di sisi lain dari rasa takut.', 'George Addair'],
+  ['Sukses adalah menyukai diri sendiri, pekerjaanmu, dan caramu mengerjakannya.', 'Maya Angelou'],
+  ['Kamu selalu lebih kuat daripada yang kamu kira.', 'A. A. Milne'],
+  ['Hal besar dilakukan melalui rangkaian hal kecil yang disatukan.', 'Vincent van Gogh'],
+  ['Yang membuatmu unik kemungkinan besar akan membuatmu sukses.', 'William Arruda'],
+  ['Percayalah bahwa kamu bisa, dan kamu sudah setengah jalan.', 'Theodore Roosevelt'],
+  ['Tidak ada yang mustahil bagi hati yang mau.', 'John Heywood'],
+  ['Bukan panjangnya hidup, melainkan kedalaman hidup yang penting.', 'Ralph Waldo Emerson'],
+  ['Kita harus menerima kekecewaan terbatas, tetapi tidak pernah kehilangan harapan tak terbatas.', 'Martin Luther King Jr.'],
+  ['Jangan menunggu pemimpin; lakukan sendiri, orang ke orang.', 'Bunda Teresa'],
+  ['Yang kita lakukan sekarang bergema dalam keabadian.', 'Marcus Aurelius'],
+  ['Teruslah berenang.', 'Dory, Finding Nemo'],
+  ['Lakukan, atau jangan lakukan. Tidak ada sekadar mencoba.', 'Yoda, The Empire Strikes Back'],
+  ['Mengapa kita jatuh? Agar kita dapat belajar untuk bangkit lagi.', 'Alfred, Batman Begins'],
+  ['Ke tak terhingga dan melampauinya!', 'Buzz Lightyear, Toy Story'],
+  ['Harapan adalah hal yang baik, mungkin yang terbaik; dan hal baik tidak pernah mati.', 'Andy Dufresne, The Shawshank Redemption'],
+  ['Raih hari ini. Jadikan hidupmu luar biasa.', 'John Keating, Dead Poets Society'],
+  ['Optimisme adalah keyakinan yang menuntun pada pencapaian; tanpa harapan, tak ada yang dapat dilakukan.', 'Helen Keller'],
+] as const;
+const LAST_LANDING_QUOTE_KEY = 'canvas-vector-recorder.last-landing-quote.v1';
 const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
 const UPDATE_CHECK_STORAGE_KEY = 'canvas-vector-recorder.update-check.v1';
 const UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -200,6 +312,16 @@ function persistTheme(): void {
   try { localStorage.setItem(THEME_STORAGE_KEY, darkMode ? 'dark' : 'light'); } catch (_) { /* Storage may be disabled by the host. */ }
 }
 
+function showRandomLandingQuote(): void {
+  let previousIndex = -1;
+  try { previousIndex = Number(sessionStorage.getItem(LAST_LANDING_QUOTE_KEY)); } catch (_) { /* Storage may be disabled by the host. */ }
+  let index = Math.floor(Math.random() * LANDING_QUOTES.length);
+  if (LANDING_QUOTES.length > 1 && index === previousIndex) index = (index + 1) % LANDING_QUOTES.length;
+  const [quote, attribution] = LANDING_QUOTES[index];
+  landingQuote.textContent = `“${quote}” — ${attribution}`;
+  try { sessionStorage.setItem(LAST_LANDING_QUOTE_KEY, String(index)); } catch (_) { /* Storage may be disabled by the host. */ }
+}
+
 function selectTargetTab(tabId: string): void {
   activeTargetId = tabId;
   setMainTab('target');
@@ -224,6 +346,11 @@ function renderTargetTabs(state: TargetTabsState): void {
   targetTabs = state.tabs;
   activeTargetId = state.active_id;
   targetOpen = targetTabs.length > 0;
+  const newTargetMainTab = $<HTMLButtonElement>('newTargetMainTab');
+  newTargetMainTab.disabled = targetTabs.length >= MAX_TARGET_TABS;
+  newTargetMainTab.title = newTargetMainTab.disabled
+    ? `Maksimal ${MAX_TARGET_TABS} tab target.`
+    : 'Buka tab target baru';
   targetMainTabs.replaceChildren();
   targetMainTabs.hidden = !targetTabs.length;
   targetTabsCount.textContent = `${targetTabs.length}/${MAX_TARGET_TABS}`;
@@ -572,6 +699,7 @@ function loadPersistedSettings(): void {
   syncRatioInputsFromSelection();
   updateRatioControls();
   syncBackgroundControls();
+  syncBackgroundColorPicker();
   updateArtworkScaleControl();
   updatePreviewZoomControl();
 }
@@ -604,6 +732,10 @@ function normalizedFilename(value: string): string | null {
   const safe = trimmed.replace(/[\u0000-\u001f<>:"/\\|?*]/g, '_');
   if (!safe || safe === '.' || safe === '..') return null;
   return /\.svg$/i.test(safe) ? safe : `${safe}.svg`;
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] || character);
 }
 
 function displayedFilename(): string {
@@ -720,6 +852,52 @@ function setArtworkScaleValue(value: number): void {
 function syncBackgroundControls(): void {
   const transparent = $<HTMLInputElement>('transparentBackground').checked;
   $<HTMLInputElement>('backgroundColor').disabled = transparent;
+  $<HTMLInputElement>('backgroundColorHex').disabled = transparent;
+  $<HTMLButtonElement>('pickBackgroundColor').disabled = transparent;
+}
+
+function normalizedHexColor(value: string): string | null {
+  const normalized = value.trim();
+  return /^#[0-9a-f]{6}$/i.test(normalized) ? normalized.toUpperCase() : null;
+}
+
+function syncBackgroundColorPicker(): void {
+  const color = $<HTMLInputElement>('backgroundColor').value;
+  $<HTMLInputElement>('backgroundColorHex').value = color.toUpperCase();
+}
+
+type EyeDropperInstance = { open(): Promise<{ sRGBHex: string }> };
+type EyeDropperConstructor = new () => EyeDropperInstance;
+
+async function pickBackgroundColor(): Promise<void> {
+  const colorInput = $<HTMLInputElement>('backgroundColor');
+  try {
+    const nativeColor = await invoke<string | null>('pick_screen_color');
+    const color = nativeColor && normalizedHexColor(nativeColor);
+    if (color) {
+      colorInput.value = color;
+      syncBackgroundColorPicker();
+      persistSettingsSilently();
+      return;
+    }
+  } catch (_) {
+    // Continue with the WebView picker when the native picker is unavailable.
+  }
+  const EyeDropper = (window as Window & { EyeDropper?: EyeDropperConstructor }).EyeDropper;
+  if (!EyeDropper) {
+    colorInput.click();
+    return;
+  }
+  try {
+    const result = await new EyeDropper().open();
+    const color = normalizedHexColor(result.sRGBHex);
+    if (!color) return;
+    colorInput.value = color;
+    syncBackgroundColorPicker();
+    persistSettingsSilently();
+  } catch (_) {
+    // User canceled the native eyedropper.
+  }
 }
 
 function thumbnailKey(item: CanvasDetection): string {
@@ -727,11 +905,30 @@ function thumbnailKey(item: CanvasDetection): string {
   return [item.canvas_id, item.revision, item.width, item.height, current.ratio, current.minPixels, current.maxPixels, current.backgroundColor, current.transparentBackground, current.artworkScale].join('|');
 }
 
+function svgThumbnailKey(item: SvgAsset): string {
+  return [item.svg_id, item.revision, item.markup.length].join('|');
+}
+
 function canvasListKey(items: CanvasDetection[]): string {
   return [selectedCanvas, ...items
     .filter(item => item.shapes > 0 || item.gap_fillers > 0)
     .map(item => [item.canvas_id, item.width, item.height, item.shapes, item.gap_fillers, item.errors, item.state].join(':'))]
     .join('|');
+}
+
+function updateAssetTabs(): void {
+  const canvasTab = $<HTMLButtonElement>('canvasAssetTab');
+  const svgTab = $<HTMLButtonElement>('svgAssetTab');
+  const canvasActive = activeAssetTab === 'canvas';
+  canvasTab.classList.toggle('active', canvasActive);
+  svgTab.classList.toggle('active', !canvasActive);
+  canvasTab.setAttribute('aria-selected', String(canvasActive));
+  svgTab.setAttribute('aria-selected', String(!canvasActive));
+  canvasList.hidden = !canvasActive;
+  svgList.hidden = canvasActive;
+  $('canvasCount').textContent = String(detectedAssets.filter(item => item.shapes > 0 || item.gap_fillers > 0).length);
+  $('svgCount').textContent = String(detectedSvgAssets.length);
+  $('detectedCount').textContent = `${detectedAssets.filter(item => item.shapes > 0 || item.gap_fillers > 0).length} C · ${detectedSvgAssets.length} S`;
 }
 
 function scheduleThumbnailRefresh(items: CanvasDetection[]): void {
@@ -802,7 +999,7 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
     }
   });
   const filtered = items.filter(item => item.shapes > 0 || item.gap_fillers > 0);
-  $('detectedCount').textContent = String(filtered.length);
+  updateAssetTabs();
   const nextListKey = canvasListKey(items);
   const listChanged = nextListKey !== renderedCanvasListKey;
   if (!filtered.length) {
@@ -825,6 +1022,7 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
     const nextCanvas = item.dataset.canvas || null;
     if (nextCanvas !== selectedCanvas) {
       selectedCanvas = nextCanvas;
+      selectedSvg = null;
       lastSvg = null;
       previewFilenameCanvasId = nextCanvas;
       previewFilenameOverride = nextCanvas ? filenameOverrides[nextCanvas] || null : null;
@@ -834,6 +1032,58 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
     renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
   if (generateThumbnails) void loadThumbnails(filtered, generation);
+}
+
+function renderSvgAssets(items: SvgAsset[]): void {
+  detectedSvgAssets = items;
+  const activeIds = new Set(items.map(item => item.svg_id));
+  svgThumbnailUrls.forEach((url, id) => {
+    if (!activeIds.has(id)) {
+      URL.revokeObjectURL(url);
+      svgThumbnailUrls.delete(id);
+      svgThumbnailKeys.delete(id);
+    }
+  });
+  updateAssetTabs();
+  if (!items.length) {
+    svgList.innerHTML = '<p class="muted">Belum ada SVG. Tunggu hasil vectorisasi tampil di target.</p>';
+    return;
+  }
+  svgList.innerHTML = items.map(item => `<div class="canvas-item${item.svg_id === selectedSvg ? ' selected' : ''}" data-svg="${item.svg_id}"><div class="canvas-thumb" data-thumb-svg="${item.svg_id}">${svgThumbnailUrls.has(item.svg_id) ? `<img src="${svgThumbnailUrls.get(item.svg_id)}" alt="Thumbnail ${escapeHtml(item.filename)}">` : '<span>Memuat thumbnail…</span>'}</div><strong>${escapeHtml(item.filename)}</strong><small>${Math.round(item.width)}×${Math.round(item.height)} · ${item.shapes} elemen · revisi ${item.revision}</small></div>`).join('');
+  svgList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
+    const nextSvg = item.dataset.svg || null;
+    if (nextSvg !== selectedSvg) {
+      selectedSvg = nextSvg;
+      selectedCanvas = null;
+      lastSvg = null;
+      previewFilenameCanvasId = nextSvg;
+      previewFilenameOverride = nextSvg ? filenameOverrides[nextSvg] || null : null;
+      closeFilenameEditor();
+      updateFilenameDisplay();
+    }
+    renderSvgAssets(detectedSvgAssets);
+    refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
+  }));
+  loadSvgThumbnails(items);
+}
+
+function loadSvgThumbnails(items: SvgAsset[]): void {
+  items.forEach(item => {
+    const key = svgThumbnailKey(item);
+    if (svgThumbnailKeys.get(item.svg_id) === key) return;
+    const previous = svgThumbnailUrls.get(item.svg_id);
+    if (previous) URL.revokeObjectURL(previous);
+    const url = URL.createObjectURL(new Blob([item.markup], { type: 'image/svg+xml' }));
+    svgThumbnailUrls.set(item.svg_id, url);
+    svgThumbnailKeys.set(item.svg_id, key);
+    const slot = Array.from(svgList.querySelectorAll<HTMLElement>('[data-thumb-svg]')).find(element => element.dataset.thumbSvg === item.svg_id);
+    if (slot) {
+      const image = document.createElement('img');
+      image.src = url;
+      image.alt = `Thumbnail ${item.filename}`;
+      slot.replaceChildren(image);
+    }
+  });
 }
 
 async function loadThumbnails(items: CanvasDetection[], generation: number): Promise<void> {
@@ -864,7 +1114,14 @@ async function loadThumbnails(items: CanvasDetection[], generation: number): Pro
 async function refreshCanvases(): Promise<void> {
   if (refreshCanvasesInProgress) return;
   refreshCanvasesInProgress = true;
-  try { renderCanvases(await invoke<CanvasDetection[]>('list_canvases')); }
+  try {
+    const [canvases, svgs] = await Promise.all([
+      invoke<CanvasDetection[]>('list_canvases'),
+      invoke<SvgAsset[]>('list_svg_assets'),
+    ]);
+    renderCanvases(canvases);
+    renderSvgAssets(svgs);
+  }
   finally { refreshCanvasesInProgress = false; }
 }
 
@@ -876,10 +1133,17 @@ function resetDetectedSurfaces(): void {
   previewRequest += 1;
   if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
   selectedCanvas = null;
+  selectedSvg = null;
   lastSvg = null;
   previewFilenameCanvasId = null;
   previewFilenameOverride = null;
   detectedAssets = [];
+  detectedSvgAssets = [];
+  svgThumbnailUrls.forEach(url => URL.revokeObjectURL(url));
+  svgThumbnailUrls.clear();
+  svgThumbnailKeys.clear();
+  activeAssetTab = 'canvas';
+  updateAssetTabs();
   previewZoom = 1;
   previewPanX = 0;
   previewPanY = 0;
@@ -896,6 +1160,28 @@ function resetDetectedSurfaces(): void {
 }
 
 async function refreshPreview(): Promise<void> {
+  const svgId = selectedSvg;
+  if (svgId) {
+    const result = await invoke<SvgResult>('generate_svg_asset', { svgId, settings: settings() });
+    if (svgId !== selectedSvg) return;
+    if (previewFilenameCanvasId !== svgId) {
+      previewFilenameCanvasId = svgId;
+      previewFilenameOverride = filenameOverrides[svgId] || null;
+    }
+    const filename = previewFilenameOverride || result.filename;
+    lastSvg = { ...result, filename };
+    const url = URL.createObjectURL(new Blob([result.svg], { type: 'image/svg+xml' }));
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl = url;
+    $('previewStage').innerHTML = `<img src="${url}" alt="SVG source preview" draggable="false">`;
+    updatePreviewZoomControl();
+    $('previewTitle').textContent = 'Source SVG'; updateFilenameDisplay();
+    $('shapeCount').textContent = String(result.stats.shapes); $('gapCount').textContent = '—'; $('errorCount').textContent = '—';
+    $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
+    $('exportSvg').removeAttribute('disabled');
+    status(workspaceStatus, 'vektor ditemukan.', 'success');
+    return;
+  }
   const canvasId = selectedCanvas;
   if (!canvasId) return;
   const request = ++previewRequest;
@@ -923,8 +1209,11 @@ async function refreshPreview(): Promise<void> {
 async function openTarget(): Promise<void> {
   if (openTargetInProgress) return;
   openTargetInProgress = true;
-  const button = $<HTMLButtonElement>('openTarget');
-  button.disabled = true;
+  const buttons = [
+    $<HTMLButtonElement>('openTarget'),
+    $<HTMLButtonElement>('newTargetMainTab'),
+  ];
+  buttons.forEach(button => { button.disabled = true; });
   try {
     const url = $<HTMLInputElement>('targetUrl').value.trim();
     try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
@@ -943,6 +1232,7 @@ async function openTarget(): Promise<void> {
     else activeMainTab = 'target';
     updateOpenTargetButton();
     selectedCanvas = null;
+    selectedSvg = null;
     lastSvg = null;
     previewFilenameCanvasId = null;
     previewFilenameOverride = null;
@@ -952,7 +1242,8 @@ async function openTarget(): Promise<void> {
     status(workspaceStatus, 'Perekam aktif di background.', 'success');
   } finally {
     openTargetInProgress = false;
-    button.disabled = false;
+    buttons[0].disabled = false;
+    buttons[1].disabled = targetTabs.length >= MAX_TARGET_TABS;
   }
 }
 
@@ -971,6 +1262,7 @@ async function closeTarget(): Promise<void> {
 document.addEventListener('DOMContentLoaded', () => {
   renderIcons();
   window.addEventListener('keydown', handleRefreshShortcut);
+  showRandomLandingQuote();
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
@@ -1004,14 +1296,17 @@ document.addEventListener('DOMContentLoaded', () => {
   closeTargetMainTab.addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   window.addEventListener('resize', syncTargetViewBounds);
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('newTargetMainTab').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('closeTarget').addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('refreshSurfacesButton').addEventListener('click', () => refreshCanvases().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  $('canvasAssetTab').addEventListener('click', () => { activeAssetTab = 'canvas'; updateAssetTabs(); });
+  $('svgAssetTab').addEventListener('click', () => { activeAssetTab = 'svg'; updateAssetTabs(); });
   $('clearSurfacesButton').addEventListener('click', async () => {
     try {
       await invoke('clear_surfaces');
       resetDetectedSurfaces();
       await refreshCanvases();
-      status(workspaceStatus, 'Daftar Canvas dibersihkan.', 'success');
+      status(workspaceStatus, 'Daftar Canvas dan SVG dibersihkan.', 'success');
     } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
   });
   $('ratio').addEventListener('change', () => {
@@ -1019,7 +1314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRatioControls();
     persistSettingsSilently();
   });
-  ['customRatioWidth', 'customRatioHeight', 'minPixels', 'maxPixels', 'backgroundColor', 'transparentBackground'].forEach(id => {
+  ['customRatioWidth', 'customRatioHeight', 'minPixels', 'maxPixels', 'transparentBackground'].forEach(id => {
     $(id).addEventListener('input', () => {
       if (id === 'customRatioWidth' || id === 'customRatioHeight') {
         const ratioSelect = $<HTMLSelectElement>('ratio');
@@ -1032,6 +1327,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     $(id).addEventListener('change', () => { syncBackgroundControls(); persistSettingsSilently(); });
   });
+  $<HTMLInputElement>('backgroundColor').addEventListener('input', () => {
+    syncBackgroundColorPicker();
+    persistSettingsSilently();
+  });
+  const backgroundColorHex = $<HTMLInputElement>('backgroundColorHex');
+  backgroundColorHex.addEventListener('input', () => {
+    const color = normalizedHexColor(backgroundColorHex.value);
+    if (!color) return;
+    $<HTMLInputElement>('backgroundColor').value = color;
+    backgroundColorHex.value = color;
+    persistSettingsSilently();
+  });
+  backgroundColorHex.addEventListener('blur', syncBackgroundColorPicker);
+  $('pickBackgroundColor').addEventListener('click', () => { void pickBackgroundColor(); });
   $('previewZoomSlider').addEventListener('input', event => {
     setPreviewZoomValue(Number((event.currentTarget as HTMLInputElement).value));
   });
@@ -1089,9 +1398,11 @@ document.addEventListener('DOMContentLoaded', () => {
     status(workspaceStatus, 'Pengaturan disimpan dan diterapkan.', 'success');
   });
   $('exportSvg').addEventListener('click', async () => {
-    if (!lastSvg || !selectedCanvas) return;
+    if (!lastSvg || (!selectedCanvas && !selectedSvg)) return;
     try {
-      const savedPath = await invoke<string>('save_svg', { canvasId: selectedCanvas, settings: settings(), filename: lastSvg.filename });
+      const savedPath = selectedSvg
+        ? await invoke<string>('save_svg_asset', { svgId: selectedSvg, settings: settings(), filename: lastSvg.filename })
+        : await invoke<string>('save_svg', { canvasId: selectedCanvas, settings: settings(), filename: lastSvg.filename });
       showDownloadToast(`Download tersimpan: ${savedPath}`);
       status(workspaceStatus, `SVG berhasil diexport: ${lastSvg.filename}`, 'success');
     } catch (error) { const message = errorMessage(error); showDownloadToast(`Export gagal: ${message}`); status(workspaceStatus, message, 'error'); }
@@ -1100,6 +1411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCanvases(event.payload, { generateThumbnails: false });
     scheduleThumbnailRefresh(event.payload);
   });
+  void listen<SvgAsset[]>('svgs-updated', event => renderSvgAssets(event.payload));
   void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
   void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
   void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });

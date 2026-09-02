@@ -50,6 +50,7 @@ pub struct CanvasState {
     pub canvas_id: String,
     pub width: f64,
     pub height: f64,
+    pub visible: bool,
     pub paths: HashMap<String, PathData>,
     pub shapes: Vec<Shape>,
     pub gap_fillers: Vec<Stroke>,
@@ -69,6 +70,7 @@ impl CanvasState {
             canvas_id: id.into(),
             width: width.max(1.0),
             height: height.max(1.0),
+            visible: true,
             ..Default::default()
         }
     }
@@ -81,6 +83,11 @@ impl CanvasState {
             self.height = height.max(1.0);
         }
         match event.event_type.as_str() {
+            "canvas_visibility" => {
+                if let Some(visible) = event.value.as_ref().and_then(|value| value.as_bool()) {
+                    self.visible = visible;
+                }
+            }
             "path_created" => {
                 if let Some(id) = &event.path_id {
                     self.paths.entry(id.clone()).or_default();

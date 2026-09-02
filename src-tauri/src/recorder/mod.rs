@@ -2,6 +2,7 @@ pub mod canvas;
 pub mod events;
 pub mod path;
 pub mod svg;
+pub mod svg_asset;
 pub mod transform;
 pub mod validator;
 
@@ -9,12 +10,16 @@ use crate::AppError;
 use canvas::{CanvasResult, CanvasState};
 use events::RecorderEvent;
 use path::PathData;
+use svg_asset::{SvgAsset, SvgAssetInput};
 use serde::Serialize;
 use std::collections::HashMap;
 use uuid::Uuid;
 
 const MAX_EVENTS: usize = 250_000;
 const MAX_BATCH_BYTES: usize = 2_000_000;
+/// Canvases smaller than this are typically tracking or temporary surfaces,
+/// not exportable artwork.
+const MIN_LISTED_CANVAS_EDGE: f64 = 16.0;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct CanvasDetection {
@@ -39,6 +44,7 @@ pub struct SessionState {
     pub last_sequences: HashMap<String, u64>,
     pub event_count: usize,
     pub canvases: HashMap<String, CanvasState>,
+    pub svgs: HashMap<String, SvgAsset>,
     pub paths: HashMap<String, PathData>,
     pub ended: bool,
 }
@@ -53,6 +59,7 @@ impl RecorderStore {
                 last_sequences: HashMap::new(),
                 event_count: 0,
                 canvases: HashMap::new(),
+                svgs: HashMap::new(),
                 paths: HashMap::new(),
                 ended: false,
             },
@@ -79,6 +86,7 @@ impl RecorderStore {
         };
         if let Some(session) = self.sessions.get_mut(&session_id) {
             session.canvases.clear();
+            session.svgs.clear();
             session.paths.clear();
             session.event_count = 0;
             session.ended = false;
@@ -162,25 +170,75 @@ impl RecorderStore {
         Ok(())
     }
     pub fn list(&self) -> Vec<CanvasDetection> {
-        self.sessions
+        let mut canvases = self
+            .sessions
             .values()
             .flat_map(|session| {
-                session.canvases.values().map(|canvas| CanvasDetection {
-                    canvas_id: canvas.canvas_id.clone(),
-                    width: canvas.width,
-                    height: canvas.height,
-                    revision: canvas.revision,
-                    shapes: canvas.shapes.len(),
-                    gap_fillers: canvas.gap_fillers.len(),
-                    errors: canvas.errors,
-                    state: if session.ended {
-                        "ENDED".into()
-                    } else {
-                        "RECORDING".into()
-                    },
-                })
+                session
+                    .canvases
+                    .values()
+                    .filter(|canvas| {
+                        canvas.visible
+                            && canvas.width >= MIN_LISTED_CANVAS_EDGE
+                            && canvas.height >= MIN_LISTED_CANVAS_EDGE
+                    })
+                    .map(|canvas| CanvasDetection {
+                        canvas_id: canvas.canvas_id.clone(),
+                        width: canvas.width,
+                        height: canvas.height,
+                        revision: canvas.revision,
+                        shapes: canvas.shapes.len(),
+                        gap_fillers: canvas.gap_fillers.len(),
+                        errors: canvas.errors,
+                        state: if session.ended {
+                            "ENDED".into()
+                        } else {
+                            "RECORDING".into()
+                        },
+                    })
             })
-            .collect()
+            .collect::<Vec<_>>();
+        canvases.sort_by(|left, right| {
+            (right.width * right.height)
+                .total_cmp(&(left.width * left.height))
+                .then_with(|| (right.shapes + right.gap_fillers).cmp(&(left.shapes + left.gap_fillers)))
+                .then_with(|| left.canvas_id.cmp(&right.canvas_id))
+        });
+        canvases
+    }
+    pub fn record_svg(&mut self, session_id: &str, input: SvgAssetInput) -> Result<bool, AppError> {
+        if self.active_session.as_deref() != Some(session_id) {
+            return Err(AppError::InvalidSession);
+        }
+        let input = input.validate().map_err(|message| AppError::InvalidEvent(message.into()))?;
+        let session = self.sessions.get_mut(session_id).ok_or(AppError::InvalidSession)?;
+        if session.ended {
+            return Err(AppError::InvalidSession);
+        }
+        let next_revision = session.svgs.get(&input.svg_id).map_or(1, |asset| asset.revision + 1);
+        if let Some(existing) = session.svgs.get(&input.svg_id) {
+            if existing.markup == input.markup && existing.width == input.width && existing.height == input.height && existing.filename == input.filename {
+                return Ok(false);
+            }
+        }
+        session.svgs.insert(input.svg_id.clone(), SvgAsset {
+            svg_id: input.svg_id,
+            width: input.width,
+            height: input.height,
+            shapes: input.shapes,
+            filename: input.filename,
+            markup: input.markup,
+            revision: next_revision,
+        });
+        Ok(true)
+    }
+    pub fn list_svgs(&self) -> Vec<SvgAsset> {
+        let mut assets = self.sessions.values().flat_map(|session| session.svgs.values().cloned()).collect::<Vec<_>>();
+        assets.sort_by(|a, b| a.svg_id.cmp(&b.svg_id));
+        assets
+    }
+    pub fn svg(&self, id: &str) -> Option<SvgAsset> {
+        self.sessions.values().find_map(|session| session.svgs.get(id).cloned())
     }
     pub fn canvas(&self, id: &str) -> Option<CanvasResult> {
         self.sessions
@@ -202,6 +260,7 @@ pub fn parse_events(value: &str) -> Result<Vec<RecorderEvent>, AppError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
     fn event(session: &str, sequence: u64, event_type: &str) -> RecorderEvent {
         RecorderEvent {
             session_id: session.into(),
@@ -284,5 +343,64 @@ mod tests {
             .record(&id, vec![event(&id, 2, "canvas_created")])
             .unwrap();
         assert_eq!(store.list().len(), 1);
+    }
+
+    #[test]
+    fn listed_canvases_skip_tiny_surfaces_and_prioritize_larger_artwork() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let mut tiny = event(&id, 1, "canvas_created");
+        tiny.canvas_id = Some("tiny".into());
+        tiny.width = Some(1.0);
+        tiny.height = Some(1.0);
+        let mut square = event(&id, 2, "canvas_created");
+        square.canvas_id = Some("square".into());
+        square.width = Some(1024.0);
+        square.height = Some(1024.0);
+        let mut wide = event(&id, 3, "canvas_created");
+        wide.canvas_id = Some("wide".into());
+        wide.width = Some(2784.0);
+        wide.height = Some(1416.0);
+        store.record(&id, vec![tiny, square, wide]).unwrap();
+
+        let listed = store.list();
+        assert_eq!(listed.iter().map(|item| item.canvas_id.as_str()).collect::<Vec<_>>(), ["wide", "square"]);
+    }
+
+    #[test]
+    fn listed_canvases_skip_hidden_surfaces() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let mut hidden = event(&id, 1, "canvas_created");
+        hidden.canvas_id = Some("hidden".into());
+        let mut visibility = event(&id, 2, "canvas_visibility");
+        visibility.canvas_id = Some("hidden".into());
+        visibility.value = Some(json!(false));
+        store.record(&id, vec![hidden, visibility]).unwrap();
+
+        assert!(store.list().is_empty());
+    }
+
+    #[test]
+    fn svg_assets_are_stored_updated_and_cleared() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let asset = SvgAssetInput {
+            svg_id: "svg-1".into(),
+            width: 320.0,
+            height: 240.0,
+            shapes: 1,
+            filename: "result.svg".into(),
+            markup: r#"<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0"/></svg>"#.into(),
+        };
+        assert!(store.record_svg(&id, asset.clone()).unwrap());
+        assert!(!store.record_svg(&id, asset.clone()).unwrap());
+        let mut updated = asset;
+        updated.shapes = 2;
+        updated.markup = r#"<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0"/><path d="M1 1"/></svg>"#.into();
+        assert!(store.record_svg(&id, updated).unwrap());
+        assert_eq!(store.svg("svg-1").unwrap().revision, 2);
+        store.clear_surfaces();
+        assert!(store.list_svgs().is_empty());
     }
 }

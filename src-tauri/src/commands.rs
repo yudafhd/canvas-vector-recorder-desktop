@@ -1,6 +1,6 @@
 use crate::{
     license,
-    recorder::{self, events::RecorderEvent, validator::MicrostockSettings},
+    recorder::{self, events::RecorderEvent, svg_asset::{SvgAsset, SvgAssetInput}, validator::MicrostockSettings},
     target_platform, AppError, AppState, TargetState, TargetTab,
 };
 use serde::Serialize;
@@ -26,6 +26,11 @@ pub fn start_recording(
         session_id,
         target_capability: "record_canvas_events".into(),
     })
+}
+
+#[tauri::command]
+pub async fn pick_screen_color(app: AppHandle) -> Result<Option<String>, AppError> {
+    crate::color_picker::pick_screen_color(app).await
 }
 
 #[tauri::command]
@@ -70,6 +75,61 @@ pub fn list_canvases(
     state: State<'_, AppState>,
 ) -> Result<Vec<recorder::CanvasDetection>, AppError> {
     Ok(state.recorder.lock().map_err(|_| AppError::State)?.list())
+}
+
+#[tauri::command]
+pub fn record_svg_asset(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    session_id: String,
+    asset: SvgAssetInput,
+) -> Result<(), AppError> {
+    let changed = state.recorder.lock().map_err(|_| AppError::State)?.record_svg(&session_id, asset)?;
+    if changed {
+        let assets = state.recorder.lock().map_err(|_| AppError::State)?.list_svgs();
+        let _ = app.emit("svgs-updated", assets);
+    }
+    Ok(())
+}
+
+#[tauri::command]
+pub fn list_svg_assets(
+    _app: AppHandle,
+    state: State<'_, AppState>,
+) -> Result<Vec<SvgAsset>, AppError> {
+    Ok(state.recorder.lock().map_err(|_| AppError::State)?.list_svgs())
+}
+
+#[tauri::command]
+pub fn get_svg_asset(
+    _app: AppHandle,
+    state: State<'_, AppState>,
+    svg_id: String,
+) -> Result<Option<SvgAsset>, AppError> {
+    Ok(state.recorder.lock().map_err(|_| AppError::State)?.svg(&svg_id))
+}
+
+fn svg_asset_or_error(
+    state: &State<'_, AppState>,
+    svg_id: &str,
+) -> Result<SvgAsset, AppError> {
+    state
+        .recorder
+        .lock()
+        .map_err(|_| AppError::State)?
+        .svg(svg_id)
+        .ok_or_else(|| AppError::NotFound(format!("SVG tidak ditemukan: {svg_id}")))
+}
+
+#[tauri::command]
+pub fn generate_svg_asset(
+    _app: AppHandle,
+    state: State<'_, AppState>,
+    svg_id: String,
+    settings: Option<MicrostockSettings>,
+) -> Result<serde_json::Value, AppError> {
+    let asset = svg_asset_or_error(&state, &svg_id)?;
+    Ok(recorder::svg_asset::result(&asset, &settings.unwrap_or_default()))
 }
 
 #[tauri::command]
@@ -139,6 +199,22 @@ pub fn save_svg(
     let path = unique_download_path(&downloads, &safe_svg_filename(&filename));
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
+}
+
+#[tauri::command]
+pub fn save_svg_asset(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    svg_id: String,
+    settings: Option<MicrostockSettings>,
+    filename: Option<String>,
+) -> Result<String, AppError> {
+    let asset = svg_asset_or_error(&state, &svg_id)?;
+    let (svg, _) = recorder::svg_asset::build_for_export(&asset, &settings.unwrap_or_default());
+    let downloads = app.path().download_dir().map_err(|error| AppError::Storage(error.to_string()))?;
+    let path = unique_download_path(&downloads, &safe_svg_filename(filename.as_deref().unwrap_or(&asset.filename)));
+    std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(path.to_string_lossy().to_string())
 }
 
 fn safe_svg_filename(filename: &str) -> String {

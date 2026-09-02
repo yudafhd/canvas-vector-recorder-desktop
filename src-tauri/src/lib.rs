@@ -1,4 +1,5 @@
 mod commands;
+mod color_picker;
 mod license;
 mod recorder;
 mod target_platform;
@@ -76,13 +77,19 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             commands::start_recording,
+            commands::pick_screen_color,
             commands::stop_recording,
             commands::record_canvas_events,
+            commands::record_svg_asset,
             commands::list_canvases,
+            commands::list_svg_assets,
+            commands::get_svg_asset,
+            commands::generate_svg_asset,
             commands::get_canvas_result,
             commands::generate_svg,
             commands::export_svg,
             commands::save_svg,
+            commands::save_svg_asset,
             commands::clear_surfaces,
             commands::clear_recording,
             commands::open_target_url,

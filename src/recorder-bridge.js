@@ -8,7 +8,7 @@
   if (!sessionId) return;
   var frameId = 'frame-' + Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
   var sequence = 0, queue = [], stopped = false, flushTimer = null;
-  var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), nextCanvas = 1, nextPath = 1;
+  var canvasIds = new WeakMap(), canvasSizes = new WeakMap(), svgIds = new WeakMap(), paths = new WeakMap(), contexts = new WeakMap(), nextCanvas = 1, nextSvg = 1, nextPath = 1;
   var MAX_BATCH = 100, FLUSH_MS = 150;
   function invoke(name, args) {
     try { return w.__TAURI_INTERNALS__ && w.__TAURI_INTERNALS__.invoke(name, args); } catch (_) { return Promise.reject(_); }
@@ -126,14 +126,59 @@
   }
   function scanCanvases() {
     if (!document.querySelectorAll) return;
-    Array.prototype.forEach.call(document.querySelectorAll('canvas'), function (canvas) { canvasId(canvas); });
+    Array.prototype.forEach.call(document.querySelectorAll('canvas'), function (canvas) {
+      var id = canvasId(canvas);
+      emit('canvas_visibility', { canvas_id: id, value: canvasIsVisible(canvas) });
+    });
+  }
+  function canvasIsVisible(canvas) {
+    if (!canvas || canvas.hidden) return false;
+    var box = canvas.getBoundingClientRect ? canvas.getBoundingClientRect() : null;
+    if (!box || box.width < 1 || box.height < 1) return false;
+    try {
+      var style = w.getComputedStyle && w.getComputedStyle(canvas);
+      return !style || (style.display !== 'none' && style.visibility !== 'hidden' && style.visibility !== 'collapse' && Number(style.opacity) !== 0);
+    } catch (_) { return true; }
+  }
+  function svgSize(svg) {
+    var viewBox = (svg.getAttribute('viewBox') || '').trim().split(/[ ,]+/).map(Number);
+    var box = svg.getBoundingClientRect ? svg.getBoundingClientRect() : null;
+    var width = Number(svg.getAttribute('width')) || (viewBox.length === 4 && viewBox[2]) || (box && box.width) || 1;
+    var height = Number(svg.getAttribute('height')) || (viewBox.length === 4 && viewBox[3]) || (box && box.height) || 1;
+    return [Math.max(1, num(width)), Math.max(1, num(height))];
+  }
+  function svgFilename(svg) {
+    var name = svg.getAttribute('data-filename') || svg.id || document.title || 'captured-vector';
+    return String(name).replace(/\.[a-z0-9]+$/i, '') + '.svg';
+  }
+  function isRecordableSvg(svg) {
+    if (!svg || (svg.closest && svg.closest('[data-cvr-target-controls]'))) return false;
+    var shapes = svg.querySelectorAll && svg.querySelectorAll('path,rect,circle,ellipse,polygon,polyline,line,use,image').length;
+    if (!shapes) return false;
+    var box = svg.getBoundingClientRect ? svg.getBoundingClientRect() : null;
+    return svg.id === 'outputsvg' || !!(svg.id && shapes >= 8 && box && box.width * box.height >= 1024);
+  }
+  function captureSvg(svg) {
+    if (!isRecordableSvg(svg) || !w.XMLSerializer) return;
+    var markup;
+    try { markup = new w.XMLSerializer().serializeToString(svg); } catch (_) { return; }
+    if (!markup || markup.length > 2000000) return;
+    if (!/^<svg\b[^>]*\sxmlns=/i.test(markup)) markup = markup.replace(/^<svg\b/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+    var id = svgIds.get(svg);
+    if (!id) { id = frameId + '-svg-' + nextSvg++; svgIds.set(svg, id); }
+    var dimensions = svgSize(svg);
+    invoke('record_svg_asset', { sessionId: sessionId, asset: { svgId: id, width: dimensions[0], height: dimensions[1], shapes: svg.querySelectorAll('path,rect,circle,ellipse,polygon,polyline,line,use,image').length, filename: svgFilename(svg), markup: markup } }).catch(function () {});
+  }
+  function scanSvgs() {
+    if (!document.querySelectorAll) return;
+    Array.prototype.forEach.call(document.querySelectorAll('svg'), captureSvg);
   }
   function installCanvasDetection() {
     var schedule = function () {
       if (schedule.timer) return;
-      schedule.timer = setTimeout(function () { schedule.timer = null; scanCanvases(); }, 100);
+      schedule.timer = setTimeout(function () { schedule.timer = null; scanCanvases(); scanSvgs(); }, 100);
     };
-    if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['width', 'height'] });
+    if (document.documentElement && w.MutationObserver) new w.MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['width', 'height', 'style', 'class', 'hidden'] });
     w.addEventListener('DOMContentLoaded', schedule, { once: true });
     setTimeout(schedule, 500);
   }

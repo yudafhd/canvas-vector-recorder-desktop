@@ -4,7 +4,7 @@ Aplikasi ini adalah project Tauri v2 terpisah dari extension WXT di `../canvas-v
 
 ## Arsitektur
 
-Studio window memiliki UI lisensi dan workspace. `open_target_url` membuat target WebView dengan initialization script pada document start di semua frame; event memiliki `frame_id` dan sequence per frame agar iframe tidak saling menolak. `src/recorder-bridge.js` hanya mendeteksi elemen Canvas (termasuk WebGL), `OffscreenCanvas`, dan operasi Canvas 2D; batching maksimum 100 event atau 150 ms, dan memanggil satu command recorder. Daftar asset dikirim kembali ke studio setiap batch diterima. Session token dibuat Rust dan disuntikkan ke setiap navigasi; command recorder menolak token, sequence, tipe event, ukuran payload, dan batas memory yang tidak valid. Capability target hanya berisi `record_canvas_events`; command lisensi, storage, dan export hanya ada pada capability studio.
+Studio window memiliki UI lisensi dan workspace. `open_target_url` membuat target WebView dengan initialization script pada document start di semua frame; event memiliki `frame_id` dan sequence per frame agar iframe tidak saling menolak. `src/recorder-bridge.js` mendeteksi elemen Canvas (termasuk WebGL), `OffscreenCanvas`, operasi Canvas 2D, dan SVG bermakna yang sudah terisi elemen grafis. Canvas direkonstruksi menjadi SVG baru, sedangkan SVG DOM disimpan sebagai artwork sumber pada tab SVG dan dibungkus dalam artboard saat preview/export agar mengikuti Export Settings. Daftar asset dikirim kembali ke studio saat berubah. Session token dibuat Rust dan disuntikkan ke setiap navigasi; command recorder menolak token, sequence, tipe event, ukuran payload, dan batas memory yang tidak valid. Capability target hanya berisi command perekaman; command lisensi, storage, dan export hanya ada pada capability studio.
 
 Generator di Rust mengeluarkan SVG standalone dengan namespace, artboard rasio/microstock, path fill/stroke, transform, dan XML escaping. Bridge tidak berisi algoritma SVG atau lisensi.
 
@@ -19,7 +19,7 @@ npm run tauri:dev
 
 `npm run compile` memeriksa TypeScript. `npm run test` menjalankan compile frontend lalu `cargo test --manifest-path src-tauri/Cargo.toml`. Build installer lintas platform memakai `npm run tauri:build`; Tauri hanya menghasilkan target untuk environment/toolchain yang tersedia.
 
-Environment dibaca pada saat build Rust. Salin `.env.example` menjadi `.env`; build Rust dan generator lisensi akan membacanya otomatis, sementara environment shell memiliki prioritas lebih tinggi. Jangan commit `.env` atau key. `LICENSE_PRODUCT_CODE` wajib diisi dan harus sama saat membuat token maupun build aplikasi, misalnya `LICENSE_PRODUCT_CODE=canvas-vector-recorder`.
+Environment lisensi dibaca pada saat build Rust. Salin `.env.example` menjadi `.env`; build Rust dan generator lisensi akan membacanya otomatis, sementara environment shell memiliki prioritas lebih tinggi. Jangan commit `.env` atau key. `LICENSE_PRODUCT_CODE` wajib diisi dan harus sama saat membuat token maupun build aplikasi. Versi aplikasi dikelola dari `package.json` dan konfigurasi Tauri, bukan dari `.env`.
 
 Saat startup, aplikasi menampilkan landing screen selama 2 detik sebelum memeriksa lisensi dan membuka activation screen atau workspace. UI menggunakan Plus Jakarta Sans variable font yang dibundel lokal di `src/assets/fonts`, sehingga tidak membutuhkan koneksi internet untuk memuat font.
 

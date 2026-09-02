@@ -5,39 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Canvas Vector Recorder</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="./assets/brand/recorder-brand.png">
+  <link rel="preload" as="image" href="./assets/brand/recorder-brand.png">
+  <style>
+    html, body, #app { width: 100%; height: 100%; }
+    body { margin: 0; min-width: 900px; overflow: hidden; background: #121b22; }
+    #landingView.landing-shell { box-sizing: border-box; display: grid; place-items: center; width: 100%; max-width: none; height: 100%; min-height: 100%; margin: 0; padding: 40px 24px; overflow: hidden; color: #f3f6fa; background: #121b22; }
+    #landingView .landing-content { display: flex; flex-direction: column; align-items: center; width: min(100%, 430px); text-align: center; }
+    #landingView .landing-mark { display: block; width: 150px; height: 150px; object-fit: cover; border-radius: 30px; }
+    #landingView .landing-loading { width: 100%; margin-top: 25px; }
+    #landingView .landing-status { margin: 0; color: #9daab7; font: 750 13px/1.2 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    #landingView .landing-progress { width: 116px; height: 5px; margin: 13px auto 0; overflow: hidden; background: #3b4650; border-radius: 999px; }
+    #landingView .landing-progress span { display: block; width: 42%; height: 100%; background: #75aee3; border-radius: inherit; }
+    #landingView .landing-quote { max-width: 390px; min-height: 2.8em; margin: 31px 0 0; color: #ecf1f5; font: 15px/1.45 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .01em; }
+  </style>
 </head>
 
 <body>
   <main id="app">
     <section id="landingView" class="view landing-shell" aria-label="Memuat Canvas Vector Recorder">
       <div class="landing-content">
-        <div class="landing-brand">
-          <div class="landing-brand-copy">
-            <strong class="landing-title">Canvas Vector Recorder</strong>
-            <span class="landing-caption">Menyiapkan workspace</span>
-          </div>
-        </div>
+        <img class="landing-mark" src="./assets/brand/recorder-brand.png" alt="Canvas Vector Recorder">
         <div class="landing-loading">
           <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
           <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
         </div>
+        <p id="landingQuote" class="landing-quote" aria-live="polite">Langkah kecil hari ini membentuk hasil besar esok hari.</p>
       </div>
     </section>
 
     <section id="activationView" class="view activation-shell" hidden>
       <div class="activation-card">
         <div class="activation-brand">
-          <div class="brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" role="presentation">
-              <path d="M7 23V9h18v14H7Z" />
-              <path d="m10 20 4-5 3 2 5-6" />
-              <circle cx="10" cy="20" r="1.4" />
-              <circle cx="14" cy="15" r="1.4" />
-              <circle cx="17" cy="17" r="1.4" />
-              <circle cx="22" cy="11" r="1.4" />
-            </svg>
-          </div>
+          <img class="brand-icon" src="./assets/brand/recorder-brand.png" alt="">
           <span class="eyebrow">CANVAS VECTOR RECORDER</span>
         </div>
         <div class="activation-copy">
@@ -65,6 +65,8 @@
       <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">
         <i data-lucide="monitor-play" aria-hidden="true"></i><span>Recorder</span>
       </button>
+      <button id="newTargetMainTab" class="main-tab new-target-main-tab" type="button" title="Buka tab target baru"
+        aria-label="Buka tab target baru"><i data-lucide="plus" aria-hidden="true"></i></button>
       <div id="targetMainTabs" class="target-main-tabs"></div>
       <span id="targetTabsCount" class="target-tabs-count" role="status" aria-label="Jumlah tab target" hidden></span>
     </nav>
@@ -72,6 +74,7 @@
     <section id="workspaceView" class="view workspace-shell" hidden>
       <header class="topbar">
         <div class="brand">
+          <img class="brand-icon" src="./assets/brand/recorder-brand.png" alt="">
           <div>
             <div class="brand-title-row">
               <h1>Canvas Vector Recorder</h1>
@@ -87,9 +90,11 @@
           <span id="licenseBadge" class="badge"></span>
           <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
             aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span
-            class="theme-toggle-label">Dark mode</span></button>
-          <button id="checkForUpdates" class="topbar-update" type="button" title="Periksa update" aria-label="Periksa update">
-            <i data-lucide="download-cloud" aria-hidden="true"></i><span id="updateIndicator" class="update-indicator" aria-hidden="true" hidden></span>
+              class="theme-toggle-label">Dark mode</span></button>
+          <button id="checkForUpdates" class="topbar-update" type="button" title="Periksa update"
+            aria-label="Periksa update">
+            <i data-lucide="download-cloud" aria-hidden="true"></i><span id="updateIndicator" class="update-indicator"
+              aria-hidden="true" hidden></span>
           </button>
         </div>
       </header>
@@ -106,7 +111,7 @@
               <button id="closeTarget" type="button"><i data-lucide="x"
                   aria-hidden="true"></i><span>Tutup</span></button>
             </div>
-            <div id="workspaceStatus" class="status status-box" role="status">Siap.</div>
+            <div id="workspaceStatus" class="status status-box" role="status" />
           </section>
 
           <div class="panel-divider"></div>
@@ -115,14 +120,23 @@
             <div class="surface-heading">
               <h2 class="section-label">DETECTED <span id="detectedCount" class="section-count">0</span></h2>
               <div class="surface-actions">
-                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset"><i
-                    data-lucide="refresh-cw" aria-hidden="true"></i><span>Refresh</span></button>
-                <button id="clearSurfacesButton" type="button" title="Hapus daftar Canvas"><i data-lucide="trash-2"
-                    aria-hidden="true"></i><span>Clear</span></button>
+                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset" aria-label="Refresh daftar asset"><i
+                    data-lucide="refresh-cw" aria-hidden="true"></i></button>
+                <button id="clearSurfacesButton" type="button" title="Hapus daftar asset" aria-label="Hapus daftar asset"><i data-lucide="trash-2"
+                    aria-hidden="true"></i></button>
               </div>
             </div>
-            <div id="canvasList" class="canvas-list">
+            <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
+              <button id="canvasAssetTab" class="active" type="button" role="tab" aria-selected="true">Canvas <span
+                  id="canvasCount">0</span></button>
+              <button id="svgAssetTab" type="button" role="tab" aria-selected="false">SVG <span
+                  id="svgCount">0</span></button>
+            </div>
+            <div id="canvasList" class="canvas-list" role="tabpanel">
               <p class="muted">Belum ada Canvas.</p>
+            </div>
+            <div id="svgList" class="canvas-list" role="tabpanel" hidden>
+              <p class="muted">Belum ada SVG.</p>
             </div>
           </section>
 
@@ -164,8 +178,15 @@
                 <div class="background-settings">
                   <label class="check-label"><input id="transparentBackground" type="checkbox"> Background
                     transparan</label>
-                  <label class="color-label">Warna background<input id="backgroundColor" type="color"
-                      value="#ffffff"></label>
+                  <label class="color-label">Warna background
+                    <span class="color-picker-row">
+                      <input id="backgroundColor" type="color" value="#ffffff" aria-label="Pilih warna background">
+                      <input id="backgroundColorHex" type="text" value="#FFFFFF" maxlength="7" inputmode="text"
+                        autocomplete="off" spellcheck="false" aria-label="Kode HEX warna background">
+                      <button id="pickBackgroundColor" class="icon-button" type="button" title="Ambil warna dari layar"
+                        aria-label="Ambil warna dari layar"><i data-lucide="pipette" aria-hidden="true"></i></button>
+                    </span>
+                  </label>
                 </div>
                 <button id="refreshSettings" type="submit">Simpan &amp; terapkan pengaturan</button>
               </form>

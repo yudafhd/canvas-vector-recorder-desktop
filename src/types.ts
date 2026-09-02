@@ -21,6 +21,16 @@ export interface CanvasDetection {
   state: string;
 }
 
+export interface SvgAsset {
+  svg_id: string;
+  width: number;
+  height: number;
+  shapes: number;
+  filename: string;
+  markup: string;
+  revision: number;
+}
+
 export interface SvgStats {
   shapes: number;
   gap_fillers: number;
