@@ -88,6 +88,11 @@ const activationStatus = $('activationStatus');
 const copyError = $('copyError');
 const workspaceStatus = $('workspaceStatus');
 const updateIndicator = $('updateIndicator');
+const updatePrompt = $('updatePrompt');
+const updatePromptTitle = $('updatePromptTitle');
+const updatePromptDescription = $('updatePromptDescription');
+const updatePromptCancel = $<HTMLButtonElement>('updatePromptCancel');
+const updatePromptInstall = $<HTMLButtonElement>('updatePromptInstall');
 const canvasList = $('canvasList');
 const svgList = $('svgList');
 const appVersion = $('appVersion');
@@ -472,6 +477,7 @@ function errorMessage(error: unknown): string {
 
 let updateInProgress = false;
 let updateAvailable = false;
+let pendingUpdateInstaller: (() => Promise<void>) | null = null;
 
 interface UpdateCheckOptions { automatic?: boolean }
 
@@ -493,6 +499,47 @@ function checkForUpdatesOncePerDay(): void {
   void checkForUpdates({ automatic: true });
 }
 
+function closeUpdatePrompt(cancelled = false): void {
+  updatePrompt.hidden = true;
+  pendingUpdateInstaller = null;
+  if (cancelled) status(workspaceStatus, 'Update tersedia. Anda dapat menginstalnya kapan saja.');
+}
+
+function showUpdatePrompt(title: string, description: string, installer: (() => Promise<void>) | null = null): void {
+  pendingUpdateInstaller = installer;
+  updatePromptTitle.textContent = title;
+  updatePromptDescription.textContent = description;
+  updatePromptCancel.hidden = !installer;
+  updatePromptInstall.textContent = installer ? 'Install sekarang' : 'Tutup';
+  updatePrompt.hidden = false;
+  window.requestAnimationFrame(() => updatePromptInstall.focus());
+}
+
+async function installPendingUpdate(): Promise<void> {
+  if (!pendingUpdateInstaller) {
+    closeUpdatePrompt();
+    return;
+  }
+  if (updateInProgress) return;
+  updateInProgress = true;
+  updatePromptInstall.disabled = true;
+  updatePromptCancel.disabled = true;
+  updatePromptInstall.textContent = 'Menginstal…';
+  try {
+    await pendingUpdateInstaller();
+    pendingUpdateInstaller = null;
+    updatePrompt.hidden = true;
+    setUpdateAvailable(false);
+  } catch (error) {
+    status(workspaceStatus, `Gagal menginstal update: ${errorMessage(error)}`, 'error');
+  } finally {
+    updateInProgress = false;
+    updatePromptInstall.disabled = false;
+    updatePromptCancel.disabled = false;
+    updatePromptInstall.textContent = 'Install sekarang';
+  }
+}
+
 async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): Promise<void> {
   if (updateInProgress) return;
   const button = $<HTMLButtonElement>('checkForUpdates');
@@ -509,32 +556,30 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
     const update = await check({ timeout: 15_000 });
     if (!update) {
       setUpdateAvailable(false);
-      if (showProgress) status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
+      if (showProgress) {
+        showUpdatePrompt('Aplikasi sudah terbaru', `Anda sudah menggunakan Canvas Vector Recorder v${packageJson.version}.`);
+        status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
+      }
       return;
     }
 
     setUpdateAvailable(true);
     if (automatic) return;
     const notes = update.body?.trim();
-    const summary = notes ? `\n\nCatatan:\n${notes.slice(0, 500)}` : '';
-    if (!window.confirm(`Update ${update.version} tersedia.${summary}\n\nInstall sekarang?`)) {
-      status(workspaceStatus, 'Update tersedia, tetapi belum diinstal.');
-      return;
-    }
-
-    let downloadedBytes = 0;
-    await update.downloadAndInstall(event => {
-      if (event.event === 'Started') {
-        downloadedBytes = 0;
-        status(workspaceStatus, 'Menyiapkan download update…');
-      } else if (event.event === 'Progress') {
-        downloadedBytes += event.data.chunkLength;
-        status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`);
-      } else if (event.event === 'Finished') {
-        status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
-      }
+    showUpdatePrompt(`Update ${update.version} tersedia`, notes ? `Catatan:\n${notes.slice(0, 500)}` : 'Versi baru siap diunduh dan diinstal.', async () => {
+      let downloadedBytes = 0;
+      await update.downloadAndInstall(event => {
+        if (event.event === 'Started') {
+          downloadedBytes = 0;
+          status(workspaceStatus, 'Menyiapkan download update…');
+        } else if (event.event === 'Progress') {
+          downloadedBytes += event.data.chunkLength;
+          status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`);
+        } else if (event.event === 'Finished') {
+          status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
+        }
+      });
     });
-    setUpdateAvailable(false);
   } catch (error) {
     const message = errorMessage(error);
     if (!automatic) {
@@ -1289,6 +1334,9 @@ document.addEventListener('DOMContentLoaded', () => {
     persistTheme();
   });
   $('checkForUpdates').addEventListener('click', () => { void checkForUpdates(); });
+  updatePromptCancel.addEventListener('click', () => closeUpdatePrompt(true));
+  updatePromptInstall.addEventListener('click', () => { void installPendingUpdate(); });
+  updatePrompt.addEventListener('click', event => { if (event.target === updatePrompt) closeUpdatePrompt(true); });
   $('mahesLink').addEventListener('click', event => {
     event.preventDefault();
     void invoke('open_mahes_app').catch(error => status(workspaceStatus, errorMessage(error), 'error'));

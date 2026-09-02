@@ -203,6 +203,14 @@ h2 { font-size: 13px; font-weight: 600; margin-bottom: 11px; }
 .status.error { color: #c42b1c; }
 .status.success { color: #107c10; }
 
+.update-prompt { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; background: #15202b99; }
+.update-prompt-card { width: min(100%, 390px); padding: 26px; color: #1f2c38; background: #fff; border: 1px solid #dbe3ea; border-radius: 12px; box-shadow: 0 20px 52px #07111d45; }
+.update-prompt-eyebrow { margin: 0 0 8px; color: #087dcc; font-size: 10px; font-weight: 750; letter-spacing: .12em; }
+.update-prompt-card h2 { margin: 0; color: #17212b; font-size: 20px; }
+.update-prompt-description { margin: 11px 0 0; color: #617384; font-size: 13px; line-height: 1.5; white-space: pre-line; }
+.update-prompt-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 23px; }
+.update-prompt-actions button { min-height: 35px; border-radius: 7px; }
+
 #workspaceView .export-settings summary { display: flex; align-items: center; gap: 7px; color: #526273; cursor: pointer; font-size: 11px; letter-spacing: .12em; font-weight: 700; list-style: none; }
 .export-settings summary::-webkit-details-marker { display: none; }
 #workspaceView .export-settings summary .summary-chevron { margin-left: auto; color: #718295; transition: transform .18s ease; }
@@ -347,6 +355,10 @@ a { color: #0067b8; }
 :root[data-theme="dark"] #workspaceView .panel-divider, :root[data-theme="dark"] #workspaceView .surface-heading { border-color: #3c4043; }
 :root[data-theme="dark"] #workspaceView .status { color: #bdc1c6; }
 :root[data-theme="dark"] #workspaceView .status-box { color: #bdc1c6; background: #303134; border-color: #5f6368; }
+:root[data-theme="dark"] .update-prompt { background: #00000099; }
+:root[data-theme="dark"] .update-prompt-card { color: #e8eaed; background: #292a2d; border-color: #3c4043; box-shadow: 0 20px 52px #00000066; }
+:root[data-theme="dark"] .update-prompt-card h2 { color: #e8eaed; }
+:root[data-theme="dark"] .update-prompt-description { color: #bdc1c6; }
 :root[data-theme="dark"] #workspaceView .status.error, :root[data-theme="dark"] #activationView #activationStatus.error { color: #f28b82; }
 :root[data-theme="dark"] #workspaceView .status.success, :root[data-theme="dark"] #activationView #activationStatus.success { color: #81c995; }
 :root[data-theme="dark"] #workspaceView .export-settings summary .summary-chevron { color: #9aa0a6; }

@@ -225,9 +225,17 @@ test('workspace updater uses signed Tauri releases', () => {
   assert.deepEqual(desktopCapability.permissions, ['updater:default']);
   assert.match(index, /id="checkForUpdates"/);
   assert.match(index, /id="updateIndicator" class="update-indicator"/);
+  assert.match(index, /id="updatePrompt"/);
+  assert.match(index, /id="updatePromptInstall"/);
   assert.match(styles, /\.update-indicator[\s\S]*border-radius: 50%/);
+  assert.match(styles, /\.update-prompt \{ position: fixed;/);
   assert.match(main, /from '@tauri-apps\/plugin-updater'/);
   assert.match(main, /downloadAndInstall/);
+  assert.match(main, /function showUpdatePrompt/);
+  assert.match(main, /function installPendingUpdate/);
+  assert.match(main, /showUpdatePrompt\('Aplikasi sudah terbaru'/);
+  assert.match(main, /updatePromptCancel\.hidden = !installer/);
+  assert.doesNotMatch(main, /window\.confirm/);
   assert.match(main, /setUpdateAvailable\(true\)/);
   assert.match(main, /Belum ada release updater yang dipublish di GitHub/);
 });

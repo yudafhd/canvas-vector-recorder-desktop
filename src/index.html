@@ -262,6 +262,17 @@
       </div>
     </section>
   </main>
+  <div id="updatePrompt" class="update-prompt" role="dialog" aria-modal="true" aria-labelledby="updatePromptTitle" hidden>
+    <div class="update-prompt-card">
+      <p class="update-prompt-eyebrow">PEMBARUAN APLIKASI</p>
+      <h2 id="updatePromptTitle">Update tersedia</h2>
+      <p id="updatePromptDescription" class="update-prompt-description"></p>
+      <div class="update-prompt-actions">
+        <button id="updatePromptCancel" type="button">Nanti</button>
+        <button id="updatePromptInstall" class="primary" type="button">Install sekarang</button>
+      </div>
+    </div>
+  </div>
   <div id="downloadToast" class="toast" role="status" aria-live="polite" hidden></div>
   <script type="module" src="/main.ts"></script>
 </body>
