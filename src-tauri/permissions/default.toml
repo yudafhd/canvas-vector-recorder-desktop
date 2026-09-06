@@ -3,7 +3,7 @@ identifier = "allow-studio-commands"
 description = "Studio-only recorder, license, storage, target-window, and export commands."
 commands.allow = [
   "start_recording", "pick_screen_color", "stop_recording", "list_canvases", "list_svg_assets", "get_svg_asset", "generate_svg_asset", "get_canvas_result", "generate_svg",
-  "export_svg", "save_svg", "save_svg_asset", "clear_recording", "clear_surfaces", "open_target_url", "open_mahes_app", "open_target_tab", "switch_target_tab",
+  "export_svg", "save_svg", "save_svg_asset", "save_eps", "save_eps_asset", "clear_recording", "clear_surfaces", "open_target_url", "open_mahes_app", "open_target_tab", "switch_target_tab",
   "close_target_tab", "reload_target_tab", "sync_target_tab", "close_target_window", "set_target_view_visible", "restore_target_view", "resize_target_view",
   "validate_license", "activate_license", "get_license_status"
 ]

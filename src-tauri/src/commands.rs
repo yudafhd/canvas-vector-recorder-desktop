@@ -217,6 +217,52 @@ pub fn save_svg_asset(
     Ok(path.to_string_lossy().to_string())
 }
 
+#[tauri::command]
+pub fn save_eps(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    canvas_id: String,
+    settings: Option<MicrostockSettings>,
+    filename: Option<String>,
+) -> Result<String, AppError> {
+    let data = canvas_or_error(&state, &canvas_id)?;
+    let raw_filename = filename.as_deref().unwrap_or("vectorized-result.eps");
+    let safe_filename = safe_eps_filename(raw_filename);
+    let (eps, _) =
+        recorder::eps::build_canvas_eps(&data, &settings.unwrap_or_default(), &safe_filename);
+    let downloads = app
+        .path()
+        .download_dir()
+        .map_err(|error| AppError::Storage(error.to_string()))?;
+    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
+    let path = unique_download_path(&downloads, &safe_filename);
+    std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(path.to_string_lossy().into_owned())
+}
+
+#[tauri::command]
+pub fn save_eps_asset(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    svg_id: String,
+    settings: Option<MicrostockSettings>,
+    filename: Option<String>,
+) -> Result<String, AppError> {
+    let asset = svg_asset_or_error(&state, &svg_id)?;
+    let raw_filename = filename.as_deref().unwrap_or(&asset.filename);
+    let safe_filename = safe_eps_filename(raw_filename);
+    let (eps, _) =
+        recorder::eps::build_svg_asset_eps(&asset, &settings.unwrap_or_default(), &safe_filename);
+    let downloads = app
+        .path()
+        .download_dir()
+        .map_err(|error| AppError::Storage(error.to_string()))?;
+    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
+    let path = unique_download_path(&downloads, &safe_filename);
+    std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(path.to_string_lossy().to_string())
+}
+
 fn safe_svg_filename(filename: &str) -> String {
     let base = Path::new(filename)
         .file_name()
@@ -246,22 +292,59 @@ fn safe_svg_filename(filename: &str) -> String {
     safe
 }
 
+fn safe_eps_filename(filename: &str) -> String {
+    let base = Path::new(filename)
+        .file_name()
+        .and_then(|value| value.to_str())
+        .unwrap_or("vectorized-result.eps");
+    let mut safe = base
+        .chars()
+        .map(|character| {
+            if character.is_control()
+                || matches!(
+                    character,
+                    '<' | '>' | ':' | '"' | '/' | '\\' | '|' | '?' | '*'
+                )
+            {
+                '_'
+            } else {
+                character
+            }
+        })
+        .collect::<String>();
+    if safe.is_empty() || safe == "." || safe == ".." {
+        safe = "vectorized-result.eps".into();
+    }
+    if safe.to_ascii_lowercase().ends_with(".svg") {
+        safe = safe[..safe.len() - 4].to_string();
+    }
+    if !safe.to_ascii_lowercase().ends_with(".eps") {
+        safe.push_str(".eps");
+    }
+    safe
+}
+
 fn unique_download_path(directory: &Path, filename: &str) -> PathBuf {
     let first = directory.join(filename);
     if !first.exists() {
         return first;
     }
-    let stem = Path::new(filename)
+    let p = Path::new(filename);
+    let stem = p
         .file_stem()
         .and_then(|value| value.to_str())
         .unwrap_or("vectorized-result");
+    let ext = p
+        .extension()
+        .and_then(|value| value.to_str())
+        .unwrap_or("svg");
     for index in 1..100_000 {
-        let candidate = directory.join(format!("{stem}_{index}.svg"));
+        let candidate = directory.join(format!("{stem}_{index}.{ext}"));
         if !candidate.exists() {
             return candidate;
         }
     }
-    directory.join(format!("{stem}_{}.svg", uuid::Uuid::new_v4()))
+    directory.join(format!("{stem}_{}.{ext}", uuid::Uuid::new_v4()))
 }
 
 #[tauri::command]

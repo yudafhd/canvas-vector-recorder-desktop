@@ -1,4 +1,5 @@
 pub mod canvas;
+pub mod eps;
 pub mod events;
 pub mod path;
 pub mod svg;

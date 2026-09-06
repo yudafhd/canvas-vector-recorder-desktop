@@ -5,17 +5,17 @@ use super::{
 };
 
 #[derive(Debug, Clone, Copy)]
-struct Bounds {
-    min_x: f64,
-    min_y: f64,
-    max_x: f64,
-    max_y: f64,
+pub(crate) struct Bounds {
+    pub(crate) min_x: f64,
+    pub(crate) min_y: f64,
+    pub(crate) max_x: f64,
+    pub(crate) max_y: f64,
 }
 
 // Keep a visible breathing room around the artwork in the exported artboard.
 // The user scale control can still deliberately enlarge the artwork, but the
 // neutral 100% setting must not place it directly against the edge.
-const ARTWORK_SAFE_AREA: f64 = 0.90;
+pub(crate) const ARTWORK_SAFE_AREA: f64 = 0.90;
 
 impl Bounds {
     fn point(x: f64, y: f64) -> Self {
@@ -45,12 +45,12 @@ impl Bounds {
 }
 
 #[derive(Debug, Clone, Copy)]
-enum PathToken {
+pub(crate) enum PathToken {
     Command(char),
     Number(f64),
 }
 
-fn tokenize_path(value: &str) -> Option<Vec<PathToken>> {
+pub(crate) fn tokenize_path(value: &str) -> Option<Vec<PathToken>> {
     let chars: Vec<char> = value.chars().collect();
     let mut tokens = Vec::new();
     let mut index = 0;
@@ -101,7 +101,7 @@ fn tokenize_path(value: &str) -> Option<Vec<PathToken>> {
     Some(tokens)
 }
 
-fn next_number(tokens: &[PathToken], index: &mut usize) -> Option<f64> {
+pub(crate) fn next_number(tokens: &[PathToken], index: &mut usize) -> Option<f64> {
     match tokens.get(*index) {
         Some(PathToken::Number(value)) => {
             *index += 1;
@@ -255,7 +255,7 @@ fn is_axis_aligned_rectangle(value: &str) -> bool {
     has_move && has_close && segments >= 3
 }
 
-fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>) -> Option<Bounds> {
+pub(crate) fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>) -> Option<Bounds> {
     let shape_bounds = data
         .shapes
         .iter()
@@ -280,7 +280,7 @@ fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>) -> Option<
         })
 }
 
-fn background_shape_index(data: &CanvasResult) -> Option<usize> {
+pub(crate) fn background_shape_index(data: &CanvasResult) -> Option<usize> {
     let overall = artwork_bounds(data, None)?;
     let candidate = data
         .shapes

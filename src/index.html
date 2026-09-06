@@ -11,13 +11,15 @@
     html, body, #app { width: 100%; height: 100%; }
     body { margin: 0; min-width: 900px; overflow: hidden; background: #121b22; }
     #landingView.landing-shell { box-sizing: border-box; display: grid; place-items: center; width: 100%; max-width: none; height: 100%; min-height: 100%; margin: 0; padding: 40px 24px; overflow: hidden; color: #f3f6fa; background: #121b22; }
-    #landingView .landing-content { display: flex; flex-direction: column; align-items: center; width: min(100%, 430px); text-align: center; }
-    #landingView .landing-mark { display: block; width: 150px; height: 150px; object-fit: cover; border-radius: 30px; }
-    #landingView .landing-loading { width: 100%; margin-top: 25px; }
-    #landingView .landing-status { margin: 0; color: #9daab7; font: 750 13px/1.2 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
-    #landingView .landing-progress { width: 116px; height: 5px; margin: 13px auto 0; overflow: hidden; background: #3b4650; border-radius: 999px; }
-    #landingView .landing-progress span { display: block; width: 42%; height: 100%; background: #75aee3; border-radius: inherit; }
-    #landingView .landing-quote { max-width: 390px; min-height: 2.8em; margin: 31px 0 0; color: #ecf1f5; font: 15px/1.45 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .01em; }
+    #landingView .landing-content { display: flex; flex-direction: column; align-items: center; width: min(100%, 420px); text-align: center; }
+    #landingView .landing-mark { display: block; width: 96px; height: 96px; object-fit: cover; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
+    #landingView .landing-brand-header { margin: 18px 0 0; }
+    #landingView .landing-app-title { margin: 0; font-size: 17px; font-weight: 600; color: #f0f4f8; letter-spacing: -0.01em; }
+    #landingView .landing-loading { width: 100%; margin-top: 22px; }
+    #landingView .landing-status { margin: 0; color: #8a9ba8; font: 600 11px/1.2 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    #landingView .landing-progress { width: 130px; height: 3px; margin: 10px auto 0; overflow: hidden; background: #263440; border-radius: 999px; }
+    #landingView .landing-progress span { display: block; width: 36%; height: 100%; background: #087dcc; border-radius: inherit; }
+    #landingView .landing-quote { max-width: 380px; min-height: 2.8em; margin: 28px 0 0; color: #9bb0c1; font: italic 13.5px/1.6 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .01em; }
   </style>
 </head>
 
@@ -26,6 +28,9 @@
     <section id="landingView" class="view landing-shell" aria-label="Memuat Canvas Vector Recorder">
       <div class="landing-content">
         <img class="landing-mark" src="./assets/brand/recorder-brand.png" alt="Canvas Vector Recorder">
+        <div class="landing-brand-header">
+          <h1 class="landing-app-title">Canvas Vector Recorder</h1>
+        </div>
         <div class="landing-loading">
           <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
           <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
@@ -88,6 +93,8 @@
         </div>
         <div class="actions">
           <span id="licenseBadge" class="badge"></span>
+          <button id="remindMeButton" class="remind-me-button" type="button" title="Inspirasi"
+            aria-label="Inspirasi"><i data-lucide="lightbulb" aria-hidden="true"></i></button>
           <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
             aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span
               class="theme-toggle-label">Dark mode</span></button>
@@ -244,8 +251,31 @@
               <div><strong id="errorCount">—</strong><span>errors</span></div>
               <div><strong id="artboardSize">—</strong><span>artboard</span></div>
             </div>
-            <button id="exportSvg" class="primary download-button" type="button" disabled><i data-lucide="download"
-                aria-hidden="true"></i><span>Download SVG</span></button>
+            <div class="download-dropdown-wrap">
+              <button id="exportSvg" class="primary download-button" type="button" disabled aria-haspopup="true"
+                aria-expanded="false">
+                <i data-lucide="download" aria-hidden="true"></i>
+                <span>Download</span>
+                <i data-lucide="chevron-down" class="download-chevron" aria-hidden="true"></i>
+              </button>
+              <div id="downloadMenu" class="download-menu" hidden role="menu" aria-label="Opsi download vector">
+                <button type="button" id="downloadSvgOption" class="download-menu-item" role="menuitem">
+                  <span class="menu-item-badge svg">SVG</span>
+                  <span class="menu-item-text">
+                    <strong>SVG</strong>
+                    <small>Vektor web</small>
+                  </span>
+                </button>
+                <div class="download-menu-divider" role="separator"></div>
+                <button type="button" id="downloadEpsOption" class="download-menu-item" role="menuitem">
+                  <span class="menu-item-badge eps">EPS</span>
+                  <span class="menu-item-text">
+                    <strong>EPS</strong>
+                    <small>Illustrator</small>
+                  </span>
+                </button>
+              </div>
+            </div>
           </footer>
         </section>
       </div>
@@ -271,6 +301,52 @@
         <button id="updatePromptCancel" type="button">Nanti</button>
         <button id="updatePromptInstall" class="primary" type="button">Install sekarang</button>
       </div>
+    </div>
+  </div>
+  <div id="motivationModal" class="motivation-modal" role="dialog" aria-modal="true" aria-labelledby="motivationModalTag" hidden>
+    <div class="motivation-card">
+      <div class="motivation-glow" aria-hidden="true"></div>
+      <header class="motivation-header">
+        <span id="motivationModalTag" class="motivation-tag">
+          <!-- <i data-lucide="sparkles" aria-hidden="true"></i> -->
+          <span>Reminder</span>
+        </span>
+        <button id="closeMotivationModal" class="motivation-close-btn" type="button" title="Tutup modal" aria-label="Tutup modal">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <div class="motivation-body">
+        <div class="motivation-quote-icon" aria-hidden="true">“</div>
+        <blockquote id="motivationQuoteBox" class="motivation-quote-box">
+          <p id="motivationQuoteText" class="motivation-text"></p>
+          <footer class="motivation-footer-author">
+            <span class="author-dash" aria-hidden="true">—</span>
+            <cite id="motivationQuoteAuthor" class="motivation-author"></cite>
+          </footer>
+        </blockquote>
+        <div id="motivationLoadingState" class="motivation-loading-state" hidden>
+          <div class="motivation-loading-dots">
+            <span class="pulse-dot"></span>
+            <span class="pulse-dot"></span>
+            <span class="pulse-dot"></span>
+          </div>
+          <p class="motivation-loading-label">Menemukan inspirasi baru…</p>
+          <div class="motivation-progress-track">
+            <div id="motivationProgressBar" class="motivation-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="motivation-actions">
+        <button id="newMotivationQuote" type="button" class="motivation-shuffle-btn" title="Inspirasi Lain">
+          <i data-lucide="rotate-cw" aria-hidden="true"></i>
+          <span id="newMotivationQuoteLabel">Inspirasi Lain</span>
+        </button>
+        <button id="dismissMotivationModal" type="button" class="primary motivation-dismiss-btn">
+          <span>Mengerti</span>
+        </button>
+      </footer>
     </div>
   </div>
   <div id="downloadToast" class="toast" role="status" aria-live="polite" hidden></div>
