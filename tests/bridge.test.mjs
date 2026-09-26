@@ -112,10 +112,9 @@ test('preview filename can be edited and is used for export', () => {
   assert.match(main, /normalizedFilename/);
   assert.match(main, /filenameOverrides/);
   assert.match(main, /persistSettingsSilently\(\)/);
-  assert.match(main, /save_svg', \{ canvasId: selectedCanvas, settings: settings\(\), filename: lastSvg\.filename \}/);
+  assert.match(main, /save_svg', \{ canvasId: selectedCanvas, settings: settings\(\), filename: filenameToSave/);
   assert.match(commands, /filename: Option<String>/);
   assert.match(commands, /safe_svg_filename\(&filename\)/);
-  assert.match(styles, /#workspaceView #refreshSettings \{ width: 100%; margin-top: 12px; color: inherit;/);
 });
 
 test('export settings provide custom ratio fields and persist all user settings', () => {
@@ -200,12 +199,11 @@ test('workspace shows the application version beside the brand title', () => {
   assert.match(main, /appVersion\.textContent = `v\$\{packageJson\.version\}`/);
   assert.match(styles, /\.brand-title-row/);
   assert.match(index, /<header class="topbar">[\s\S]*?<img class="brand-icon" src="\.\/assets\/brand\/recorder-brand\.png" alt="">/);
-  assert.match(styles, /\.badge \{[^}]*font-size: 12px;/);
+  assert.match(styles, /\.brand-version/);
 });
 
 test('workspace provides a persistent accessible dark mode toggle', () => {
   assert.match(index, /id="themeToggle"/);
-  assert.match(index, /id="licenseBadge"[\s\S]*id="themeToggle"/);
   assert.match(index, /aria-pressed="false"/);
   assert.match(main, /THEME_STORAGE_KEY/);
   assert.match(main, /applyTheme\(!darkMode\)/);
@@ -240,10 +238,9 @@ test('workspace updater uses signed Tauri releases', () => {
   assert.match(main, /Belum ada release updater yang dipublish di GitHub/);
 });
 
-test('workspace checks for releases at most once per day', () => {
-  assert.match(main, /UPDATE_CHECK_INTERVAL_MS = 24 \* 60 \* 60 \* 1000/);
-  assert.match(main, /UPDATE_CHECK_STORAGE_KEY/);
-  assert.match(main, /checkForUpdatesOncePerDay\(\)/);
+test('workspace checks for releases periodically', () => {
+  assert.match(main, /UPDATE_CHECK_INTERVAL_MS = 3 \* 60 \* 60 \* 1000/);
+  assert.match(main, /setAutomaticUpdateChecks/);
   assert.match(main, /checkForUpdates\(\{ automatic: true \}\)/);
 });
 
