@@ -8,18 +8,102 @@
   <link rel="icon" type="image/png" href="./assets/brand/recorder-brand.png">
   <link rel="preload" as="image" href="./assets/brand/recorder-brand.png">
   <style>
-    html, body, #app { width: 100%; height: 100%; }
-    body { margin: 0; min-width: 900px; overflow: hidden; background: #121b22; }
-    #landingView.landing-shell { box-sizing: border-box; display: grid; place-items: center; width: 100%; max-width: none; height: 100%; min-height: 100%; margin: 0; padding: 40px 24px; overflow: hidden; color: #f3f6fa; background: #121b22; }
-    #landingView .landing-content { display: flex; flex-direction: column; align-items: center; width: min(100%, 420px); text-align: center; }
-    #landingView .landing-mark { display: block; width: 96px; height: 96px; object-fit: cover; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
-    #landingView .landing-brand-header { margin: 18px 0 0; }
-    #landingView .landing-app-title { margin: 0; font-size: 17px; font-weight: 600; color: #f0f4f8; letter-spacing: -0.01em; }
-    #landingView .landing-loading { width: 100%; margin-top: 22px; }
-    #landingView .landing-status { margin: 0; color: #8a9ba8; font: 600 11px/1.2 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-    #landingView .landing-progress { width: 130px; height: 3px; margin: 10px auto 0; overflow: hidden; background: #263440; border-radius: 999px; }
-    #landingView .landing-progress span { display: block; width: 36%; height: 100%; background: #087dcc; border-radius: inherit; }
-    #landingView .landing-quote { max-width: 380px; min-height: 2.8em; margin: 28px 0 0; color: #9bb0c1; font: italic 13.5px/1.6 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing: .01em; }
+    html,
+    body,
+    #app {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-width: 900px;
+      overflow: hidden;
+      background: #121b22;
+    }
+
+    #landingView.landing-shell {
+      box-sizing: border-box;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      padding: 40px 24px;
+      overflow: hidden;
+      color: #f3f6fa;
+      background: #121b22;
+    }
+
+    #landingView .landing-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: min(100%, 420px);
+      text-align: center;
+    }
+
+    #landingView .landing-mark {
+      display: block;
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    #landingView .landing-brand-header {
+      margin: 18px 0 0;
+    }
+
+    #landingView .landing-app-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      color: #f0f4f8;
+      letter-spacing: -0.01em;
+    }
+
+    #landingView .landing-loading {
+      width: 100%;
+      margin-top: 22px;
+    }
+
+    #landingView .landing-status {
+      margin: 0;
+      color: #8a9ba8;
+      font: 600 11px/1.2 "Plus Jakarta Sans", system-ui, sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    #landingView .landing-progress {
+      width: 130px;
+      height: 3px;
+      margin: 10px auto 0;
+      overflow: hidden;
+      background: #263440;
+      border-radius: 999px;
+    }
+
+    #landingView .landing-progress span {
+      display: block;
+      width: 36%;
+      height: 100%;
+      background: #087dcc;
+      border-radius: inherit;
+    }
+
+    #landingView .landing-quote {
+      max-width: 380px;
+      min-height: 2.8em;
+      margin: 28px 0 0;
+      color: #9bb0c1;
+      font: italic 13.5px/1.6 "Plus Jakarta Sans", system-ui, sans-serif;
+      letter-spacing: .01em;
+    }
   </style>
 </head>
 
@@ -35,7 +119,8 @@
           <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
           <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
         </div>
-        <p id="landingQuote" class="landing-quote" aria-live="polite">Langkah kecil hari ini membentuk hasil besar esok hari.</p>
+        <p id="landingQuote" class="landing-quote" aria-live="polite">Langkah kecil hari ini membentuk hasil besar esok
+          hari.</p>
       </div>
     </section>
 
@@ -92,9 +177,11 @@
           </div>
         </div>
         <div class="actions">
-          <span id="licenseBadge" class="badge"></span>
-          <button id="remindMeButton" class="remind-me-button" type="button" title="Inspirasi"
-            aria-label="Inspirasi"><i data-lucide="lightbulb" aria-hidden="true"></i></button>
+          <button id="discoverButton" class="topbar-discover" type="button" title="Buka Discover"
+            aria-label="Buka Discover"><i data-lucide="bell" aria-hidden="true"></i><span id="discoverBadge"
+              class="discover-badge" hidden></span></button>
+          <button id="remindMeButton" class="remind-me-button" type="button" title="Inspirasi" aria-label="Inspirasi"><i
+              data-lucide="lightbulb" aria-hidden="true"></i></button>
           <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
             aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span
               class="theme-toggle-label">Dark mode</span></button>
@@ -127,10 +214,10 @@
             <div class="surface-heading">
               <h2 class="section-label">DETECTED <span id="detectedCount" class="section-count">0</span></h2>
               <div class="surface-actions">
-                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset" aria-label="Refresh daftar asset"><i
-                    data-lucide="refresh-cw" aria-hidden="true"></i></button>
-                <button id="clearSurfacesButton" type="button" title="Hapus daftar asset" aria-label="Hapus daftar asset"><i data-lucide="trash-2"
-                    aria-hidden="true"></i></button>
+                <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset"
+                  aria-label="Refresh daftar asset"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
+                <button id="clearSurfacesButton" type="button" title="Hapus daftar asset"
+                  aria-label="Hapus daftar asset"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div>
             <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
@@ -153,7 +240,7 @@
             <summary><i data-lucide="settings-2" aria-hidden="true"></i><span>EXPORT SETTINGS</span><i
                 class="summary-chevron" data-lucide="chevron-down" aria-hidden="true"></i></summary>
             <div class="settings-body">
-              <form id="exportSettingsForm">
+              <div id="exportSettingsForm">
                 <label>Rasio<select id="ratio">
                     <option value="source">Source</option>
                     <option value="1:1">1:1</option>
@@ -183,9 +270,25 @@
                     aria-label="Atur ukuran aset">
                 </div>
                 <div class="background-settings">
-                  <label class="check-label"><input id="transparentBackground" type="checkbox"> Background
-                    transparan</label>
-                  <label class="color-label">Warna background
+                  <label class="check-label"><input id="removeAssetColors" type="checkbox"> Hapus warna asli dari
+                    aset</label>
+                  <div id="assetColorControls" class="asset-color-controls" hidden>
+                    <label class="color-label">Warna yang dihapus
+                      <span class="color-picker-row">
+                        <input id="assetRemovalColor" type="color" value="#ffffff"
+                          aria-label="Pilih warna yang dihapus">
+                        <input id="assetRemovalColorHex" type="text" value="#FFFFFF" maxlength="7" inputmode="text"
+                          autocomplete="off" spellcheck="false" aria-label="Kode HEX warna yang dihapus">
+                        <button id="pickAssetColor" class="icon-button" type="button" title="Ambil warna dari layar"
+                          aria-label="Ambil warna dari layar"><i data-lucide="pipette" aria-hidden="true"></i></button>
+                      </span>
+                    </label>
+                    <div id="assetColorList" class="asset-color-list"><span class="muted">Pilih aset untuk melihat
+                        warnanya.</span></div>
+                  </div>
+                  <label class="check-label"><input id="applyBackgroundColor" type="checkbox"> Terapkan warna
+                    background</label>
+                  <label id="backgroundColorControls" class="color-label" hidden>Warna background
                     <span class="color-picker-row">
                       <input id="backgroundColor" type="color" value="#ffffff" aria-label="Pilih warna background">
                       <input id="backgroundColorHex" type="text" value="#FFFFFF" maxlength="7" inputmode="text"
@@ -194,16 +297,40 @@
                         aria-label="Ambil warna dari layar"><i data-lucide="pipette" aria-hidden="true"></i></button>
                     </span>
                   </label>
+                  <div class="object-eraser-setting">
+                    <div class="object-eraser-header">
+                      <label class="check-label"><input id="enableObjectEraser" type="checkbox"> Hapus Objek</label>
+                      <span id="eraserMarkedCount" class="badge eraser-badge" hidden>0 ditandai</span>
+                    </div>
+                    <div id="objectEraserControls" class="object-eraser-controls" hidden>
+                      <p class="field-help">Klik area objek pada preview untuk menandai area yang ingin dihapus. Lalu
+                        klik tombol hapus.</p>
+                      <div class="object-eraser-actions">
+                        <button id="eraseMarkedObjects" class="eraser-action-button danger" type="button" disabled
+                          title="Hapus objek yang ditandai">
+                          <i data-lucide="trash-2" aria-hidden="true"></i><span>Hapus Objek</span>
+                        </button>
+                        <button id="clearMarkedObjects" class="eraser-action-button secondary" type="button" disabled
+                          title="Batal menandai objek">
+                          <i data-lucide="x" aria-hidden="true"></i><span>Batal Tandai</span>
+                        </button>
+                        <button id="restoreErasedObjects" class="eraser-action-button restore" type="button" hidden
+                          title="Kembalikan objek yang telah dihapus">
+                          <i data-lucide="rotate-ccw" aria-hidden="true"></i><span id="restoreErasedLabel">Pulihkan
+                            objek terhapus</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <button id="refreshSettings" type="submit">Simpan &amp; terapkan pengaturan</button>
-              </form>
+              </div>
             </div>
           </details>
         </aside>
 
         <section class="panel preview-panel">
           <header class="preview-header">
-            <h2 id="previewTitle">Rendered Preview</h2>
+            <h2 id="previewTitle">Preview</h2>
             <div class="preview-tools" aria-label="Kontrol preview">
               <button id="resetPreview" class="preview-reset-button" type="button" title="Reset zoom dan posisi canvas">
                 <i data-lucide="rotate-cw" aria-hidden="true"></i><span>Reset</span>
@@ -225,7 +352,7 @@
           </div>
           <footer class="preview-footer">
             <div class="preview-file">
-              <div class="preview-file-row">
+              <div id="previewFileRow" class="preview-file-row" hidden>
                 <strong id="previewFilename"></strong>
                 <button id="editFilename" class="icon-button preview-file-edit" type="button" disabled
                   aria-label="Edit nama file" title="Edit nama file">
@@ -244,11 +371,21 @@
                   <i data-lucide="x" aria-hidden="true"></i>
                 </button>
               </form>
+              <div class="save-location">
+                <button id="chooseSaveDirectory" class="save-location-button" type="button"
+                  aria-label="Pilih lokasi simpan" title="Pilih lokasi simpan">
+                  <i data-lucide="folder-open" aria-hidden="true"></i>
+                  <span class="save-location-label">Simpan ke</span>
+                  <strong id="saveDirectoryLabel" class="save-location-path">Downloads</strong>
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <button id="resetSaveDirectory" class="icon-button save-location-reset" type="button"
+                  aria-label="Kembalikan lokasi simpan ke Downloads" title="Kembalikan ke Downloads" hidden>
+                  <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
             <div class="stats" aria-label="Ringkasan hasil">
-              <div><strong id="shapeCount">—</strong><span>shapes</span></div>
-              <div><strong id="gapCount">—</strong><span>gaps</span></div>
-              <div><strong id="errorCount">—</strong><span>errors</span></div>
               <div><strong id="artboardSize">—</strong><span>artboard</span></div>
             </div>
             <div class="download-dropdown-wrap">
@@ -292,7 +429,24 @@
       </div>
     </section>
   </main>
-  <div id="updatePrompt" class="update-prompt" role="dialog" aria-modal="true" aria-labelledby="updatePromptTitle" hidden>
+  <div id="discoverOverlay" class="discover-overlay" hidden>
+    <section class="discover-sheet" role="dialog" aria-modal="true" aria-labelledby="discoverTitle">
+      <header class="discover-header">
+        <div class="discover-heading"><i data-lucide="bell" aria-hidden="true"></i>
+          <h2 id="discoverTitle">Discover</h2>
+        </div>
+        <div class="discover-header-actions">
+          <button id="refreshDiscover" type="button" title="Perbarui Discover" aria-label="Perbarui Discover"><i
+              data-lucide="refresh-cw" aria-hidden="true"></i></button>
+          <button id="closeDiscover" type="button" title="Tutup Discover" aria-label="Tutup Discover"><i data-lucide="x"
+              aria-hidden="true"></i></button>
+        </div>
+      </header>
+      <div id="discoverContent" class="discover-content" aria-live="polite"></div>
+    </section>
+  </div>
+  <div id="updatePrompt" class="update-prompt" role="dialog" aria-modal="true" aria-labelledby="updatePromptTitle"
+    hidden>
     <div class="update-prompt-card">
       <p class="update-prompt-eyebrow">PEMBARUAN APLIKASI</p>
       <h2 id="updatePromptTitle">Update tersedia</h2>
@@ -303,7 +457,8 @@
       </div>
     </div>
   </div>
-  <div id="motivationModal" class="motivation-modal" role="dialog" aria-modal="true" aria-labelledby="motivationModalTag" hidden>
+  <div id="motivationModal" class="motivation-modal" role="dialog" aria-modal="true"
+    aria-labelledby="motivationModalTag" hidden>
     <div class="motivation-card">
       <div class="motivation-glow" aria-hidden="true"></div>
       <header class="motivation-header">
@@ -311,7 +466,8 @@
           <!-- <i data-lucide="sparkles" aria-hidden="true"></i> -->
           <span>Reminder</span>
         </span>
-        <button id="closeMotivationModal" class="motivation-close-btn" type="button" title="Tutup modal" aria-label="Tutup modal">
+        <button id="closeMotivationModal" class="motivation-close-btn" type="button" title="Tutup modal"
+          aria-label="Tutup modal">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </header>

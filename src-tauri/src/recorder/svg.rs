@@ -39,9 +39,6 @@ impl Bounds {
         self.include(other.max_x, other.max_y);
     }
 
-    fn area(self) -> f64 {
-        (self.max_x - self.min_x).max(0.0) * (self.max_y - self.min_y).max(0.0)
-    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -221,48 +218,13 @@ fn path_bounds(value: &str, matrix: Matrix) -> Option<Bounds> {
     bounds
 }
 
-fn is_white_fill(value: &str) -> bool {
-    let normalized = value
-        .trim()
-        .to_ascii_lowercase()
-        .replace(' ', "")
-        .replace('\t', "");
-    matches!(
-        normalized.as_str(),
-        "white" | "#fff" | "#ffffff" | "rgb(255,255,255)" | "rgba(255,255,255,1)"
-    )
-}
-
-fn is_axis_aligned_rectangle(value: &str) -> bool {
-    let Some(tokens) = tokenize_path(value) else {
-        return false;
-    };
-    let mut has_move = false;
-    let mut has_close = false;
-    let mut segments = 0;
-    for token in tokens {
-        let PathToken::Command(command) = token else {
-            continue;
-        };
-        match command.to_ascii_uppercase() {
-            'M' => has_move = true,
-            'H' | 'V' | 'L' => segments += 1,
-            'Z' => has_close = true,
-            'C' | 'S' | 'Q' | 'T' | 'A' => return false,
-            _ => return false,
-        }
-    }
-    has_move && has_close && segments >= 3
-}
-
-pub(crate) fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>) -> Option<Bounds> {
+pub(crate) fn artwork_bounds(data: &CanvasResult, settings: &MicrostockSettings) -> Option<Bounds> {
     let shape_bounds = data
         .shapes
         .iter()
         .enumerate()
-        .filter(|(index, _)| Some(*index) != excluded_shape)
-        .map(|(_, shape)| shape)
-        .filter_map(|shape| path_bounds(&shape.d, shape.transform))
+        .filter(|(i, shape)| !settings.removes_element(&format!("shape-{}", i + 1)) && !settings.removes_color(&shape.fill))
+        .filter_map(|(_, shape)| path_bounds(&shape.d, shape.transform))
         .reduce(|mut bounds, next| {
             bounds.merge(next);
             bounds
@@ -272,26 +234,13 @@ pub(crate) fn artwork_bounds(data: &CanvasResult, excluded_shape: Option<usize>)
     }
     data.gap_fillers
         .iter()
-        .filter(|stroke| stroke.clip_path.is_none())
-        .filter_map(|stroke| path_bounds(&stroke.d, stroke.transform))
+        .enumerate()
+        .filter(|(i, stroke)| stroke.clip_path.is_none() && !settings.removes_element(&format!("gap-filler-{}", i + 1)) && !settings.removes_color(&stroke.stroke))
+        .filter_map(|(_, stroke)| path_bounds(&stroke.d, stroke.transform))
         .reduce(|mut bounds, next| {
             bounds.merge(next);
             bounds
         })
-}
-
-pub(crate) fn background_shape_index(data: &CanvasResult) -> Option<usize> {
-    let overall = artwork_bounds(data, None)?;
-    let candidate = data
-        .shapes
-        .iter()
-        .enumerate()
-        .filter(|(_, shape)| is_white_fill(&shape.fill) && is_axis_aligned_rectangle(&shape.d))
-        .filter_map(|(index, shape)| {
-            path_bounds(&shape.d, shape.transform).map(|bounds| (index, bounds))
-        })
-        .max_by(|(_, left), (_, right)| left.area().total_cmp(&right.area()))?;
-    (candidate.1.area() >= overall.area() * 0.75).then_some(candidate.0)
 }
 
 pub fn escape_xml(value: &str) -> String {
@@ -304,8 +253,12 @@ pub fn escape_xml(value: &str) -> String {
 }
 
 pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
+    let (svg, artboard) = build_details(data, settings);
+    (svg, artboard)
+}
+
+fn build_details(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
     let (width, height, ratio) = artboard(data.width, data.height, settings);
-    let background_index = background_shape_index(data);
     // Keep the original canvas coordinate system. Gap-filler strokes can
     // extend beyond the artwork (and are clipped in the source canvas); using
     // their bounds here would make the entire preview appear tiny or shifted.
@@ -319,7 +272,7 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
         1.0
     };
     let scale = base_scale * artwork_scale;
-    let (ox, oy) = artwork_bounds(data, background_index)
+    let (ox, oy) = artwork_bounds(data, settings)
         .map(|bounds| {
             (
                 width as f64 / 2.0 - ((bounds.min_x + bounds.max_x) / 2.0) * scale,
@@ -369,12 +322,13 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
         data.shapes
             .iter()
             .enumerate()
-            .filter(|(index, _)| Some(*index) != background_index)
+            .filter(|(i, shape)| !settings.removes_element(&format!("shape-{}", i + 1)) && !settings.removes_color(&shape.fill))
             .map(|(i, shape)| render_shape(i, shape))
             .chain(
                 data.gap_fillers
                     .iter()
                     .enumerate()
+                    .filter(|(i, stroke)| !settings.removes_element(&format!("gap-filler-{}", i + 1)) && !settings.removes_color(&stroke.stroke))
                     .map(|(i, stroke)| render_stroke(i, stroke)),
             )
             .collect::<Vec<_>>()
@@ -382,16 +336,17 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
         data.operations
             .iter()
             .filter_map(|operation| match operation {
-                super::canvas::PaintOperation::Shape(index) if Some(*index) != background_index => {
+                super::canvas::PaintOperation::Shape(index) => {
                     data.shapes
                         .get(*index)
+                        .filter(|shape| !settings.removes_element(&format!("shape-{}", index + 1)) && !settings.removes_color(&shape.fill))
                         .map(|shape| render_shape(*index, shape))
                 }
                 super::canvas::PaintOperation::Stroke(index) => data
                     .gap_fillers
                     .get(*index)
+                    .filter(|stroke| !settings.removes_element(&format!("gap-filler-{}", index + 1)) && !settings.removes_color(&stroke.stroke))
                     .map(|stroke| render_stroke(*index, stroke)),
-                _ => None,
             })
             .collect::<Vec<_>>()
     }
@@ -401,9 +356,11 @@ pub fn build(data: &CanvasResult, settings: &MicrostockSettings) -> (String, (u6
 }
 
 pub fn result(data: &CanvasResult, settings: &MicrostockSettings) -> serde_json::Value {
-    let (svg, (width, height, ratio)) = build(data, settings);
+    let (svg, (width, height, ratio)) = build_details(data, settings);
     let validation = validate(data);
-    serde_json::json!({ "svg": svg, "filename": "vectorized-result.svg", "stats": { "shapes": data.shapes.len(), "gap_fillers": data.gap_fillers.len(), "errors": data.errors, "artboard": { "width": width, "height": height, "pixels": width * height, "ratio": ratio }, "stock_validation": validation }, "error": if validation.valid { serde_json::Value::Null } else { serde_json::Value::String("Peringatan: SVG belum memenuhi pemeriksaan microstock.".into()) } })
+    let shapes_count = data.shapes.iter().enumerate().filter(|(i, s)| !settings.removes_element(&format!("shape-{}", i + 1)) && !settings.removes_color(&s.fill)).count();
+    let gap_count = data.gap_fillers.iter().enumerate().filter(|(i, s)| !settings.removes_element(&format!("gap-filler-{}", i + 1)) && !settings.removes_color(&s.stroke)).count();
+    serde_json::json!({ "svg": svg, "filename": "vectorized-result.svg", "stats": { "shapes": shapes_count, "gap_fillers": gap_count, "errors": data.errors, "artboard": { "width": width, "height": height, "pixels": width * height, "ratio": ratio }, "stock_validation": validation }, "error": if validation.valid { serde_json::Value::Null } else { serde_json::Value::String("Peringatan: SVG belum memenuhi pemeriksaan microstock.".into()) } })
 }
 
 #[cfg(test)]

@@ -1,7 +1,7 @@
 use super::{
     canvas::CanvasResult,
     svg::{
-        artwork_bounds, background_shape_index, next_number, tokenize_path, PathToken,
+        artwork_bounds, next_number, tokenize_path, PathToken,
         ARTWORK_SAFE_AREA,
     },
     svg_asset::SvgAsset,
@@ -451,7 +451,6 @@ pub fn build_canvas_eps(
     title: &str,
 ) -> (String, (u64, u64, String)) {
     let (width, height, ratio) = artboard(data.width, data.height, settings);
-    let background_index = background_shape_index(data);
 
     let source_width = data.width.max(1.0);
     let source_height = data.height.max(1.0);
@@ -463,7 +462,7 @@ pub fn build_canvas_eps(
         1.0
     };
     let scale = base_scale * artwork_scale;
-    let (ox, oy) = artwork_bounds(data, background_index)
+    let (ox, oy) = artwork_bounds(data, settings)
         .map(|bounds| {
             (
                 width as f64 / 2.0 - ((bounds.min_x + bounds.max_x) / 2.0) * scale,
@@ -518,7 +517,9 @@ pub fn build_canvas_eps(
     eps.push_str(&format!("{} {} translate\n", f(ox), f(oy)));
     eps.push_str(&format!("{} {} scale\n", f(scale), f(scale)));
 
-    let render_shape = |shape: &super::canvas::Shape| -> Option<String> {
+    let render_shape = |index: usize, shape: &super::canvas::Shape| -> Option<String> {
+        if settings.removes_element(&format!("shape-{}", index + 1)) { return None; }
+        if settings.removes_color(&shape.fill) { return None; }
         let (r, g, b) = parse_color_rgb(&shape.fill)?;
         let path_ps = path_to_postscript(&shape.d)?;
         let mut block = String::new();
@@ -547,7 +548,9 @@ pub fn build_canvas_eps(
         Some(block)
     };
 
-    let render_stroke = |stroke: &super::canvas::Stroke| -> Option<String> {
+    let render_stroke = |index: usize, stroke: &super::canvas::Stroke| -> Option<String> {
+        if settings.removes_element(&format!("gap-filler-{}", index + 1)) { return None; }
+        if settings.removes_color(&stroke.stroke) { return None; }
         let (r, g, b) = parse_color_rgb(&stroke.stroke)?;
         let path_ps = path_to_postscript(&stroke.d)?;
         let mut block = String::new();
@@ -575,36 +578,32 @@ pub fn build_canvas_eps(
 
     if data.operations.is_empty() {
         for (i, shape) in data.shapes.iter().enumerate() {
-            if Some(i) == background_index {
-                continue;
-            }
-            if let Some(code) = render_shape(shape) {
+            if let Some(code) = render_shape(i, shape) {
                 eps.push_str(&code);
             }
         }
-        for stroke in &data.gap_fillers {
-            if let Some(code) = render_stroke(stroke) {
+        for (i, stroke) in data.gap_fillers.iter().enumerate() {
+            if let Some(code) = render_stroke(i, stroke) {
                 eps.push_str(&code);
             }
         }
     } else {
         for operation in &data.operations {
             match operation {
-                super::canvas::PaintOperation::Shape(index) if Some(*index) != background_index => {
+                super::canvas::PaintOperation::Shape(index) => {
                     if let Some(shape) = data.shapes.get(*index) {
-                        if let Some(code) = render_shape(shape) {
+                        if let Some(code) = render_shape(*index, shape) {
                             eps.push_str(&code);
                         }
                     }
                 }
                 super::canvas::PaintOperation::Stroke(index) => {
                     if let Some(stroke) = data.gap_fillers.get(*index) {
-                        if let Some(code) = render_stroke(stroke) {
+                        if let Some(code) = render_stroke(*index, stroke) {
                             eps.push_str(&code);
                         }
                     }
                 }
-                _ => {}
             }
         }
     }
@@ -678,16 +677,13 @@ pub fn build_svg_asset_eps(
     eps.push_str(&format!("{} {} translate\n", f(offset_x), f(offset_y)));
     eps.push_str(&format!("{} {} scale\n", f(scale), f(scale)));
 
-    // Parse path elements from asset markup
-    for segment in asset.markup.split('<') {
-        let tag = segment.trim();
-        if tag.starts_with("path") {
-            let get_attr = |name: &str| -> Option<String> {
-                let pattern = format!("{}=\"", name);
-                let start = tag.find(&pattern)? + pattern.len();
-                let end = tag[start..].find('"')? + start;
-                Some(tag[start..end].to_string())
-            };
+    // Read exact XML attributes: substring matching confuses `d` with `id`.
+    if let Ok(document) = roxmltree::Document::parse(&asset.markup) {
+        for path in document.descendants().filter(|node| {
+            node.has_tag_name("path") && !node.ancestors().any(|parent|
+                matches!(parent.tag_name().name(), "defs" | "clipPath" | "mask" | "pattern" | "symbol" | "marker"))
+        }) {
+            let get_attr = |name: &str| path.attribute(name).map(str::to_string);
             if let Some(d) = get_attr("d") {
                 if let Some(path_ps) = path_to_postscript(&d) {
                     let fill = get_attr("fill").unwrap_or_else(|| "#000000".into());

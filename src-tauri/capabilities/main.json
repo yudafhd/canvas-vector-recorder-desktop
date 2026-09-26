@@ -3,5 +3,5 @@
   "identifier": "main-capability",
   "description": "Studio commands and narrowly scoped target recorder IPC.",
   "windows": ["main"],
-  "permissions": ["core:default", "core:window:default", "core:webview:default", "allow-studio-commands"]
+  "permissions": ["core:default", "core:window:default", "core:webview:default", "dialog:allow-open", "allow-studio-commands"]
 }

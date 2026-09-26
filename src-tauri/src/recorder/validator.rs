@@ -12,6 +12,10 @@ pub struct MicrostockSettings {
     pub background_color: String,
     #[serde(default)]
     pub transparent_background: bool,
+    #[serde(default)]
+    pub removed_colors: Vec<String>,
+    #[serde(default)]
+    pub removed_elements: Vec<String>,
     #[serde(default = "default_artwork_scale")]
     pub artwork_scale: f64,
 }
@@ -33,6 +37,8 @@ impl Default for MicrostockSettings {
             ratio: "source".into(),
             background_color: default_background_color(),
             transparent_background: false,
+            removed_colors: Vec::new(),
+            removed_elements: Vec::new(),
             artwork_scale: default_artwork_scale(),
         }
     }
@@ -44,6 +50,24 @@ pub struct StockValidation {
     pub unsupported_fills: usize,
     pub unsupported_strokes: usize,
     pub has_strokes: bool,
+}
+
+impl MicrostockSettings {
+    pub fn removes_element(&self, element_id: &str) -> bool {
+        if self.removed_elements.is_empty() { return false; }
+        self.removed_elements.iter().any(|id| id == element_id)
+    }
+    pub fn removes_color(&self, value: &str) -> bool {
+        if self.removed_colors.is_empty() { return false; }
+        let source = super::eps::parse_color_rgb(value);
+        self.removed_colors.iter().any(|selected| {
+            if selected.trim().eq_ignore_ascii_case(value.trim()) { return true; }
+            match (source, super::eps::parse_color_rgb(selected)) {
+                (Some((r1,g1,b1)), Some((r2,g2,b2))) => (r1-r2).abs()<0.002 && (g1-g2).abs()<0.002 && (b1-b2).abs()<0.002,
+                _ => false,
+            }
+        })
+    }
 }
 
 pub fn portable_paint(value: &str) -> bool {
@@ -195,7 +219,8 @@ mod tests {
             profile: Some("custom".into()),
             background_color: default_background_color(),
             transparent_background: false,
-            artwork_scale: default_artwork_scale(),
+            removed_colors: Vec::new(),
+            ..Default::default()
         };
         let (width, height, ratio) = artboard(1024.0, 1024.0, &settings);
         assert_eq!(ratio, "4:3");
@@ -211,7 +236,8 @@ mod tests {
             profile: Some("custom".into()),
             background_color: default_background_color(),
             transparent_background: false,
-            artwork_scale: default_artwork_scale(),
+            removed_colors: Vec::new(),
+            ..Default::default()
         };
         let (width, height, ratio) = artboard(1024.0, 768.0, &settings);
         assert_eq!(ratio, "7:5");
@@ -228,7 +254,8 @@ mod tests {
             profile: Some("custom".into()),
             background_color: default_background_color(),
             transparent_background: false,
-            artwork_scale: default_artwork_scale(),
+            removed_colors: Vec::new(),
+            ..Default::default()
         };
         let (width, height, _) = artboard(100_000.0, 100_000.0, &settings);
         assert_eq!(width * 5, height * 7);

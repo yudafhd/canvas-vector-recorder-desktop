@@ -64,6 +64,7 @@ pub enum AppError {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             #[cfg(desktop)]
             app.handle()
@@ -96,6 +97,8 @@ pub fn run() {
             commands::clear_recording,
             commands::open_target_url,
             commands::open_mahes_app,
+            commands::get_discover,
+            commands::open_discover_link,
             commands::open_target_tab,
             commands::switch_target_tab,
             commands::close_target_tab,

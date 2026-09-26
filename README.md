@@ -33,8 +33,9 @@ repository. Untuk publish release, tambahkan GitHub Actions secrets berikut:
 - `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`: password private key updater.
 - `LICENSE_PUBLIC_KEY`: public key lisensi yang dipakai saat build.
 
+Untuk panduan lengkap langkah demi langkah pembuatan rilis, ikuti [panduan rilis](docs/RELEASING.md).
 Workflow `.github/workflows/publish-desktop.yml` berjalan melalui `workflow_dispatch`
-atau push ke branch `release`. Workflow membuat artifact updater bertanda tangan
+atau push tag versi `v*`. Workflow membuat artifact updater bertanda tangan
 dan GitHub Release yang dibaca aplikasi melalui `latest.json`. Naikkan versi di
 `package.json`, `src-tauri/Cargo.toml`, dan `src-tauri/tauri.conf.json` sebelum
 mempublish update berikutnya.

@@ -1,6 +1,6 @@
 [package]
 name = "canvas-vector-recorder-desktop"
-version = "1.1.7"
+version = "1.1.8"
 description = "Canvas Vector Recorder desktop application"
 authors = ["Canvas Vector Recorder"]
 edition = "2021"
@@ -15,6 +15,7 @@ tauri-build = { version = "2.3", features = [] }
 
 [dependencies]
 tauri = { version = "2.6", features = ["unstable", "devtools"] }
+tauri-plugin-dialog = "2"
 guardian-core = { git = "https://github.com/yudafhd/guardian-core", rev = "db6ba26a84447baff26fdcde195afbf1aeeb8e34" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
@@ -23,6 +24,7 @@ uuid = { version = "1", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde", "clock"] }
 reqwest = { version = "0.13.4", default-features = false, features = ["blocking", "json", "rustls"] }
 url = "2"
+roxmltree = "0.20"
 
 [profile.release]
 panic = "abort"

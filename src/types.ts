@@ -7,6 +7,8 @@ export interface MicrostockSettings {
   ratio: Ratio;
   backgroundColor: string;
   transparentBackground: boolean;
+  removedColors: string[];
+  removedElements?: string[];
   artworkScale: number;
 }
 

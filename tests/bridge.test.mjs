@@ -267,10 +267,10 @@ test('license gating happens before workspace rendering on the landing page', ()
   assert.match(main, /void loadLicense\(\)/);
 });
 
-test('recorder is always active and perpetual licenses show the email', () => {
+test('recorder is always active and perpetual licenses show active status', () => {
   assert.doesNotMatch(index, /recordToggle|REC ON/);
   assert.doesNotMatch(main, /recordingEnabled|set_recording/);
-  assert.match(main, /s\.perpetual[\s\S]*s\.email \|\| 'Lisensi aktif'/);
+  assert.match(main, /renderLicense\([\s\S]*s\.valid/);
   assert.doesNotMatch(bridge, /recordingEnabled|cvr-set-recording/);
 });
 
@@ -279,4 +279,17 @@ test('license product code comes from LICENSE_PRODUCT_CODE', () => {
   assert.match(licenseCreate, /WIB_OFFSET_MS/);
   assert.match(licenseCreate, /issuedInWib/);
   assert.match(licenseRust, /option_env!\("LICENSE_PRODUCT_CODE"\)/);
+});
+
+test('export settings includes interactive object eraser feature', () => {
+  assert.match(index, /id="enableObjectEraser"/);
+  assert.match(index, /id="eraseMarkedObjects"/);
+  assert.match(index, /id="clearMarkedObjects"/);
+  assert.match(index, /id="restoreErasedObjects"/);
+  assert.match(styles, /\.object-eraser-setting/);
+  assert.match(styles, /\.preview-stage\.eraser-mode/);
+  assert.match(styles, /\[data-eraser-marked="true"\]/);
+  assert.match(main, /objectEraserActive/);
+  assert.match(main, /eraseMarkedObjects/);
+  assert.match(main, /renderSvgToPreviewStage/);
 });

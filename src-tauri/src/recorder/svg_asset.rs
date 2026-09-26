@@ -41,6 +41,11 @@ impl SvgAssetInput {
 }
 
 pub fn build_for_export(asset: &SvgAsset, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
+    let (svg, artboard) = build_details(asset, settings);
+    (svg, artboard)
+}
+
+fn build_details(asset: &SvgAsset, settings: &MicrostockSettings) -> (String, (u64, u64, String)) {
     const ARTWORK_SAFE_AREA: f64 = 0.90;
     let (width, height, ratio) = artboard(asset.width, asset.height, settings);
     let artwork_scale = if settings.artwork_scale.is_finite() {
@@ -67,7 +72,7 @@ pub fn build_for_export(asset: &SvgAsset, settings: &MicrostockSettings) -> (Str
 }
 
 pub fn result(asset: &SvgAsset, settings: &MicrostockSettings) -> serde_json::Value {
-    let (svg, (width, height, ratio)) = build_for_export(asset, settings);
+    let (svg, (width, height, ratio)) = build_details(asset, settings);
     serde_json::json!({
         "svg": svg,
         "filename": asset.filename,

@@ -9,6 +9,52 @@ use std::process::Command;
 use tauri::{AppHandle, Emitter, Manager, State};
 
 const MAHES_APP_URL: &str = "https://mahes.app";
+const DISCOVER_URL: &str = "https://www.mahes.app/api/v1/discover";
+
+#[tauri::command]
+pub async fn get_discover() -> Result<serde_json::Value, AppError> {
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(15))
+        .build()
+        .map_err(|error| AppError::Network(error.to_string()))?;
+    client
+        .get(DISCOVER_URL)
+        .header(reqwest::header::ACCEPT, "application/json")
+        .send()
+        .await
+        .and_then(reqwest::Response::error_for_status)
+        .map_err(|error| AppError::Network(format!("Discover tidak dapat dihubungi: {error}")))?
+        .json()
+        .await
+        .map_err(|error| AppError::Network(format!("Respons Discover tidak valid: {error}")))
+}
+
+#[tauri::command]
+pub fn open_discover_link(url: String) -> Result<(), AppError> {
+    let parsed = url::Url::parse(&url).map_err(|_| AppError::InvalidUrl)?;
+    if parsed.scheme() != "https" || parsed.host_str().is_none() {
+        return Err(AppError::InvalidUrl);
+    }
+
+    #[cfg(target_os = "macos")]
+    let result = Command::new("open").arg(parsed.as_str()).spawn();
+
+    #[cfg(target_os = "windows")]
+    let result = {
+        use std::os::windows::process::CommandExt;
+        Command::new("rundll32")
+            .args(["url.dll,FileProtocolHandler", parsed.as_str()])
+            .creation_flags(0x08000000)
+            .spawn()
+    };
+
+    #[cfg(all(unix, not(target_os = "macos")))]
+    let result = Command::new("xdg-open").arg(parsed.as_str()).spawn();
+
+    result
+        .map(|_| ())
+        .map_err(|error| AppError::Window(format!("Gagal membuka tautan Discover: {error}")))
+}
 
 #[derive(Debug, Serialize)]
 pub struct StartRecording {
@@ -109,6 +155,21 @@ pub fn get_svg_asset(
     Ok(state.recorder.lock().map_err(|_| AppError::State)?.svg(&svg_id))
 }
 
+fn svg_asset_with_markup(
+    state: &State<'_, AppState>,
+    svg_id: &str,
+    source_markup: Option<String>,
+) -> Result<SvgAsset, AppError> {
+    let mut asset = svg_asset_or_error(state, svg_id)?;
+    if let Some(markup) = source_markup {
+        if markup.len() > recorder::svg_asset::MAX_SVG_BYTES || !markup.trim_start().starts_with("<svg") {
+            return Err(AppError::InvalidEvent("invalid SVG markup override".into()));
+        }
+        asset.markup = markup;
+    }
+    Ok(asset)
+}
+
 fn svg_asset_or_error(
     state: &State<'_, AppState>,
     svg_id: &str,
@@ -127,8 +188,9 @@ pub fn generate_svg_asset(
     state: State<'_, AppState>,
     svg_id: String,
     settings: Option<MicrostockSettings>,
+    source_markup: Option<String>,
 ) -> Result<serde_json::Value, AppError> {
-    let asset = svg_asset_or_error(&state, &svg_id)?;
+    let asset = svg_asset_with_markup(&state, &svg_id, source_markup)?;
     Ok(recorder::svg_asset::result(&asset, &settings.unwrap_or_default()))
 }
 
@@ -187,16 +249,13 @@ pub fn save_svg(
     canvas_id: String,
     settings: Option<MicrostockSettings>,
     filename: Option<String>,
+    save_directory: Option<String>,
 ) -> Result<String, AppError> {
     let data = canvas_or_error(&state, &canvas_id)?;
     let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
     let filename = filename.as_deref().unwrap_or("vectorized-result.svg");
-    let downloads = app
-        .path()
-        .download_dir()
-        .map_err(|error| AppError::Storage(error.to_string()))?;
-    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
-    let path = unique_download_path(&downloads, &safe_svg_filename(&filename));
+    let directory = export_directory(&app, save_directory.as_deref())?;
+    let path = unique_download_path(&directory, &safe_svg_filename(&filename));
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
 }
@@ -208,11 +267,13 @@ pub fn save_svg_asset(
     svg_id: String,
     settings: Option<MicrostockSettings>,
     filename: Option<String>,
+    source_markup: Option<String>,
+    save_directory: Option<String>,
 ) -> Result<String, AppError> {
-    let asset = svg_asset_or_error(&state, &svg_id)?;
+    let asset = svg_asset_with_markup(&state, &svg_id, source_markup)?;
     let (svg, _) = recorder::svg_asset::build_for_export(&asset, &settings.unwrap_or_default());
-    let downloads = app.path().download_dir().map_err(|error| AppError::Storage(error.to_string()))?;
-    let path = unique_download_path(&downloads, &safe_svg_filename(filename.as_deref().unwrap_or(&asset.filename)));
+    let directory = export_directory(&app, save_directory.as_deref())?;
+    let path = unique_download_path(&directory, &safe_svg_filename(filename.as_deref().unwrap_or(&asset.filename)));
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().to_string())
 }
@@ -224,18 +285,15 @@ pub fn save_eps(
     canvas_id: String,
     settings: Option<MicrostockSettings>,
     filename: Option<String>,
+    save_directory: Option<String>,
 ) -> Result<String, AppError> {
     let data = canvas_or_error(&state, &canvas_id)?;
     let raw_filename = filename.as_deref().unwrap_or("vectorized-result.eps");
     let safe_filename = safe_eps_filename(raw_filename);
     let (eps, _) =
         recorder::eps::build_canvas_eps(&data, &settings.unwrap_or_default(), &safe_filename);
-    let downloads = app
-        .path()
-        .download_dir()
-        .map_err(|error| AppError::Storage(error.to_string()))?;
-    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
-    let path = unique_download_path(&downloads, &safe_filename);
+    let directory = export_directory(&app, save_directory.as_deref())?;
+    let path = unique_download_path(&directory, &safe_filename);
     std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
 }
@@ -247,20 +305,34 @@ pub fn save_eps_asset(
     svg_id: String,
     settings: Option<MicrostockSettings>,
     filename: Option<String>,
+    source_markup: Option<String>,
+    save_directory: Option<String>,
 ) -> Result<String, AppError> {
-    let asset = svg_asset_or_error(&state, &svg_id)?;
+    let asset = svg_asset_with_markup(&state, &svg_id, source_markup)?;
     let raw_filename = filename.as_deref().unwrap_or(&asset.filename);
     let safe_filename = safe_eps_filename(raw_filename);
     let (eps, _) =
         recorder::eps::build_svg_asset_eps(&asset, &settings.unwrap_or_default(), &safe_filename);
-    let downloads = app
-        .path()
-        .download_dir()
-        .map_err(|error| AppError::Storage(error.to_string()))?;
-    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
-    let path = unique_download_path(&downloads, &safe_filename);
+    let directory = export_directory(&app, save_directory.as_deref())?;
+    let path = unique_download_path(&directory, &safe_filename);
     std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().to_string())
+}
+
+fn export_directory(app: &AppHandle, selected: Option<&str>) -> Result<PathBuf, AppError> {
+    if let Some(selected) = selected {
+        let directory = PathBuf::from(selected);
+        if !directory.is_absolute() || !directory.is_dir() {
+            return Err(AppError::Storage(format!(
+                "Lokasi simpan tidak tersedia: {}",
+                directory.display()
+            )));
+        }
+        return Ok(directory);
+    }
+    let downloads = app.path().download_dir().map_err(|error| AppError::Storage(error.to_string()))?;
+    std::fs::create_dir_all(&downloads).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(downloads)
 }
 
 fn safe_svg_filename(filename: &str) -> String {
