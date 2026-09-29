@@ -1,0 +1,129 @@
+BezierFitter::selectKeepers(int, int, int)
+LC_FUNCTION_STARTS: [0x1000b9430, 0x1000b95d0)
+Numeric interpretations are candidates.
+1000b9430:	55	pushq	%rbp
+1000b9431:	48 89 e5	movq	%rsp, %rbp
+1000b9434:	41 57	pushq	%r15
+1000b9436:	41 56	pushq	%r14
+1000b9438:	41 55	pushq	%r13
+1000b943a:	41 54	pushq	%r12
+1000b943c:	53	pushq	%rbx
+1000b943d:	48 83 ec 28	subq	$0x28, %rsp
+1000b9441:	89 d3	movl	%edx, %ebx
+1000b9443:	41 89 f5	movl	%esi, %r13d
+1000b9446:	49 89 ff	movq	%rdi, %r15
+1000b9449:	89 4d c0	movl	%ecx, -0x40(%rbp)
+1000b944c:	e8 6f 29 00 00	callq	__ZN12BezierFitter16mergeAndSwapLoopEiii ## BezierFitter::mergeAndSwapLoop(int, int, int)
+1000b9451:	49 8b 7f 28	movq	0x28(%r15), %rdi
+1000b9455:	44 89 ee	movl	%r13d, %esi
+1000b9458:	e8 83 fe ff ff	callq	0x1000b92e0
+1000b945d:	44 8b 60 20	movl	0x20(%rax), %r12d
+1000b9461:	49 8d 7f 58	leaq	0x58(%r15), %rdi
+1000b9465:	31 f6	xorl	%esi, %esi
+1000b9467:	e8 44 2a 00 00	callq	0x1000bbeb0
+1000b946c:	49 89 c6	movq	%rax, %r14
+1000b946f:	49 8d 47 6c	leaq	0x6c(%r15), %rax
+1000b9473:	48 89 45 b0	movq	%rax, -0x50(%rbp)
+1000b9477:	89 5d c4	movl	%ebx, -0x3c(%rbp)
+1000b947a:	44 89 65 bc	movl	%r12d, -0x44(%rbp)
+1000b947e:	eb 15	jmp	0x1000b9495
+1000b9480:	41 ff 47 68	incl	0x68(%r15)
+1000b9484:	4c 8b 75 c8	movq	-0x38(%rbp), %r14
+1000b9488:	4d 8b 76 08	movq	0x8(%r14), %r14
+1000b948c:	4d 85 f6	testq	%r14, %r14
+1000b948f:	0f 84 c8 00 00 00	je	0x1000b955d
+1000b9495:	49 8b 46 08	movq	0x8(%r14), %rax
+1000b9499:	48 85 c0	testq	%rax, %rax
+1000b949c:	48 0f 44 45 b0	cmoveq	-0x50(%rbp), %rax
+1000b94a1:	8b 00	movl	(%rax), %eax
+1000b94a3:	89 45 d4	movl	%eax, -0x2c(%rbp)
+1000b94a6:	49 8b 7f 28	movq	0x28(%r15), %rdi
+1000b94aa:	49 8b 47 30	movq	0x30(%r15), %rax
+1000b94ae:	48 89 45 c8	movq	%rax, -0x38(%rbp)
+1000b94b2:	44 89 ee	movl	%r13d, %esi
+1000b94b5:	e8 26 fe ff ff	callq	0x1000b92e0
+1000b94ba:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b94be:	89 d8	movl	%ebx, %eax
+1000b94c0:	99	cltd
+1000b94c1:	41 f7 fc	idivl	%r12d
+1000b94c4:	89 d6	movl	%edx, %esi
+1000b94c6:	e8 75 fe ff ff	callq	0x1000b9340
+1000b94cb:	8b 30	movl	(%rax), %esi
+1000b94cd:	48 8b 7d c8	movq	-0x38(%rbp), %rdi
+1000b94d1:	e8 3a fe ff ff	callq	0x1000b9310
+1000b94d6:	c6 40 1c 05	movb	$0x5, 0x1c(%rax)
+1000b94da:	4c 89 75 c8	movq	%r14, -0x38(%rbp)
+1000b94de:	45 8b 36	movl	(%r14), %r14d
+1000b94e1:	ff c3	incl	%ebx
+1000b94e3:	41 8d 46 01	leal	0x1(%r14), %eax
+1000b94e7:	8b 4d d4	movl	-0x2c(%rbp), %ecx
+1000b94ea:	39 c8	cmpl	%ecx, %eax
+1000b94ec:	7d 92	jge	0x1000b9480
+1000b94ee:	41 f7 d6	notl	%r14d
+1000b94f1:	41 01 ce	addl	%ecx, %r14d
+1000b94f4:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000b9500:	89 5d d4	movl	%ebx, -0x2c(%rbp)
+1000b9503:	49 8b 7f 28	movq	0x28(%r15), %rdi
+1000b9507:	44 89 ee	movl	%r13d, %esi
+1000b950a:	e8 d1 fd ff ff	callq	0x1000b92e0
+1000b950f:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b9513:	89 d8	movl	%ebx, %eax
+1000b9515:	99	cltd
+1000b9516:	41 f7 fc	idivl	%r12d
+1000b9519:	89 d6	movl	%edx, %esi
+1000b951b:	e8 20 fe ff ff	callq	0x1000b9340
+1000b9520:	8b 18	movl	(%rax), %ebx
+1000b9522:	45 89 ec	movl	%r13d, %r12d
+1000b9525:	45 8b 6f 68	movl	0x68(%r15), %r13d
+1000b9529:	49 8b 7f 30	movq	0x30(%r15), %rdi
+1000b952d:	89 de	movl	%ebx, %esi
+1000b952f:	e8 dc fd ff ff	callq	0x1000b9310
+1000b9534:	44 89 68 18	movl	%r13d, 0x18(%rax)
+1000b9538:	45 89 e5	movl	%r12d, %r13d
+1000b953b:	44 8b 65 bc	movl	-0x44(%rbp), %r12d
+1000b953f:	49 8b 7f 30	movq	0x30(%r15), %rdi
+1000b9543:	89 de	movl	%ebx, %esi
+1000b9545:	8b 5d d4	movl	-0x2c(%rbp), %ebx
+1000b9548:	e8 c3 fd ff ff	callq	0x1000b9310
+1000b954d:	c6 40 1c 01	movb	$0x1, 0x1c(%rax)
+1000b9551:	ff c3	incl	%ebx
+1000b9553:	41 ff ce	decl	%r14d
+1000b9556:	75 a8	jne	0x1000b9500
+1000b9558:	e9 23 ff ff ff	jmp	0x1000b9480
+1000b955d:	49 8b 7f 28	movq	0x28(%r15), %rdi
+1000b9561:	49 8b 5f 30	movq	0x30(%r15), %rbx
+1000b9565:	44 89 ee	movl	%r13d, %esi
+1000b9568:	e8 73 fd ff ff	callq	0x1000b92e0
+1000b956d:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b9571:	8b 45 c4	movl	-0x3c(%rbp), %eax
+1000b9574:	99	cltd
+1000b9575:	41 f7 fc	idivl	%r12d
+1000b9578:	89 d6	movl	%edx, %esi
+1000b957a:	e8 c1 fd ff ff	callq	0x1000b9340
+1000b957f:	8b 30	movl	(%rax), %esi
+1000b9581:	48 89 df	movq	%rbx, %rdi
+1000b9584:	e8 87 fd ff ff	callq	0x1000b9310
+1000b9589:	c6 40 1c 04	movb	$0x4, 0x1c(%rax)
+1000b958d:	49 8b 7f 28	movq	0x28(%r15), %rdi
+1000b9591:	49 8b 5f 30	movq	0x30(%r15), %rbx
+1000b9595:	44 89 ee	movl	%r13d, %esi
+1000b9598:	e8 43 fd ff ff	callq	0x1000b92e0
+1000b959d:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b95a1:	8b 45 c0	movl	-0x40(%rbp), %eax
+1000b95a4:	99	cltd
+1000b95a5:	41 f7 fc	idivl	%r12d
+1000b95a8:	89 d6	movl	%edx, %esi
+1000b95aa:	e8 91 fd ff ff	callq	0x1000b9340
+1000b95af:	8b 30	movl	(%rax), %esi
+1000b95b1:	48 89 df	movq	%rbx, %rdi
+1000b95b4:	e8 57 fd ff ff	callq	0x1000b9310
+1000b95b9:	c6 40 1c 04	movb	$0x4, 0x1c(%rax)
+1000b95bd:	48 83 c4 28	addq	$0x28, %rsp
+1000b95c1:	5b	popq	%rbx
+1000b95c2:	41 5c	popq	%r12
+1000b95c4:	41 5d	popq	%r13
+1000b95c6:	41 5e	popq	%r14
+1000b95c8:	41 5f	popq	%r15
+1000b95ca:	5d	popq	%rbp
+1000b95cb:	c3	retq
+1000b95cc:	0f 1f 40 00	nopl	(%rax)

@@ -1,0 +1,60 @@
+VectorImage::setInitialNodePositionAndType(int, int, int)
+LC_FUNCTION_STARTS: [0x1000d4260, 0x1000d4310)
+Numeric interpretations are candidates.
+1000d4260:	55	pushq	%rbp
+1000d4261:	48 89 e5	movq	%rsp, %rbp
+1000d4264:	41 57	pushq	%r15
+1000d4266:	41 56	pushq	%r14
+1000d4268:	41 55	pushq	%r13
+1000d426a:	41 54	pushq	%r12
+1000d426c:	53	pushq	%rbx
+1000d426d:	48 83 ec 18	subq	$0x18, %rsp
+1000d4271:	41 89 cf	movl	%ecx, %r15d
+1000d4274:	41 89 d5	movl	%edx, %r13d
+1000d4277:	89 f3	movl	%esi, %ebx
+1000d4279:	49 89 fc	movq	%rdi, %r12
+1000d427c:	4c 8d 77 10	leaq	0x10(%rdi), %r14
+1000d4280:	4c 89 f7	movq	%r14, %rdi
+1000d4283:	e8 88 50 fe ff	callq	0x1000b9310
+1000d4288:	f2 41 0f 2a c5	cvtsi2sd	%r13d, %xmm0
+1000d428d:	f2 41 0f 2a cf	cvtsi2sd	%r15d, %xmm1
+1000d4292:	f2 0f 11 00	movsd	%xmm0, (%rax)
+1000d4296:	f2 0f 11 48 08	movsd	%xmm1, 0x8(%rax)
+1000d429b:	45 85 ed	testl	%r13d, %r13d
+1000d429e:	74 07	je	0x1000d42a7
+1000d42a0:	45 3b 6c 24 54	cmpl	0x54(%r12), %r13d
+1000d42a5:	75 15	jne	0x1000d42bc
+1000d42a7:	45 85 ff	testl	%r15d, %r15d
+1000d42aa:	74 15	je	0x1000d42c1
+1000d42ac:	31 c0	xorl	%eax, %eax
+1000d42ae:	45 3b 7c 24 58	cmpl	0x58(%r12), %r15d
+1000d42b3:	0f 94 c0	sete	%al
+1000d42b6:	44 8d 3c 40	leal	(%rax,%rax,2), %r15d
+1000d42ba:	eb 08	jmp	0x1000d42c4
+1000d42bc:	45 31 ff	xorl	%r15d, %r15d
+1000d42bf:	eb 03	jmp	0x1000d42c4
+1000d42c1:	41 b7 03	movb	$0x3, %r15b
+1000d42c4:	4c 89 f7	movq	%r14, %rdi
+1000d42c7:	89 de	movl	%ebx, %esi
+1000d42c9:	e8 42 50 fe ff	callq	0x1000b9310
+1000d42ce:	44 88 78 1c	movb	%r15b, 0x1c(%rax)
+1000d42d2:	4c 89 f7	movq	%r14, %rdi
+1000d42d5:	89 de	movl	%ebx, %esi
+1000d42d7:	e8 34 50 fe ff	callq	0x1000b9310
+1000d42dc:	66 0f 10 00	movupd	(%rax), %xmm0
+1000d42e0:	66 0f 5a c0	cvtpd2ps	%xmm0, %xmm0
+1000d42e4:	66 0f 29 45 c0	movapd	%xmm0, -0x40(%rbp)
+1000d42e9:	4c 89 f7	movq	%r14, %rdi
+1000d42ec:	89 de	movl	%ebx, %esi
+1000d42ee:	e8 1d 50 fe ff	callq	0x1000b9310
+1000d42f3:	0f 28 45 c0	movaps	-0x40(%rbp), %xmm0
+1000d42f7:	0f 13 40 10	movlps	%xmm0, 0x10(%rax)
+1000d42fb:	48 83 c4 18	addq	$0x18, %rsp
+1000d42ff:	5b	popq	%rbx
+1000d4300:	41 5c	popq	%r12
+1000d4302:	41 5d	popq	%r13
+1000d4304:	41 5e	popq	%r14
+1000d4306:	41 5f	popq	%r15
+1000d4308:	5d	popq	%rbp
+1000d4309:	c3	retq
+1000d430a:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

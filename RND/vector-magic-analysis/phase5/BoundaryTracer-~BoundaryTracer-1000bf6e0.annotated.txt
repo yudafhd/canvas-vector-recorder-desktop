@@ -1,0 +1,30 @@
+BoundaryTracer::~BoundaryTracer()
+LC_FUNCTION_STARTS: [0x1000bf6e0, 0x1000bf750)
+Numeric interpretations are candidates.
+1000bf6e0:	55	pushq	%rbp
+1000bf6e1:	48 89 e5	movq	%rsp, %rbp
+1000bf6e4:	53	pushq	%rbx
+1000bf6e5:	50	pushq	%rax
+1000bf6e6:	48 89 fb	movq	%rdi, %rbx
+1000bf6e9:	c7 87 b0 00 00 00 00 00 00 00	movl	$0x0, 0xb0(%rdi)
+1000bf6f3:	48 8b bf a8 00 00 00	movq	0xa8(%rdi), %rdi
+1000bf6fa:	48 85 ff	testq	%rdi, %rdi
+1000bf6fd:	74 10	je	0x1000bf70f
+1000bf6ff:	e8 42 c9 06 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000bf704:	48 c7 83 a8 00 00 00 00 00 00 00	movq	$0x0, 0xa8(%rbx)
+1000bf70f:	48 c7 43 40 00 00 00 00	movq	$0x0, 0x40(%rbx)
+1000bf717:	48 8b 7b 38	movq	0x38(%rbx), %rdi
+1000bf71b:	48 85 ff	testq	%rdi, %rdi
+1000bf71e:	74 0d	je	0x1000bf72d
+1000bf720:	e8 21 c9 06 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000bf725:	48 c7 43 38 00 00 00 00	movq	$0x0, 0x38(%rbx)
+1000bf72d:	48 c7 43 08 00 00 00 00	movq	$0x0, 0x8(%rbx)
+1000bf735:	48 8b 3b	movq	(%rbx), %rdi
+1000bf738:	48 85 ff	testq	%rdi, %rdi
+1000bf73b:	74 0c	je	0x1000bf749
+1000bf73d:	e8 04 c9 06 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000bf742:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000bf749:	48 83 c4 08	addq	$0x8, %rsp
+1000bf74d:	5b	popq	%rbx
+1000bf74e:	5d	popq	%rbp
+1000bf74f:	c3	retq

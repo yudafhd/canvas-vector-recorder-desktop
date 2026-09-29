@@ -1,0 +1,27 @@
+1000782ca:	48 8d 35 ff 42 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+1000782d1:	48 8d 15 78 e7 0c 00	leaq	0xce778(%rip), %rdx ## literal pool for: "Bezier Curve Complexity"
+1000782d8:	48 8d bd 88 f9 ff ff	leaq	-0x678(%rbp), %rdi
+1000782df:	31 c9	xorl	%ecx, %ecx
+1000782e1:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+1000782e7:	e8 f2 38 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+1000782ec:	48 8d 35 dd 42 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+1000782f3:	48 8d 15 6e e7 0c 00	leaq	0xce76e(%rip), %rdx ## literal pool for: "Fewer Nodes"
+1000782fa:	48 8d bd a0 f9 ff ff	leaq	-0x660(%rbp), %rdi
+100078301:	31 c9	xorl	%ecx, %ecx
+100078303:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+100078309:	e8 d0 38 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+10007830e:	48 8d 35 bb 42 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+100078315:	48 8d 15 58 e7 0c 00	leaq	0xce758(%rip), %rdx ## literal pool for: "More Nodes"
+10007831c:	4c 8d ad 58 f6 ff ff	leaq	-0x9a8(%rbp), %r13
+100078323:	4c 89 ef	movq	%r13, %rdi
+100078326:	31 c9	xorl	%ecx, %ecx
+100078328:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+10007832e:	e8 ab 38 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+100078333:	4c 89 2c 24	movq	%r13, (%rsp)
+100078337:	48 8d 95 88 f9 ff ff	leaq	-0x678(%rbp), %rdx
+10007833e:	4c 8d 8d a0 f9 ff ff	leaq	-0x660(%rbp), %r9
+100078345:	4c 89 ff	movq	%r15, %rdi
+100078348:	48 89 de	movq	%rbx, %rsi
+10007834b:	b9 01 00 00 00	movl	$0x1, %ecx
+100078350:	41 b8 0c 00 00 00	movl	$0xc, %r8d
+100078356:	e8 b5 9c fa ff	callq	__ZN12CustomSliderC1EP7QWidget7QStringiiS2_S2_ ## CustomSlider::CustomSlider(QWidget*, QString, int, int, QString, QString)

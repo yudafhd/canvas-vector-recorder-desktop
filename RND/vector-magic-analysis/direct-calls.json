@@ -1,0 +1,1458 @@
+{
+  "BezierFitter::execute()": [
+    {
+      "address": "0x1000b87c5",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000b87cd",
+      "target": "__ZN12BezierFitter10initializeEv ## BezierFitter::initialize()"
+    },
+    {
+      "address": "0x1000b87db",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000b87e3",
+      "target": "__ZN12BezierFitter15segmentContoursEv ## BezierFitter::segmentContours()"
+    },
+    {
+      "address": "0x1000b87f4",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000b87fc",
+      "target": "__ZN12BezierFitter15fitBezierCurvesEv ## BezierFitter::fitBezierCurves()"
+    },
+    {
+      "address": "0x1000b880d",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000b8815",
+      "target": "__ZN12BezierFitter25buildCurveReferenceArraysEv ## BezierFitter::buildCurveReferenceArrays()"
+    }
+  ],
+  "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)": [
+    {
+      "address": "0x1000b9601",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000b964c",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000b9665",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000b9670",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000b969a",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000b96ae",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000b96b9",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000b96e0",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000b96f5",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000b96ff",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000b9726",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000b9738",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000b9745",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000b97a5",
+      "target": "__ZN12BezierFitter18computeDataAndTimeERN3sla11BezierCurveIdLi2ELi3EEEiiiRNS0_6Array1IdEERNS4_INS0_3VecIdLi2EEEEEb ## BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)"
+    },
+    {
+      "address": "0x1000b97f3",
+      "target": "0x10012c070 ## symbol stub for: __Znam"
+    },
+    {
+      "address": "0x1000b98fc",
+      "target": "0x10012c070 ## symbol stub for: __Znam"
+    },
+    {
+      "address": "0x1000b99f1",
+      "target": "0x1000bd0e0"
+    },
+    {
+      "address": "0x1000b9a0b",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9a45",
+      "target": "0x1000bf0e0"
+    },
+    {
+      "address": "0x1000b9a85",
+      "target": "0x1000bf0e0"
+    },
+    {
+      "address": "0x1000b9ad1",
+      "target": "0x1000bf0e0"
+    },
+    {
+      "address": "0x1000b9b66",
+      "target": "0x1000bf110"
+    },
+    {
+      "address": "0x1000b9cce",
+      "target": "0x1000ba7c0"
+    },
+    {
+      "address": "0x1000b9d20",
+      "target": "0x1000ba790"
+    },
+    {
+      "address": "0x1000b9e04",
+      "target": "0x1000bc570"
+    },
+    {
+      "address": "0x1000b9e1e",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9e3b",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9e50",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9e97",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9ebb",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9ee1",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9ef6",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000b9efe",
+      "target": "0x10012acea ## symbol stub for: __Unwind_Resume"
+    },
+    {
+      "address": "0x1000b9f2d",
+      "target": "0x100120430"
+    },
+    {
+      "address": "0x1000b9f61",
+      "target": "0x1001204d0"
+    },
+    {
+      "address": "0x1000b9f94",
+      "target": "0x100120570"
+    }
+  ],
+  "BezierFitter::computeMergeMetric(Fragment*)": [
+    {
+      "address": "0x1000bc11d",
+      "target": "__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+    },
+    {
+      "address": "0x1000bc179",
+      "target": "__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+    },
+    {
+      "address": "0x1000bc1b1",
+      "target": "__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+    }
+  ],
+  "BezierFitter::computeSelfCost(Fragment*)": [
+    {
+      "address": "0x1000bc48e",
+      "target": "__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+    }
+  ],
+  "ContourSmoother::execute(bool)": [
+    {
+      "address": "0x1000c459f",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000c45aa",
+      "target": "__ZN15ContourSmoother10initializeEb ## ContourSmoother::initialize(bool)"
+    },
+    {
+      "address": "0x1000c45bb",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000c462d",
+      "target": "__ZN13Configuration12dumpSettingsEv ## Configuration::dumpSettings()"
+    },
+    {
+      "address": "0x1000c4639",
+      "target": "__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()"
+    },
+    {
+      "address": "0x1000c4645",
+      "target": "__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()"
+    },
+    {
+      "address": "0x1000c4651",
+      "target": "__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()"
+    },
+    {
+      "address": "0x1000c4663",
+      "target": "__ZN15ContourSmoother19executeCurrentPhaseEv ## ContourSmoother::executeCurrentPhase()"
+    },
+    {
+      "address": "0x1000c4688",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1000c46a1",
+      "target": "__ZN11VectorImage18flagInversionNodesEv ## VectorImage::flagInversionNodes()"
+    }
+  ],
+  "ContourSmoother::findPotential()": [
+    {
+      "address": "0x1000c4eca",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c4efa",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c4f11",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c4f5d",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c4f70",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5025",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c503f",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5053",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c505f",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5073",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5093",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c50a5",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c50b8",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c50d7",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c50e3",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c50fb",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5114",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5126",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c516d",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c517f",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c522a",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5249",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5255",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c528d",
+      "target": "*%rax"
+    },
+    {
+      "address": "0x1000c52fd",
+      "target": "__ZN11VectorImage10updateAreaEi ## VectorImage::updateArea(int)"
+    },
+    {
+      "address": "0x1000c5341",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c53b2",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c5420",
+      "target": "__ZN15GenerativeModel13findPotentialEv ## GenerativeModel::findPotential()"
+    },
+    {
+      "address": "0x1000c5462",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c54d7",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c54fe",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c5547",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c556f",
+      "target": "0x100121fb0"
+    },
+    {
+      "address": "0x1000c5574",
+      "target": "0x100121f30"
+    },
+    {
+      "address": "0x1000c5579",
+      "target": "0x100121eb0"
+    }
+  ],
+  "ContourSmoother::findGradient()": [
+    {
+      "address": "0x1000c55a9",
+      "target": "0x10012c094 ## symbol stub for: ___bzero"
+    },
+    {
+      "address": "0x1000c562b",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c566a",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5680",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c56b7",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c56cd",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5734",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5761",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c578e",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c57b5",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c57fa",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5814",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5828",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5834",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5848",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5869",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c587b",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c588e",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c58a6",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c58b2",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c58ca",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c58e3",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c58fc",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5930",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5946",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c59bd",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c59ea",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5a1a",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5a41",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5a6c",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5a84",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5a94",
+      "target": "0x1000b9f40"
+    },
+    {
+      "address": "0x1000c5adb",
+      "target": "*%rax"
+    },
+    {
+      "address": "0x1000c5b21",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5b8a",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5b96",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5ba8",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5bc4",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5bd6",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5bed",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5c03",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5c4e",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5c65",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5c7b",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5cb9",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5ccd",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5ce8",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5d03",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5d62",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5d6e",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5d80",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000c5d8c",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000c5d9e",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5db5",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5dcf",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5e0e",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5e25",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c5e3b",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5ef1",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c5f57",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c5f85",
+      "target": "__ZN15GenerativeModel12findGradientERN3sla6Array1INS0_4Vec2IdEEEE ## GenerativeModel::findGradient(sla::Array1<sla::Vec2<double>>&)"
+    },
+    {
+      "address": "0x1000c5fbd",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c5fd9",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c6037",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c605d",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000c6084",
+      "target": "__ZN11VectorImage14getMovedVectorEi ## VectorImage::getMovedVector(int)"
+    },
+    {
+      "address": "0x1000c60a1",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c60c0",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c60e7",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c610d",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c6120",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c6147",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c6173",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c6197",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c61c7",
+      "target": "0x1000c4d80"
+    },
+    {
+      "address": "0x1000c61f6",
+      "target": "0x100122270"
+    },
+    {
+      "address": "0x1000c61fb",
+      "target": "0x1001222f0"
+    },
+    {
+      "address": "0x1000c6200",
+      "target": "0x1001221f0"
+    },
+    {
+      "address": "0x1000c6205",
+      "target": "0x100122170"
+    }
+  ],
+  "GenerativeModel::computePixelColor(int, int)": [
+    {
+      "address": "0x1000ee8f6",
+      "target": "0x1000f1730"
+    },
+    {
+      "address": "0x1000ee933",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000eea2a",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eea85",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000eeb1e",
+      "target": "0x1000d5970"
+    },
+    {
+      "address": "0x1000eeb35",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eebd9",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eebf1",
+      "target": "__ZN15GenerativeModel14regionToIslandEi ## GenerativeModel::regionToIsland(int)"
+    },
+    {
+      "address": "0x1000eec5b",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eeca6",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000eed5a",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eedb4",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000eee49",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eee58",
+      "target": "__ZN15GenerativeModel14regionToIslandEi ## GenerativeModel::regionToIsland(int)"
+    },
+    {
+      "address": "0x1000eee8c",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000eeeed",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000eefda",
+      "target": "0x10002c160"
+    },
+    {
+      "address": "0x1000ef05a",
+      "target": "0x10012c076 ## symbol stub for: __Znwm"
+    },
+    {
+      "address": "0x1000ef0da",
+      "target": "0x1000d5970"
+    },
+    {
+      "address": "0x1000ef11a",
+      "target": "0x10002c160"
+    },
+    {
+      "address": "0x1000ef19b",
+      "target": "0x10012c076 ## symbol stub for: __Znwm"
+    },
+    {
+      "address": "0x1000ef1ee",
+      "target": "0x1000f1730"
+    },
+    {
+      "address": "0x1000ef20e",
+      "target": "0x1000d6120"
+    },
+    {
+      "address": "0x1000ef26e",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000ef349",
+      "target": "0x100125550"
+    },
+    {
+      "address": "0x1000ef34e",
+      "target": "0x1001254d0"
+    },
+    {
+      "address": "0x1000ef3a6",
+      "target": "0x100125150"
+    },
+    {
+      "address": "0x1000ef3ab",
+      "target": "0x100125450"
+    },
+    {
+      "address": "0x1000ef3b0",
+      "target": "0x100125350"
+    },
+    {
+      "address": "0x1000ef3b5",
+      "target": "0x1001251d0"
+    },
+    {
+      "address": "0x1000ef3ba",
+      "target": "0x1001253d0"
+    },
+    {
+      "address": "0x1000ef3bf",
+      "target": "0x1001250d0"
+    },
+    {
+      "address": "0x1000ef3c4",
+      "target": "0x1001252d0"
+    },
+    {
+      "address": "0x1000ef3c9",
+      "target": "0x100125250"
+    }
+  ],
+  "GenerativeModel::findPotential()": [
+    {
+      "address": "0x1000f01a5",
+      "target": "0x1000f16b0"
+    },
+    {
+      "address": "0x1000f01d5",
+      "target": "0x10012c094 ## symbol stub for: ___bzero"
+    },
+    {
+      "address": "0x1000f020e",
+      "target": "0x10002c160"
+    },
+    {
+      "address": "0x1000f0236",
+      "target": "0x1000b92e0"
+    },
+    {
+      "address": "0x1000f024e",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000f0258",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000f026d",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000f0277",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000f0290",
+      "target": "0x10012c0e8 ## symbol stub for: _atan2"
+    },
+    {
+      "address": "0x1000f02c2",
+      "target": "__ZN15GenerativeModel15dropBreadCrumbsEiii ## GenerativeModel::dropBreadCrumbs(int, int, int)"
+    },
+    {
+      "address": "0x1000f0323",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000f032d",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000f034d",
+      "target": "0x1000b9340"
+    },
+    {
+      "address": "0x1000f0357",
+      "target": "0x1000b9310"
+    },
+    {
+      "address": "0x1000f0370",
+      "target": "0x10012c0e8 ## symbol stub for: _atan2"
+    },
+    {
+      "address": "0x1000f03e6",
+      "target": "__ZN15GenerativeModel15dropBreadCrumbsEiii ## GenerativeModel::dropBreadCrumbs(int, int, int)"
+    },
+    {
+      "address": "0x1000f045e",
+      "target": "0x10012c076 ## symbol stub for: __Znwm"
+    },
+    {
+      "address": "0x1000f04f2",
+      "target": "0x1000f1760"
+    },
+    {
+      "address": "0x1000f050f",
+      "target": "0x1000d6120"
+    },
+    {
+      "address": "0x1000f05e1",
+      "target": "0x1000f1730"
+    },
+    {
+      "address": "0x1000f0604",
+      "target": "__ZN15GenerativeModel10closePixelEii ## GenerativeModel::closePixel(int, int)"
+    },
+    {
+      "address": "0x1000f0612",
+      "target": "__ZN15GenerativeModel17computePixelColorEii ## GenerativeModel::computePixelColor(int, int)"
+    }
+  ],
+  "PaletteFinder::doKMeans(bool, int)": [
+    {
+      "address": "0x1000f80cc",
+      "target": "__ZN13PaletteFinder11initializeKEi ## PaletteFinder::initializeK(int)"
+    },
+    {
+      "address": "0x1000f8100",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x1000f8118",
+      "target": "__ZN13PaletteFinder7assignKEb ## PaletteFinder::assignK(bool)"
+    },
+    {
+      "address": "0x1000f8130",
+      "target": "__ZN13PaletteFinder25computeWeightedMeanColorsEv ## PaletteFinder::computeWeightedMeanColors()"
+    },
+    {
+      "address": "0x1000f8143",
+      "target": "__ZN13PaletteFinder17computeMeanColorsEv ## PaletteFinder::computeMeanColors()"
+    },
+    {
+      "address": "0x1000f8168",
+      "target": "0x1000c8610"
+    },
+    {
+      "address": "0x1000f8176",
+      "target": "0x1000c8610"
+    },
+    {
+      "address": "0x1000f81cd",
+      "target": "0x1000c8610"
+    },
+    {
+      "address": "0x1000f81dc",
+      "target": "0x1000c8610"
+    },
+    {
+      "address": "0x1000f8263",
+      "target": "0x1000c7cb0"
+    },
+    {
+      "address": "0x1000f827d",
+      "target": "0x1000c8610"
+    }
+  ],
+  "PaletteFinder::computeCost(Palette*)": [
+    {
+      "address": "0x1000f82bc",
+      "target": "__ZN12BoundaryMask7update8Ei ## BoundaryMask::update8(int)"
+    },
+    {
+      "address": "0x1000f830e",
+      "target": "__ZN13PaletteFinder16computePixelCostEii ## PaletteFinder::computePixelCost(int, int)"
+    },
+    {
+      "address": "0x1000f8363",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1000f8374",
+      "target": "0x10012c184 ## symbol stub for: _log10"
+    }
+  ],
+  "PixelSegmenter::computeMergeMetric(int, int)": [
+    {
+      "address": "0x10010539a",
+      "target": "*(%rax)"
+    },
+    {
+      "address": "0x1001053a9",
+      "target": "*(%rax)"
+    },
+    {
+      "address": "0x100105491",
+      "target": "0x10012c1b4 ## symbol stub for: _powf"
+    },
+    {
+      "address": "0x1001054a4",
+      "target": "0x10012c1b4 ## symbol stub for: _powf"
+    },
+    {
+      "address": "0x1001054c4",
+      "target": "0x10012c1b4 ## symbol stub for: _powf"
+    }
+  ],
+  "Segmenter::execute(bool, bool, bool)": [
+    {
+      "address": "0x100110376",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x100110382",
+      "target": "__ZN14PixelSegmenter10initializeEv ## PixelSegmenter::initialize()"
+    },
+    {
+      "address": "0x1001103a8",
+      "target": "__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)"
+    },
+    {
+      "address": "0x1001103b4",
+      "target": "__ZN17SubPixelSegmenter7executeEv ## SubPixelSegmenter::execute()"
+    },
+    {
+      "address": "0x1001103d3",
+      "target": "__ZN17SubPixelSegmenter19snapColorsToPaletteEv ## SubPixelSegmenter::snapColorsToPalette()"
+    },
+    {
+      "address": "0x1001103e6",
+      "target": "__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)"
+    },
+    {
+      "address": "0x1001103ee",
+      "target": "__ZN17SubPixelSegmenter18flagShadowSegmentsEv ## SubPixelSegmenter::flagShadowSegments()"
+    },
+    {
+      "address": "0x1001103f6",
+      "target": "__ZN17SubPixelSegmenter43splitAndMergeFlaggedSegmentsFromBlurryImageEv ## SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()"
+    },
+    {
+      "address": "0x100110414",
+      "target": "__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)"
+    },
+    {
+      "address": "0x10011041c",
+      "target": "__ZN17SubPixelSegmenter19snapColorsToPaletteEv ## SubPixelSegmenter::snapColorsToPalette()"
+    },
+    {
+      "address": "0x100110436",
+      "target": "__ZN13PaletteFinder20executeSingleAssignKEv ## PaletteFinder::executeSingleAssignK()"
+    },
+    {
+      "address": "0x100110444",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x100110450",
+      "target": "__ZN17PixelSegmentation8renumberEv ## PixelSegmentation::renumber()"
+    },
+    {
+      "address": "0x100110461",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x10011046d",
+      "target": "__ZN13PaletteFinder20executeSingleAssignKEv ## PaletteFinder::executeSingleAssignK()"
+    },
+    {
+      "address": "0x10011047e",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x10011048a",
+      "target": "__ZN17PixelSegmentation25performDiagonalExtrusionsEv ## PixelSegmentation::performDiagonalExtrusions()"
+    },
+    {
+      "address": "0x10011049b",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1001104a7",
+      "target": "__ZN17PixelSegmentation27assignPaletteIndicesFromMapEv ## PixelSegmentation::assignPaletteIndicesFromMap()"
+    },
+    {
+      "address": "0x1001104b8",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x1001104d4",
+      "target": "__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)"
+    },
+    {
+      "address": "0x1001104e7",
+      "target": "__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)"
+    },
+    {
+      "address": "0x1001104ef",
+      "target": "__ZN17SubPixelSegmenter18flagShadowSegmentsEv ## SubPixelSegmenter::flagShadowSegments()"
+    },
+    {
+      "address": "0x1001104f7",
+      "target": "__ZN17SubPixelSegmenter43splitAndMergeFlaggedSegmentsFromBlurryImageEv ## SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()"
+    },
+    {
+      "address": "0x100110517",
+      "target": "__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)"
+    },
+    {
+      "address": "0x10011052a",
+      "target": "__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)"
+    },
+    {
+      "address": "0x100110532",
+      "target": "__ZN17SubPixelSegmenter8finalizeEv ## SubPixelSegmenter::finalize()"
+    },
+    {
+      "address": "0x100110551",
+      "target": "__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)"
+    },
+    {
+      "address": "0x100110559",
+      "target": "__ZN14PixelSegmenter31clusterColorsAndGeneratePaletteEv ## PixelSegmenter::clusterColorsAndGeneratePalette()"
+    },
+    {
+      "address": "0x100110565",
+      "target": "__ZN17PixelSegmentation16updateStatisticsEv ## PixelSegmentation::updateStatistics()"
+    },
+    {
+      "address": "0x100110576",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x10011057e",
+      "target": "__ZN14PixelSegmenter19enforceMinNumPixelsEv ## PixelSegmenter::enforceMinNumPixels()"
+    },
+    {
+      "address": "0x10011059a",
+      "target": "__ZN17PixelSegmentation8finalizeEv ## PixelSegmentation::finalize()"
+    },
+    {
+      "address": "0x1001105c5",
+      "target": "__ZN17PixelSegmentation18exportSegmentationEv ## PixelSegmentation::exportSegmentation()"
+    },
+    {
+      "address": "0x1001105d2",
+      "target": "__ZN9Segmenter12buildRegionsEv ## Segmenter::buildRegions()"
+    },
+    {
+      "address": "0x1001105e3",
+      "target": "__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)"
+    },
+    {
+      "address": "0x1001105ef",
+      "target": "__ZN17PixelSegmentation27generatePaletteFromSegmentsEv ## PixelSegmentation::generatePaletteFromSegments()"
+    },
+    {
+      "address": "0x100110632",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x10011064f",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x10011066c",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    },
+    {
+      "address": "0x1001106b4",
+      "target": "0x10012c04c ## symbol stub for: __ZdlPv"
+    },
+    {
+      "address": "0x1001106d8",
+      "target": "0x10012c046 ## symbol stub for: __ZdaPv"
+    }
+  ],
+  "SubPixelSegmenter::execute()": [
+    {
+      "address": "0x1001108f9",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x100110928",
+      "target": "__ZN20SubPixelSegmentation10initializeEib ## SubPixelSegmentation::initialize(int, bool)"
+    },
+    {
+      "address": "0x10011093b",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x10011094d",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x100110974",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110982",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x1001109a0",
+      "target": "__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)"
+    },
+    {
+      "address": "0x1001109b3",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x1001109c5",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x1001109e4",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x1001109f5",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x100110a12",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110a2d",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x100110a4a",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110a71",
+      "target": "__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)"
+    },
+    {
+      "address": "0x100110a84",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110a9a",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x100110ab7",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110ad2",
+      "target": "__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)"
+    },
+    {
+      "address": "0x100110ada",
+      "target": "__ZN17SubPixelSegmenter20splitAndMergeBeachesEv ## SubPixelSegmenter::splitAndMergeBeaches()"
+    },
+    {
+      "address": "0x100110ae3",
+      "target": "__ZN17PixelSegmentation25performDiagonalExtrusionsEv ## PixelSegmentation::performDiagonalExtrusions()"
+    },
+    {
+      "address": "0x100110af7",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x100110b0b",
+      "target": "__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)"
+    },
+    {
+      "address": "0x100110b1e",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110b3d",
+      "target": "__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)"
+    },
+    {
+      "address": "0x100110b5a",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)"
+    },
+    {
+      "address": "0x100110b73",
+      "target": "__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)"
+    }
+  ],
+  "SuperPixelSegmenter::execute()": [
+    {
+      "address": "0x100115302",
+      "target": "__ZN22SuperPixelSegmentation10initializeEb ## SuperPixelSegmentation::initialize(bool)"
+    },
+    {
+      "address": "0x10011530a",
+      "target": "__ZN19SuperPixelSegmenter9mergeLoopEv ## SuperPixelSegmenter::mergeLoop()"
+    },
+    {
+      "address": "0x10011531b",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x100115323",
+      "target": "__ZN19SuperPixelSegmenter8swapLoopEv ## SuperPixelSegmenter::swapLoop()"
+    },
+    {
+      "address": "0x100115334",
+      "target": "__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)"
+    },
+    {
+      "address": "0x10011533c",
+      "target": "__ZN19SuperPixelSegmenter9mergeLoopEv ## SuperPixelSegmenter::mergeLoop()"
+    }
+  ],
+  "VmController::segmentImage(VmVectorizationSettings const&)": [
+    {
+      "address": "0x10011b4ad",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b4cb",
+      "target": "__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)"
+    },
+    {
+      "address": "0x10011b4db",
+      "target": "__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)"
+    },
+    {
+      "address": "0x10011b4f0",
+      "target": "__ZN12VmController14needsToSegmentERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToSegment(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)"
+    },
+    {
+      "address": "0x10011b520",
+      "target": "__ZN12VmController15ensureFlattenedEb7VmColor ## VmController::ensureFlattened(bool, VmColor)"
+    },
+    {
+      "address": "0x10011b531",
+      "target": "__ZN12Preprocessor9setPixelsEv ## Preprocessor::setPixels()"
+    },
+    {
+      "address": "0x10011b54b",
+      "target": "__ZN9Segmenter7executeEbbb ## Segmenter::execute(bool, bool, bool)"
+    },
+    {
+      "address": "0x10011b561",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b570",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b57f",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b5a3",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b5b9",
+      "target": "__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)"
+    },
+    {
+      "address": "0x10011b5d2",
+      "target": "0x100129c70"
+    }
+  ],
+  "VmController::contourSmoothImage(VmVectorizationSettings const&)": [
+    {
+      "address": "0x10011b6e8",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b706",
+      "target": "__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)"
+    },
+    {
+      "address": "0x10011b716",
+      "target": "__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)"
+    },
+    {
+      "address": "0x10011b72b",
+      "target": "__ZN12VmController20needsToContourSmoothERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToContourSmooth(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)"
+    },
+    {
+      "address": "0x10011b740",
+      "target": "__ZN14BoundaryTracer7executeEv ## BoundaryTracer::execute()"
+    },
+    {
+      "address": "0x10011b756",
+      "target": "__ZN15ContourSmoother7executeEb ## ContourSmoother::execute(bool)"
+    },
+    {
+      "address": "0x10011b769",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b78d",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b7a3",
+      "target": "__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)"
+    },
+    {
+      "address": "0x10011b7ba",
+      "target": "0x100129cc0"
+    }
+  ],
+  "VmController::bezierFitImage(VmVectorizationSettings const&)": [
+    {
+      "address": "0x10011b8d8",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b8f6",
+      "target": "__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)"
+    },
+    {
+      "address": "0x10011b906",
+      "target": "__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)"
+    },
+    {
+      "address": "0x10011b91b",
+      "target": "__ZN12VmController16needsToBezierFitERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToBezierFit(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)"
+    },
+    {
+      "address": "0x10011b930",
+      "target": "__ZN12BezierFitter7executeEv ## BezierFitter::execute()"
+    },
+    {
+      "address": "0x10011b941",
+      "target": "__ZN8Exporter22generateCompoundCurvesEv ## Exporter::generateCompoundCurves()"
+    },
+    {
+      "address": "0x10011b965",
+      "target": "0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc"
+    },
+    {
+      "address": "0x10011b97b",
+      "target": "__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)"
+    },
+    {
+      "address": "0x10011b992",
+      "target": "0x100129d10"
+    }
+  ]
+}

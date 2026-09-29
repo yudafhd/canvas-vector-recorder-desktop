@@ -1,0 +1,11 @@
+preset,ContourSmoother::measurement_types,ContourSmoother::is_enabled,ContourSmoother::prior_types,ContourSmoother::do_puncture_corners,BezierFitter::stat_thresh_initial,BezierFitter::stat_thresh_final,BezierFitter::max_iterations
+_EP_CLASSIFY,0 0 0,1 1 1,3 3 3,0 1 0,1e-008,0.2,20
+_EP_LOGO_HIG,0 0 0,1 1 1,3 3 3,0 1 0,1e-008,0.5,20
+_EP_LOGO_HIG_AA,1 1 1,1 1 1,3 3 3,0 1 0,1e-008,0.2,20
+_EP_LOGO_LOW,0 0 0,1 1 1,3 3 3,0 1 0,1e-008,0.7,20
+_EP_LOGO_LOW_AA,1 1 1,1 1 1,3 3 3,0 1 0,1e-008,0.2,20
+_EP_LOGO_MED,0 0 0,1 1 1,3 3 3,0 1 0,1e-008,0.6,20
+_EP_LOGO_MED_AA,1 1 1,1 1 1,3 3 3,0 1 0,1e-008,0.2,20
+_EP_PHOTO_HIG,0 0 0,1 0 0,3 3 3,0 1 0,0.0001,0.5,10
+_EP_PHOTO_LOW,0 0 0,1 0 0,3 3 3,0 0 0,0.0001,10,10
+_EP_PHOTO_MED,0 0 0,1 0 0,3 3 3,0 0 0,0.0001,3,10

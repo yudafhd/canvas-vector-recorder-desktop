@@ -1,0 +1,27 @@
+100077c6d:	48 8d 35 5c 49 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+100077c74:	48 8d 15 4f ec 0c 00	leaq	0xcec4f(%rip), %rdx ## literal pool for: "Smoothness"
+100077c7b:	48 8d bd 40 f9 ff ff	leaq	-0x6c0(%rbp), %rdi
+100077c82:	31 c9	xorl	%ecx, %ecx
+100077c84:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+100077c8a:	e8 4f 3f 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+100077c8f:	48 8d 35 3a 49 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+100077c96:	48 8d 15 38 ec 0c 00	leaq	0xcec38(%rip), %rdx ## literal pool for: "Less Smoothing"
+100077c9d:	48 8d bd 58 f9 ff ff	leaq	-0x6a8(%rbp), %rdi
+100077ca4:	31 c9	xorl	%ecx, %ecx
+100077ca6:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+100077cac:	e8 2d 3f 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+100077cb1:	48 8d 35 18 49 28 00	leaq	__ZN4VmQt16staticMetaObjectE(%rip), %rsi ## VmQt::staticMetaObject
+100077cb8:	48 8d 15 25 ec 0c 00	leaq	0xcec25(%rip), %rdx ## literal pool for: "More Smoothing"
+100077cbf:	4c 8d ad 40 f6 ff ff	leaq	-0x9c0(%rbp), %r13
+100077cc6:	4c 89 ef	movq	%r13, %rdi
+100077cc9:	31 c9	xorl	%ecx, %ecx
+100077ccb:	41 b8 ff ff ff ff	movl	$0xffffffff, %r8d
+100077cd1:	e8 08 3f 0b 00	callq	0x10012bbde ## symbol stub for: __ZNK11QMetaObject2trEPKcS1_i
+100077cd6:	4c 89 2c 24	movq	%r13, (%rsp)
+100077cda:	48 8d 95 40 f9 ff ff	leaq	-0x6c0(%rbp), %rdx
+100077ce1:	4c 8d 8d 58 f9 ff ff	leaq	-0x6a8(%rbp), %r9
+100077ce8:	4c 89 ff	movq	%r15, %rdi
+100077ceb:	48 89 de	movq	%rbx, %rsi
+100077cee:	b9 01 00 00 00	movl	$0x1, %ecx
+100077cf3:	41 b8 0c 00 00 00	movl	$0xc, %r8d
+100077cf9:	e8 12 a3 fa ff	callq	__ZN12CustomSliderC1EP7QWidget7QStringiiS2_S2_ ## CustomSlider::CustomSlider(QWidget*, QString, int, int, QString, QString)

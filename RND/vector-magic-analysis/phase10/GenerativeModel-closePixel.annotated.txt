@@ -1,0 +1,147 @@
+GenerativeModel::closePixel(int, int)
+LC_FUNCTION_STARTS: [0x1000ee260, 0x1000ee480)
+Numeric annotations are candidates.
+1000ee260:	55	pushq	%rbp
+1000ee261:	48 89 e5	movq	%rsp, %rbp
+1000ee264:	41 57	pushq	%r15
+1000ee266:	41 56	pushq	%r14
+1000ee268:	41 55	pushq	%r13
+1000ee26a:	41 54	pushq	%r12
+1000ee26c:	53	pushq	%rbx
+1000ee26d:	50	pushq	%rax
+1000ee26e:	48 89 fb	movq	%rdi, %rbx
+1000ee271:	ff 87 38 01 00 00	incl	0x138(%rdi)
+1000ee277:	48 83 c7 08	addq	$0x8, %rdi
+1000ee27b:	4c 8b 7b 08	movq	0x8(%rbx), %r15
+1000ee27f:	89 75 d4	movl	%esi, -0x2c(%rbp)
+1000ee282:	89 55 d0	movl	%edx, -0x30(%rbp)
+1000ee285:	e8 a6 34 00 00	callq	0x1000f1730
+1000ee28a:	48 98	cltq
+1000ee28c:	48 c1 e0 04	shlq	$0x4, %rax
+1000ee290:	4d 8b 34 07	movq	(%r15,%rax), %r14
+1000ee294:	4d 85 f6	testq	%r14, %r14
+1000ee297:	0f 84 b9 01 00 00	je	0x1000ee456
+1000ee29d:	49 01 c7	addq	%rax, %r15
+1000ee2a0:	4c 89 f0	movq	%r14, %rax
+1000ee2a3:	eb 20	jmp	0x1000ee2c5
+1000ee2a5:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000ee2b0:	49 39 07	cmpq	%rax, (%r15)
+1000ee2b3:	0f 84 67 01 00 00	je	0x1000ee420
+1000ee2b9:	4d 89 e6	movq	%r12, %r14
+1000ee2bc:	4d 85 e4	testq	%r12, %r12
+1000ee2bf:	0f 84 91 01 00 00	je	0x1000ee456
+1000ee2c5:	4d 8b 26	movq	(%r14), %r12
+1000ee2c8:	4d 85 e4	testq	%r12, %r12
+1000ee2cb:	74 e3	je	0x1000ee2b0
+1000ee2cd:	41 8b 4e 10	movl	0x10(%r14), %ecx
+1000ee2d1:	4c 89 f2	movq	%r14, %rdx
+1000ee2d4:	41 3b 4c 24 10	cmpl	0x10(%r12), %ecx
+1000ee2d9:	75 d5	jne	0x1000ee2b0
+1000ee2db:	0f 1f 44 00 00	nopl	(%rax,%rax)
+1000ee2e0:	48 89 d0	movq	%rdx, %rax
+1000ee2e3:	f6 42 08 01	testb	$0x1, 0x8(%rdx)
+1000ee2e7:	75 0d	jne	0x1000ee2f6
+1000ee2e9:	48 8b 10	movq	(%rax), %rdx
+1000ee2ec:	48 85 d2	testq	%rdx, %rdx
+1000ee2ef:	74 05	je	0x1000ee2f6
+1000ee2f1:	39 48 10	cmpl	%ecx, 0x10(%rax)
+1000ee2f4:	74 ea	je	0x1000ee2e0
+1000ee2f6:	f2 0f 10 40 28	movsd	0x28(%rax), %xmm0
+1000ee2fb:	f2 0f 11 83 98 00 00 00	movsd	%xmm0, 0x98(%rbx)
+1000ee303:	4d 89 f5	movq	%r14, %r13
+1000ee306:	eb 29	jmp	0x1000ee331
+1000ee308:	48 89 df	movq	%rbx, %rdi
+1000ee30b:	4c 89 ee	movq	%r13, %rsi
+1000ee30e:	4c 89 e2	movq	%r12, %rdx
+1000ee311:	8b 4d d4	movl	-0x2c(%rbp), %ecx
+1000ee314:	44 8b 45 d0	movl	-0x30(%rbp), %r8d
+1000ee318:	e8 43 fb ff ff	callq	__ZN15GenerativeModel17insertCornerNodesEP10BreadCrumbS1_ii ## GenerativeModel::insertCornerNodes(BreadCrumb*, BreadCrumb*, int, int)
+1000ee31d:	49 89 c5	movq	%rax, %r13
+1000ee320:	4d 8b 6d 00	movq	(%r13), %r13
+1000ee324:	4d 8b 65 00	movq	(%r13), %r12
+1000ee328:	4d 85 e4	testq	%r12, %r12
+1000ee32b:	0f 84 9f 00 00 00	je	0x1000ee3d0
+1000ee331:	41 8b 75 10	movl	0x10(%r13), %esi
+1000ee335:	41 3b 74 24 10	cmpl	0x10(%r12), %esi
+1000ee33a:	0f 85 90 00 00 00	jne	0x1000ee3d0
+1000ee340:	48 8b 7b 68	movq	0x68(%rbx), %rdi
+1000ee344:	e8 97 af fc ff	callq	0x1000b92e0
+1000ee349:	41 8b 74 24 08	movl	0x8(%r12), %esi
+1000ee34e:	41 23 75 08	andl	0x8(%r13), %esi
+1000ee352:	40 f6 c6 01	testb	$0x1, %sil
+1000ee356:	74 c8	je	0x1000ee320
+1000ee358:	41 8b 4d 0c	movl	0xc(%r13), %ecx
+1000ee35c:	41 8b 7c 24 0c	movl	0xc(%r12), %edi
+1000ee361:	39 f9	cmpl	%edi, %ecx
+1000ee363:	74 bb	je	0x1000ee320
+1000ee365:	ff c1	incl	%ecx
+1000ee367:	49 89 c0	movq	%rax, %r8
+1000ee36a:	89 c8	movl	%ecx, %eax
+1000ee36c:	99	cltd
+1000ee36d:	41 f7 78 20	idivl	0x20(%r8)
+1000ee371:	39 fa	cmpl	%edi, %edx
+1000ee373:	75 11	jne	0x1000ee386
+1000ee375:	f2 41 0f 10 45 28	movsd	0x28(%r13), %xmm0
+1000ee37b:	66 41 0f 2e 44 24 28	ucomisd	0x28(%r12), %xmm0
+1000ee382:	75 02	jne	0x1000ee386
+1000ee384:	7b 9a	jnp	0x1000ee320
+1000ee386:	40 f6 c6 02	testb	$0x2, %sil
+1000ee38a:	0f 84 78 ff ff ff	je	0x1000ee308
+1000ee390:	f2 41 0f 10 45 18	movsd	0x18(%r13), %xmm0
+1000ee396:	66 41 0f 2e 44 24 18	ucomisd	0x18(%r12), %xmm0
+1000ee39d:	75 06	jne	0x1000ee3a5
+1000ee39f:	0f 8b 7b ff ff ff	jnp	0x1000ee320
+1000ee3a5:	f2 41 0f 10 45 20	movsd	0x20(%r13), %xmm0
+1000ee3ab:	66 41 0f 2e 44 24 20	ucomisd	0x20(%r12), %xmm0
+1000ee3b2:	0f 85 50 ff ff ff	jne	0x1000ee308
+1000ee3b8:	0f 8b 62 ff ff ff	jnp	0x1000ee320
+1000ee3be:	e9 45 ff ff ff	jmp	0x1000ee308
+1000ee3c3:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000ee3d0:	48 8b 7b 68	movq	0x68(%rbx), %rdi
+1000ee3d4:	41 8b 75 10	movl	0x10(%r13), %esi
+1000ee3d8:	e8 03 af fc ff	callq	0x1000b92e0
+1000ee3dd:	48 89 c1	movq	%rax, %rcx
+1000ee3e0:	41 8b 45 08	movl	0x8(%r13), %eax
+1000ee3e4:	41 23 46 08	andl	0x8(%r14), %eax
+1000ee3e8:	a8 01	testb	$0x1, %al
+1000ee3ea:	74 20	je	0x1000ee40c
+1000ee3ec:	41 8b 45 0c	movl	0xc(%r13), %eax
+1000ee3f0:	ff c0	incl	%eax
+1000ee3f2:	99	cltd
+1000ee3f3:	f7 79 20	idivl	0x20(%rcx)
+1000ee3f6:	41 3b 56 0c	cmpl	0xc(%r14), %edx
+1000ee3fa:	75 2f	jne	0x1000ee42b
+1000ee3fc:	f2 41 0f 10 45 28	movsd	0x28(%r13), %xmm0
+1000ee402:	66 41 0f 2e 46 28	ucomisd	0x28(%r14), %xmm0
+1000ee408:	75 21	jne	0x1000ee42b
+1000ee40a:	7a 1f	jp	0x1000ee42b
+1000ee40c:	4d 8b 75 00	movq	(%r13), %r14
+1000ee410:	eb 38	jmp	0x1000ee44a
+1000ee412:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000ee420:	4d 89 27	movq	%r12, (%r15)
+1000ee423:	4c 89 e0	movq	%r12, %rax
+1000ee426:	e9 8e fe ff ff	jmp	0x1000ee2b9
+1000ee42b:	4d 8b 65 00	movq	(%r13), %r12
+1000ee42f:	48 89 df	movq	%rbx, %rdi
+1000ee432:	4c 89 ee	movq	%r13, %rsi
+1000ee435:	4c 89 f2	movq	%r14, %rdx
+1000ee438:	8b 4d d4	movl	-0x2c(%rbp), %ecx
+1000ee43b:	44 8b 45 d0	movl	-0x30(%rbp), %r8d
+1000ee43f:	e8 1c fa ff ff	callq	__ZN15GenerativeModel17insertCornerNodesEP10BreadCrumbS1_ii ## GenerativeModel::insertCornerNodes(BreadCrumb*, BreadCrumb*, int, int)
+1000ee444:	4c 89 20	movq	%r12, (%rax)
+1000ee447:	4d 89 e6	movq	%r12, %r14
+1000ee44a:	4c 89 f0	movq	%r14, %rax
+1000ee44d:	4d 85 f6	testq	%r14, %r14
+1000ee450:	0f 85 6f fe ff ff	jne	0x1000ee2c5
+1000ee456:	48 89 df	movq	%rbx, %rdi
+1000ee459:	8b 75 d4	movl	-0x2c(%rbp), %esi
+1000ee45c:	8b 55 d0	movl	-0x30(%rbp), %edx
+1000ee45f:	48 83 c4 08	addq	$0x8, %rsp
+1000ee463:	5b	popq	%rbx
+1000ee464:	41 5c	popq	%r12
+1000ee466:	41 5d	popq	%r13
+1000ee468:	41 5e	popq	%r14
+1000ee46a:	41 5f	popq	%r15
+1000ee46c:	5d	popq	%rbp
+1000ee46d:	e9 5e 00 00 00	jmp	__ZN15GenerativeModel23cleanOutTwoCrumbRegionsEii ## GenerativeModel::cleanOutTwoCrumbRegions(int, int)
+1000ee472:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

@@ -223,7 +223,7 @@ h2 { font-size: 13px; font-weight: 600; margin-bottom: 11px; }
 .target-main-panel { display: flex; flex-direction: column; height: 100%; overflow: hidden; background: #f4f4f4; border: 1px solid #d8d8d8; border-radius: 3px; }
 .target-main-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 8px 14px; border-bottom: 1px solid #d8d8d8; }
 #targetFrame { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; background: #fff; }
-.target-main-view.mac-target-view { padding-top: 46px; }
+.target-main-view.mac-target-view { width: min(calc(100% - 128px), 900px); height: calc(100vh - 24px); padding: 46px 0 0; }
 .target-main-view.mac-target-view .target-main-panel { border: 0; border-radius: 0; }
 .target-main-view.mac-target-view .target-main-toolbar { display: none; }
 .topbar { display: flex; justify-content: space-between; align-items: center; min-height: 54px; padding: 8px 0px; border-bottom: 1px solid #d8d8d8; }

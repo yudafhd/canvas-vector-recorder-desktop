@@ -1,0 +1,73 @@
+ContourSmoother::execute(bool)
+1000c4580:	55	pushq	%rbp
+1000c4581:	48 89 e5	movq	%rsp, %rbp
+1000c4584:	41 57	pushq	%r15
+1000c4586:	41 56	pushq	%r14
+1000c4588:	53	pushq	%rbx
+1000c4589:	50	pushq	%rax
+1000c458a:	41 89 f6	movl	%esi, %r14d
+1000c458d:	48 89 fb	movq	%rdi, %rbx
+1000c4590:	45 31 ff	xorl	%r15d, %r15d
+1000c4593:	bf 08 00 00 00	movl	$0x8, %edi
+1000c4598:	be ff ff ff ff	movl	$0xffffffff, %esi
+1000c459d:	31 d2	xorl	%edx, %edx
+1000c459f:	e8 9c 85 01 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000c45a4:	48 89 df	movq	%rbx, %rdi
+1000c45a7:	44 89 f6	movl	%r14d, %esi
+1000c45aa:	e8 b1 fd ff ff	callq	__ZN15ContourSmoother10initializeEb ## ContourSmoother::initialize(bool)
+1000c45af:	bf 08 00 00 00	movl	$0x8, %edi
+1000c45b4:	be 01 00 00 00	movl	$0x1, %esi
+1000c45b9:	31 d2	xorl	%edx, %edx
+1000c45bb:	e8 80 85 01 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000c45c0:	48 c7 83 8c 06 00 00 00 00 00 00	movq	$0x0, 0x68c(%rbx)
+1000c45cb:	83 7b 5c 00	cmpl	$0x0, 0x5c(%rbx)
+1000c45cf:	74 0e	je	0x1000c45df
+1000c45d1:	44 8b bb 30 02 00 00	movl	0x230(%rbx), %r15d
+1000c45d8:	44 89 bb 8c 06 00 00	movl	%r15d, 0x68c(%rbx)
+1000c45df:	44 89 bb 80 06 00 00	movl	%r15d, 0x680(%rbx)
+1000c45e6:	83 7b 60 00	cmpl	$0x0, 0x60(%rbx)
+1000c45ea:	74 0e	je	0x1000c45fa
+1000c45ec:	44 03 bb f8 02 00 00	addl	0x2f8(%rbx), %r15d
+1000c45f3:	44 89 bb 8c 06 00 00	movl	%r15d, 0x68c(%rbx)
+1000c45fa:	44 89 bb 84 06 00 00	movl	%r15d, 0x684(%rbx)
+1000c4601:	83 7b 64 00	cmpl	$0x0, 0x64(%rbx)
+1000c4605:	74 0e	je	0x1000c4615
+1000c4607:	44 03 bb c0 03 00 00	addl	0x3c0(%rbx), %r15d
+1000c460e:	44 89 bb 8c 06 00 00	movl	%r15d, 0x68c(%rbx)
+1000c4615:	44 89 bb 88 06 00 00	movl	%r15d, 0x688(%rbx)
+1000c461c:	c7 83 f0 05 00 00 03 00 00 00	movl	$0x3, 0x5f0(%rbx)
+1000c4626:	48 8b bb f8 05 00 00	movq	0x5f8(%rbx), %rdi
+1000c462d:	e8 5e 3a 00 00	callq	__ZN13Configuration12dumpSettingsEv ## Configuration::dumpSettings()
+1000c4632:	48 8d bb 28 02 00 00	leaq	0x228(%rbx), %rdi
+1000c4639:	e8 22 d8 02 00	callq	__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()
+1000c463e:	48 8d bb f0 02 00 00	leaq	0x2f0(%rbx), %rdi
+1000c4645:	e8 16 d8 02 00	callq	__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()
+1000c464a:	48 8d bb b8 03 00 00	leaq	0x3b8(%rbx), %rdi
+1000c4651:	e8 0a d8 02 00	callq	__ZN17OptimizerSettings12dumpSettingsEv ## OptimizerSettings::dumpSettings()
+1000c4656:	c7 83 f0 05 00 00 00 00 00 00	movl	$0x0, 0x5f0(%rbx)
+1000c4660:	48 89 df	movq	%rbx, %rdi
+1000c4663:	e8 d8 e9 ff ff	callq	__ZN15ContourSmoother19executeCurrentPhaseEv ## ContourSmoother::executeCurrentPhase()
+1000c4668:	8b 83 f0 05 00 00	movl	0x5f0(%rbx), %eax
+1000c466e:	8d 48 01	leal	0x1(%rax), %ecx
+1000c4671:	89 8b f0 05 00 00	movl	%ecx, 0x5f0(%rbx)
+1000c4677:	83 f8 02	cmpl	$0x2, %eax
+1000c467a:	7c e4	jl	0x1000c4660
+1000c467c:	bf 08 00 00 00	movl	$0x8, %edi
+1000c4681:	be 03 00 00 00	movl	$0x3, %esi
+1000c4686:	31 d2	xorl	%edx, %edx
+1000c4688:	e8 b3 84 01 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000c468d:	48 8b 83 f8 05 00 00	movq	0x5f8(%rbx), %rax
+1000c4694:	83 78 04 00	cmpl	$0x0, 0x4(%rax)
+1000c4698:	74 0c	je	0x1000c46a6
+1000c469a:	48 8b bb 38 06 00 00	movq	0x638(%rbx), %rdi
+1000c46a1:	e8 da f4 00 00	callq	__ZN11VectorImage18flagInversionNodesEv ## VectorImage::flagInversionNodes()
+1000c46a6:	bf 08 00 00 00	movl	$0x8, %edi
+1000c46ab:	be fe ff ff ff	movl	$0xfffffffe, %esi
+1000c46b0:	31 d2	xorl	%edx, %edx
+1000c46b2:	48 83 c4 08	addq	$0x8, %rsp
+1000c46b6:	5b	popq	%rbx
+1000c46b7:	41 5e	popq	%r14
+1000c46b9:	41 5f	popq	%r15
+1000c46bb:	5d	popq	%rbp
+1000c46bc:	e9 7f 84 01 00	jmp	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000c46c1:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

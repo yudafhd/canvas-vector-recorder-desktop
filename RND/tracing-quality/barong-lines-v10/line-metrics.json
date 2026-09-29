@@ -1,0 +1,38 @@
+{
+  "before": {
+    "left": {
+      "yRange": [
+        530,
+        590
+      ],
+      "rmsXResidualPixels": 0.040243384826894504,
+      "maxAbsXResidualPixels": 0.11053234443942694
+    },
+    "right": {
+      "yRange": [
+        530,
+        590
+      ],
+      "rmsXResidualPixels": 0.040735706331433134,
+      "maxAbsXResidualPixels": 0.11235693445339234
+    }
+  },
+  "after": {
+    "left": {
+      "yRange": [
+        530,
+        590
+      ],
+      "rmsXResidualPixels": 4.502774422232955e-14,
+      "maxAbsXResidualPixels": 6.997180612700049e-14
+    },
+    "right": {
+      "yRange": [
+        530,
+        590
+      ],
+      "rmsXResidualPixels": 5.0760209057837985e-14,
+      "maxAbsXResidualPixels": 9.39803790345195e-14
+    }
+  }
+}

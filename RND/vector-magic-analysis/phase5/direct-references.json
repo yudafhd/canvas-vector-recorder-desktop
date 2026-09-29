@@ -1,0 +1,2624 @@
+[
+  {
+    "site": "0x100056da1",
+    "caller": "SegmentationThread::run()",
+    "target": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100056dd1",
+    "caller": "ContourSmoothingThread::run()",
+    "target": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b87cd",
+    "caller": "BezierFitter::execute()",
+    "target": "BezierFitter::initialize()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b87e3",
+    "caller": "BezierFitter::execute()",
+    "target": "BezierFitter::segmentContours()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b87fc",
+    "caller": "BezierFitter::execute()",
+    "target": "BezierFitter::fitBezierCurves()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8877",
+    "caller": "BezierFitter::initialize()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b88ae",
+    "caller": "BezierFitter::initialize()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b88ce",
+    "caller": "BezierFitter::initialize()",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b88ff",
+    "caller": "BezierFitter::initialize()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b892e",
+    "caller": "BezierFitter::initialize()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b89a3",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b89af",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b89df",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b89eb",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b89f6",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8a12",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8a2b",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8a5a",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::selectKeepers(int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8a5f",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x1000b89d0",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000b8a78",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8aa1",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8abc",
+    "caller": "BezierFitter::segmentContours()",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8b34",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8b60",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8b6c",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8b7b",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8b9a",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8bba",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8bf1",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8bfd",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b9f10",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8c1b",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b8c20",
+    "caller": "BezierFitter::fitBezierCurves()",
+    "target": "0x1000b8b50",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000b9395",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b93a8",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b93b9",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b93d7",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b93eb",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b93fa",
+    "caller": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b944c",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9458",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9467",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b94b5",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b94c6",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b94d1",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b950a",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b951b",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b952f",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9548",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9558",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9480",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000b9568",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b957a",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9584",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b9598",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b95aa",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000b95b4",
+    "caller": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbdd2",
+    "caller": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "BezierFitter::initializeFragments(int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbde9",
+    "caller": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "0x10012c17e",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbe07",
+    "caller": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "0x10012c124",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbe47",
+    "caller": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbe66",
+    "caller": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "BezierFitter::considerMergeAndSwap(Fragment*)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf26",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf49",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf57",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf6d",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf7b",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bbf99",
+    "caller": "BezierFitter::initializeFragments(int, int, int)",
+    "target": "0x1000bbeb0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf2c1",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf2fb",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf374",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf3e3",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf419",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf421",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf435",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf449",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf456",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf46a",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf472",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf486",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf491",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4a5",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4b2",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4ba",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4c8",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfbc",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4cd",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x1000bf58d",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bf4d9",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4e1",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf4f5",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf509",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf516",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf52a",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf532",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf546",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf551",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf565",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf572",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf57a",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10004c1c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf588",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012bfbc",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf5a5",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012c08e",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf5d0",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf5f4",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf612",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf622",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "0x10012acea",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf665",
+    "caller": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "target": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bf68f",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf6b0",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf6cd",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf6ff",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf720",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf73d",
+    "caller": "BoundaryTracer::~BoundaryTracer()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf7a0",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf7c4",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf80a",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf831",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf83d",
+    "caller": "BoundaryTracer::execute()",
+    "target": "BoundaryTracer::enumerateBoundaryNodes()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf899",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf8ad",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf8c1",
+    "caller": "BoundaryTracer::execute()",
+    "target": "VectorImage::setNodesSize(int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf8d6",
+    "caller": "BoundaryTracer::execute()",
+    "target": "VectorImage::initializeEdgeNodeCounts(int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf92a",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf948",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf95d",
+    "caller": "BoundaryTracer::execute()",
+    "target": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf97e",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c1a8",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf9b0",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bf9c8",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfa1c",
+    "caller": "BoundaryTracer::execute()",
+    "target": "BoundaryTracer::traceBoundary(int, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfa3c",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfa4e",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfa73",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfa9f",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfacf",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfaff",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfb15",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000bfa21",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bfb8f",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfbd4",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfc1a",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfc70",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfcc4",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfd2c",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfd35",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000bfb70",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bfd4b",
+    "caller": "BoundaryTracer::execute()",
+    "target": "BoundaryTracer::removeRedundantNodes(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfd77",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfd94",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfda7",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfdbc",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfdc8",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfdd7",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfdf7",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfe03",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfe17",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfe22",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000bfd70",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bfe36",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfe45",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x1000bfd80",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000bfe5a",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfe77",
+    "caller": "BoundaryTracer::execute()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bfec7",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x10012c094",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bff58",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bff77",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bff9c",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bffb6",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bffd2",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000bffea",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0007",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c001e",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0029",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000bff30",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0041",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0064",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0088",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c00ab",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c00ce",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0102",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0135",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0183",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c01c6",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0244",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0277",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0294",
+    "caller": "BoundaryTracer::enumerateBoundaryNodes()",
+    "target": "0x1000c0200",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0343",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c034f",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c076",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0437",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c045b",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c04a2",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0506",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c059e",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c03b0",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c05c2",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c06b9",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c076",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c06f2",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1b70",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c071a",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c084a",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c075e",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c06a2",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c07ab",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c06a2",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c07f8",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c06a2",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0819",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c082c",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0840",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0845",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c0c3c",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0851",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0873",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c088b",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c089f",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c08bd",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c08d9",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c08f3",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "ContourElement::ContourElement()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c092f",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c093d",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0954",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0962",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c098a",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1ba0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0993",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1d40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c09aa",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c1a10",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c09be",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c09d1",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c0a54",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c09e7",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0a0a",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0a30",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0a3f",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0a84",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c04c",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0ad4",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c04c",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b06",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b13",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b27",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b32",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b46",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b52",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfbc",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b71",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c08e",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b76",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c0c86",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0b8e",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0b9b",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0baf",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0bba",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0bce",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0bda",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfbc",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0bf9",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c08e",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0bfe",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x1000c0c86",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c0c16",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c23",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c37",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c42",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfec",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c56",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10003d230",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c62",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012bfbc",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c81",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c08e",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0c92",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0cac",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x100040060",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0cb8",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x100040060",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0cc0",
+    "caller": "BoundaryTracer::traceBoundary(int, int, int)",
+    "target": "0x10012acea",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0d74",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0d86",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0dc7",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0e3e",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0e52",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c1a8",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0e8c",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0e9e",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0eb1",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0ec4",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0f30",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c0f52",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c101f",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000c0e70",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c1050",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c10f3",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c10fd",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c111a",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1124",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c124d",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1294",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c129e",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c12b4",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000c10a0",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c12c4",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000c16c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c12f7",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c19c",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c12ff",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1321",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c137f",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c138a",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c139c",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c13a9",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c13b7",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c13ce",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c13f4",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1431",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1451",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c19c",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1459",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c146c",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c14b2",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c14d4",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "ContourElement::ContourElement()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c14e9",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000c12d9",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c1505",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1514",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "ContourElement::ContourElement()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1529",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x1000c1304",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c153e",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1565",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c157f",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1587",
+    "caller": "BoundaryTracer::removeRedundantNodes(bool)",
+    "target": "0x10012acea",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c15a9",
+    "caller": "BoundaryTracer::finalize()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c15c6",
+    "caller": "BoundaryTracer::finalize()",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1633",
+    "caller": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1643",
+    "caller": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1669",
+    "caller": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1685",
+    "caller": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c1696",
+    "caller": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "target": "0x1000bf630",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3111",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x10012c19c",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3128",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x10012bf7a",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c314d",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x10012bf7a",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3155",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "Optimizer::doCG()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3170",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "ContourSmoother::punctureCorners()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c31a9",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "CoreEngine::triggerFinegrainedProgress(ModuleType, int, int, int)",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c31ae",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x100121730",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c31c1",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x100121550",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c31c6",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x100121640",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c31cb",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x1001215c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c31de",
+    "caller": "ContourSmoother::executeCurrentPhase()",
+    "target": "0x1001216c0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c389b",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c38b4",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c38c8",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c38de",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c38f2",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3906",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c391a",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c392e",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3939",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c394d",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3961",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3975",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3989",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c39a1",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c39bc",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c39df",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c39f1",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3b95",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000c3d2c",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c3baa",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3bc6",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9340",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3bea",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3bfc",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3ee0",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c3eec",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c40b2",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000c4020",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c41c2",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000c4130",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c41e9",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "isProbablyPuncturedNode(sla::Vec<double, 21> const&, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4200",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4213",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c421f",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4227",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x1000c3ba0",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c424e",
+    "caller": "ContourSmoother::punctureCorners()",
+    "target": "0x10012c0d6",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c43a2",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "GenerativeModel::setup()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c43d1",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "0x10012c046",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c43f4",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "0x10012c070",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c440a",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "Optimizer::setup(StateContainer&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4418",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4430",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "VectorImage::initializeMarginNodes(int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4449",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "VectorImage::buildIricNeighbors()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c445a",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4471",
+    "caller": "ContourSmoother::initialize(bool)",
+    "target": "ContourSmoother::initializeNodePositions()",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000c459f",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c45aa",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "ContourSmoother::initialize(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c45bb",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c462d",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "Configuration::dumpSettings()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4639",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "OptimizerSettings::dumpSettings()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4645",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "OptimizerSettings::dumpSettings()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4651",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "OptimizerSettings::dumpSettings()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4663",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "ContourSmoother::executeCurrentPhase()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c4688",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c46a1",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "VectorImage::flagInversionNodes()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000c46bc",
+    "caller": "ContourSmoother::execute(bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1000d2726",
+    "caller": "VectorImage::clearNodeFlags()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d4283",
+    "caller": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d42c9",
+    "caller": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d42d7",
+    "caller": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d42ee",
+    "caller": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d4e1e",
+    "caller": "VectorImage::resetNodePositionsAndFlags()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d4e36",
+    "caller": "VectorImage::resetNodePositionsAndFlags()",
+    "target": "0x1000b92e0",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d4e42",
+    "caller": "VectorImage::resetNodePositionsAndFlags()",
+    "target": "0x1000b9f40",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d4e76",
+    "caller": "VectorImage::resetNodePositionsAndFlags()",
+    "target": "0x1000b9310",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d8517",
+    "caller": "CoreEngine::CoreEngine()",
+    "target": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000d8621",
+    "caller": "CoreEngine::CoreEngine()",
+    "target": "BoundaryTracer::~BoundaryTracer()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000daf90",
+    "caller": "CoreEngine::~CoreEngine()",
+    "target": "BoundaryTracer::~BoundaryTracer()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1000db814",
+    "caller": "CoreEngine::classifyImage()",
+    "target": "Segmenter::execute(bool, bool, bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110376",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110382",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::initialize()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103a8",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::overSegmentation(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103b4",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::execute()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103d3",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::snapColorsToPalette()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103e6",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmentation::flattenTo(PixelSegmentation&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103ee",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::flagShadowSegments()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001103f6",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110414",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::clusterColors(int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011041c",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::snapColorsToPalette()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110421",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "0x10011051c",
+    "kind": "jump"
+  },
+  {
+    "site": "0x100110436",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PaletteFinder::executeSingleAssignK()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110444",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110450",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::renumber()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110461",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011046d",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PaletteFinder::executeSingleAssignK()",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011047e",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011048a",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::performDiagonalExtrusions()",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011049b",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104a7",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::assignPaletteIndicesFromMap()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104b8",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104bd",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "0x10011055e",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1001104d4",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::clusterColors(int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104e7",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmentation::flattenTo(PixelSegmentation&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104ef",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::flagShadowSegments()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001104f7",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110517",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::clusterColors(int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011052a",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmentation::flattenTo(PixelSegmentation&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110532",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "SubPixelSegmenter::finalize()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110551",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::overSegmentation(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110559",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::clusterColorsAndGeneratePalette()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110565",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::updateStatistics()",
+    "kind": "call"
+  },
+  {
+    "site": "0x100110576",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011057e",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::enforceMinNumPixels()",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011059a",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::finalize()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001105b9",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "CoreEngine::triggerProgress(ModuleType, int, int)",
+    "kind": "jump"
+  },
+  {
+    "site": "0x1001105c5",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::exportSegmentation()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001105d2",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "Segmenter::buildRegions()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001105e3",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmenter::overSegmentation(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001105ef",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "PixelSegmentation::generatePaletteFromSegments()",
+    "kind": "call"
+  },
+  {
+    "site": "0x1001105f4",
+    "caller": "Segmenter::execute(bool, bool, bool)",
+    "target": "0x10011056a",
+    "kind": "jump"
+  },
+  {
+    "site": "0x10011b4ad",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b4cb",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "CoreEngine::initializeTask(StatusMessageTaskType, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b4db",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "VmController::populateSettings(VmVectorizationSettings const&, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b4f0",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "VmController::needsToSegment(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b520",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "VmController::ensureFlattened(bool, VmColor)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b531",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "Preprocessor::setPixels()",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b54b",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "Segmenter::execute(bool, bool, bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b561",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b570",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b57f",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b5a3",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b5b9",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "VmVectorizationSettings::set(VmVectorizationSettings const&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b5d2",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x100129c70",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b5d7",
+    "caller": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "target": "0x10011b550",
+    "kind": "jump"
+  },
+  {
+    "site": "0x10011b6e8",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b706",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "CoreEngine::initializeTask(StatusMessageTaskType, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b716",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "VmController::populateSettings(VmVectorizationSettings const&, int)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b72b",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "VmController::needsToContourSmooth(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b740",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "BoundaryTracer::execute()",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b756",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "ContourSmoother::execute(bool)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b769",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b78d",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "0x10012bf5c",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b7a3",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "VmVectorizationSettings::set(VmVectorizationSettings const&)",
+    "kind": "call"
+  },
+  {
+    "site": "0x10011b7ba",
+    "caller": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "target": "0x100129cc0",
+    "kind": "call"
+  }
+]

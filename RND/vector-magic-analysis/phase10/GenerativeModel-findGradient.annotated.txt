@@ -1,0 +1,57 @@
+GenerativeModel::findGradient(sla::Array1<sla::Vec2<double>>&)
+LC_FUNCTION_STARTS: [0x1000f0650, 0x1000f06f0)
+Numeric annotations are candidates.
+1000f0650:	55	pushq	%rbp
+1000f0651:	48 89 e5	movq	%rsp, %rbp
+1000f0654:	41 57	pushq	%r15
+1000f0656:	41 56	pushq	%r14
+1000f0658:	41 55	pushq	%r13
+1000f065a:	41 54	pushq	%r12
+1000f065c:	53	pushq	%rbx
+1000f065d:	50	pushq	%rax
+1000f065e:	48 89 75 d0	movq	%rsi, -0x30(%rbp)
+1000f0662:	8b 87 88 00 00 00	movl	0x88(%rdi), %eax
+1000f0668:	85 c0	testl	%eax, %eax
+1000f066a:	7e 75	jle	0x1000f06e1
+1000f066c:	49 89 fe	movq	%rdi, %r14
+1000f066f:	4c 8d 7f 08	leaq	0x8(%rdi), %r15
+1000f0673:	8b 8f 8c 00 00 00	movl	0x8c(%rdi), %ecx
+1000f0679:	45 31 e4	xorl	%r12d, %r12d
+1000f067c:	eb 11	jmp	0x1000f068f
+1000f067e:	66 90	nop
+1000f0680:	41 8b 86 88 00 00 00	movl	0x88(%r14), %eax
+1000f0687:	41 ff c4	incl	%r12d
+1000f068a:	41 39 c4	cmpl	%eax, %r12d
+1000f068d:	7d 52	jge	0x1000f06e1
+1000f068f:	85 c9	testl	%ecx, %ecx
+1000f0691:	7e f4	jle	0x1000f0687
+1000f0693:	45 31 ed	xorl	%r13d, %r13d
+1000f0696:	eb 17	jmp	0x1000f06af
+1000f0698:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)
+1000f06a0:	41 ff c5	incl	%r13d
+1000f06a3:	41 8b 8e 8c 00 00 00	movl	0x8c(%r14), %ecx
+1000f06aa:	41 39 cd	cmpl	%ecx, %r13d
+1000f06ad:	7d d1	jge	0x1000f0680
+1000f06af:	49 8b 1f	movq	(%r15), %rbx
+1000f06b2:	4c 89 ff	movq	%r15, %rdi
+1000f06b5:	44 89 ee	movl	%r13d, %esi
+1000f06b8:	44 89 e2	movl	%r12d, %edx
+1000f06bb:	e8 70 10 00 00	callq	0x1000f1730
+1000f06c0:	48 98	cltq
+1000f06c2:	48 c1 e0 04	shlq	$0x4, %rax
+1000f06c6:	48 83 3c 03 00	cmpq	$0x0, (%rbx,%rax)
+1000f06cb:	74 d3	je	0x1000f06a0
+1000f06cd:	4c 89 f7	movq	%r14, %rdi
+1000f06d0:	48 8b 75 d0	movq	-0x30(%rbp), %rsi
+1000f06d4:	44 89 ea	movl	%r13d, %edx
+1000f06d7:	44 89 e1	movl	%r12d, %ecx
+1000f06da:	e8 21 ee ff ff	callq	__ZN15GenerativeModel17findPixelGradientERN3sla6Array1INS0_4Vec2IdEEEEii ## GenerativeModel::findPixelGradient(sla::Array1<sla::Vec2<double>>&, int, int)
+1000f06df:	eb bf	jmp	0x1000f06a0
+1000f06e1:	48 83 c4 08	addq	$0x8, %rsp
+1000f06e5:	5b	popq	%rbx
+1000f06e6:	41 5c	popq	%r12
+1000f06e8:	41 5d	popq	%r13
+1000f06ea:	41 5e	popq	%r14
+1000f06ec:	41 5f	popq	%r15
+1000f06ee:	5d	popq	%rbp
+1000f06ef:	c3	retq

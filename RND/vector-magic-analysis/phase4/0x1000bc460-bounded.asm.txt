@@ -1,0 +1,25 @@
+1000bc460:	80 7e 18 00	cmpb	$0x0, 0x18(%rsi)
+1000bc464:	74 3d	je	0x1000bc4a3
+1000bc466:	55	pushq	%rbp
+1000bc467:	48 89 e5	movq	%rsp, %rbp
+1000bc46a:	53	pushq	%rbx
+1000bc46b:	50	pushq	%rax
+1000bc46c:	8b 8f 0c 01 00 00	movl	0x10c(%rdi), %ecx
+1000bc472:	03 0e	addl	(%rsi), %ecx
+1000bc474:	8b 97 08 01 00 00	movl	0x108(%rdi), %edx
+1000bc47a:	44 8b 46 04	movl	0x4(%rsi), %r8d
+1000bc47e:	41 01 c8	addl	%ecx, %r8d
+1000bc481:	48 8d 47 78	leaq	0x78(%rdi), %rax
+1000bc485:	48 89 f3	movq	%rsi, %rbx
+1000bc488:	48 89 c6	movq	%rax, %rsi
+1000bc48b:	45 31 c9	xorl	%r9d, %r9d
+1000bc48e:	e8 3d d1 ff ff	callq	__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)
+1000bc493:	f2 0f 11 43 10	movsd	%xmm0, 0x10(%rbx)
+1000bc498:	c6 43 18 00	movb	$0x0, 0x18(%rbx)
+1000bc49c:	48 83 c4 08	addq	$0x8, %rsp
+1000bc4a0:	5b	popq	%rbx
+1000bc4a1:	5d	popq	%rbp
+1000bc4a2:	c3	retq
+1000bc4a3:	f2 0f 10 46 10	movsd	0x10(%rsi), %xmm0
+1000bc4a8:	c3	retq
+1000bc4a9:	0f 1f 80 00 00 00 00	nopl	(%rax)

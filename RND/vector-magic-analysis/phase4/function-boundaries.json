@@ -1,0 +1,182 @@
+[
+  {
+    "start": "0x100021ba0",
+    "end_exclusive": "0x100021ed0",
+    "name": "CustomSlider::CustomSlider(QWidget*, QString, int, int, QString, QString)",
+    "file": "0x100021ba0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8650",
+    "end_exclusive": "0x1000b86d0",
+    "name": "BezierFitter::BezierFitter(CoreEngine&)",
+    "file": "0x1000b8650-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8750",
+    "end_exclusive": "0x1000b8780",
+    "name": "BezierFitter::~BezierFitter()",
+    "file": "0x1000b8750-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b87b0",
+    "end_exclusive": "0x1000b8840",
+    "name": "BezierFitter::execute()",
+    "file": "0x1000b87b0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8840",
+    "end_exclusive": "0x1000b8950",
+    "name": "BezierFitter::initialize()",
+    "file": "0x1000b8840-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8950",
+    "end_exclusive": "0x1000b8ae0",
+    "name": "BezierFitter::segmentContours()",
+    "file": "0x1000b8950-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8ae0",
+    "end_exclusive": "0x1000b8c40",
+    "name": "BezierFitter::fitBezierCurves()",
+    "file": "0x1000b8ae0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b8c40",
+    "end_exclusive": "0x1000b92e0",
+    "name": "BezierFitter::buildCurveReferenceArrays()",
+    "file": "0x1000b8c40-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b9370",
+    "end_exclusive": "0x1000b9430",
+    "name": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "file": "0x1000b9370-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b9430",
+    "end_exclusive": "0x1000b95d0",
+    "name": "BezierFitter::selectKeepers(int, int, int)",
+    "file": "0x1000b9430-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b95d0",
+    "end_exclusive": "0x1000b9f10",
+    "name": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)",
+    "file": "0x1000b95d0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000b9fa0",
+    "end_exclusive": "0x1000ba400",
+    "name": "BezierFitter::findPotential()",
+    "file": "0x1000b9fa0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000ba430",
+    "end_exclusive": "0x1000ba790",
+    "name": "BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)",
+    "file": "0x1000ba430-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000ba7f0",
+    "end_exclusive": "0x1000baad0",
+    "name": "BezierFitter::getStateVariable(int, int)",
+    "file": "0x1000ba7f0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000baad0",
+    "end_exclusive": "0x1000bb090",
+    "name": "BezierFitter::setStateVariable(int, int, double)",
+    "file": "0x1000baad0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bb090",
+    "end_exclusive": "0x1000bb1e0",
+    "name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "file": "0x1000bb090-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bb1e0",
+    "end_exclusive": "0x1000bbdc0",
+    "name": "BezierFitter::reportComparisonResult(double, sla::Array1<double>&, sla::Array1<double>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, double)",
+    "file": "0x1000bb1e0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bbdc0",
+    "end_exclusive": "0x1000bbeb0",
+    "name": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "file": "0x1000bbdc0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bbee0",
+    "end_exclusive": "0x1000bbfc0",
+    "name": "BezierFitter::initializeFragments(int, int, int)",
+    "file": "0x1000bbee0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bbfc0",
+    "end_exclusive": "0x1000bc0b0",
+    "name": "BezierFitter::considerMergeAndSwap(Fragment*)",
+    "file": "0x1000bbfc0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bc0d0",
+    "end_exclusive": "0x1000bc1d0",
+    "name": "BezierFitter::computeMergeMetric(Fragment*)",
+    "file": "0x1000bc0d0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bc1f0",
+    "end_exclusive": "0x1000bc430",
+    "name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "file": "0x1000bc1f0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bc460",
+    "end_exclusive": "0x1000bc4b0",
+    "name": "BezierFitter::computeSelfCost(Fragment*)",
+    "file": "0x1000bc460-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bc4b0",
+    "end_exclusive": "0x1000bc570",
+    "name": "BezierFitter::computeDislikeOf(Fragment*, int, int)",
+    "file": "0x1000bc4b0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bc570",
+    "end_exclusive": "0x1000bd0e0",
+    "name": null,
+    "file": "0x1000bc570-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bd0e0",
+    "end_exclusive": "0x1000bdb50",
+    "name": null,
+    "file": "0x1000bd0e0-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bdb50",
+    "end_exclusive": "0x1000bdfd0",
+    "name": "BezierFitter::findHessianAndGradient(sla::BezierCurve<double, 2, 3>&, int, int, int, bool, BezierOptimizationRecord&)",
+    "file": "0x1000bdb50-bounded.asm.txt"
+  },
+  {
+    "start": "0x1000bf070",
+    "end_exclusive": "0x1000bf090",
+    "name": "BezierFitter::memoryUsed()",
+    "file": "0x1000bf070-bounded.asm.txt"
+  },
+  {
+    "start": "0x1001184a0",
+    "end_exclusive": "0x100118970",
+    "name": "VmVectorizationSettings::toString() const",
+    "file": "0x1001184a0-bounded.asm.txt"
+  },
+  {
+    "start": "0x100119d40",
+    "end_exclusive": "0x10011a5c0",
+    "name": "VmController::populateSettings(VmVectorizationSettings const&, int)",
+    "file": "0x100119d40-bounded.asm.txt"
+  }
+]

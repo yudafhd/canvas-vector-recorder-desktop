@@ -1,0 +1,8 @@
+BoundaryTracer::BoundaryTracer(CoreEngine&)
+LC_FUNCTION_STARTS: [0x1000bf660, 0x1000bf670)
+Numeric interpretations are candidates.
+1000bf660:	55	pushq	%rbp
+1000bf661:	48 89 e5	movq	%rsp, %rbp
+1000bf664:	5d	popq	%rbp
+1000bf665:	e9 96 fb ff ff	jmp	__ZN14BoundaryTracerC2ER10CoreEngine ## BoundaryTracer::BoundaryTracer(CoreEngine&)
+1000bf66a:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

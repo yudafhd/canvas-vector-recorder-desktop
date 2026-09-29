@@ -1,0 +1,64 @@
+VectorImage::resetNodePositionsAndFlags()
+LC_FUNCTION_STARTS: [0x1000d4df0, 0x1000d4ea0)
+Numeric interpretations are candidates.
+1000d4df0:	55	pushq	%rbp
+1000d4df1:	48 89 e5	movq	%rsp, %rbp
+1000d4df4:	41 57	pushq	%r15
+1000d4df6:	41 56	pushq	%r14
+1000d4df8:	41 55	pushq	%r13
+1000d4dfa:	41 54	pushq	%r12
+1000d4dfc:	53	pushq	%rbx
+1000d4dfd:	50	pushq	%rax
+1000d4dfe:	48 89 fb	movq	%rdi, %rbx
+1000d4e01:	44 8b 67 08	movl	0x8(%rdi), %r12d
+1000d4e05:	45 85 e4	testl	%r12d, %r12d
+1000d4e08:	7e 4a	jle	0x1000d4e54
+1000d4e0a:	45 31 f6	xorl	%r14d, %r14d
+1000d4e0d:	eb 09	jmp	0x1000d4e18
+1000d4e0f:	90	nop
+1000d4e10:	41 ff c6	incl	%r14d
+1000d4e13:	45 39 e6	cmpl	%r12d, %r14d
+1000d4e16:	74 3c	je	0x1000d4e54
+1000d4e18:	48 89 df	movq	%rbx, %rdi
+1000d4e1b:	44 89 f6	movl	%r14d, %esi
+1000d4e1e:	e8 bd 44 fe ff	callq	0x1000b92e0
+1000d4e23:	44 8b 68 30	movl	0x30(%rax), %r13d
+1000d4e27:	45 85 ed	testl	%r13d, %r13d
+1000d4e2a:	7e e4	jle	0x1000d4e10
+1000d4e2c:	45 31 ff	xorl	%r15d, %r15d
+1000d4e2f:	90	nop
+1000d4e30:	48 89 df	movq	%rbx, %rdi
+1000d4e33:	44 89 f6	movl	%r14d, %esi
+1000d4e36:	e8 a5 44 fe ff	callq	0x1000b92e0
+1000d4e3b:	48 8d 78 28	leaq	0x28(%rax), %rdi
+1000d4e3f:	44 89 fe	movl	%r15d, %esi
+1000d4e42:	e8 f9 50 fe ff	callq	0x1000b9f40
+1000d4e47:	c6 00 00	movb	$0x0, (%rax)
+1000d4e4a:	41 ff c7	incl	%r15d
+1000d4e4d:	45 39 fd	cmpl	%r15d, %r13d
+1000d4e50:	75 de	jne	0x1000d4e30
+1000d4e52:	eb bc	jmp	0x1000d4e10
+1000d4e54:	44 8b 7b 18	movl	0x18(%rbx), %r15d
+1000d4e58:	45 85 ff	testl	%r15d, %r15d
+1000d4e5b:	7e 33	jle	0x1000d4e90
+1000d4e5d:	48 83 c3 10	addq	$0x10, %rbx
+1000d4e61:	45 31 f6	xorl	%r14d, %r14d
+1000d4e64:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000d4e70:	48 89 df	movq	%rbx, %rdi
+1000d4e73:	44 89 f6	movl	%r14d, %esi
+1000d4e76:	e8 95 44 fe ff	callq	0x1000b9310
+1000d4e7b:	66 c7 40 1d 00 00	movw	$0x0, 0x1d(%rax)
+1000d4e81:	0f 5a 40 10	cvtps2pd	0x10(%rax), %xmm0
+1000d4e85:	0f 11 00	movups	%xmm0, (%rax)
+1000d4e88:	41 ff c6	incl	%r14d
+1000d4e8b:	45 39 f7	cmpl	%r14d, %r15d
+1000d4e8e:	75 e0	jne	0x1000d4e70
+1000d4e90:	48 83 c4 08	addq	$0x8, %rsp
+1000d4e94:	5b	popq	%rbx
+1000d4e95:	41 5c	popq	%r12
+1000d4e97:	41 5d	popq	%r13
+1000d4e99:	41 5e	popq	%r14
+1000d4e9b:	41 5f	popq	%r15
+1000d4e9d:	5d	popq	%rbp
+1000d4e9e:	c3	retq
+1000d4e9f:	90	nop

@@ -1,0 +1,55 @@
+{
+  "source": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/vector-magic-analysis/phase8/diagonal-yellow-white-353-vm.svg",
+  "fixture_size": [
+    353,
+    353
+  ],
+  "expected_yellow_pixel_count": 62128,
+  "colored_regions": {
+    "shape-5": {
+      "fill": "#fcc101",
+      "cubic_segments": 4,
+      "area_local_square_pixels": 62001.86193234096,
+      "diagonal_endpoints_local": [
+        [
+          346.5688,
+          5.5677
+        ],
+        [
+          0.0,
+          352.1669
+        ]
+      ],
+      "diagonal_offset_from_x_plus_y_352": {
+        "min": 0.13618838692497093,
+        "max": 0.16689999999999827,
+        "mean": 0.14395775000000308,
+        "max_absolute": 0.16689999999999827
+      }
+    },
+    "shape-6": {
+      "fill": "#ffffff",
+      "cubic_segments": 6,
+      "area_local_square_pixels": 62607.13806765906,
+      "diagonal_endpoints_local": [
+        [
+          0.0,
+          352.1669
+        ],
+        [
+          346.5688,
+          5.5677
+        ]
+      ],
+      "diagonal_offset_from_x_plus_y_352": {
+        "min": 0.13618838692497093,
+        "max": 0.16689999999999827,
+        "mean": 0.14395775000000147,
+        "max_absolute": 0.16689999999999827
+      }
+    }
+  },
+  "yellow_area_delta_from_raster_pixel_count": -126.13806765904155,
+  "colored_region_area_sum": 124609.00000000003,
+  "full_image_area": 124609
+}

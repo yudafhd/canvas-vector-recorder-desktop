@@ -1,0 +1,31 @@
+SuperPixelSegmenter::execute()
+1001152f0:	55	pushq	%rbp
+1001152f1:	48 89 e5	movq	%rsp, %rbp
+1001152f4:	53	pushq	%rbx
+1001152f5:	50	pushq	%rax
+1001152f6:	48 89 fb	movq	%rdi, %rbx
+1001152f9:	48 8b 7f 20	movq	0x20(%rdi), %rdi
+1001152fd:	be 01 00 00 00	movl	$0x1, %esi
+100115302:	e8 89 90 ff ff	callq	__ZN22SuperPixelSegmentation10initializeEb ## SuperPixelSegmentation::initialize(bool)
+100115307:	48 89 df	movq	%rbx, %rdi
+10011530a:	e8 51 00 00 00	callq	__ZN19SuperPixelSegmenter9mergeLoopEv ## SuperPixelSegmenter::mergeLoop()
+10011530f:	bf 05 00 00 00	movl	$0x5, %edi
+100115314:	be 01 00 00 00	movl	$0x1, %esi
+100115319:	31 d2	xorl	%edx, %edx
+10011531b:	e8 20 78 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100115320:	48 89 df	movq	%rbx, %rdi
+100115323:	e8 88 03 00 00	callq	__ZN19SuperPixelSegmenter8swapLoopEv ## SuperPixelSegmenter::swapLoop()
+100115328:	bf 05 00 00 00	movl	$0x5, %edi
+10011532d:	be 02 00 00 00	movl	$0x2, %esi
+100115332:	31 d2	xorl	%edx, %edx
+100115334:	e8 07 78 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100115339:	48 89 df	movq	%rbx, %rdi
+10011533c:	e8 1f 00 00 00	callq	__ZN19SuperPixelSegmenter9mergeLoopEv ## SuperPixelSegmenter::mergeLoop()
+100115341:	bf 05 00 00 00	movl	$0x5, %edi
+100115346:	be 03 00 00 00	movl	$0x3, %esi
+10011534b:	31 d2	xorl	%edx, %edx
+10011534d:	48 83 c4 08	addq	$0x8, %rsp
+100115351:	5b	popq	%rbx
+100115352:	5d	popq	%rbp
+100115353:	e9 e8 77 fc ff	jmp	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100115358:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="id"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shipping doodle — perbandingan tracing model raster</title>
+<style>
+body{font:16px system-ui,sans-serif;background:#171a20;color:#e9edf5;margin:0;padding:24px}main{max-width:1200px;margin:auto}h1{font-size:24px;margin:0 0 8px}p{color:#bdc7d8}a{color:#82c7ff}nav{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:20px 0}label{display:flex;gap:8px;align-items:center}select,input{font:inherit}select{padding:6px}#viewport{overflow:auto;border:1px solid #596274;background:#fff;max-height:75vh}#stage{position:relative;width:1024px;aspect-ratio:1024/252}#stage img{position:absolute;inset:0;width:100%;height:100%}#right{clip-path:inset(0 0 0 50%)}#divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#1687df;pointer-events:none}output{min-width:45px}footer{margin-top:18px}
+</style>
+<main><h1>Shipping doodle: sumber, sebelum, dan sesudah pembersihan region</h1>
+<p>Pilih dua tampilan, geser batas pembanding, lalu perbesar untuk memeriksa sudut dan urat gambar.</p>
+<nav>
+<label>Kiri <select id="leftChoice"><option value="source.png">Sumber</option><option value="region-map.svg">Lokasi perubahan (magenta)</option><option value="before.svg" selected>Sebelum</option><option value="after.svg">Sesudah</option></select></label>
+<label>Kanan <select id="rightChoice"><option value="source.png">Sumber</option><option value="region-map.svg">Lokasi perubahan (magenta)</option><option value="before.svg">Sebelum</option><option value="after.svg" selected>Sesudah</option></select></label>
+<label>Batas <input id="split" type="range" min="0" max="100" value="50"></label>
+<label>Zoom <input id="zoom" type="range" min="100" max="400" step="25" value="100"><output id="zoomValue">100%</output></label>
+</nav>
+<div id="viewport"><div id="stage"><img id="left" src="before.svg" alt="Tampilan kiri"><img id="right" src="after.svg" alt="Tampilan kanan"><div id="divider"></div></div></div>
+<footer><a href="after.svg">SVG sesudah</a> · <a href="comparison.png">Perbandingan tiga gambar</a> · <a href="REPORT.md">Laporan dan batas pengukuran</a></footer>
+</main>
+<script>
+const element=id=>document.getElementById(id);
+element('leftChoice').onchange=()=>element('left').src=element('leftChoice').value;
+element('rightChoice').onchange=()=>element('right').src=element('rightChoice').value;
+element('split').oninput=()=>{const value=element('split').value;element('right').style.clipPath=`inset(0 0 0 ${value}%)`;element('divider').style.left=`${value}%`};
+element('zoom').oninput=()=>{const value=Number(element('zoom').value);element('stage').style.width=`${1024*value/100}px`;element('zoomValue').textContent=`${value}%`};
+</script></html>

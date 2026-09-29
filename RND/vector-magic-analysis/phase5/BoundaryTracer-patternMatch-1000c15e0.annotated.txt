@@ -1,0 +1,73 @@
+BoundaryTracer::patternMatch(int, int, int, int*)
+LC_FUNCTION_STARTS: [0x1000c15e0, 0x1000c16c0)
+Numeric interpretations are candidates.
+1000c15e0:	55	pushq	%rbp
+1000c15e1:	48 89 e5	movq	%rsp, %rbp
+1000c15e4:	41 57	pushq	%r15
+1000c15e6:	41 56	pushq	%r14
+1000c15e8:	41 55	pushq	%r13
+1000c15ea:	41 54	pushq	%r12
+1000c15ec:	53	pushq	%rbx
+1000c15ed:	48 83 ec 28	subq	$0x28, %rsp
+1000c15f1:	89 55 d0	movl	%edx, -0x30(%rbp)
+1000c15f4:	89 75 cc	movl	%esi, -0x34(%rbp)
+1000c15f7:	83 bf b0 00 00 00 00	cmpl	$0x0, 0xb0(%rdi)
+1000c15fe:	0f 8e a5 00 00 00	jle	0x1000c16a9
+1000c1604:	41 89 cd	movl	%ecx, %r13d
+1000c1607:	49 89 fc	movq	%rdi, %r12
+1000c160a:	4c 89 45 c0	movq	%r8, -0x40(%rbp)
+1000c160e:	48 8d 9f a8 00 00 00	leaq	0xa8(%rdi), %rbx
+1000c1615:	45 31 ff	xorl	%r15d, %r15d
+1000c1618:	48 89 7d b8	movq	%rdi, -0x48(%rbp)
+1000c161c:	eb 0f	jmp	0x1000c162d
+1000c161e:	66 90	nop
+1000c1620:	41 ff c7	incl	%r15d
+1000c1623:	45 3b bc 24 b0 00 00 00	cmpl	0xb0(%r12), %r15d
+1000c162b:	7d 7c	jge	0x1000c16a9
+1000c162d:	48 89 df	movq	%rbx, %rdi
+1000c1630:	44 89 fe	movl	%r15d, %esi
+1000c1633:	e8 f8 df ff ff	callq	0x1000bf630
+1000c1638:	44 3b 28	cmpl	(%rax), %r13d
+1000c163b:	7c e3	jl	0x1000c1620
+1000c163d:	48 89 df	movq	%rbx, %rdi
+1000c1640:	44 89 fe	movl	%r15d, %esi
+1000c1643:	e8 e8 df ff ff	callq	0x1000bf630
+1000c1648:	8b 08	movl	(%rax), %ecx
+1000c164a:	41 be ff ff ff ff	movl	$0xffffffff, %r14d
+1000c1650:	89 4d d4	movl	%ecx, -0x2c(%rbp)
+1000c1653:	41 d3 e6	shll	%cl, %r14d
+1000c1656:	41 f7 d6	notl	%r14d
+1000c1659:	45 89 ec	movl	%r13d, %r12d
+1000c165c:	44 8b 6d cc	movl	-0x34(%rbp), %r13d
+1000c1660:	45 21 f5	andl	%r14d, %r13d
+1000c1663:	48 89 df	movq	%rbx, %rdi
+1000c1666:	44 89 fe	movl	%r15d, %esi
+1000c1669:	e8 c2 df ff ff	callq	0x1000bf630
+1000c166e:	44 3b 68 04	cmpl	0x4(%rax), %r13d
+1000c1672:	45 89 e5	movl	%r12d, %r13d
+1000c1675:	4c 8b 65 b8	movq	-0x48(%rbp), %r12
+1000c1679:	74 15	je	0x1000c1690
+1000c167b:	44 23 75 d0	andl	-0x30(%rbp), %r14d
+1000c167f:	48 89 df	movq	%rbx, %rdi
+1000c1682:	44 89 fe	movl	%r15d, %esi
+1000c1685:	e8 a6 df ff ff	callq	0x1000bf630
+1000c168a:	44 3b 70 04	cmpl	0x4(%rax), %r14d
+1000c168e:	75 90	jne	0x1000c1620
+1000c1690:	48 89 df	movq	%rbx, %rdi
+1000c1693:	44 89 fe	movl	%r15d, %esi
+1000c1696:	e8 95 df ff ff	callq	0x1000bf630
+1000c169b:	8b 40 08	movl	0x8(%rax), %eax
+1000c169e:	48 8b 4d c0	movq	-0x40(%rbp), %rcx
+1000c16a2:	89 01	movl	%eax, (%rcx)
+1000c16a4:	8b 45 d4	movl	-0x2c(%rbp), %eax
+1000c16a7:	eb 02	jmp	0x1000c16ab
+1000c16a9:	31 c0	xorl	%eax, %eax
+1000c16ab:	48 83 c4 28	addq	$0x28, %rsp
+1000c16af:	5b	popq	%rbx
+1000c16b0:	41 5c	popq	%r12
+1000c16b2:	41 5d	popq	%r13
+1000c16b4:	41 5e	popq	%r14
+1000c16b6:	41 5f	popq	%r15
+1000c16b8:	5d	popq	%rbp
+1000c16b9:	c3	retq
+1000c16ba:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

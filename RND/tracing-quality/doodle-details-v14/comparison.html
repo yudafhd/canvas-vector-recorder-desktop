@@ -1,0 +1,15 @@
+<!doctype html><html lang="id"><meta charset="utf-8"><title>Doodle — detail lipatan pita</title>
+<style>body{margin:24px;background:#202124;color:#eee;font:15px system-ui}h1{font-size:22px}button,select{padding:8px;margin:4px}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.view{height:65vh;overflow:auto;background:#fff}.view img{display:block;max-width:none}p{max-width:1000px;color:#ccc}a{color:#8cc9ff}</style>
+<h1>Detail lipatan pita</h1><p>Perbaikan menjaga bidang kecil yang warnanya didukung gambar sumber. Panel kanan membedakan ekspor UI pengguna dari hasil uji offline. Resize offline memakai sips; hasil UI baru belum diverifikasi.</p>
+<button id="fold">Fokus lipatan</button><button id="arrow">Seluruh pita</button><button id="all">Seluruh gambar</button>
+<label>Panel kanan <select id="result"><option value="after.svg">Sesudah perbaikan — offline</option><option value="before.svg">Sebelum perbaikan — offline</option><option value="ui-provided.svg">SVG UI yang diberikan pengguna</option></select></label>
+<main><section><h2>Sumber uji (1024 × 576)</h2><div class="view" id="left"><img src="source.png" alt="Raster sumber uji"></div></section><section><h2 id="heading">Sesudah perbaikan — offline</h2><div class="view" id="right"><img src="after.svg" alt="Hasil SVG"></div></section></main>
+<p><a href="REPORT.md">Laporan</a> · <a href="metrics.json">Metrik</a> · <a href="after.svg">SVG hasil baru</a></p>
+<script>
+const views=[...document.querySelectorAll('.view')],select=document.querySelector('select');let focus=[92,337,8];
+function position(){const[x,y,scale]=focus;for(const v of views){const img=v.querySelector('img');img.style.width=`${1024*scale}px`;img.style.height=`${576*scale}px`;v.scrollLeft=Math.max(0,x*scale-v.clientWidth/2);v.scrollTop=Math.max(0,y*scale-v.clientHeight/2);}}
+select.onchange=()=>{views[1].querySelector('img').src=select.value;document.querySelector('#heading').textContent=select.selectedOptions[0].textContent;position()};
+document.querySelector('#fold').onclick=()=>{focus=[92,337,8];position()};document.querySelector('#arrow').onclick=()=>{focus=[150,363,2];position()};document.querySelector('#all').onclick=()=>{focus=[512,288,Math.min(views[0].clientWidth/1024,views[0].clientHeight/576)];position()};
+for(const v of views)v.onscroll=()=>{const other=views.find(x=>x!==v);if(Math.abs(other.scrollLeft-v.scrollLeft)>1)other.scrollLeft=v.scrollLeft;if(Math.abs(other.scrollTop-v.scrollTop)>1)other.scrollTop=v.scrollTop};
+window.onload=position;window.onresize=position;
+</script></html>

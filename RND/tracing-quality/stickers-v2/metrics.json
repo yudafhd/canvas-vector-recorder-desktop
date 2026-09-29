@@ -1,0 +1,168 @@
+{
+  "input": "/Users/yuda/Downloads/download (2)/motivational_sticker_sheet.jpg",
+  "inputSha256": "9c5cab5df299591e1aca2117a988ca038789a95523585b8edb535e2f83f0649f",
+  "originalSize": [
+    2000,
+    1200
+  ],
+  "processSize": [
+    1024,
+    614
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "paths": 6,
+      "engineSha256": "ff1aa6a81e79832ddde889ba3c44c6c00827fbdac03387c20a971831cadf0e66",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 44457,
+        "fullyTransparentInteriorPixels": 0,
+        "meanAbsoluteRGBErrorOnWhite": 12.128,
+        "meanAbsoluteEdgeRGBErrorOnWhite": 27.939,
+        "edgePixels": 95420
+      },
+      "colors": [
+        "#fefdfa",
+        "#141310",
+        "#fbcb2c",
+        "#535acb",
+        "#79bb89",
+        "#ef8b90"
+      ],
+      "contours": 901,
+      "segments": 6156,
+      "bytes": 225257,
+      "milliseconds": 766
+    },
+    {
+      "name": "balanced",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "paths": 308,
+      "engineSha256": "9ed319f9ec598d06d95f07949bd48e84e2f37eb1acf66d251a3ff8baa9e1f959",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 0,
+        "fullyTransparentInteriorPixels": 0,
+        "meanAbsoluteRGBErrorOnWhite": 11.597,
+        "meanAbsoluteEdgeRGBErrorOnWhite": 24.906,
+        "edgePixels": 95420
+      },
+      "colors": [
+        "#fefdfa",
+        "#141310",
+        "#79bb89",
+        "#ef8b90",
+        "#fbcb2c",
+        "#535acb"
+      ],
+      "contours": 308,
+      "segments": 2495,
+      "bytes": 116243,
+      "milliseconds": 946
+    },
+    {
+      "name": "detail",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.35,
+        "minArea": 0,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "paths": 7239,
+      "engineSha256": "9ed319f9ec598d06d95f07949bd48e84e2f37eb1acf66d251a3ff8baa9e1f959",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 0,
+        "fullyTransparentInteriorPixels": 0,
+        "meanAbsoluteRGBErrorOnWhite": 10.872,
+        "meanAbsoluteEdgeRGBErrorOnWhite": 20.585,
+        "edgePixels": 95420
+      },
+      "colors": [
+        "#fefdfa",
+        "#141310",
+        "#79bb89",
+        "#ef8b90",
+        "#fbcb2c",
+        "#535acb"
+      ],
+      "contours": 7239,
+      "segments": 32414,
+      "bytes": 921935,
+      "milliseconds": 887
+    },
+    {
+      "name": "simple",
+      "options": {
+        "colors": 6,
+        "tolerance": 1.6,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "paths": 308,
+      "engineSha256": "9ed319f9ec598d06d95f07949bd48e84e2f37eb1acf66d251a3ff8baa9e1f959",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 0,
+        "fullyTransparentInteriorPixels": 0,
+        "meanAbsoluteRGBErrorOnWhite": 13.175,
+        "meanAbsoluteEdgeRGBErrorOnWhite": 32.754,
+        "edgePixels": 95420
+      },
+      "colors": [
+        "#fefdfa",
+        "#141310",
+        "#79bb89",
+        "#ef8b90",
+        "#fbcb2c",
+        "#535acb"
+      ],
+      "contours": 308,
+      "segments": 2105,
+      "bytes": 99265,
+      "milliseconds": 744
+    },
+    {
+      "name": "transparent",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": true
+      },
+      "paths": 234,
+      "engineSha256": "9ed319f9ec598d06d95f07949bd48e84e2f37eb1acf66d251a3ff8baa9e1f959",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 360412,
+        "fullyTransparentInteriorPixels": 330845,
+        "meanAbsoluteRGBErrorOnWhite": 10.749,
+        "meanAbsoluteEdgeRGBErrorOnWhite": 25.733,
+        "edgePixels": 95420
+      },
+      "colors": [
+        "#141310",
+        "#79bb89",
+        "#ef8b90",
+        "#fbcb2c",
+        "#535acb"
+      ],
+      "contours": 322,
+      "segments": 2612,
+      "bytes": 118071,
+      "milliseconds": 715
+    }
+  ]
+}

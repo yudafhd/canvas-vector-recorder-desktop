@@ -1,0 +1,9 @@
+{
+  "files": {
+    "RND/aset_jpg/doodle_sticker_sheet.jpg": "61f34112be5df19eff54fa5816ea2eaf439bc38a9aa2296748d6fc62b218654d",
+    "RND/aset_jpg/doodle_sticker_sheet-traced.svg": "a6352899292940f1786dd5987a83c14e6ef1d41daf40a6b894d40a32b1430133",
+    "src/tracing/engine.ts": "6be9a28d0b08520645f58610e8bb3044d9531f24a3aafedfcfd1218faa95f202",
+    "RND/tracing-quality/before-small-detail-guard.ts": "14f96c510db74cde0ce8458205dc1c86361bb8e3ddc5a9c75c34e29a1d237ec0"
+  },
+  "validation": "Offline sips resize and independent SVG rasterizer, not a new Tauri UI export."
+}

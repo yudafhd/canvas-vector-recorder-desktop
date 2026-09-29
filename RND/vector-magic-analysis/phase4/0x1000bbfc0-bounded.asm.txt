@@ -1,0 +1,65 @@
+1000bbfc0:	55	pushq	%rbp
+1000bbfc1:	48 89 e5	movq	%rsp, %rbp
+1000bbfc4:	41 57	pushq	%r15
+1000bbfc6:	41 56	pushq	%r14
+1000bbfc8:	53	pushq	%rbx
+1000bbfc9:	50	pushq	%rax
+1000bbfca:	48 89 f3	movq	%rsi, %rbx
+1000bbfcd:	49 89 fe	movq	%rdi, %r14
+1000bbfd0:	4c 8b 7e 08	movq	0x8(%rsi), %r15
+1000bbfd4:	e8 f7 00 00 00	callq	__ZN12BezierFitter18computeMergeMetricEP8Fragment ## BezierFitter::computeMergeMetric(Fragment*)
+1000bbfd9:	f2 41 0f 10 4e 70	movsd	0x70(%r14), %xmm1
+1000bbfdf:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000bbfe3:	76 18	jbe	0x1000bbffd
+1000bbfe5:	41 8b 47 04	movl	0x4(%r15), %eax
+1000bbfe9:	01 43 04	addl	%eax, 0x4(%rbx)
+1000bbfec:	49 8b 47 08	movq	0x8(%r15), %rax
+1000bbff0:	48 89 43 08	movq	%rax, 0x8(%rbx)
+1000bbff4:	c6 43 18 01	movb	$0x1, 0x18(%rbx)
+1000bbff8:	e9 94 00 00 00	jmp	0x1000bc091
+1000bbffd:	4c 89 f7	movq	%r14, %rdi
+1000bc000:	48 89 de	movq	%rbx, %rsi
+1000bc003:	ba ff ff ff ff	movl	$0xffffffff, %edx
+1000bc008:	e8 e3 01 00 00	callq	__ZN12BezierFitter17computeSwapMetricEP8Fragmenti ## BezierFitter::computeSwapMetric(Fragment*, int)
+1000bc00d:	66 0f 57 c9	xorpd	%xmm1, %xmm1
+1000bc011:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000bc015:	76 2b	jbe	0x1000bc042
+1000bc017:	f3 41 0f 7e 07	movq	(%r15), %xmm0
+1000bc01c:	66 0f fe 05 5c fa 22 00	paddd	0x22fa5c(%rip), %xmm0
+1000bc024:	66 41 0f d6 07	movq	%xmm0, (%r15)
+1000bc029:	ff 4b 04	decl	0x4(%rbx)
+1000bc02c:	41 c6 47 18 01	movb	$0x1, 0x18(%r15)
+1000bc031:	c6 43 18 01	movb	$0x1, 0x18(%rbx)
+1000bc035:	66 0f 7e c0	movd	%xmm0, %eax
+1000bc039:	3b 03	cmpl	(%rbx), %eax
+1000bc03b:	7f 54	jg	0x1000bc091
+1000bc03d:	e8 ee 4b 06 00	callq	0x100120c30
+1000bc042:	4c 89 f7	movq	%r14, %rdi
+1000bc045:	48 89 de	movq	%rbx, %rsi
+1000bc048:	ba 01 00 00 00	movl	$0x1, %edx
+1000bc04d:	e8 9e 01 00 00	callq	__ZN12BezierFitter17computeSwapMetricEP8Fragmenti ## BezierFitter::computeSwapMetric(Fragment*, int)
+1000bc052:	66 0f 57 c9	xorpd	%xmm1, %xmm1
+1000bc056:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000bc05a:	76 35	jbe	0x1000bc091
+1000bc05c:	ff 43 04	incl	0x4(%rbx)
+1000bc05f:	f3 41 0f 7e 07	movq	(%r15), %xmm0
+1000bc064:	66 0f fe 05 04 fa 22 00	paddd	0x22fa04(%rip), %xmm0
+1000bc06c:	66 41 0f d6 07	movq	%xmm0, (%r15)
+1000bc071:	c6 43 18 01	movb	$0x1, 0x18(%rbx)
+1000bc075:	41 c6 47 18 01	movb	$0x1, 0x18(%r15)
+1000bc07a:	49 8b 4f 08	movq	0x8(%r15), %rcx
+1000bc07e:	66 0f 7e c0	movd	%xmm0, %eax
+1000bc082:	48 85 c9	testq	%rcx, %rcx
+1000bc085:	74 04	je	0x1000bc08b
+1000bc087:	3b 01	cmpl	(%rcx), %eax
+1000bc089:	7c 06	jl	0x1000bc091
+1000bc08b:	41 3b 46 6c	cmpl	0x6c(%r14), %eax
+1000bc08f:	7d 0b	jge	0x1000bc09c
+1000bc091:	48 83 c4 08	addq	$0x8, %rsp
+1000bc095:	5b	popq	%rbx
+1000bc096:	41 5e	popq	%r14
+1000bc098:	41 5f	popq	%r15
+1000bc09a:	5d	popq	%rbp
+1000bc09b:	c3	retq
+1000bc09c:	e8 ef 4a 06 00	callq	0x100120b90
+1000bc0a1:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

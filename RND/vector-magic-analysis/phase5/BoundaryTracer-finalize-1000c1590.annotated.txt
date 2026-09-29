@@ -1,0 +1,25 @@
+BoundaryTracer::finalize()
+LC_FUNCTION_STARTS: [0x1000c1590, 0x1000c15e0)
+Numeric interpretations are candidates.
+1000c1590:	55	pushq	%rbp
+1000c1591:	48 89 e5	movq	%rsp, %rbp
+1000c1594:	53	pushq	%rbx
+1000c1595:	50	pushq	%rax
+1000c1596:	48 89 fb	movq	%rdi, %rbx
+1000c1599:	48 c7 47 08 00 00 00 00	movq	$0x0, 0x8(%rdi)
+1000c15a1:	48 8b 3f	movq	(%rdi), %rdi
+1000c15a4:	48 85 ff	testq	%rdi, %rdi
+1000c15a7:	74 0c	je	0x1000c15b5
+1000c15a9:	e8 98 aa 06 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000c15ae:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000c15b5:	48 c7 43 40 00 00 00 00	movq	$0x0, 0x40(%rbx)
+1000c15bd:	48 8b 7b 38	movq	0x38(%rbx), %rdi
+1000c15c1:	48 85 ff	testq	%rdi, %rdi
+1000c15c4:	74 0d	je	0x1000c15d3
+1000c15c6:	e8 7b aa 06 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000c15cb:	48 c7 43 38 00 00 00 00	movq	$0x0, 0x38(%rbx)
+1000c15d3:	48 83 c4 08	addq	$0x8, %rsp
+1000c15d7:	5b	popq	%rbx
+1000c15d8:	5d	popq	%rbp
+1000c15d9:	c3	retq
+1000c15da:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

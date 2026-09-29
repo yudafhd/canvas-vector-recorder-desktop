@@ -1,0 +1,91 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/tracing-quality/apple-v3/source.bmp",
+  "inputSha256": "954f60f7202f28e2b6a599ada903754aa497ffbdb6c46172e7d464df2f569f65",
+  "width": 512,
+  "height": 512,
+  "renderer": "Independent software polygon rasterizer; cubics flattened to 0.04 px; 4x4 sample grid; no browser antialias",
+  "panels": [
+    "source",
+    "before",
+    "after"
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 16,
+        "tolerance": 0.8,
+        "minArea": 24,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "7883e5d64bfbaeb9404f74410a2a59b763013881ed0245b9962a75edd153043e",
+      "colors": [
+        "#ffffff",
+        "#d93836",
+        "#6ac97e",
+        "#8f2b29",
+        "#fcd7c0",
+        "#e55651"
+      ],
+      "contours": 8,
+      "segments": 57,
+      "bytes": 2943,
+      "milliseconds": 1404,
+      "diagnostics": {
+        "unitFragments": 4267,
+        "merges": 4222,
+        "swaps": 302,
+        "puncturedCorners": 0,
+        "tangentRefits": 36,
+        "rasterSteps": 100,
+        "rasterEnergyBefore": 34.87638857439125,
+        "rasterEnergyAfter": 33.679683030807816,
+        "smallAreaConstraints": 0
+      },
+      "meanAbsoluteRGBError": 0.590844472249349,
+      "meanAbsoluteEdgeRGBError": 20.267551452202348,
+      "edgePixels": 3466
+    },
+    {
+      "name": "after",
+      "options": {
+        "colors": 16,
+        "tolerance": 0.8,
+        "minArea": 24,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "aed2035270024e16f70997c1652a5303a8d1aa5a08ac058e849886df2bf25c0a",
+      "colors": [
+        "#ffffff",
+        "#d93836",
+        "#6ac97e",
+        "#8f2b29",
+        "#fcd7c0",
+        "#e55651"
+      ],
+      "contours": 8,
+      "segments": 79,
+      "bytes": 3958,
+      "milliseconds": 1611,
+      "diagnostics": {
+        "unitFragments": 4267,
+        "merges": 4222,
+        "swaps": 302,
+        "puncturedCorners": 0,
+        "tangentRefits": 36,
+        "rasterSteps": 100,
+        "rasterEnergyBefore": 34.87638857439125,
+        "rasterEnergyAfter": 33.679683030807816,
+        "smallAreaConstraints": 0,
+        "guardedFits": 17,
+        "fitDeviationBefore": 0.743777427539408,
+        "fitDeviationAfter": 0.5230545281028439
+      },
+      "meanAbsoluteRGBError": 0.530877431233724,
+      "meanAbsoluteEdgeRGBError": 15.94364300827082,
+      "edgePixels": 3466
+    }
+  ]
+}

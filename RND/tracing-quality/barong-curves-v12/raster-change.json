@@ -1,0 +1,57 @@
+{
+  "eyes": {
+    "bounds": [
+      350,
+      238,
+      310,
+      105
+    ],
+    "meanAbsoluteRGBAChange": 0.023955453149001535,
+    "changedPixels": 123,
+    "totalPixels": 32550
+  },
+  "tongue": {
+    "bounds": [
+      450,
+      480,
+      124,
+      220
+    ],
+    "meanAbsoluteRGBAChange": 0.004444648093841643,
+    "changedPixels": 29,
+    "totalPixels": 27280
+  },
+  "fangs": {
+    "bounds": [
+      383,
+      439,
+      258,
+      153
+    ],
+    "meanAbsoluteRGBAChange": 0.004369965040279678,
+    "changedPixels": 14,
+    "totalPixels": 39474
+  },
+  "ornaments": {
+    "bounds": [
+      142,
+      90,
+      734,
+      152
+    ],
+    "meanAbsoluteRGBAChange": 0.01766411515846838,
+    "changedPixels": 318,
+    "totalPixels": 111568
+  },
+  "whole": {
+    "bounds": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "meanAbsoluteRGBAChange": 0.005324840545654297,
+    "changedPixels": 808,
+    "totalPixels": 1048576
+  }
+}

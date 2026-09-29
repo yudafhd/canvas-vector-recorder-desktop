@@ -1,0 +1,16 @@
+1000b8750:	55	pushq	%rbp
+1000b8751:	48 89 e5	movq	%rsp, %rbp
+1000b8754:	53	pushq	%rbx
+1000b8755:	50	pushq	%rax
+1000b8756:	48 89 fb	movq	%rdi, %rbx
+1000b8759:	c7 47 60 00 00 00 00	movl	$0x0, 0x60(%rdi)
+1000b8760:	48 8b 7f 58	movq	0x58(%rdi), %rdi
+1000b8764:	48 85 ff	testq	%rdi, %rdi
+1000b8767:	74 0d	je	0x1000b8776
+1000b8769:	e8 d8 38 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000b876e:	48 c7 43 58 00 00 00 00	movq	$0x0, 0x58(%rbx)
+1000b8776:	48 83 c4 08	addq	$0x8, %rsp
+1000b877a:	5b	popq	%rbx
+1000b877b:	5d	popq	%rbp
+1000b877c:	c3	retq
+1000b877d:	0f 1f 00	nopl	(%rax)

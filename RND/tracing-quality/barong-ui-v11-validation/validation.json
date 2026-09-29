@@ -1,0 +1,38 @@
+{
+  "files": {
+    "before": {
+      "sha256": "52aacd48b28f0650a81f147a967cf717855a4868b1a11bb8a54dc8cbeca42465",
+      "bytes": 87568
+    },
+    "after": {
+      "sha256": "d1cbd1362f3bdf6dc35e6c2111c145b4182e326a1196d976d57cb79ff4b849c0",
+      "bytes": 87033
+    }
+  },
+  "tongueLineJoins": [
+    {
+      "from": [
+        507.912,
+        526.996
+      ],
+      "to": [
+        509.054,
+        593.033
+      ],
+      "entryAngleDegrees": 0.0014472596587823655,
+      "exitAngleDegrees": 0.005191914356288706
+    },
+    {
+      "from": [
+        513.927,
+        611.989
+      ],
+      "to": [
+        516.073,
+        526.996
+      ],
+      "entryAngleDegrees": 0.005343857508656699,
+      "exitAngleDegrees": 0.010006962661778035
+    }
+  ]
+}

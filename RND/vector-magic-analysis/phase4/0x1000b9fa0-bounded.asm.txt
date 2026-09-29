@@ -1,0 +1,270 @@
+1000b9fa0:	55	pushq	%rbp
+1000b9fa1:	48 89 e5	movq	%rsp, %rbp
+1000b9fa4:	41 57	pushq	%r15
+1000b9fa6:	41 56	pushq	%r14
+1000b9fa8:	41 55	pushq	%r13
+1000b9faa:	41 54	pushq	%r12
+1000b9fac:	53	pushq	%rbx
+1000b9fad:	48 81 ec a8 00 00 00	subq	$0xa8, %rsp
+1000b9fb4:	48 c7 45 a0 00 00 00 00	movq	$0x0, -0x60(%rbp)
+1000b9fbc:	c7 45 a8 00 00 00 00	movl	$0x0, -0x58(%rbp)
+1000b9fc3:	48 c7 45 b0 00 00 00 00	movq	$0x0, -0x50(%rbp)
+1000b9fcb:	c7 45 b8 00 00 00 00	movl	$0x0, -0x48(%rbp)
+1000b9fd2:	48 89 7d c8	movq	%rdi, -0x38(%rbp)
+1000b9fd6:	48 8b 7f 38	movq	0x38(%rdi), %rdi
+1000b9fda:	83 7f 08 00	cmpl	$0x0, 0x8(%rdi)
+1000b9fde:	0f 8e 9f 01 00 00	jle	0x1000ba183
+1000b9fe4:	45 31 f6	xorl	%r14d, %r14d
+1000b9fe7:	66 0f 57 c0	xorpd	%xmm0, %xmm0
+1000b9feb:	66 0f 29 45 80	movapd	%xmm0, -0x80(%rbp)
+1000b9ff0:	eb 23	jmp	0x1000ba015
+1000b9ff2:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000ba000:	41 ff c6	incl	%r14d
+1000ba003:	48 8b 45 c8	movq	-0x38(%rbp), %rax
+1000ba007:	48 8b 78 38	movq	0x38(%rax), %rdi
+1000ba00b:	44 3b 77 08	cmpl	0x8(%rdi), %r14d
+1000ba00f:	0f 8d 77 01 00 00	jge	0x1000ba18c
+1000ba015:	44 89 f6	movl	%r14d, %esi
+1000ba018:	e8 f3 fe ff ff	callq	0x1000b9f10
+1000ba01d:	49 89 c5	movq	%rax, %r13
+1000ba020:	48 8b 45 c8	movq	-0x38(%rbp), %rax
+1000ba024:	48 8b 78 40	movq	0x40(%rax), %rdi
+1000ba028:	44 89 f6	movl	%r14d, %esi
+1000ba02b:	e8 d0 03 00 00	callq	0x1000ba400
+1000ba030:	83 b8 a0 00 00 00 00	cmpl	$0x0, 0xa0(%rax)
+1000ba037:	74 c7	je	0x1000ba000
+1000ba039:	8b 90 a8 00 00 00	movl	0xa8(%rax), %edx
+1000ba03f:	8b 88 ac 00 00 00	movl	0xac(%rax), %ecx
+1000ba045:	44 8b 80 b0 00 00 00	movl	0xb0(%rax), %r8d
+1000ba04c:	48 8d 45 b0	leaq	-0x50(%rbp), %rax
+1000ba050:	48 89 04 24	movq	%rax, (%rsp)
+1000ba054:	c7 44 24 08 00 00 00 00	movl	$0x0, 0x8(%rsp)
+1000ba05c:	48 8b 7d c8	movq	-0x38(%rbp), %rdi
+1000ba060:	4c 89 ee	movq	%r13, %rsi
+1000ba063:	4c 8d 4d a0	leaq	-0x60(%rbp), %r9
+1000ba067:	e8 c4 03 00 00	callq	__ZN12BezierFitter18computeDataAndTimeERN3sla11BezierCurveIdLi2ELi3EEEiiiRNS0_6Array1IdEERNS4_INS0_3VecIdLi2EEEEEb ## BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)
+1000ba06c:	89 c3	movl	%eax, %ebx
+1000ba06e:	85 c0	testl	%eax, %eax
+1000ba070:	74 8e	je	0x1000ba000
+1000ba072:	45 31 ff	xorl	%r15d, %r15d
+1000ba075:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000ba080:	48 8d 7d b0	leaq	-0x50(%rbp), %rdi
+1000ba084:	44 89 fe	movl	%r15d, %esi
+1000ba087:	e8 04 07 00 00	callq	0x1000ba790
+1000ba08c:	49 89 c4	movq	%rax, %r12
+1000ba08f:	48 8d 7d a0	leaq	-0x60(%rbp), %rdi
+1000ba093:	44 89 fe	movl	%r15d, %esi
+1000ba096:	e8 25 07 00 00	callq	0x1000ba7c0
+1000ba09b:	f2 0f 10 00	movsd	(%rax), %xmm0
+1000ba09f:	f2 0f 10 1d 19 65 0a 00	movsd	0xa6519(%rip), %xmm3
+1000ba0a7:	f2 0f 5c d8	subsd	%xmm0, %xmm3
+1000ba0ab:	66 0f 28 d3	movapd	%xmm3, %xmm2
+1000ba0af:	66 0f 28 eb	movapd	%xmm3, %xmm5
+1000ba0b3:	f2 0f 59 eb	mulsd	%xmm3, %xmm5
+1000ba0b7:	66 0f 28 c8	movapd	%xmm0, %xmm1
+1000ba0bb:	f2 0f 59 d5	mulsd	%xmm5, %xmm2
+1000ba0bf:	f2 41 0f 10 75 00	movsd	(%r13), %xmm6
+1000ba0c5:	f2 0f 59 f2	mulsd	%xmm2, %xmm6
+1000ba0c9:	f2 41 0f 59 55 08	mulsd	0x8(%r13), %xmm2
+1000ba0cf:	f2 0f 59 c8	mulsd	%xmm0, %xmm1
+1000ba0d3:	66 0f 28 e0	movapd	%xmm0, %xmm4
+1000ba0d7:	f2 0f 59 c1	mulsd	%xmm1, %xmm0
+1000ba0db:	f2 0f 10 3d 4d 66 0a 00	movsd	0xa664d(%rip), %xmm7
+1000ba0e3:	f2 0f 59 cf	mulsd	%xmm7, %xmm1
+1000ba0e7:	f2 0f 59 cb	mulsd	%xmm3, %xmm1
+1000ba0eb:	f2 0f 59 e7	mulsd	%xmm7, %xmm4
+1000ba0ef:	f2 0f 59 e5	mulsd	%xmm5, %xmm4
+1000ba0f3:	f2 41 0f 10 5d 10	movsd	0x10(%r13), %xmm3
+1000ba0f9:	f2 0f 59 dc	mulsd	%xmm4, %xmm3
+1000ba0fd:	f2 0f 58 de	addsd	%xmm6, %xmm3
+1000ba101:	f2 41 0f 59 65 18	mulsd	0x18(%r13), %xmm4
+1000ba107:	f2 0f 58 e2	addsd	%xmm2, %xmm4
+1000ba10b:	f2 41 0f 10 55 20	movsd	0x20(%r13), %xmm2
+1000ba111:	f2 0f 59 d1	mulsd	%xmm1, %xmm2
+1000ba115:	f2 0f 58 d3	addsd	%xmm3, %xmm2
+1000ba119:	f2 41 0f 59 4d 28	mulsd	0x28(%r13), %xmm1
+1000ba11f:	f2 0f 58 cc	addsd	%xmm4, %xmm1
+1000ba123:	f2 41 0f 10 5d 30	movsd	0x30(%r13), %xmm3
+1000ba129:	f2 0f 59 d8	mulsd	%xmm0, %xmm3
+1000ba12d:	f2 0f 58 da	addsd	%xmm2, %xmm3
+1000ba131:	f2 41 0f 59 45 38	mulsd	0x38(%r13), %xmm0
+1000ba137:	f2 0f 58 c1	addsd	%xmm1, %xmm0
+1000ba13b:	f2 41 0f 10 0c 24	movsd	(%r12), %xmm1
+1000ba141:	f2 0f 5c cb	subsd	%xmm3, %xmm1
+1000ba145:	f2 41 0f 10 54 24 08	movsd	0x8(%r12), %xmm2
+1000ba14c:	f2 0f 5c d0	subsd	%xmm0, %xmm2
+1000ba150:	f2 0f 59 c9	mulsd	%xmm1, %xmm1
+1000ba154:	66 0f 57 c0	xorpd	%xmm0, %xmm0
+1000ba158:	f2 0f 58 c8	addsd	%xmm0, %xmm1
+1000ba15c:	f2 0f 59 d2	mulsd	%xmm2, %xmm2
+1000ba160:	f2 0f 58 d1	addsd	%xmm1, %xmm2
+1000ba164:	66 0f 28 45 80	movapd	-0x80(%rbp), %xmm0
+1000ba169:	f2 0f 58 c2	addsd	%xmm2, %xmm0
+1000ba16d:	66 0f 29 45 80	movapd	%xmm0, -0x80(%rbp)
+1000ba172:	41 ff c7	incl	%r15d
+1000ba175:	44 39 fb	cmpl	%r15d, %ebx
+1000ba178:	0f 85 02 ff ff ff	jne	0x1000ba080
+1000ba17e:	e9 7d fe ff ff	jmp	0x1000ba000
+1000ba183:	66 0f 57 c0	xorpd	%xmm0, %xmm0
+1000ba187:	66 0f 29 45 80	movapd	%xmm0, -0x80(%rbp)
+1000ba18c:	48 8b 4d c8	movq	-0x38(%rbp), %rcx
+1000ba190:	48 8b 41 28	movq	0x28(%rcx), %rax
+1000ba194:	8b 40 08	movl	0x8(%rax), %eax
+1000ba197:	89 45 9c	movl	%eax, -0x64(%rbp)
+1000ba19a:	85 c0	testl	%eax, %eax
+1000ba19c:	0f 8e c8 01 00 00	jle	0x1000ba36a
+1000ba1a2:	48 8b 59 20	movq	0x20(%rcx), %rbx
+1000ba1a6:	45 31 f6	xorl	%r14d, %r14d
+1000ba1a9:	48 89 5d c0	movq	%rbx, -0x40(%rbp)
+1000ba1ad:	eb 12	jmp	0x1000ba1c1
+1000ba1af:	90	nop
+1000ba1b0:	44 8b 75 d4	movl	-0x2c(%rbp), %r14d
+1000ba1b4:	41 ff c6	incl	%r14d
+1000ba1b7:	44 3b 75 9c	cmpl	-0x64(%rbp), %r14d
+1000ba1bb:	0f 84 a9 01 00 00	je	0x1000ba36a
+1000ba1c1:	48 8b 45 c8	movq	-0x38(%rbp), %rax
+1000ba1c5:	48 8b 78 28	movq	0x28(%rax), %rdi
+1000ba1c9:	44 89 f6	movl	%r14d, %esi
+1000ba1cc:	e8 0f f1 ff ff	callq	0x1000b92e0
+1000ba1d1:	44 89 75 d4	movl	%r14d, -0x2c(%rbp)
+1000ba1d5:	8b 50 70	movl	0x70(%rax), %edx
+1000ba1d8:	85 d2	testl	%edx, %edx
+1000ba1da:	7e d4	jle	0x1000ba1b0
+1000ba1dc:	4c 8d 70 68	leaq	0x68(%rax), %r14
+1000ba1e0:	48 83 c0 28	addq	$0x28, %rax
+1000ba1e4:	48 89 85 78 ff ff ff	movq	%rax, -0x88(%rbp)
+1000ba1eb:	f7 da	negl	%edx
+1000ba1ed:	41 bf 01 00 00 00	movl	$0x1, %r15d
+1000ba1f3:	48 89 95 68 ff ff ff	movq	%rdx, -0x98(%rbp)
+1000ba1fa:	4c 89 b5 70 ff ff ff	movq	%r14, -0x90(%rbp)
+1000ba201:	e9 af 00 00 00	jmp	0x1000ba2b5
+1000ba206:	66 0f 28 85 50 ff ff ff	movapd	-0xb0(%rbp), %xmm0
+1000ba20e:	66 0f 28 a5 40 ff ff ff	movapd	-0xc0(%rbp), %xmm4
+1000ba216:	66 0f 28 cc	movapd	%xmm4, %xmm1
+1000ba21a:	66 0f 14 c8	unpcklpd	%xmm0, %xmm1
+1000ba21e:	66 0f 28 d1	movapd	%xmm1, %xmm2
+1000ba222:	66 0f 59 d1	mulpd	%xmm1, %xmm2
+1000ba226:	66 0f 57 db	xorpd	%xmm3, %xmm3
+1000ba22a:	66 0f 58 d3	addpd	%xmm3, %xmm2
+1000ba22e:	66 0f 15 e0	unpckhpd	%xmm0, %xmm4
+1000ba232:	66 0f 28 c4	movapd	%xmm4, %xmm0
+1000ba236:	66 0f 59 c4	mulpd	%xmm4, %xmm0
+1000ba23a:	66 0f 58 c2	addpd	%xmm2, %xmm0
+1000ba23e:	66 0f 51 c0	sqrtpd	%xmm0, %xmm0
+1000ba242:	66 0f 5e c8	divpd	%xmm0, %xmm1
+1000ba246:	66 0f 5e e0	divpd	%xmm0, %xmm4
+1000ba24a:	66 0f 28 c1	movapd	%xmm1, %xmm0
+1000ba24e:	66 0f 15 c1	unpckhpd	%xmm1, %xmm0
+1000ba252:	f2 0f 5c c8	subsd	%xmm0, %xmm1
+1000ba256:	66 0f 28 c4	movapd	%xmm4, %xmm0
+1000ba25a:	66 0f 15 c4	unpckhpd	%xmm4, %xmm0
+1000ba25e:	f2 0f 5c e0	subsd	%xmm0, %xmm4
+1000ba262:	f2 0f 59 c9	mulsd	%xmm1, %xmm1
+1000ba266:	66 0f 57 c0	xorpd	%xmm0, %xmm0
+1000ba26a:	f2 0f 58 c8	addsd	%xmm0, %xmm1
+1000ba26e:	f2 0f 59 e4	mulsd	%xmm4, %xmm4
+1000ba272:	f2 0f 58 e1	addsd	%xmm1, %xmm4
+1000ba276:	48 8b 45 c8	movq	-0x38(%rbp), %rax
+1000ba27a:	f2 0f 59 60 50	mulsd	0x50(%rax), %xmm4
+1000ba27f:	66 0f 28 45 80	movapd	-0x80(%rbp), %xmm0
+1000ba284:	f2 0f 58 c4	addsd	%xmm4, %xmm0
+1000ba288:	66 0f 29 45 80	movapd	%xmm0, -0x80(%rbp)
+1000ba28d:	0f 1f 00	nopl	(%rax)
+1000ba290:	48 8b 95 68 ff ff ff	movq	-0x98(%rbp), %rdx
+1000ba297:	42 8d 04 3a	leal	(%rdx,%r15), %eax
+1000ba29b:	ff c0	incl	%eax
+1000ba29d:	44 89 f9	movl	%r15d, %ecx
+1000ba2a0:	ff c1	incl	%ecx
+1000ba2a2:	41 89 cf	movl	%ecx, %r15d
+1000ba2a5:	83 f8 01	cmpl	$0x1, %eax
+1000ba2a8:	4c 8b b5 70 ff ff ff	movq	-0x90(%rbp), %r14
+1000ba2af:	0f 84 fb fe ff ff	je	0x1000ba1b0
+1000ba2b5:	45 8d 6f ff	leal	-0x1(%r15), %r13d
+1000ba2b9:	89 d0	movl	%edx, %eax
+1000ba2bb:	44 01 f8	addl	%r15d, %eax
+1000ba2be:	44 89 fb	movl	%r15d, %ebx
+1000ba2c1:	b8 00 00 00 00	movl	$0x0, %eax
+1000ba2c6:	0f 44 d8	cmovel	%eax, %ebx
+1000ba2c9:	4c 89 f7	movq	%r14, %rdi
+1000ba2cc:	44 89 ee	movl	%r13d, %esi
+1000ba2cf:	e8 9c fc ff ff	callq	0x1000b9f70
+1000ba2d4:	49 89 c4	movq	%rax, %r12
+1000ba2d7:	4c 89 f7	movq	%r14, %rdi
+1000ba2da:	89 de	movl	%ebx, %esi
+1000ba2dc:	e8 8f fc ff ff	callq	0x1000b9f70
+1000ba2e1:	49 89 c6	movq	%rax, %r14
+1000ba2e4:	48 8b 7d c0	movq	-0x40(%rbp), %rdi
+1000ba2e8:	4c 89 e6	movq	%r12, %rsi
+1000ba2eb:	e8 a0 68 01 00	callq	__ZN11VectorImage25isBezierWithFreeVariablesER14CurveReference ## VectorImage::isBezierWithFreeVariables(CurveReference&)
+1000ba2f0:	84 c0	testb	%al, %al
+1000ba2f2:	74 9c	je	0x1000ba290
+1000ba2f4:	48 8b 7d c0	movq	-0x40(%rbp), %rdi
+1000ba2f8:	4c 89 f6	movq	%r14, %rsi
+1000ba2fb:	e8 90 68 01 00	callq	__ZN11VectorImage25isBezierWithFreeVariablesER14CurveReference ## VectorImage::isBezierWithFreeVariables(CurveReference&)
+1000ba300:	84 c0	testb	%al, %al
+1000ba302:	74 8c	je	0x1000ba290
+1000ba304:	31 c0	xorl	%eax, %eax
+1000ba306:	41 83 7c 24 04 02	cmpl	$0x2, 0x4(%r12)
+1000ba30c:	0f 95 c0	setne	%al
+1000ba30f:	41 8b 74 84 14	movl	0x14(%r12,%rax,4), %esi
+1000ba314:	48 8b bd 78 ff ff ff	movq	-0x88(%rbp), %rdi
+1000ba31b:	e8 20 fc ff ff	callq	0x1000b9f40
+1000ba320:	f6 00 01	testb	$0x1, (%rax)
+1000ba323:	0f 85 67 ff ff ff	jne	0x1000ba290
+1000ba329:	4c 8d a5 50 ff ff ff	leaq	-0xb0(%rbp), %r12
+1000ba330:	4c 89 e7	movq	%r12, %rdi
+1000ba333:	4c 8b 75 c0	movq	-0x40(%rbp), %r14
+1000ba337:	4c 89 f6	movq	%r14, %rsi
+1000ba33a:	8b 55 d4	movl	-0x2c(%rbp), %edx
+1000ba33d:	44 89 e9	movl	%r13d, %ecx
+1000ba340:	e8 9b 64 01 00	callq	__ZN11VectorImage17getEndTangentDaFaEii ## VectorImage::getEndTangentDaFa(int, int)
+1000ba345:	66 0f 28 85 50 ff ff ff	movapd	-0xb0(%rbp), %xmm0
+1000ba34d:	66 0f 29 85 40 ff ff ff	movapd	%xmm0, -0xc0(%rbp)
+1000ba355:	4c 89 e7	movq	%r12, %rdi
+1000ba358:	4c 89 f6	movq	%r14, %rsi
+1000ba35b:	8b 55 d4	movl	-0x2c(%rbp), %edx
+1000ba35e:	89 d9	movl	%ebx, %ecx
+1000ba360:	e8 3b 61 01 00	callq	__ZN11VectorImage19getStartTangentDaFaEii ## VectorImage::getStartTangentDaFa(int, int)
+1000ba365:	e9 9c fe ff ff	jmp	0x1000ba206
+1000ba36a:	c7 45 b8 00 00 00 00	movl	$0x0, -0x48(%rbp)
+1000ba371:	48 8b 7d b0	movq	-0x50(%rbp), %rdi
+1000ba375:	48 85 ff	testq	%rdi, %rdi
+1000ba378:	74 05	je	0x1000ba37f
+1000ba37a:	e8 c7 1c 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000ba37f:	c7 45 a8 00 00 00 00	movl	$0x0, -0x58(%rbp)
+1000ba386:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000ba38a:	48 85 ff	testq	%rdi, %rdi
+1000ba38d:	74 05	je	0x1000ba394
+1000ba38f:	e8 b2 1c 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000ba394:	0f 28 45 80	movaps	-0x80(%rbp), %xmm0
+1000ba398:	48 81 c4 a8 00 00 00	addq	$0xa8, %rsp
+1000ba39f:	5b	popq	%rbx
+1000ba3a0:	41 5c	popq	%r12
+1000ba3a2:	41 5d	popq	%r13
+1000ba3a4:	41 5e	popq	%r14
+1000ba3a6:	41 5f	popq	%r15
+1000ba3a8:	5d	popq	%rbp
+1000ba3a9:	c3	retq
+1000ba3aa:	eb 10	jmp	0x1000ba3bc
+1000ba3ac:	eb 0e	jmp	0x1000ba3bc
+1000ba3ae:	eb 0c	jmp	0x1000ba3bc
+1000ba3b0:	eb 0a	jmp	0x1000ba3bc
+1000ba3b2:	eb 08	jmp	0x1000ba3bc
+1000ba3b4:	eb 06	jmp	0x1000ba3bc
+1000ba3b6:	eb 04	jmp	0x1000ba3bc
+1000ba3b8:	eb 02	jmp	0x1000ba3bc
+1000ba3ba:	eb 00	jmp	0x1000ba3bc
+1000ba3bc:	48 89 c3	movq	%rax, %rbx
+1000ba3bf:	c7 45 b8 00 00 00 00	movl	$0x0, -0x48(%rbp)
+1000ba3c6:	48 8b 7d b0	movq	-0x50(%rbp), %rdi
+1000ba3ca:	48 85 ff	testq	%rdi, %rdi
+1000ba3cd:	74 05	je	0x1000ba3d4
+1000ba3cf:	e8 72 1c 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000ba3d4:	c7 45 a8 00 00 00 00	movl	$0x0, -0x58(%rbp)
+1000ba3db:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000ba3df:	48 85 ff	testq	%rdi, %rdi
+1000ba3e2:	74 05	je	0x1000ba3e9
+1000ba3e4:	e8 5d 1c 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000ba3e9:	48 89 df	movq	%rbx, %rdi
+1000ba3ec:	e8 f9 08 07 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+1000ba3f1:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

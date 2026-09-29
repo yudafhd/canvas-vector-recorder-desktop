@@ -1,0 +1,126 @@
+ContourSmoother::findAngularPriorGradient(int, int, int, sla::Vec2<double>&, sla::Vec2<double>&)
+LC_FUNCTION_STARTS: [0x1000c35a0, 0x1000c3790)
+Numeric annotations are candidates.
+1000c35a0:	55	pushq	%rbp
+1000c35a1:	48 89 e5	movq	%rsp, %rbp
+1000c35a4:	41 57	pushq	%r15
+1000c35a6:	41 56	pushq	%r14
+1000c35a8:	41 55	pushq	%r13
+1000c35aa:	41 54	pushq	%r12
+1000c35ac:	53	pushq	%rbx
+1000c35ad:	48 83 ec 28	subq	$0x28, %rsp
+1000c35b1:	4c 89 4d c8	movq	%r9, -0x38(%rbp)
+1000c35b5:	4c 89 45 d0	movq	%r8, -0x30(%rbp)
+1000c35b9:	41 89 cd	movl	%ecx, %r13d
+1000c35bc:	41 89 d4	movl	%edx, %r12d
+1000c35bf:	89 f3	movl	%esi, %ebx
+1000c35c1:	49 89 ff	movq	%rdi, %r15
+1000c35c4:	48 8b bf 08 06 00 00	movq	0x608(%rdi), %rdi
+1000c35cb:	89 d6	movl	%edx, %esi
+1000c35cd:	e8 3e 5d ff ff	callq	0x1000b9310
+1000c35d2:	49 89 c6	movq	%rax, %r14
+1000c35d5:	49 8b bf 08 06 00 00	movq	0x608(%r15), %rdi
+1000c35dc:	89 de	movl	%ebx, %esi
+1000c35de:	e8 2d 5d ff ff	callq	0x1000b9310
+1000c35e3:	49 8b bf 08 06 00 00	movq	0x608(%r15), %rdi
+1000c35ea:	66 41 0f 10 0e	movupd	(%r14), %xmm1
+1000c35ef:	66 0f 10 00	movupd	(%rax), %xmm0
+1000c35f3:	66 0f 5c c8	subpd	%xmm0, %xmm1
+1000c35f7:	66 0f 29 4d b0	movapd	%xmm1, -0x50(%rbp)
+1000c35fc:	44 89 ee	movl	%r13d, %esi
+1000c35ff:	e8 0c 5d ff ff	callq	0x1000b9310
+1000c3604:	48 89 c3	movq	%rax, %rbx
+1000c3607:	49 8b bf 08 06 00 00	movq	0x608(%r15), %rdi
+1000c360e:	44 89 e6	movl	%r12d, %esi
+1000c3611:	e8 fa 5c ff ff	callq	0x1000b9310
+1000c3616:	48 8b 55 d0	movq	-0x30(%rbp), %rdx
+1000c361a:	48 8b 4d c8	movq	-0x38(%rbp), %rcx
+1000c361e:	66 0f 10 03	movupd	(%rbx), %xmm0
+1000c3622:	66 0f 10 08	movupd	(%rax), %xmm1
+1000c3626:	66 0f 5c c1	subpd	%xmm1, %xmm0
+1000c362a:	66 0f 28 6d b0	movapd	-0x50(%rbp), %xmm5
+1000c362f:	66 0f 28 cd	movapd	%xmm5, %xmm1
+1000c3633:	66 0f 14 c8	unpcklpd	%xmm0, %xmm1
+1000c3637:	66 0f 59 c9	mulpd	%xmm1, %xmm1
+1000c363b:	66 0f 57 d2	xorpd	%xmm2, %xmm2
+1000c363f:	66 0f 58 d1	addpd	%xmm1, %xmm2
+1000c3643:	66 0f 28 cd	movapd	%xmm5, %xmm1
+1000c3647:	66 0f 15 c8	unpckhpd	%xmm0, %xmm1
+1000c364b:	66 0f 59 c9	mulpd	%xmm1, %xmm1
+1000c364f:	66 0f 58 ca	addpd	%xmm2, %xmm1
+1000c3653:	66 0f 51 c9	sqrtpd	%xmm1, %xmm1
+1000c3657:	f2 0f 12 d1	movddup	%xmm1, %xmm2
+1000c365b:	66 0f 5e ea	divpd	%xmm2, %xmm5
+1000c365f:	66 0f 28 d1	movapd	%xmm1, %xmm2
+1000c3663:	66 0f 15 d1	unpckhpd	%xmm1, %xmm2
+1000c3667:	66 0f 5e c2	divpd	%xmm2, %xmm0
+1000c366b:	66 0f 28 dd	movapd	%xmm5, %xmm3
+1000c366f:	f2 0f 59 d8	mulsd	%xmm0, %xmm3
+1000c3673:	66 0f 57 e4	xorpd	%xmm4, %xmm4
+1000c3677:	f2 0f 58 e3	addsd	%xmm3, %xmm4
+1000c367b:	66 0f 28 dd	movapd	%xmm5, %xmm3
+1000c367f:	66 44 0f 28 c5	movapd	%xmm5, %xmm8
+1000c3684:	66 0f 15 dd	unpckhpd	%xmm5, %xmm3
+1000c3688:	66 0f 28 e8	movapd	%xmm0, %xmm5
+1000c368c:	66 0f 15 e8	unpckhpd	%xmm0, %xmm5
+1000c3690:	f2 0f 59 eb	mulsd	%xmm3, %xmm5
+1000c3694:	f2 0f 58 ec	addsd	%xmm4, %xmm5
+1000c3698:	f2 0f 12 dd	movddup	%xmm5, %xmm3
+1000c369c:	f2 0f 58 ed	addsd	%xmm5, %xmm5
+1000c36a0:	f2 0f 10 25 20 cf 09 00	movsd	0x9cf20(%rip), %xmm4 ; @0x1001605c8 candidate_f64x2=(2.0, 110.0)
+1000c36a8:	f2 0f 5c e5	subsd	%xmm5, %xmm4
+1000c36ac:	f2 0f 58 25 6c 87 22 00	addsd	0x22876c(%rip), %xmm4 ; @0x1002ebe20 candidate_f64x2=(0.001, 0.25)
+1000c36b4:	f2 0f 51 e4	sqrtsd	%xmm4, %xmm4
+1000c36b8:	f2 0f 10 2d 00 cf 09 00	movsd	0x9cf00(%rip), %xmm5 ; @0x1001605c0 candidate_f64x2=(1.0, 2.0)
+1000c36c0:	f2 0f 5e e9	divsd	%xmm1, %xmm5
+1000c36c4:	f2 0f 10 35 dc ce 09 00	movsd	0x9cedc(%rip), %xmm6 ; @0x1001605a8 candidate_f64x2=(-1.0, 10.0)
+1000c36cc:	f2 0f 5e f2	divsd	%xmm2, %xmm6
+1000c36d0:	66 41 0f 28 d0	movapd	%xmm8, %xmm2
+1000c36d5:	66 0f 59 d3	mulpd	%xmm3, %xmm2
+1000c36d9:	66 0f 28 f8	movapd	%xmm0, %xmm7
+1000c36dd:	66 0f 5c fa	subpd	%xmm2, %xmm7
+1000c36e1:	f2 0f 12 d5	movddup	%xmm5, %xmm2
+1000c36e5:	66 0f 59 d7	mulpd	%xmm7, %xmm2
+1000c36e9:	f2 0f 12 e4	movddup	%xmm4, %xmm4
+1000c36ed:	66 0f 5e d4	divpd	%xmm4, %xmm2
+1000c36f1:	66 0f 11 12	movupd	%xmm2, (%rdx)
+1000c36f5:	66 0f 59 d8	mulpd	%xmm0, %xmm3
+1000c36f9:	66 41 0f 28 d0	movapd	%xmm8, %xmm2
+1000c36fe:	66 0f 5c d3	subpd	%xmm3, %xmm2
+1000c3702:	f2 0f 12 de	movddup	%xmm6, %xmm3
+1000c3706:	66 0f 59 da	mulpd	%xmm2, %xmm3
+1000c370a:	66 0f 5e dc	divpd	%xmm4, %xmm3
+1000c370e:	66 0f 11 19	movupd	%xmm3, (%rcx)
+1000c3712:	41 8b bf f0 05 00 00	movl	0x5f0(%r15), %edi
+1000c3719:	48 83 ff 03	cmpq	$0x3, %rdi
+1000c371d:	73 6c	jae	0x1000c378b
+1000c371f:	66 41 0f 28 e8	movapd	%xmm8, %xmm5
+1000c3724:	f3 41 0f e6 97 78 06 00 00	cvtdq2pd	0x678(%r15), %xmm2
+1000c372d:	66 0f 5e ca	divpd	%xmm2, %xmm1
+1000c3731:	66 0f 28 d9	movapd	%xmm1, %xmm3
+1000c3735:	66 0f 15 d9	unpckhpd	%xmm1, %xmm3
+1000c3739:	f2 0f 5c d9	subsd	%xmm1, %xmm3
+1000c373d:	f2 0f 58 db	addsd	%xmm3, %xmm3
+1000c3741:	f2 41 0f 59 5c ff 38	mulsd	0x38(%r15,%rdi,8), %xmm3
+1000c3748:	f2 0f 12 cb	movddup	%xmm3, %xmm1
+1000c374c:	66 0f 59 e9	mulpd	%xmm1, %xmm5
+1000c3750:	f2 0f 12 da	movddup	%xmm2, %xmm3
+1000c3754:	66 0f 5e eb	divpd	%xmm3, %xmm5
+1000c3758:	66 0f 10 1a	movupd	(%rdx), %xmm3
+1000c375c:	66 0f 58 dd	addpd	%xmm5, %xmm3
+1000c3760:	66 0f 11 1a	movupd	%xmm3, (%rdx)
+1000c3764:	66 0f 59 c1	mulpd	%xmm1, %xmm0
+1000c3768:	66 0f 15 d2	unpckhpd	%xmm2, %xmm2
+1000c376c:	66 0f 5e c2	divpd	%xmm2, %xmm0
+1000c3770:	66 0f 10 09	movupd	(%rcx), %xmm1
+1000c3774:	66 0f 58 c8	addpd	%xmm0, %xmm1
+1000c3778:	66 0f 11 09	movupd	%xmm1, (%rcx)
+1000c377c:	48 83 c4 28	addq	$0x28, %rsp
+1000c3780:	5b	popq	%rbx
+1000c3781:	41 5c	popq	%r12
+1000c3783:	41 5d	popq	%r13
+1000c3785:	41 5e	popq	%r14
+1000c3787:	41 5f	popq	%r15
+1000c3789:	5d	popq	%rbp
+1000c378a:	c3	retq
+1000c378b:	e8 a0 e1 05 00	callq	0x100121930

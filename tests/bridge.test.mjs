@@ -13,6 +13,8 @@ const commands = await readFile(new URL('../src-tauri/src/commands.rs', import.m
 const permissions = await readFile(new URL('../src-tauri/permissions/default.toml', import.meta.url), 'utf8');
 const desktopCapability = JSON.parse(await readFile(new URL('../src-tauri/capabilities/desktop.json', import.meta.url), 'utf8'));
 const tauriConfig = JSON.parse(await readFile(new URL('../src-tauri/tauri.conf.json', import.meta.url), 'utf8'));
+const tracingPage = await readFile(new URL('../src/tracing/page.ts', import.meta.url), 'utf8');
+const tracingStyles = await readFile(new URL('../src/tracing/tracing.css', import.meta.url), 'utf8');
 test('bridge batches events and flushes by timer or count', () => {
   assert.match(bridge, /MAX_BATCH = 100/); assert.match(bridge, /FLUSH_MS = 150/); assert.match(bridge, /queue\.length >= MAX_BATCH/); assert.match(bridge, /record_canvas_events/);
 });
@@ -76,7 +78,9 @@ test('main macOS tabs provide reload controls and stay compact', () => {
 
 test('macOS target view puts the native webview at the top of the tab content', () => {
   assert.match(main, /mac-target-view/);
-  assert.match(styles, /\.target-main-view\.mac-target-view \{ padding-top: 46px; \}/);
+  const targetRule = styles.match(/\.target-main-view\.mac-target-view\s*\{([^}]+)\}/)?.[1];
+  assert.ok(targetRule, 'macOS target layout rule exists');
+  assert.match(targetRule, /padding(?:-top)?:\s*46px(?:\s|;)/);
   assert.match(styles, /\.target-main-view\.mac-target-view \.target-main-toolbar \{ display: none; \}/);
 });
 
@@ -290,3 +294,26 @@ test('export settings includes interactive object eraser feature', () => {
   assert.match(main, /eraseMarkedObjects/);
   assert.match(main, /renderSvgToPreviewStage/);
 });
+
+test('tracing tab provides open and close toggle for left sidebar', () => {
+  assert.match(tracingPage, /id="traceSidebarToggle"/);
+  assert.match(tracingPage, /id="traceSidebarClose"/);
+  assert.match(tracingPage, /sidebar-collapsed/);
+  assert.match(tracingPage, /cvr_trace_sidebar_collapsed/);
+  assert.match(tracingStyles, /\.trace-layout\.sidebar-collapsed\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+  assert.match(tracingStyles, /\.trace-layout\.sidebar-collapsed\s*\.trace-sidebar\s*\{[^}]*display:\s*none/);
+});
+
+test('tracing preview provides scroll-to-zoom and synchronized mirroring between original and result', () => {
+  assert.match(tracingPage, /id="traceStageOriginal"/);
+  assert.match(tracingPage, /id="traceStageOutput"/);
+  assert.match(tracingPage, /stageOriginal\.addEventListener\('wheel'/);
+  assert.match(tracingPage, /stageOutput\.addEventListener\('wheel'/);
+  assert.match(tracingPage, /syncScroll\(stageOriginal,\s*stageOutput\)/);
+  assert.match(tracingPage, /syncScroll\(stageOutput,\s*stageOriginal\)/);
+  assert.match(tracingPage, /pointerdown/);
+  assert.match(tracingPage, /pointermove/);
+  assert.match(tracingStyles, /\.trace-stage\.can-pan\s*\{\s*cursor:\s*grab;\s*\}/);
+  assert.match(tracingStyles, /\.trace-is-panning\s*\.trace-stage\s*\{\s*cursor:\s*grabbing/);
+});
+

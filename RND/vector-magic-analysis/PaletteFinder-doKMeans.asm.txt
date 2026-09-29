@@ -1,0 +1,132 @@
+PaletteFinder::doKMeans(bool, int)
+1000f80b0:	55	pushq	%rbp
+1000f80b1:	48 89 e5	movq	%rsp, %rbp
+1000f80b4:	41 57	pushq	%r15
+1000f80b6:	41 56	pushq	%r14
+1000f80b8:	41 55	pushq	%r13
+1000f80ba:	41 54	pushq	%r12
+1000f80bc:	53	pushq	%rbx
+1000f80bd:	48 83 ec 18	subq	$0x18, %rsp
+1000f80c1:	89 75 d4	movl	%esi, -0x2c(%rbp)
+1000f80c4:	48 89 fb	movq	%rdi, %rbx
+1000f80c7:	89 55 d0	movl	%edx, -0x30(%rbp)
+1000f80ca:	89 d6	movl	%edx, %esi
+1000f80cc:	e8 df 0a 00 00	callq	__ZN13PaletteFinder11initializeKEi ## PaletteFinder::initializeK(int)
+1000f80d1:	4c 8d a3 a8 02 00 00	leaq	0x2a8(%rbx), %r12
+1000f80d8:	45 31 ed	xorl	%r13d, %r13d
+1000f80db:	45 31 f6	xorl	%r14d, %r14d
+1000f80de:	eb 10	jmp	0x1000f80f0
+1000f80e0:	41 b6 01	movb	$0x1, %r14b
+1000f80e3:	41 ff c5	incl	%r13d
+1000f80e6:	41 83 fd 0a	cmpl	$0xa, %r13d
+1000f80ea:	0f 84 48 01 00 00	je	0x1000f8238
+1000f80f0:	bf 01 00 00 00	movl	$0x1, %edi
+1000f80f5:	8b 75 d0	movl	-0x30(%rbp), %esi
+1000f80f8:	44 89 ea	movl	%r13d, %edx
+1000f80fb:	b9 0a 00 00 00	movl	$0xa, %ecx
+1000f8100:	e8 bb 4a fe ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+1000f8105:	41 83 fd 09	cmpl	$0x9, %r13d
+1000f8109:	0f 94 c0	sete	%al
+1000f810c:	44 08 f0	orb	%r14b, %al
+1000f810f:	0f b6 f0	movzbl	%al, %esi
+1000f8112:	83 e6 01	andl	$0x1, %esi
+1000f8115:	48 89 df	movq	%rbx, %rdi
+1000f8118:	e8 33 e3 ff ff	callq	__ZN13PaletteFinder7assignKEb ## PaletteFinder::assignK(bool)
+1000f811d:	41 f6 c6 01	testb	$0x1, %r14b
+1000f8121:	0f 85 0d 01 00 00	jne	0x1000f8234
+1000f8127:	80 7d d4 00	cmpb	$0x0, -0x2c(%rbp)
+1000f812b:	74 13	je	0x1000f8140
+1000f812d:	48 89 df	movq	%rbx, %rdi
+1000f8130:	e8 5b 0c 00 00	callq	__ZN13PaletteFinder25computeWeightedMeanColorsEv ## PaletteFinder::computeWeightedMeanColors()
+1000f8135:	eb 11	jmp	0x1000f8148
+1000f8137:	66 0f 1f 84 00 00 00 00 00	nopw	(%rax,%rax)
+1000f8140:	48 89 df	movq	%rbx, %rdi
+1000f8143:	e8 48 0e 00 00	callq	__ZN13PaletteFinder17computeMeanColorsEv ## PaletteFinder::computeMeanColors()
+1000f8148:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000f814c:	83 7f 08 00	cmpl	$0x0, 0x8(%rdi)
+1000f8150:	7e 8e	jle	0x1000f80e0
+1000f8152:	0f 57 c9	xorps	%xmm1, %xmm1
+1000f8155:	45 31 ff	xorl	%r15d, %r15d
+1000f8158:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)
+1000f8160:	f3 0f 11 4d c0	movss	%xmm1, -0x40(%rbp)
+1000f8165:	44 89 fe	movl	%r15d, %esi
+1000f8168:	e8 a3 04 fd ff	callq	0x1000c8610
+1000f816d:	49 89 c6	movq	%rax, %r14
+1000f8170:	4c 89 e7	movq	%r12, %rdi
+1000f8173:	44 89 fe	movl	%r15d, %esi
+1000f8176:	e8 95 04 fd ff	callq	0x1000c8610
+1000f817b:	f3 41 0f 10 46 08	movss	0x8(%r14), %xmm0
+1000f8181:	f3 0f 5c 40 08	subss	0x8(%rax), %xmm0
+1000f8186:	f3 41 0f 10 5e 0c	movss	0xc(%r14), %xmm3
+1000f818c:	f3 0f 5c 58 0c	subss	0xc(%rax), %xmm3
+1000f8191:	f2 41 0f 10 0e	movsd	(%r14), %xmm1
+1000f8196:	f2 0f 10 10	movsd	(%rax), %xmm2
+1000f819a:	0f 5c ca	subps	%xmm2, %xmm1
+1000f819d:	0f 28 15 4c 3d 1f 00	movaps	0x1f3d4c(%rip), %xmm2
+1000f81a4:	0f 54 ca	andps	%xmm2, %xmm1
+1000f81a7:	0f 54 c2	andps	%xmm2, %xmm0
+1000f81aa:	0f 54 da	andps	%xmm2, %xmm3
+1000f81ad:	66 0f 70 d1 f5	pshufd	$0xf5, %xmm1, %xmm2
+1000f81b2:	f3 0f 5f d1	maxss	%xmm1, %xmm2
+1000f81b6:	f3 0f 5f c2	maxss	%xmm2, %xmm0
+1000f81ba:	f3 0f 5f d8	maxss	%xmm0, %xmm3
+1000f81be:	f3 0f 5f 5d c0	maxss	-0x40(%rbp), %xmm3
+1000f81c3:	0f 29 5d c0	movaps	%xmm3, -0x40(%rbp)
+1000f81c7:	4c 89 e7	movq	%r12, %rdi
+1000f81ca:	44 89 fe	movl	%r15d, %esi
+1000f81cd:	e8 3e 04 fd ff	callq	0x1000c8610
+1000f81d2:	49 89 c6	movq	%rax, %r14
+1000f81d5:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000f81d9:	44 89 fe	movl	%r15d, %esi
+1000f81dc:	e8 2f 04 fd ff	callq	0x1000c8610
+1000f81e1:	0f 28 4d c0	movaps	-0x40(%rbp), %xmm1
+1000f81e5:	f3 41 0f 10 06	movss	(%r14), %xmm0
+1000f81ea:	f3 0f 11 00	movss	%xmm0, (%rax)
+1000f81ee:	f3 41 0f 10 46 04	movss	0x4(%r14), %xmm0
+1000f81f4:	f3 0f 11 40 04	movss	%xmm0, 0x4(%rax)
+1000f81f9:	f3 41 0f 10 46 08	movss	0x8(%r14), %xmm0
+1000f81ff:	f3 0f 11 40 08	movss	%xmm0, 0x8(%rax)
+1000f8204:	f3 41 0f 10 46 0c	movss	0xc(%r14), %xmm0
+1000f820a:	f3 0f 11 40 0c	movss	%xmm0, 0xc(%rax)
+1000f820f:	41 ff c7	incl	%r15d
+1000f8212:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000f8216:	44 3b 7f 08	cmpl	0x8(%rdi), %r15d
+1000f821a:	0f 8c 40 ff ff ff	jl	0x1000f8160
+1000f8220:	f3 0f 10 05 b8 41 1f 00	movss	0x1f41b8(%rip), %xmm0
+1000f8228:	0f 2e c1	ucomiss	%xmm1, %xmm0
+1000f822b:	41 0f 97 c6	seta	%r14b
+1000f822f:	e9 af fe ff ff	jmp	0x1000f80e3
+1000f8234:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000f8238:	83 7f 08 00	cmpl	$0x0, 0x8(%rdi)
+1000f823c:	7e 4c	jle	0x1000f828a
+1000f823e:	4c 8d b3 b8 02 00 00	leaq	0x2b8(%rbx), %r14
+1000f8245:	45 31 ff	xorl	%r15d, %r15d
+1000f8248:	eb 13	jmp	0x1000f825d
+1000f824a:	66 0f 1f 44 00 00	nopw	(%rax,%rax)
+1000f8250:	41 ff c7	incl	%r15d
+1000f8253:	48 8b 43 70	movq	0x70(%rbx), %rax
+1000f8257:	44 3b 78 08	cmpl	0x8(%rax), %r15d
+1000f825b:	7d 2d	jge	0x1000f828a
+1000f825d:	4c 89 f7	movq	%r14, %rdi
+1000f8260:	44 89 fe	movl	%r15d, %esi
+1000f8263:	e8 48 fa fc ff	callq	0x1000c7cb0
+1000f8268:	f3 0f 10 00	movss	(%rax), %xmm0
+1000f826c:	0f 57 c9	xorps	%xmm1, %xmm1
+1000f826f:	0f 2e c1	ucomiss	%xmm1, %xmm0
+1000f8272:	75 dc	jne	0x1000f8250
+1000f8274:	7a da	jp	0x1000f8250
+1000f8276:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000f827a:	44 89 fe	movl	%r15d, %esi
+1000f827d:	e8 8e 03 fd ff	callq	0x1000c8610
+1000f8282:	0f 57 c0	xorps	%xmm0, %xmm0
+1000f8285:	0f 11 00	movups	%xmm0, (%rax)
+1000f8288:	eb c6	jmp	0x1000f8250
+1000f828a:	48 83 c4 18	addq	$0x18, %rsp
+1000f828e:	5b	popq	%rbx
+1000f828f:	41 5c	popq	%r12
+1000f8291:	41 5d	popq	%r13
+1000f8293:	41 5e	popq	%r14
+1000f8295:	41 5f	popq	%r15
+1000f8297:	5d	popq	%rbp
+1000f8298:	c3	retq
+1000f8299:	0f 1f 80 00 00 00 00	nopl	(%rax)

@@ -1,0 +1,12 @@
+{
+  "classifier_vectors_checked": 14680,
+  "conditional_jump_sites": 10,
+  "all_conditional_jump_outcomes_covered": true,
+  "synthetic_reference": {
+    "straight": false,
+    "isolated_right_angle": true,
+    "four_node_contour_skipped": true
+  },
+  "target_binary_executed": false,
+  "scope": "Finite-input decision-tree transcription versus disassembly interpreter; feature geometry remains a static reconstruction"
+}

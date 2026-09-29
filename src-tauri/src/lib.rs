@@ -91,6 +91,7 @@ pub fn run() {
             commands::export_svg,
             commands::save_svg,
             commands::save_svg_asset,
+            commands::save_tracing_svg,
             commands::save_eps,
             commands::save_eps_asset,
             commands::clear_surfaces,

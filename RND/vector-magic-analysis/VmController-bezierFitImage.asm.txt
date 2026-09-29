@@ -1,0 +1,59 @@
+VmController::bezierFitImage(VmVectorizationSettings const&)
+10011b8b0:	55	pushq	%rbp
+10011b8b1:	48 89 e5	movq	%rsp, %rbp
+10011b8b4:	41 57	pushq	%r15
+10011b8b6:	41 56	pushq	%r14
+10011b8b8:	53	pushq	%rbx
+10011b8b9:	50	pushq	%rax
+10011b8ba:	48 89 f3	movq	%rsi, %rbx
+10011b8bd:	49 89 fe	movq	%rdi, %r14
+10011b8c0:	c7 87 70 01 00 00 00 00 00 00	movl	$0x0, 0x170(%rdi)
+10011b8ca:	48 81 c7 d8 01 00 00	addq	$0x1d8, %rdi
+10011b8d1:	48 8d 35 d0 1c 02 00	leaq	0x21cd0(%rip), %rsi ## literal pool for: ""
+10011b8d8:	e8 7f 06 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b8dd:	41 c6 86 74 01 00 00 00	movb	$0x0, 0x174(%r14)
+10011b8e5:	49 8b be 78 01 00 00	movq	0x178(%r14), %rdi
+10011b8ec:	be 06 00 00 00	movl	$0x6, %esi
+10011b8f1:	ba 01 00 00 00	movl	$0x1, %edx
+10011b8f6:	e8 85 0e fc ff	callq	__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)
+10011b8fb:	4c 89 f7	movq	%r14, %rdi
+10011b8fe:	48 89 de	movq	%rbx, %rsi
+10011b901:	ba 04 00 00 00	movl	$0x4, %edx
+10011b906:	e8 35 e4 ff ff	callq	__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)
+10011b90b:	4d 8d be 50 01 00 00	leaq	0x150(%r14), %r15
+10011b912:	4c 89 f7	movq	%r14, %rdi
+10011b915:	48 89 de	movq	%rbx, %rsi
+10011b918:	4c 89 fa	movq	%r15, %rdx
+10011b91b:	e8 80 00 00 00	callq	__ZN12VmController16needsToBezierFitERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToBezierFit(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)
+10011b920:	84 c0	testb	%al, %al
+10011b922:	74 22	je	0x10011b946
+10011b924:	bf 20 24 00 00	movl	$0x2420, %edi
+10011b929:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b930:	e8 7b ce f9 ff	callq	__ZN12BezierFitter7executeEv ## BezierFitter::execute()
+10011b935:	bf 30 25 00 00	movl	$0x2530, %edi
+10011b93a:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b941:	e8 ba 25 fc ff	callq	__ZN8Exporter22generateCompoundCurvesEv ## Exporter::generateCompoundCurves()
+10011b946:	41 c7 86 70 01 00 00 64 00 00 00	movl	$0x64, 0x170(%r14)
+10011b951:	41 80 be 74 01 00 00 01	cmpb	$0x1, 0x174(%r14)
+10011b959:	75 16	jne	0x10011b971
+10011b95b:	48 8d 35 46 1c 02 00	leaq	0x21c46(%rip), %rsi ## literal pool for: ""
+10011b962:	4c 89 ff	movq	%r15, %rdi
+10011b965:	e8 f2 05 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b96a:	b8 02 00 00 00	movl	$0x2, %eax
+10011b96f:	eb 11	jmp	0x10011b982
+10011b971:	49 83 c6 20	addq	$0x20, %r14
+10011b975:	4c 89 f7	movq	%r14, %rdi
+10011b978:	48 89 de	movq	%rbx, %rsi
+10011b97b:	e8 30 d0 ff ff	callq	__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)
+10011b980:	31 c0	xorl	%eax, %eax
+10011b982:	48 83 c4 08	addq	$0x8, %rsp
+10011b986:	5b	popq	%rbx
+10011b987:	41 5e	popq	%r14
+10011b989:	41 5f	popq	%r15
+10011b98b:	5d	popq	%rbp
+10011b98c:	c3	retq
+10011b98d:	48 89 c7	movq	%rax, %rdi
+10011b990:	89 d6	movl	%edx, %esi
+10011b992:	e8 79 e3 00 00	callq	0x100129d10
+10011b997:	eb ad	jmp	0x10011b946
+10011b999:	0f 1f 80 00 00 00 00	nopl	(%rax)

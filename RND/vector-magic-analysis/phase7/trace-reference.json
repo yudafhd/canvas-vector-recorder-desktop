@@ -1,0 +1,207 @@
+{
+  "target_executed": false,
+  "mac_slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "candidate_cases_checked": 247,
+  "directions": [
+    {
+      "direction": "west",
+      "dx": -1,
+      "dy": 0,
+      "first_side": [
+        -1,
+        -1
+      ],
+      "second_side": [
+        -1,
+        0
+      ]
+    },
+    {
+      "direction": "south",
+      "dx": 0,
+      "dy": 1,
+      "first_side": [
+        -1,
+        0
+      ],
+      "second_side": [
+        0,
+        0
+      ]
+    },
+    {
+      "direction": "east",
+      "dx": 1,
+      "dy": 0,
+      "first_side": [
+        0,
+        0
+      ],
+      "second_side": [
+        0,
+        -1
+      ]
+    },
+    {
+      "direction": "north",
+      "dx": 0,
+      "dy": -1,
+      "first_side": [
+        0,
+        -1
+      ],
+      "second_side": [
+        -1,
+        -1
+      ]
+    }
+  ],
+  "examples": {
+    "checkerboard_junction": [
+      {
+        "direction": "west",
+        "dx": -1,
+        "dy": 0,
+        "first_side": [
+          -1,
+          -1
+        ],
+        "second_side": [
+          -1,
+          0
+        ],
+        "next": [
+          0,
+          1
+        ],
+        "first_pixel": [
+          0,
+          0
+        ],
+        "other_region": 2
+      },
+      {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "first_side": [
+          0,
+          0
+        ],
+        "second_side": [
+          0,
+          -1
+        ],
+        "next": [
+          2,
+          1
+        ],
+        "first_pixel": [
+          1,
+          1
+        ],
+        "other_region": 2
+      }
+    ],
+    "checkerboard_decisions": {
+      "no_previous_cell": "west",
+      "previous_northwest_cell": "west",
+      "previous_southeast_cell": "east",
+      "previous_unmatched_cell": "east"
+    },
+    "single_pixel_corner": [
+      {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "first_side": [
+          0,
+          0
+        ],
+        "second_side": [
+          0,
+          -1
+        ],
+        "next": [
+          1,
+          0
+        ],
+        "first_pixel": [
+          0,
+          0
+        ],
+        "other_region": -1
+      }
+    ],
+    "visited_west_suppressed": [
+      {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "first_side": [
+          0,
+          0
+        ],
+        "second_side": [
+          0,
+          -1
+        ],
+        "next": [
+          2,
+          1
+        ],
+        "first_pixel": [
+          1,
+          1
+        ],
+        "other_region": 2
+      }
+    ],
+    "other_region_junction": [
+      {
+        "direction": "south",
+        "dx": 0,
+        "dy": 1,
+        "first_side": [
+          -1,
+          0
+        ],
+        "second_side": [
+          0,
+          0
+        ],
+        "next": [
+          1,
+          2
+        ],
+        "first_pixel": [
+          0,
+          1
+        ],
+        "other_region": 1
+      },
+      {
+        "direction": "north",
+        "dx": 0,
+        "dy": -1,
+        "first_side": [
+          0,
+          -1
+        ],
+        "second_side": [
+          -1,
+          -1
+        ],
+        "next": [
+          1,
+          0
+        ],
+        "first_pixel": [
+          1,
+          0
+        ],
+        "other_region": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,382 @@
+Filtering the log data using "process BEGINSWITH[cd] "Vector Magic" AND type == 1024"
+Timestamp               Ty Process[PID:TID]
+2026-09-28 14:40:23.437 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+2026-09-28 14:40:23.449 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a1a related: 0
+2026-09-28 14:40:23.460 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order all windows front 154625633673123
+2026-09-28 14:40:23.478 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x6000027045a0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:40:23.479 Df Vector Magic[78389:24ab3b] [com.apple.xpc:connection] [0x6000027045a0] invalidated after the last release of the connection object
+2026-09-28 14:40:23.478 I  Vector Magic[78389:247ba4] [com.apple.appleevents:receive] RECEIVED:(aevt,rapp) {aevt,rapp target=Dock  returnID=-26102}...
+2026-09-28 14:40:23.480 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c3dc0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:23.480 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff00744e740] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:23.607 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:40:23.607 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff00227a780] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:23.607 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002604080] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:26.278 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff006c25e50] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.280 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 6b0ddf9b) for window 2a3f
+2026-09-28 14:40:26.281 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x60000273aa30] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:40:26.282 Df Vector Magic[78389:24ab3b] [com.apple.xpc:connection] [0x60000273aa30] invalidated after the last release of the connection object
+2026-09-28 14:40:26.282 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff007432f20] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.551 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> c2468df9) for window 2a41
+2026-09-28 14:40:26.551 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (c2468df9 -> 0) for window 2a41
+2026-09-28 14:40:26.551 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 8d8d2614) for window 2a41
+2026-09-28 14:40:26.552 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f remove <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 from group
+2026-09-28 14:40:26.552 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f add <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 to group
+2026-09-28 14:40:26.553 E  Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] Ignoring NSSavePanel method sent to NSOpenPanel: <private>
+2026-09-28 14:40:26.558 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 44e9ae05) for window 2a42
+2026-09-28 14:40:26.562 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Controls] NSButtonVisualProvider found bezel configuration changes during display or layout
+2026-09-28 14:40:26.576 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] -[<NSOpenPanel: 0x7ff007436010> runModal] - canChooseFiles:1 canChooseDirectories:0 resolvesAliases:1 allowsMultipleSelection:0 canCreateDirectories:1 canResolveUbiquitousConflicts:1 canDownloadUbiquitousContents:1 showsHiddenFiles:0 treatsFilePackagesAsDirectories:0 identifier:(null) allowedContentTypes:(
+)
+2026-09-28 14:40:26.576 Df Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] Advance to run phase.
+2026-09-28 14:40:26.584 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] (app) begin modal window 2a3f
+2026-09-28 14:40:26.587 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:40:26.588 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:40:26.594 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a3f related: 0
+2026-09-28 14:40:26.594 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f remove <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 from group
+2026-09-28 14:40:26.594 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f add <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 to group
+2026-09-28 14:40:26.633 I  Vector Magic[78389:247ba4] [com.apple.launchservices:cas] information in shared memory for 0x0-0x16016 with seed 567 was still valid, so using cached info { "ApplicationType"="BackgroundOnly", , "BuildMachineOSBuild"="23A344014", , "BundleIdentifierLowerCase"="com.apple.viewbridgeauxiliary", , "CFBundleExecutable"="ViewBridgeAuxiliary", , "CFBundleExecutablePath"="/System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary", , "CFBundleExecutablePathDeviceID"=16777220, , "CFBundleExecutablePathINode"=1152921500312433643, , "CFBundleIdentifier"="com.apple.ViewBridgeAuxiliary", , "CFBundleInfoDictionaryVersion"="6.0", , "CFBundleName"="ViewBridgeAuxiliary", , "CFBundleNameLowerCase"="viewbridgeauxiliary", , "CFBundlePackageType"="XPC!", , "CFBundleSignature"="????", , "CFBundleSupportedPlatforms"=( "MacOSX"), , "ChangeCount"=567, , "DTCompiler"="com.apple.compilers.llvm.clang.1_0", , "DTPlatformBuild"="", , "DTPlatformName"="macosx", , "DTPlatformVersion"="15.6", , "DTSDKBuild"="24G78", , "DTSDKName"="macosx15.6.internal", , "DTXcode"="1630", , "DTXcodeBuild"="<…>
+2026-09-28 14:40:26.731 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x60000273a0d0] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:40:26.731 Df Vector Magic[78389:24ac06] [com.apple.xpc:connection] [0x600002717570] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:40:26.731 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x6000027003c0] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:40:26.731 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x60000273a0d0] invalidated after the last release of the connection object
+2026-09-28 14:40:26.731 Df Vector Magic[78389:24ac06] [com.apple.xpc:connection] [0x600002717570] invalidated after the last release of the connection object
+2026-09-28 14:40:26.732 Df Vector Magic[78389:24a572] [com.apple.xpc:connection] [0x6000027003c0] invalidated after the last release of the connection object
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002605560] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff00227a780] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002717770] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c90f0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017bf4f0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.732 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022d2750] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:26.768 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OcclusionDetection] Window 0x2a41 event shape became non empty
+2026-09-28 14:40:27.962 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OcclusionDetection] Window 0x2a41 event shape became non empty
+2026-09-28 14:40:28.088 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f remove <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 from group
+2026-09-28 14:40:28.095 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> d57553d1) for window 2a48
+2026-09-28 14:40:28.096 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a48 op: 1 relative: 2a3f related: 0
+2026-09-28 14:40:28.098 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a3f op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.164 Df Vector Magic[78389:24ac06] [com.apple.xpc:connection] [0x60000273d0e0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:40:28.164 Df Vector Magic[78389:24ab45] [com.apple.xpc:connection] [0x60000273d0e0] invalidated after the last release of the connection object
+2026-09-28 14:40:28.169 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a1a op: 1 relative: 2a3f related: 0
+2026-09-28 14:40:28.169 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a3f op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.169 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0074553d0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:28.169 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c0070] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:40:28.170 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a3f op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.178 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] window <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f finishing close
+2026-09-28 14:40:28.178 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a3f op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.179 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] window <QNSPanel: 0x7ff00232a900> windowNumber=2a42 finishing close
+2026-09-28 14:40:28.179 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a42 op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.179 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a3f op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.180 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff007436010> windowNumber=2a3f remove <NSAccessoryViewWindow: 0x7ff0017e9740> windowNumber=2a41 from group
+2026-09-28 14:40:28.194 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (44e9ae05 -> 0) for window 2a42
+2026-09-28 14:40:28.198 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (8d8d2614 -> 0) for window 2a41
+2026-09-28 14:40:28.260 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a48 op: 0 relative: 0 related: 0
+2026-09-28 14:40:28.260 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (d57553d1 -> 0) for window 2a48
+2026-09-28 14:40:28.261 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff006c25e50] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.261 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff007432f20] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.261 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (6b0ddf9b -> 0) for window 2a3f
+2026-09-28 14:40:28.266 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:40:28.266 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff00744e740] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.266 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c3dc0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022d2750] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017bf4f0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c90f0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002717770] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff00227a780] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:28.268 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002605560] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:40:35.756 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:40:35.756 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:40:35.932 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]
+2026-09-28 14:40:35.932 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges] finishing enqueued operations
+2026-09-28 14:40:35.932 Df Vector Magic[78389:24ab3b] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke asyncing to main queue
+2026-09-28 14:40:36.058 Df Vector Magic[78389:24ab3b] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke writing records
+2026-09-28 14:40:36.146 I  Vector Magic[78389:24ab3b] [com.apple.CoreAnalytics:client] Dropping "com.apple.libspindump.hid_response_statistics" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-28 14:41:17.130 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+2026-09-28 14:42:13.217 I  Vector Magic[78389:247ba4] [com.apple.launchservices:cas] Removing cached information for app [ 0x0-0x16016]  "ViewBridgeAuxiliary", as its seed is different from that in shared memory ( 567 vs 569)
+2026-09-28 14:43:51.834 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+2026-09-28 14:43:51.842 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a1a related: 0
+2026-09-28 14:43:51.863 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order all windows front 154834030372830
+2026-09-28 14:43:51.927 Df Vector Magic[78389:24c1f5] [com.apple.xpc:connection] [0x6000027003c0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:43:51.930 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x6000027003c0] invalidated after the last release of the connection object
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:cache] Rebuilding cache for 'Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E)
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyFlavorsForItem('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1)
+2026-09-28 14:43:51.989 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 flavor-count: 6  (-1 means nil)
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.file-url')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'com.apple.finder.noderef')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 1
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'fndf')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 1
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.utf16-external-plain-text')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.utf8-plain-text')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'com.apple.icns')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'com.apple.notranslations')
+2026-09-28 14:43:51.990 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:51.991 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.tiff')
+2026-09-28 14:43:51.991 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:51.991 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1 flavor: 'com.apple.icns')
+2026-09-28 14:43:51.991 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:general] Will request data from daemon
+2026-09-28 14:43:51.993 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: 0 generation: 441 data (495336 bytes) flags: 0
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.tiff')
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1 flavor: 'com.apple.icns')
+2026-09-28 14:43:52.052 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (cache) - result: 0 generation: 441 data (495336 bytes) flags: 0
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.tiff')
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1 flavor: 'com.apple.icns')
+2026-09-28 14:43:52.082 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (cache) - result: 0 generation: 441 data (495336 bytes) flags: 0
+2026-09-28 14:43:52.105 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.105 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.105 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.105 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.tiff')
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1 flavor: 'com.apple.icns')
+2026-09-28 14:43:52.106 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (cache) - result: 0 generation: 441 data (495336 bytes) flags: 0
+2026-09-28 14:43:52.129 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.129 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 1, flavor: 'public.tiff')
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 1 flavor: 'com.apple.icns')
+2026-09-28 14:43:52.130 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (cache) - result: 0 generation: 441 data (495336 bytes) flags: 0
+2026-09-28 14:43:52.152 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 item: 1
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.153 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Pasteboard] NSPasteboard (name: Apple CFPasteboard general): data requested for type public.utf8-plain-text at index 0
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyItemsAndFlavors('Apple CFPasteboard general (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)' gen: -1)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:cache] Rebuilding cache for 'Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0, gen: -1 item-count: 6 flavor-count: 6 (-1 means nil)
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'public.file-url')
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'com.apple.finder.noderef')
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 1
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'fndf')
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 1
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'public.utf16-external-plain-text')
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'public.utf8-plain-text')
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:52.153 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 1, flavor: 'com.apple.icns')
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 0
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1)
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 441 count: 1
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyItemsAndFlavors('Apple CFPasteboard general (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)' gen: -1)
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0, gen: -1 item-count: 6 flavor-count: 6 (-1 means nil)
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: 441 item: 1 flavor: 'public.utf8-plain-text')
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:general] Will request data from daemon
+2026-09-28 14:43:52.154 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: 0 generation: 441 data (23 bytes) flags: 0
+2026-09-28 14:43:52.155 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022d3ef0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:52.155 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017eb5f0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:52.156 I  Vector Magic[78389:247ba4] [com.apple.appleevents:receive] RECEIVED:(aevt,rapp) {aevt,rapp target=Dock  returnID=-17583}...
+2026-09-28 14:43:52.181 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:43:52.181 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c0070] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:52.181 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0074553d0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:54.114 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 1cf032a) for window 2a6e
+2026-09-28 14:43:54.125 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] (app) begin modal window 2a6e
+2026-09-28 14:43:54.127 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:43:54.127 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:43:54.130 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017e8cc0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:54.133 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0026076a0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:54.135 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x60000273a3a0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:43:54.135 Df Vector Magic[78389:24c1f5] [com.apple.xpc:connection] [0x60000273a3a0] invalidated after the last release of the connection object
+2026-09-28 14:43:54.136 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a6e related: 0
+2026-09-28 14:43:54.137 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController scheduleUpdateCursorLocation]
+2026-09-28 14:43:54.141 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff007451820] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:54.141 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713740] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:54.185 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:43:54.186 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017eb5f0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:54.186 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022d3ef0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:55.030 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IATextInputActions] initWithAnalyticsMetadataObserver service
+2026-09-28 14:43:55.030 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IAXPCClient] Initialized 0x600001807260
+2026-09-28 14:43:55.033 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IAXPCClient] 0x600001807260 using shared remote object proxy
+2026-09-28 14:43:55.033 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IAXPCClient] 0x600001807260 calling connection resume after shared instance
+2026-09-28 14:43:55.033 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017e5bb0] activating connection: mach=true listener=false peer=false name=com.apple.inputanalyticsd
+2026-09-28 14:43:55.033 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IAXPCClient] IAXPCclient 0x600001807260 init created _connection 0x600002e09040 _server 0x0 with IXAXPCProtocol
+2026-09-28 14:43:55.033 I  Vector Magic[78389:247ba4] [com.apple.inputAnalytics.client:IATextInputActions] initialized new <private> xpc client 0x600001807260 with server 0x600003b7a9e0
+2026-09-28 14:43:55.039 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 9378932b) for window 2a70
+2026-09-28 14:43:55.040 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a70 op: 1 relative: 2a6e related: 0
+2026-09-28 14:43:55.041 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:43:55.041 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:43:55.046 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x6000027045a0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:43:55.046 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x6000027045a0] invalidated after the last release of the connection object
+2026-09-28 14:43:55.051 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a1a op: 1 relative: 2a6e related: 0
+2026-09-28 14:43:55.051 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a6e op: 0 relative: 0 related: 0
+2026-09-28 14:43:55.052 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] window <QNSPanel: 0x7ff0020dc820> windowNumber=2a6e finishing close
+2026-09-28 14:43:55.052 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a6e op: 0 relative: 0 related: 0
+2026-09-28 14:43:55.085 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0026076a0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:55.085 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017e8cc0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:55.085 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff006c899e0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:55.085 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0027140b0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:55.128 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:43:55.128 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713740] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:55.128 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff007451820] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:43:55.211 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a70 op: 0 relative: 0 related: 0
+2026-09-28 14:43:55.211 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (9378932b -> 0) for window 2a70
+2026-09-28 14:43:55.225 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (1cf032a -> 0) for window 2a6e
+2026-09-28 14:43:57.835 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0020cf940] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:57.836 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 49313026) for window 2a72
+2026-09-28 14:43:57.837 Df Vector Magic[78389:24c1f5] [com.apple.xpc:connection] [0x60000273f1b0] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:43:57.838 Df Vector Magic[78389:24d4b3] [com.apple.xpc:connection] [0x60000273f1b0] invalidated after the last release of the connection object
+2026-09-28 14:43:57.838 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017baa70] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.050 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 943f2ab4) for window 2a74
+2026-09-28 14:43:58.050 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (943f2ab4 -> 0) for window 2a74
+2026-09-28 14:43:58.050 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 694cc330) for window 2a74
+2026-09-28 14:43:58.051 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 remove <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 from group
+2026-09-28 14:43:58.051 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 add <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 to group
+2026-09-28 14:43:58.052 E  Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] Ignoring NSSavePanel method sent to NSOpenPanel: <private>
+2026-09-28 14:43:58.057 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> d1e8258b) for window 2a75
+2026-09-28 14:43:58.064 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Controls] NSButtonVisualProvider found bezel configuration changes during display or layout
+2026-09-28 14:43:58.081 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] -[<NSOpenPanel: 0x7ff0017f9770> runModal] - canChooseFiles:1 canChooseDirectories:0 resolvesAliases:1 allowsMultipleSelection:0 canCreateDirectories:1 canResolveUbiquitousConflicts:1 canDownloadUbiquitousContents:1 showsHiddenFiles:0 treatsFilePackagesAsDirectories:0 identifier:(null) allowedContentTypes:(
+)
+2026-09-28 14:43:58.081 Df Vector Magic[78389:247ba4] [com.apple.AppKit:OpenSavePanels] Advance to run phase.
+2026-09-28 14:43:58.088 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] (app) begin modal window 2a72
+2026-09-28 14:43:58.094 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:43:58.094 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:43:58.096 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a72 related: 0
+2026-09-28 14:43:58.097 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 remove <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 from group
+2026-09-28 14:43:58.097 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 add <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 to group
+2026-09-28 14:43:58.231 Df Vector Magic[78389:24d59b] [com.apple.xpc:connection] [0x600002717570] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:43:58.231 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x6000027082d0] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:43:58.232 Df Vector Magic[78389:24d441] [com.apple.xpc:connection] [0x6000027083c0] activating connection: mach=false listener=false peer=false name=com.apple.appkit.xpc.openAndSavePanelService
+2026-09-28 14:43:58.232 Df Vector Magic[78389:24d59b] [com.apple.xpc:connection] [0x600002717570] invalidated after the last release of the connection object
+2026-09-28 14:43:58.232 Df Vector Magic[78389:24d59b] [com.apple.xpc:connection] [0x6000027082d0] invalidated after the last release of the connection object
+2026-09-28 14:43:58.232 Df Vector Magic[78389:24d59b] [com.apple.xpc:connection] [0x6000027083c0] invalidated after the last release of the connection object
+2026-09-28 14:43:58.232 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713740] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.232 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017d72c0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.232 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002605020] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.232 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017de9a0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.233 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713a30] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.233 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017dafc0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:43:58.268 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OcclusionDetection] Window 0x2a74 event shape became non empty
+2026-09-28 14:43:59.849 I  Vector Magic[78389:247ba4] [com.apple.AppKit:OcclusionDetection] Window 0x2a74 event shape became non empty
+2026-09-28 14:43:59.975 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 remove <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 from group
+2026-09-28 14:43:59.983 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (0 -> 9440f5df) for window 2a7b
+2026-09-28 14:43:59.984 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a7b op: 1 relative: 2a72 related: 0
+2026-09-28 14:43:59.986 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a72 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.081 Df Vector Magic[78389:24d4b3] [com.apple.xpc:connection] [0x60000273f0c0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:44:00.082 Df Vector Magic[78389:24d43c] [com.apple.xpc:connection] [0x60000273f0c0] invalidated after the last release of the connection object
+2026-09-28 14:44:00.086 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a1a op: 1 relative: 2a72 related: 0
+2026-09-28 14:44:00.086 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a72 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.086 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017e02f0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:44:00.087 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017bc820] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:44:00.087 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a72 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.096 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] window <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 finishing close
+2026-09-28 14:44:00.096 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a72 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.097 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] window <QNSPanel: 0x7ff0074556f0> windowNumber=2a75 finishing close
+2026-09-28 14:44:00.097 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a75 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.098 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a72 op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.098 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] parent <NSOpenPanel: 0x7ff0017f9770> windowNumber=2a72 remove <NSAccessoryViewWindow: 0x7ff007053110> windowNumber=2a74 from group
+2026-09-28 14:44:00.115 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (d1e8258b -> 0) for window 2a75
+2026-09-28 14:44:00.206 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window: 2a7b op: 0 relative: 0 related: 0
+2026-09-28 14:44:00.206 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (9440f5df -> 0) for window 2a7b
+2026-09-28 14:44:00.206 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0020cf940] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.206 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017baa70] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.206 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (49313026 -> 0) for window 2a72
+2026-09-28 14:44:00.211 I  Vector Magic[78389:247ba4] [com.apple.AppKit:Window] context (694cc330 -> 0) for window 2a74
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017d72c0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713740] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017de9a0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002605020] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017dafc0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.257 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002713a30] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.258 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:44:00.259 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0027140b0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.259 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff006c899e0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:44:00.377 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff002377390] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:44:00.378 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0022c6990] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:44:03.016 I  Vector Magic[78389:24d4b3] [com.apple.CoreAnalytics:client] Dropping "com.apple.libspindump.hid_response_statistics" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-28 14:44:12.107 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:44:12.108 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:44:12.224 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]
+2026-09-28 14:44:12.224 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges] finishing enqueued operations
+2026-09-28 14:44:12.224 Df Vector Magic[78389:24d852] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke asyncing to main queue
+2026-09-28 14:44:12.226 Df Vector Magic[78389:24d852] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke writing records
+2026-09-28 14:44:15.214 I  Vector Magic[78389:24d852] [com.apple.CoreAnalytics:client] Dropping "com.apple.libspindump.hid_response_statistics" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-28 14:44:47.138 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+2026-09-28 14:47:43.502 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+2026-09-28 14:47:43.515 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order window front conditionally: 2a1a related: 0
+2026-09-28 14:47:43.535 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Window] order all windows front 155065694865432
+2026-09-28 14:47:43.536 I  Vector Magic[78389:247ba4] [com.apple.launchservices:cas] Removing cached information for app [ 0x0-0x16016]  "ViewBridgeAuxiliary", as its seed is different from that in shared memory ( 571 vs 573)
+2026-09-28 14:47:43.559 Df Vector Magic[78389:24fef8] [com.apple.xpc:connection] [0x6000027172a0] activating connection: mach=false listener=false peer=false name=com.apple.TextInputUI.xpc.CursorUIViewService
+2026-09-28 14:47:43.560 I  Vector Magic[78389:247ba4] [com.apple.appleevents:receive] RECEIVED:(aevt,rapp) {aevt,rapp target=Dock  returnID=30830}...
+2026-09-28 14:47:43.560 Df Vector Magic[78389:25013a] [com.apple.xpc:connection] [0x6000027172a0] invalidated after the last release of the connection object
+2026-09-28 14:47:43.564 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017db490] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:47:43.564 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017ce210] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-28 14:47:43.650 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.650 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:cache] Rebuilding cache for 'Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 item: 789514
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyFlavorsForItem('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 item: 789514)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 flavor-count: 1  (-1 means nil)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 789514, flavor: 'public.utf8-plain-text')
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 20000000
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1  item: 789514, flavor: 'com.apple.notranslations')
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: -9 flags: 0
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.651 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 item: 789514
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemAtIndex('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1 idx: 1)
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 item: 789514
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183db20> 3575D5B3-2874-4E32-9054-9009829E941E) gen: -1)
+2026-09-28 14:47:43.652 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.652 Df Vector Magic[78389:247ba4] [com.apple.AppKit:Pasteboard] NSPasteboard (name: Apple CFPasteboard general): data requested for type public.utf8-plain-text at index 0
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyItemsAndFlavors('Apple CFPasteboard general (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)' gen: -1)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:cache] Rebuilding cache for 'Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0, gen: -1 item-count: 1 flavor-count: 1 (-1 means nil)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetDataFlags('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1  item: 789514, flavor: 'public.utf8-plain-text')
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 flags: 20000000
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] GetItemCount('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: -1)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0 gen: 446 count: 1
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyItemsAndFlavors('Apple CFPasteboard general (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B)' gen: -1)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] result: 0, gen: -1 item-count: 1 flavor-count: 1 (-1 means nil)
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('Apple CFPasteboard general' (<CFUUID 0x60000183c1c0> 397550AB-350F-424C-A6AF-FE9D8CFC756B) gen: 446 item: 789514 flavor: 'public.utf8-plain-text')
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:general] Will request data from daemon
+2026-09-28 14:47:43.653 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: 0 generation: 446 data (102 bytes) flags: 20000000
+2026-09-28 14:47:43.685 Df Vector Magic[78389:247ba4] [com.apple.TextInputUI:CursorUI] -[TUINSCursorUIController activate:]_block_invoke: Create CursorUIViewService: TUINSRemoteViewController
+2026-09-28 14:47:43.685 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017bc820] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:47:43.685 Df Vector Magic[78389:247ba4] [com.apple.xpc:connection] [0x7ff0017e02f0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-28 14:47:46.921 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:entry] CopyData('DefaultAsciiKeyboardLayoutPasteboard' (<CFUUID 0x60000183dc60> C7B5D873-6F9D-43EC-ACF4-7956657F11DB) gen: -1 item: 1264739405 flavor: 'DefaultAsciiKeyboardLayoutFlavor')
+2026-09-28 14:47:46.921 I  Vector Magic[78389:247ba4] [com.apple.CFPasteboard:exit] (not-in-cache) - result: -8 generation: 0 null data flags: 0
+2026-09-28 14:47:47.027 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]
+2026-09-28 14:47:47.027 Df Vector Magic[78389:247ba4] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges] finishing enqueued operations
+2026-09-28 14:47:47.027 Df Vector Magic[78389:24fef8] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke asyncing to main queue
+2026-09-28 14:47:47.039 Df Vector Magic[78389:25013a] [com.apple.AppKit:StateRestoration] -[NSPersistentUIManager flushAllChanges]_block_invoke writing records
+2026-09-28 14:48:17.147 I  Vector Magic[78389:247ba4] [com.apple.runningboard:assertion] Acquiring assertion: <RBSAssertionDescriptor| "AppNap adapter assertion" ID:(null) target:78389>
+

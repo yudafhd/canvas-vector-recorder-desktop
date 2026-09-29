@@ -1,0 +1,261 @@
+1000d8350:	55	pushq	%rbp
+1000d8351:	48 89 e5	movq	%rsp, %rbp
+1000d8354:	41 57	pushq	%r15
+1000d8356:	41 56	pushq	%r14
+1000d8358:	41 55	pushq	%r13
+1000d835a:	41 54	pushq	%r12
+1000d835c:	53	pushq	%rbx
+1000d835d:	48 81 ec 98 00 00 00	subq	$0x98, %rsp
+1000d8364:	49 89 fe	movq	%rdi, %r14
+1000d8367:	48 8d 05 aa 50 22 00	leaq	0x2250aa(%rip), %rax
+1000d836e:	48 89 07	movq	%rax, (%rdi)
+1000d8371:	48 8d 5f 08	leaq	0x8(%rdi), %rbx
+1000d8375:	4c 8d 7f 38	leaq	0x38(%rdi), %r15
+1000d8379:	0f 57 c0	xorps	%xmm0, %xmm0
+1000d837c:	0f 11 47 08	movups	%xmm0, 0x8(%rdi)
+1000d8380:	0f 11 47 18	movups	%xmm0, 0x18(%rdi)
+1000d8384:	0f 11 47 28	movups	%xmm0, 0x28(%rdi)
+1000d8388:	4c 89 ff	movq	%r15, %rdi
+1000d838b:	4c 89 f6	movq	%r14, %rsi
+1000d838e:	48 89 9d 70 ff ff ff	movq	%rbx, -0x90(%rbp)
+1000d8395:	e8 e6 14 ff ff	callq	__ZN11SignalImageC1ER10CoreEngine ## SignalImage::SignalImage(CoreEngine&)
+1000d839a:	49 8d 7e 70	leaq	0x70(%r14), %rdi
+1000d839e:	48 89 de	movq	%rbx, %rsi
+1000d83a1:	4c 89 bd 48 ff ff ff	movq	%r15, -0xb8(%rbp)
+1000d83a8:	e8 13 1e ff ff	callq	__ZN9EdgeImageC1ERN3sla6Array2INS0_6Color4IhEEEE ## EdgeImage::EdgeImage(sla::Array2<sla::Color4<unsigned char>>&)
+1000d83ad:	4d 8d a6 98 00 00 00	leaq	0x98(%r14), %r12
+1000d83b4:	4c 89 e7	movq	%r12, %rdi
+1000d83b7:	e8 74 fd fe ff	callq	__ZN7PaletteC1Ev ## Palette::Palette()
+1000d83bc:	4d 8d ae e0 00 00 00	leaq	0xe0(%r14), %r13
+1000d83c3:	0f 57 c0	xorps	%xmm0, %xmm0
+1000d83c6:	41 0f 11 86 e0 00 00 00	movups	%xmm0, 0xe0(%r14)
+1000d83ce:	49 c7 86 f8 00 00 00 00 00 00 00	movq	$0x0, 0xf8(%r14)
+1000d83d9:	41 c7 86 00 01 00 00 00 00 00 00	movl	$0x0, 0x100(%r14)
+1000d83e4:	41 0f 11 86 10 01 00 00	movups	%xmm0, 0x110(%r14)
+1000d83ec:	49 8d be 20 01 00 00	leaq	0x120(%r14), %rdi
+1000d83f3:	48 89 bd 60 ff ff ff	movq	%rdi, -0xa0(%rbp)
+1000d83fa:	48 89 de	movq	%rbx, %rsi
+1000d83fd:	4c 89 a5 50 ff ff ff	movq	%r12, -0xb0(%rbp)
+1000d8404:	4c 89 ad 58 ff ff ff	movq	%r13, -0xa8(%rbp)
+1000d840b:	e8 d0 51 ff ff	callq	__ZN9FlowFieldC1ERN3sla6Array2INS0_6Color4IhEEEE ## FlowField::FlowField(sla::Array2<sla::Color4<unsigned char>>&)
+1000d8410:	0f 57 c0	xorps	%xmm0, %xmm0
+1000d8413:	41 0f 11 86 50 01 00 00	movups	%xmm0, 0x150(%r14)
+1000d841b:	4d 89 ae 60 01 00 00	movq	%r13, 0x160(%r14)
+1000d8422:	41 0f 11 86 68 01 00 00	movups	%xmm0, 0x168(%r14)
+1000d842a:	49 8d be 80 01 00 00	leaq	0x180(%r14), %rdi
+1000d8431:	48 89 bd 68 ff ff ff	movq	%rdi, -0x98(%rbp)
+1000d8438:	4c 89 f6	movq	%r14, %rsi
+1000d843b:	e8 90 ee 02 00	callq	__ZN17PixelSegmentationC1ER10CoreEngine ## PixelSegmentation::PixelSegmentation(CoreEngine&)
+1000d8440:	49 8d be d8 01 00 00	leaq	0x1d8(%r14), %rdi
+1000d8447:	48 89 bd 78 ff ff ff	movq	%rdi, -0x88(%rbp)
+1000d844e:	4c 89 f6	movq	%r14, %rsi
+1000d8451:	e8 8a 18 03 00	callq	__ZN20SubPixelSegmentationC1ER10CoreEngine ## SubPixelSegmentation::SubPixelSegmentation(CoreEngine&)
+1000d8456:	49 8d be 68 02 00 00	leaq	0x268(%r14), %rdi
+1000d845d:	48 89 7d 80	movq	%rdi, -0x80(%rbp)
+1000d8461:	4c 89 f6	movq	%r14, %rsi
+1000d8464:	e8 17 5e 03 00	callq	__ZN22SuperPixelSegmentationC1ER10CoreEngine ## SuperPixelSegmentation::SuperPixelSegmentation(CoreEngine&)
+1000d8469:	4d 8d a6 68 03 00 00	leaq	0x368(%r14), %r12
+1000d8470:	4c 89 e7	movq	%r12, %rdi
+1000d8473:	e8 68 48 00 00	callq	0x1000dcce0
+1000d8478:	4d 8d be 18 04 00 00	leaq	0x418(%r14), %r15
+1000d847f:	4c 89 ff	movq	%r15, %rdi
+1000d8482:	4c 89 65 88	movq	%r12, -0x78(%rbp)
+1000d8486:	4c 89 e6	movq	%r12, %rsi
+1000d8489:	e8 e2 7b ff ff	callq	__ZN11VectorImageC1ER13Configuration ## VectorImage::VectorImage(Configuration&)
+1000d848e:	4d 89 be b8 04 00 00	movq	%r15, 0x4b8(%r14)
+1000d8495:	49 8d 86 28 04 00 00	leaq	0x428(%r14), %rax
+1000d849c:	49 89 86 c0 04 00 00	movq	%rax, 0x4c0(%r14)
+1000d84a3:	49 8d be c8 04 00 00	leaq	0x4c8(%r14), %rdi
+1000d84aa:	48 89 7d 98	movq	%rdi, -0x68(%rbp)
+1000d84ae:	4c 89 f6	movq	%r14, %rsi
+1000d84b1:	4c 89 7d 90	movq	%r15, -0x70(%rbp)
+1000d84b5:	e8 06 d2 02 00	callq	__ZN12PreprocessorC1ER10CoreEngine ## Preprocessor::Preprocessor(CoreEngine&)
+1000d84ba:	4d 8d be 10 05 00 00	leaq	0x510(%r14), %r15
+1000d84c1:	4c 89 ff	movq	%r15, %rdi
+1000d84c4:	4c 89 f6	movq	%r14, %rsi
+1000d84c7:	e8 c4 54 02 00	callq	__ZN19ParameterClassifierC1ER10CoreEngine ## ParameterClassifier::ParameterClassifier(CoreEngine&)
+1000d84cc:	49 8d be 10 0a 00 00	leaq	0xa10(%r14), %rdi
+1000d84d3:	48 89 7d a8	movq	%rdi, -0x58(%rbp)
+1000d84d7:	4c 89 f6	movq	%r14, %rsi
+1000d84da:	4c 89 7d a0	movq	%r15, -0x60(%rbp)
+1000d84de:	e8 cd dc 01 00	callq	__ZN13PaletteFinderC1ER10CoreEngine ## PaletteFinder::PaletteFinder(CoreEngine&)
+1000d84e3:	49 8d be 18 0d 00 00	leaq	0xd18(%r14), %rdi
+1000d84ea:	48 89 7d b0	movq	%rdi, -0x50(%rbp)
+1000d84ee:	4c 89 f6	movq	%r14, %rsi
+1000d84f1:	e8 7a 7b 03 00	callq	__ZN9SegmenterC1ER10CoreEngine ## Segmenter::Segmenter(CoreEngine&)
+1000d84f6:	49 8d be f0 0e 00 00	leaq	0xef0(%r14), %rdi
+1000d84fd:	48 89 7d b8	movq	%rdi, -0x48(%rbp)
+1000d8501:	4c 89 f6	movq	%r14, %rsi
+1000d8504:	e8 47 56 04 00	callq	__ZN13WeightsFinderC1ER10CoreEngine ## WeightsFinder::WeightsFinder(CoreEngine&)
+1000d8509:	49 8d be a8 1c 00 00	leaq	0x1ca8(%r14), %rdi
+1000d8510:	48 89 7d c0	movq	%rdi, -0x40(%rbp)
+1000d8514:	4c 89 f6	movq	%r14, %rsi
+1000d8517:	e8 44 71 fe ff	callq	__ZN14BoundaryTracerC1ER10CoreEngine ## BoundaryTracer::BoundaryTracer(CoreEngine&)
+1000d851c:	49 8d be 68 1d 00 00	leaq	0x1d68(%r14), %rdi
+1000d8523:	48 89 7d c8	movq	%rdi, -0x38(%rbp)
+1000d8527:	4c 89 f6	movq	%r14, %rsi
+1000d852a:	e8 91 a9 fe ff	callq	__ZN15ContourSmootherC1ER10CoreEngine ## ContourSmoother::ContourSmoother(CoreEngine&)
+1000d852f:	4d 8d be 20 24 00 00	leaq	0x2420(%r14), %r15
+1000d8536:	4c 89 ff	movq	%r15, %rdi
+1000d8539:	4c 89 f6	movq	%r14, %rsi
+1000d853c:	e8 8f 01 fe ff	callq	__ZN12BezierFitterC1ER10CoreEngine ## BezierFitter::BezierFitter(CoreEngine&)
+1000d8541:	4d 8d ae 30 25 00 00	leaq	0x2530(%r14), %r13
+1000d8548:	4c 89 ef	movq	%r13, %rdi
+1000d854b:	4c 89 f6	movq	%r14, %rsi
+1000d854e:	e8 1d 57 00 00	callq	__ZN8ExporterC1ER10CoreEngine ## Exporter::Exporter(CoreEngine&)
+1000d8553:	49 8d 9e e8 25 00 00	leaq	0x25e8(%r14), %rbx
+1000d855a:	49 8d 86 f0 25 00 00	leaq	0x25f0(%r14), %rax
+1000d8561:	49 89 86 f0 25 00 00	movq	%rax, 0x25f0(%r14)
+1000d8568:	49 89 86 f8 25 00 00	movq	%rax, 0x25f8(%r14)
+1000d856f:	0f 57 c0	xorps	%xmm0, %xmm0
+1000d8572:	41 0f 11 86 00 26 00 00	movups	%xmm0, 0x2600(%r14)
+1000d857a:	41 0f 11 86 10 26 00 00	movups	%xmm0, 0x2610(%r14)
+1000d8582:	41 c7 86 e8 25 00 00 28 00 00 00	movl	$0x28, 0x25e8(%r14)
+1000d858d:	4d 8d a6 28 26 00 00	leaq	0x2628(%r14), %r12
+1000d8594:	41 0f 11 86 28 26 00 00	movups	%xmm0, 0x2628(%r14)
+1000d859c:	49 c7 86 38 26 00 00 00 00 00 00	movq	$0x0, 0x2638(%r14)
+1000d85a7:	4c 89 f7	movq	%r14, %rdi
+1000d85aa:	e8 a1 02 00 00	callq	__ZN10CoreEngine18registerParametersEv ## CoreEngine::registerParameters()
+1000d85af:	49 c7 86 40 26 00 00 00 00 00 00	movq	$0x0, 0x2640(%r14)
+1000d85ba:	4c 89 35 77 c9 22 00	movq	%r14, _p_engine(%rip)
+1000d85c1:	48 81 c4 98 00 00 00	addq	$0x98, %rsp
+1000d85c8:	5b	popq	%rbx
+1000d85c9:	41 5c	popq	%r12
+1000d85cb:	41 5d	popq	%r13
+1000d85cd:	41 5e	popq	%r14
+1000d85cf:	41 5f	popq	%r15
+1000d85d1:	5d	popq	%rbp
+1000d85d2:	c3	retq
+1000d85d3:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d85d7:	41 f6 04 24 01	testb	$0x1, (%r12)
+1000d85dc:	74 0c	je	0x1000d85ea
+1000d85de:	49 8b be 38 26 00 00	movq	0x2638(%r14), %rdi
+1000d85e5:	e8 62 3a 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d85ea:	48 89 df	movq	%rbx, %rdi
+1000d85ed:	e8 4e 25 00 00	callq	0x1000dab40
+1000d85f2:	4c 89 ef	movq	%r13, %rdi
+1000d85f5:	e8 f6 58 00 00	callq	__ZN8ExporterD1Ev ## Exporter::~Exporter()
+1000d85fa:	eb 04	jmp	0x1000d8600
+1000d85fc:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8600:	4c 89 ff	movq	%r15, %rdi
+1000d8603:	e8 78 01 fe ff	callq	__ZN12BezierFitterD1Ev ## BezierFitter::~BezierFitter()
+1000d8608:	eb 04	jmp	0x1000d860e
+1000d860a:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d860e:	48 8b 7d c8	movq	-0x38(%rbp), %rdi
+1000d8612:	e8 49 a9 fe ff	callq	__ZN15ContourSmootherD1Ev ## ContourSmoother::~ContourSmoother()
+1000d8617:	eb 04	jmp	0x1000d861d
+1000d8619:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d861d:	48 8b 7d c0	movq	-0x40(%rbp), %rdi
+1000d8621:	e8 ba 70 fe ff	callq	__ZN14BoundaryTracerD1Ev ## BoundaryTracer::~BoundaryTracer()
+1000d8626:	eb 04	jmp	0x1000d862c
+1000d8628:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d862c:	48 8b 7d b8	movq	-0x48(%rbp), %rdi
+1000d8630:	e8 0b 57 04 00	callq	__ZN13WeightsFinderD1Ev ## WeightsFinder::~WeightsFinder()
+1000d8635:	48 8b 7d b0	movq	-0x50(%rbp), %rdi
+1000d8639:	e8 42 7b 03 00	callq	__ZN9SegmenterD1Ev ## Segmenter::~Segmenter()
+1000d863e:	48 8b 7d a8	movq	-0x58(%rbp), %rdi
+1000d8642:	e8 a9 dd 01 00	callq	__ZN13PaletteFinderD1Ev ## PaletteFinder::~PaletteFinder()
+1000d8647:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d864b:	e8 80 25 00 00	callq	0x1000dabd0
+1000d8650:	48 8b 7d 98	movq	-0x68(%rbp), %rdi
+1000d8654:	e8 f7 d0 02 00	callq	__ZN12PreprocessorD1Ev ## Preprocessor::~Preprocessor()
+1000d8659:	48 8b 7d 90	movq	-0x70(%rbp), %rdi
+1000d865d:	e8 be 7b ff ff	callq	__ZN11VectorImageD1Ev ## VectorImage::~VectorImage()
+1000d8662:	48 8b 7d 88	movq	-0x78(%rbp), %rdi
+1000d8666:	e8 15 26 00 00	callq	0x1000dac80
+1000d866b:	48 8b 7d 80	movq	-0x80(%rbp), %rdi
+1000d866f:	e8 8c 26 00 00	callq	0x1000dad00
+1000d8674:	48 8b bd 78 ff ff ff	movq	-0x88(%rbp), %rdi
+1000d867b:	e8 e0 17 03 00	callq	__ZN20SubPixelSegmentationD1Ev ## SubPixelSegmentation::~SubPixelSegmentation()
+1000d8680:	48 8b bd 68 ff ff ff	movq	-0x98(%rbp), %rdi
+1000d8687:	e8 14 ed 02 00	callq	__ZN17PixelSegmentationD1Ev ## PixelSegmentation::~PixelSegmentation()
+1000d868c:	49 c7 86 70 01 00 00 00 00 00 00	movq	$0x0, 0x170(%r14)
+1000d8697:	49 8b be 68 01 00 00	movq	0x168(%r14), %rdi
+1000d869e:	48 85 ff	testq	%rdi, %rdi
+1000d86a1:	74 13	je	0x1000d86b6
+1000d86a3:	49 8d 9e 68 01 00 00	leaq	0x168(%r14), %rbx
+1000d86aa:	e8 97 39 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d86af:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000d86b6:	49 c7 86 58 01 00 00 00 00 00 00	movq	$0x0, 0x158(%r14)
+1000d86c1:	49 8b be 50 01 00 00	movq	0x150(%r14), %rdi
+1000d86c8:	48 85 ff	testq	%rdi, %rdi
+1000d86cb:	74 13	je	0x1000d86e0
+1000d86cd:	49 8d 9e 50 01 00 00	leaq	0x150(%r14), %rbx
+1000d86d4:	e8 6d 39 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d86d9:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000d86e0:	48 8b bd 60 ff ff ff	movq	-0xa0(%rbp), %rdi
+1000d86e7:	e8 64 26 00 00	callq	0x1000dad50
+1000d86ec:	49 c7 86 18 01 00 00 00 00 00 00	movq	$0x0, 0x118(%r14)
+1000d86f7:	49 8b be 10 01 00 00	movq	0x110(%r14), %rdi
+1000d86fe:	48 85 ff	testq	%rdi, %rdi
+1000d8701:	74 13	je	0x1000d8716
+1000d8703:	49 8d 9e 10 01 00 00	leaq	0x110(%r14), %rbx
+1000d870a:	e8 37 39 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d870f:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000d8716:	48 8b bd 58 ff ff ff	movq	-0xa8(%rbp), %rdi
+1000d871d:	e8 7e 26 00 00	callq	0x1000dada0
+1000d8722:	48 8b bd 50 ff ff ff	movq	-0xb0(%rbp), %rdi
+1000d8729:	e8 c2 26 00 00	callq	0x1000dadf0
+1000d872e:	49 c7 86 88 00 00 00 00 00 00 00	movq	$0x0, 0x88(%r14)
+1000d8739:	49 8b be 80 00 00 00	movq	0x80(%r14), %rdi
+1000d8740:	48 85 ff	testq	%rdi, %rdi
+1000d8743:	74 10	je	0x1000d8755
+1000d8745:	e8 fc 38 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d874a:	49 c7 86 80 00 00 00 00 00 00 00	movq	$0x0, 0x80(%r14)
+1000d8755:	48 8b bd 48 ff ff ff	movq	-0xb8(%rbp), %rdi
+1000d875c:	e8 ef 26 00 00	callq	0x1000dae50
+1000d8761:	49 c7 46 30 00 00 00 00	movq	$0x0, 0x30(%r14)
+1000d8769:	49 8b 7e 28	movq	0x28(%r14), %rdi
+1000d876d:	48 85 ff	testq	%rdi, %rdi
+1000d8770:	74 0d	je	0x1000d877f
+1000d8772:	e8 cf 38 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d8777:	49 c7 46 28 00 00 00 00	movq	$0x0, 0x28(%r14)
+1000d877f:	49 c7 46 20 00 00 00 00	movq	$0x0, 0x20(%r14)
+1000d8787:	49 8b 7e 18	movq	0x18(%r14), %rdi
+1000d878b:	48 85 ff	testq	%rdi, %rdi
+1000d878e:	74 0d	je	0x1000d879d
+1000d8790:	e8 b1 38 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d8795:	49 c7 46 18 00 00 00 00	movq	$0x0, 0x18(%r14)
+1000d879d:	49 c7 46 10 00 00 00 00	movq	$0x0, 0x10(%r14)
+1000d87a5:	49 8b 7e 08	movq	0x8(%r14), %rdi
+1000d87a9:	48 85 ff	testq	%rdi, %rdi
+1000d87ac:	74 13	je	0x1000d87c1
+1000d87ae:	e8 93 38 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000d87b3:	48 8b 85 70 ff ff ff	movq	-0x90(%rbp), %rax
+1000d87ba:	48 c7 00 00 00 00 00	movq	$0x0, (%rax)
+1000d87c1:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+1000d87c5:	e8 20 25 05 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+1000d87ca:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87ce:	e9 62 fe ff ff	jmp	0x1000d8635
+1000d87d3:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87d7:	e9 62 fe ff ff	jmp	0x1000d863e
+1000d87dc:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87e0:	e9 62 fe ff ff	jmp	0x1000d8647
+1000d87e5:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87e9:	e9 62 fe ff ff	jmp	0x1000d8650
+1000d87ee:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87f2:	e9 62 fe ff ff	jmp	0x1000d8659
+1000d87f7:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d87fb:	e9 62 fe ff ff	jmp	0x1000d8662
+1000d8800:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8804:	e9 62 fe ff ff	jmp	0x1000d866b
+1000d8809:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d880d:	e9 62 fe ff ff	jmp	0x1000d8674
+1000d8812:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8816:	e9 65 fe ff ff	jmp	0x1000d8680
+1000d881b:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d881f:	e9 68 fe ff ff	jmp	0x1000d868c
+1000d8824:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8828:	e9 bf fe ff ff	jmp	0x1000d86ec
+1000d882d:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8831:	e9 f8 fe ff ff	jmp	0x1000d872e
+1000d8836:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d883a:	e9 16 ff ff ff	jmp	0x1000d8755
+1000d883f:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8843:	e9 19 ff ff ff	jmp	0x1000d8761
+1000d8848:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)
+1000daea0:	55	pushq	%rbp
+1000daea1:	48 89 e5	movq	%rsp, %rbp
+1000daea4:	5d	popq	%rbp
+1000daea5:	e9 a6 d4 ff ff	jmp	__ZN10CoreEngineC2Ev ## CoreEngine::CoreEngine()
+1000daeaa:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

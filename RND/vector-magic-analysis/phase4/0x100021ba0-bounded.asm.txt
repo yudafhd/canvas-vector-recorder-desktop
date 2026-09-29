@@ -1,0 +1,212 @@
+100021ba0:	55	pushq	%rbp
+100021ba1:	48 89 e5	movq	%rsp, %rbp
+100021ba4:	41 57	pushq	%r15
+100021ba6:	41 56	pushq	%r14
+100021ba8:	41 55	pushq	%r13
+100021baa:	41 54	pushq	%r12
+100021bac:	53	pushq	%rbx
+100021bad:	48 83 ec 38	subq	$0x38, %rsp
+100021bb1:	4c 89 4d c0	movq	%r9, -0x40(%rbp)
+100021bb5:	45 89 c7	movl	%r8d, %r15d
+100021bb8:	41 89 cd	movl	%ecx, %r13d
+100021bbb:	49 89 d6	movq	%rdx, %r14
+100021bbe:	48 89 fb	movq	%rdi, %rbx
+100021bc1:	31 d2	xorl	%edx, %edx
+100021bc3:	e8 e0 99 10 00	callq	0x10012b5a8 ## symbol stub for: __ZN6QFrameC2EP7QWidget6QFlagsIN2Qt10WindowTypeEE
+100021bc8:	48 8d 05 69 28 2d 00	leaq	__ZTV12CustomSlider(%rip), %rax ## vtable for CustomSlider
+100021bcf:	48 8d 48 10	leaq	0x10(%rax), %rcx
+100021bd3:	48 89 0b	movq	%rcx, (%rbx)
+100021bd6:	48 05 c8 01 00 00	addq	$0x1c8, %rax
+100021bdc:	48 89 43 10	movq	%rax, 0x10(%rbx)
+100021be0:	48 8d 7b 28	leaq	0x28(%rbx), %rdi
+100021be4:	48 89 7d d0	movq	%rdi, -0x30(%rbp)
+100021be8:	48 89 de	movq	%rbx, %rsi
+100021beb:	e8 68 92 10 00	callq	0x10012ae58 ## symbol stub for: __ZN11QGridLayoutC1EP7QWidget
+100021bf0:	48 8d 7b 48	leaq	0x48(%rbx), %rdi
+100021bf4:	48 89 7d c8	movq	%rdi, -0x38(%rbp)
+100021bf8:	31 f6	xorl	%esi, %esi
+100021bfa:	31 d2	xorl	%edx, %edx
+100021bfc:	e8 1f 9a 10 00	callq	0x10012b620 ## symbol stub for: __ZN6QLabelC1EP7QWidget6QFlagsIN2Qt10WindowTypeEE
+100021c01:	4c 8d 63 70	leaq	0x70(%rbx), %r12
+100021c05:	4c 89 e7	movq	%r12, %rdi
+100021c08:	31 f6	xorl	%esi, %esi
+100021c0a:	e8 6d 9b 10 00	callq	0x10012b77c ## symbol stub for: __ZN7QSliderC1EP7QWidget
+100021c0f:	41 0f 10 06	movups	(%r14), %xmm0
+100021c13:	49 8b 06	movq	(%r14), %rax
+100021c16:	0f 11 83 98 00 00 00	movups	%xmm0, 0x98(%rbx)
+100021c1d:	49 8b 4e 10	movq	0x10(%r14), %rcx
+100021c21:	48 89 8b a8 00 00 00	movq	%rcx, 0xa8(%rbx)
+100021c28:	48 85 c0	testq	%rax, %rax
+100021c2b:	74 03	je	0x100021c30
+100021c2d:	f0	lock
+100021c2e:	ff 00	incl	(%rax)
+100021c30:	4c 89 e7	movq	%r12, %rdi
+100021c33:	be 01 00 00 00	movl	$0x1, %esi
+100021c38:	e8 17 96 10 00	callq	0x10012b254 ## symbol stub for: __ZN15QAbstractSlider14setOrientationEN2Qt11OrientationE
+100021c3d:	4c 89 e7	movq	%r12, %rdi
+100021c40:	44 89 ee	movl	%r13d, %esi
+100021c43:	e8 fa 95 10 00	callq	0x10012b242 ## symbol stub for: __ZN15QAbstractSlider10setMinimumEi
+100021c48:	4c 89 e7	movq	%r12, %rdi
+100021c4b:	44 89 fe	movl	%r15d, %esi
+100021c4e:	e8 e9 95 10 00	callq	0x10012b23c ## symbol stub for: __ZN15QAbstractSlider10setMaximumEi
+100021c53:	43 8d 04 2f	leal	(%r15,%r13), %eax
+100021c57:	89 c6	movl	%eax, %esi
+100021c59:	c1 ee 1f	shrl	$0x1f, %esi
+100021c5c:	01 c6	addl	%eax, %esi
+100021c5e:	d1 fe	sarl	%esi
+100021c60:	4c 89 e7	movq	%r12, %rdi
+100021c63:	e8 f2 95 10 00	callq	0x10012b25a ## symbol stub for: __ZN15QAbstractSlider8setValueEi
+100021c68:	45 29 ef	subl	%r13d, %r15d
+100021c6b:	49 63 c7	movslq	%r15d, %rax
+100021c6e:	48 69 c0 ab aa aa 2a	imulq	$0x2aaaaaab, %rax, %rax
+100021c75:	48 89 c1	movq	%rax, %rcx
+100021c78:	48 c1 e9 3f	shrq	$0x3f, %rcx
+100021c7c:	48 c1 e8 20	shrq	$0x20, %rax
+100021c80:	01 c8	addl	%ecx, %eax
+100021c82:	83 f8 02	cmpl	$0x2, %eax
+100021c85:	be 01 00 00 00	movl	$0x1, %esi
+100021c8a:	0f 4d f0	cmovgel	%eax, %esi
+100021c8d:	4c 89 e7	movq	%r12, %rdi
+100021c90:	e8 b3 95 10 00	callq	0x10012b248 ## symbol stub for: __ZN15QAbstractSlider11setPageStepEi
+100021c95:	4c 89 e7	movq	%r12, %rdi
+100021c98:	be 01 00 00 00	movl	$0x1, %esi
+100021c9d:	e8 ce 9a 10 00	callq	0x10012b770 ## symbol stub for: __ZN7QSlider15setTickIntervalEi
+100021ca2:	4c 89 e7	movq	%r12, %rdi
+100021ca5:	be 02 00 00 00	movl	$0x2, %esi
+100021caa:	e8 c7 9a 10 00	callq	0x10012b776 ## symbol stub for: __ZN7QSlider15setTickPositionENS_12TickPositionE
+100021caf:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021cb3:	31 f6	xorl	%esi, %esi
+100021cb5:	31 d2	xorl	%edx, %edx
+100021cb7:	31 c9	xorl	%ecx, %ecx
+100021cb9:	45 31 c0	xorl	%r8d, %r8d
+100021cbc:	e8 13 9a 10 00	callq	0x10012b6d4 ## symbol stub for: __ZN7QLayout18setContentsMarginsEiiii
+100021cc1:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021cc5:	be 03 00 00 00	movl	$0x3, %esi
+100021cca:	e8 4d 91 10 00	callq	0x10012ae1c ## symbol stub for: __ZN11QGridLayout10setSpacingEi
+100021ccf:	c7 04 24 04 00 00 00	movl	$0x4, (%rsp)
+100021cd6:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021cda:	48 8b 75 c8	movq	-0x38(%rbp), %rsi
+100021cde:	ba 02 00 00 00	movl	$0x2, %edx
+100021ce3:	b9 01 00 00 00	movl	$0x1, %ecx
+100021ce8:	41 b8 01 00 00 00	movl	$0x1, %r8d
+100021cee:	41 b9 01 00 00 00	movl	$0x1, %r9d
+100021cf4:	e8 59 91 10 00	callq	0x10012ae52 ## symbol stub for: __ZN11QGridLayout9addWidgetEP7QWidgetiiii6QFlagsIN2Qt13AlignmentFlagEE
+100021cf9:	c7 04 24 00 00 00 00	movl	$0x0, (%rsp)
+100021d00:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021d04:	4c 89 e6	movq	%r12, %rsi
+100021d07:	ba 01 00 00 00	movl	$0x1, %edx
+100021d0c:	31 c9	xorl	%ecx, %ecx
+100021d0e:	41 b8 01 00 00 00	movl	$0x1, %r8d
+100021d14:	41 b9 03 00 00 00	movl	$0x3, %r9d
+100021d1a:	e8 33 91 10 00	callq	0x10012ae52 ## symbol stub for: __ZN11QGridLayout9addWidgetEP7QWidgetiiii6QFlagsIN2Qt13AlignmentFlagEE
+100021d1f:	48 8b 45 c0	movq	-0x40(%rbp), %rax
+100021d23:	48 83 78 10 00	cmpq	$0x0, 0x10(%rax)
+100021d28:	0f 8e d0 00 00 00	jle	0x100021dfe
+100021d2e:	4c 8b 7d 10	movq	0x10(%rbp), %r15
+100021d32:	49 83 7f 10 00	cmpq	$0x0, 0x10(%r15)
+100021d37:	0f 8e c1 00 00 00	jle	0x100021dfe
+100021d3d:	bf 28 00 00 00	movl	$0x28, %edi
+100021d42:	e8 2f a3 10 00	callq	0x10012c076 ## symbol stub for: __Znwm
+100021d47:	49 89 c6	movq	%rax, %r14
+100021d4a:	48 89 c7	movq	%rax, %rdi
+100021d4d:	48 8b 75 c0	movq	-0x40(%rbp), %rsi
+100021d51:	48 89 da	movq	%rbx, %rdx
+100021d54:	31 c9	xorl	%ecx, %ecx
+100021d56:	e8 cb 98 10 00	callq	0x10012b626 ## symbol stub for: __ZN6QLabelC1ERK7QStringP7QWidget6QFlagsIN2Qt10WindowTypeEE
+100021d5b:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021d5f:	4c 89 f6	movq	%r14, %rsi
+100021d62:	ba 02 00 00 00	movl	$0x2, %edx
+100021d67:	31 c9	xorl	%ecx, %ecx
+100021d69:	45 31 c0	xorl	%r8d, %r8d
+100021d6c:	e8 db 90 10 00	callq	0x10012ae4c ## symbol stub for: __ZN11QGridLayout9addWidgetEP7QWidgetii6QFlagsIN2Qt13AlignmentFlagEE
+100021d71:	bf 28 00 00 00	movl	$0x28, %edi
+100021d76:	e8 fb a2 10 00	callq	0x10012c076 ## symbol stub for: __Znwm
+100021d7b:	48 8b 0d b6 f2 2c 00	movq	0x2cf2b6(%rip), %rcx ## literal pool symbol address: __ZTV11QSpacerItem
+100021d82:	48 83 c1 10	addq	$0x10, %rcx
+100021d86:	48 89 08	movq	%rcx, (%rax)
+100021d89:	0f 28 05 d0 e9 13 00	movaps	0x13e9d0(%rip), %xmm0
+100021d90:	0f 11 40 08	movups	%xmm0, 0x8(%rax)
+100021d94:	0f 28 05 65 e8 13 00	movaps	0x13e865(%rip), %xmm0
+100021d9b:	0f 11 40 18	movups	%xmm0, 0x18(%rax)
+100021d9f:	c7 04 24 00 00 00 00	movl	$0x0, (%rsp)
+100021da6:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021daa:	48 89 c6	movq	%rax, %rsi
+100021dad:	ba 02 00 00 00	movl	$0x2, %edx
+100021db2:	b9 01 00 00 00	movl	$0x1, %ecx
+100021db7:	41 b8 01 00 00 00	movl	$0x1, %r8d
+100021dbd:	41 b9 01 00 00 00	movl	$0x1, %r9d
+100021dc3:	e8 72 90 10 00	callq	0x10012ae3a ## symbol stub for: __ZN11QGridLayout7addItemEP11QLayoutItemiiii6QFlagsIN2Qt13AlignmentFlagEE
+100021dc8:	bf 28 00 00 00	movl	$0x28, %edi
+100021dcd:	e8 a4 a2 10 00	callq	0x10012c076 ## symbol stub for: __Znwm
+100021dd2:	49 89 c6	movq	%rax, %r14
+100021dd5:	48 89 c7	movq	%rax, %rdi
+100021dd8:	4c 89 fe	movq	%r15, %rsi
+100021ddb:	48 89 da	movq	%rbx, %rdx
+100021dde:	31 c9	xorl	%ecx, %ecx
+100021de0:	e8 41 98 10 00	callq	0x10012b626 ## symbol stub for: __ZN6QLabelC1ERK7QStringP7QWidget6QFlagsIN2Qt10WindowTypeEE
+100021de5:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021de9:	4c 89 f6	movq	%r14, %rsi
+100021dec:	ba 02 00 00 00	movl	$0x2, %edx
+100021df1:	b9 02 00 00 00	movl	$0x2, %ecx
+100021df6:	45 31 c0	xorl	%r8d, %r8d
+100021df9:	e8 4e 90 10 00	callq	0x10012ae4c ## symbol stub for: __ZN11QGridLayout9addWidgetEP7QWidgetii6QFlagsIN2Qt13AlignmentFlagEE
+100021dfe:	48 89 df	movq	%rbx, %rdi
+100021e01:	e8 ca 00 00 00	callq	__ZN12CustomSlider10updateViewEv ## CustomSlider::updateView()
+100021e06:	48 8d 15 28 d0 11 00	leaq	0x11d028(%rip), %rdx ## literal pool for: "2valueChanged(int)"
+100021e0d:	4c 8d 05 0f cd 11 00	leaq	0x11cd0f(%rip), %r8 ## literal pool for: "1updateView()"
+100021e14:	48 8d 7d b0	leaq	-0x50(%rbp), %rdi
+100021e18:	4c 89 e6	movq	%r12, %rsi
+100021e1b:	48 89 d9	movq	%rbx, %rcx
+100021e1e:	45 31 c9	xorl	%r9d, %r9d
+100021e21:	e8 f6 98 10 00	callq	0x10012b71c ## symbol stub for: __ZN7QObject7connectEPKS_PKcS1_S3_N2Qt14ConnectionTypeE
+100021e26:	48 8d 7d b0	leaq	-0x50(%rbp), %rdi
+100021e2a:	e8 cb 90 10 00	callq	0x10012aefa ## symbol stub for: __ZN11QMetaObject10ConnectionD1Ev
+100021e2f:	48 8d 15 ff cf 11 00	leaq	0x11cfff(%rip), %rdx ## literal pool for: "2valueChanged(int)"
+100021e36:	48 8d 7d b8	leaq	-0x48(%rbp), %rdi
+100021e3a:	4c 89 e6	movq	%r12, %rsi
+100021e3d:	48 89 d9	movq	%rbx, %rcx
+100021e40:	49 89 d0	movq	%rdx, %r8
+100021e43:	45 31 c9	xorl	%r9d, %r9d
+100021e46:	e8 d1 98 10 00	callq	0x10012b71c ## symbol stub for: __ZN7QObject7connectEPKS_PKcS1_S3_N2Qt14ConnectionTypeE
+100021e4b:	48 8d 7d b8	leaq	-0x48(%rbp), %rdi
+100021e4f:	e8 a6 90 10 00	callq	0x10012aefa ## symbol stub for: __ZN11QMetaObject10ConnectionD1Ev
+100021e54:	48 83 c4 38	addq	$0x38, %rsp
+100021e58:	5b	popq	%rbx
+100021e59:	41 5c	popq	%r12
+100021e5b:	41 5d	popq	%r13
+100021e5d:	41 5e	popq	%r14
+100021e5f:	41 5f	popq	%r15
+100021e61:	5d	popq	%rbp
+100021e62:	c3	retq
+100021e63:	eb 00	jmp	0x100021e65
+100021e65:	49 89 c7	movq	%rax, %r15
+100021e68:	4c 89 f7	movq	%r14, %rdi
+100021e6b:	e8 dc a1 10 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+100021e70:	eb 14	jmp	0x100021e86
+100021e72:	eb 0f	jmp	0x100021e83
+100021e74:	49 89 c7	movq	%rax, %r15
+100021e77:	eb 32	jmp	0x100021eab
+100021e79:	49 89 c7	movq	%rax, %r15
+100021e7c:	eb 36	jmp	0x100021eb4
+100021e7e:	49 89 c7	movq	%rax, %r15
+100021e81:	eb 3a	jmp	0x100021ebd
+100021e83:	49 89 c7	movq	%rax, %r15
+100021e86:	48 8b 83 98 00 00 00	movq	0x98(%rbx), %rax
+100021e8d:	48 85 c0	testq	%rax, %rax
+100021e90:	74 11	je	0x100021ea3
+100021e92:	f0	lock
+100021e93:	ff 08	decl	(%rax)
+100021e95:	75 0c	jne	0x100021ea3
+100021e97:	48 8b bb 98 00 00 00	movq	0x98(%rbx), %rdi
+100021e9e:	e8 ab a2 10 00	callq	0x10012c14e ## symbol stub for: _free
+100021ea3:	4c 89 e7	movq	%r12, %rdi
+100021ea6:	e8 dd 98 10 00	callq	0x10012b788 ## symbol stub for: __ZN7QSliderD1Ev
+100021eab:	48 8b 7d c8	movq	-0x38(%rbp), %rdi
+100021eaf:	e8 84 97 10 00	callq	0x10012b638 ## symbol stub for: __ZN6QLabelD1Ev
+100021eb4:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+100021eb8:	e8 a1 8f 10 00	callq	0x10012ae5e ## symbol stub for: __ZN11QGridLayoutD1Ev
+100021ebd:	48 89 df	movq	%rbx, %rdi
+100021ec0:	e8 e9 96 10 00	callq	0x10012b5ae ## symbol stub for: __ZN6QFrameD2Ev
+100021ec5:	4c 89 ff	movq	%r15, %rdi
+100021ec8:	e8 1d 8e 10 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+100021ecd:	0f 1f 00	nopl	(%rax)

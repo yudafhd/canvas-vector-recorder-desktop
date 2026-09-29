@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="3873" height="3873" viewBox="0 0 3873 3873" color-interpolation="sRGB">
+  <title>Editable vector artwork</title>
+  <g id="artwork-transform" aria-label="Artwork transform" transform="translate(-105.4727 1023.2739) scale(0.749)">
+    <g id="artwork" aria-label="Artwork">
+    <path id="gap-filler-1" d="M 1101 660 h 125 v 10 h -125 Z" fill="none" stroke="#000" stroke-width="1" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-1" d="M 1101 660 h 125 v 10 h -125 Z" fill="#000" fill-rule="nonzero" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-2" d="M 1101 660 h 0 v 10 h 0 Z" fill="#000" fill-rule="nonzero" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-3" d="M 516.5044 3.5 Z" fill="#ffffff" fill-rule="nonzero" transform="matrix(2 0 0 2 0 0)"/>
+    <path id="shape-4" d="M 406.171 628.5625 Z" fill="#ffffff" fill-rule="nonzero" transform="matrix(2 0 0 2 0 0)"/>
+    <path id="gap-filler-2" d="M 0 0 C 175.9014 0 175.9014 0 351.8029 0 C 350.0608 1.8599 348.3687 3.7621 346.5688 5.5677 C 231.0403 121.0948 115.5116 236.6257 0 352.1669 C 0 176.0835 0 176.0835 0 0 Z" fill="none" stroke="#fcc101" stroke-width="1" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="gap-filler-3" d="M 351.8029 0 C 352.4014 0 352.4014 0 353 0 C 353 176.5 353 176.5 353 353 C 176.5 353 176.5 353 0 353 C 0 352.5835 0 352.5835 0 352.1669 C 115.5116 236.6257 231.0403 121.0948 346.5688 5.5677 C 348.3687 3.7621 350.0608 1.8599 351.8029 0 Z" fill="none" stroke="#ffffff" stroke-width="1" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-5" d="M 0 0 C 175.9014 0 175.9014 0 351.8029 0 C 350.0608 1.8599 348.3687 3.7621 346.5688 5.5677 C 231.0403 121.0948 115.5116 236.6257 0 352.1669 C 0 176.0835 0 176.0835 0 0 Z" fill="#fcc101" fill-rule="nonzero" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-6" d="M 351.8029 0 C 352.4014 0 352.4014 0 353 0 C 353 176.5 353 176.5 353 353 C 176.5 353 176.5 353 0 353 C 0 352.5835 0 352.5835 0 352.1669 C 115.5116 236.6257 231.0403 121.0948 346.5688 5.5677 C 348.3687 3.7621 350.0608 1.8599 351.8029 0 Z" fill="#ffffff" fill-rule="nonzero" transform="matrix(3.5797 0 0 3.5797 532.05 33.2531)"/>
+    <path id="shape-7" d="M 516.5044 3.5 Z" fill="#ffffff" fill-rule="nonzero" transform="matrix(2 0 0 2 0 0)"/>
+    <path id="shape-8" d="M 406.171 628.5625 Z" fill="#ffffff" fill-rule="nonzero" transform="matrix(2 0 0 2 0 0)"/>
+    </g>
+  </g>
+</svg>

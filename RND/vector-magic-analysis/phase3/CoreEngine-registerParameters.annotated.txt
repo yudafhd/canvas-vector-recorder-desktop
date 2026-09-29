@@ -1,0 +1,1875 @@
+CoreEngine::registerParameters()
+1000d8850:	55	pushq	%rbp
+1000d8851:	48 89 e5	movq	%rsp, %rbp
+1000d8854:	41 57	pushq	%r15
+1000d8856:	41 56	pushq	%r14
+1000d8858:	41 55	pushq	%r13
+1000d885a:	41 54	pushq	%r12
+1000d885c:	53	pushq	%rbx
+1000d885d:	48 81 ec 78 05 00 00	subq	$0x578, %rsp
+1000d8864:	49 89 fe	movq	%rdi, %r14
+1000d8867:	48 8b 05 9a 88 21 00	movq	0x21889a(%rip), %rax ## literal pool symbol address: ___stack_chk_guard ; @0x1002f1108 f64=0.0 f32=0.0
+1000d886e:	48 8b 00	movq	(%rax), %rax
+1000d8871:	48 89 45 d0	movq	%rax, -0x30(%rbp)
+1000d8875:	48 8d 9f e8 25 00 00	leaq	0x25e8(%rdi), %rbx
+1000d887c:	c7 87 e8 25 00 00 34 00 00 00	movl	$0x34, 0x25e8(%rdi)
+1000d8886:	bf 28 00 00 00	movl	$0x28, %edi
+1000d888b:	e8 e6 37 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8890:	48 89 85 78 fa ff ff	movq	%rax, -0x588(%rbp)
+1000d8897:	48 c7 85 68 fa ff ff 29 00 00 00	movq	$0x29, -0x598(%rbp)
+1000d88a2:	48 c7 85 70 fa ff ff 23 00 00 00	movq	$0x23, -0x590(%rbp)
+1000d88ad:	0f 10 05 27 4e 07 00	movups	0x74e27(%rip), %xmm0 ## literal pool for: "guration Parameters" ; @0x10014d6db 'guration Parameters'
+1000d88b4:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d88b8:	0f 10 05 0c 4e 07 00	movups	0x74e0c(%rip), %xmm0 ## literal pool for: "CoreEngine Configuration Parameters" ; @0x10014d6cb 'CoreEngine Configuration Parameters'
+1000d88bf:	0f 11 00	movups	%xmm0, (%rax)
+1000d88c2:	c7 40 1f 74 65 72 73	movl	$0x73726574, 0x1f(%rax)
+1000d88c9:	c6 40 23 00	movb	$0x0, 0x23(%rax)
+1000d88cd:	48 8d b5 68 fa ff ff	leaq	-0x598(%rbp), %rsi
+1000d88d4:	48 89 df	movq	%rbx, %rdi
+1000d88d7:	e8 c4 9f 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d88dc:	f6 85 68 fa ff ff 01	testb	$0x1, -0x598(%rbp)
+1000d88e3:	74 0c	je	0x1000d88f1
+1000d88e5:	48 8b bd 78 fa ff ff	movq	-0x588(%rbp), %rdi
+1000d88ec:	e8 5b 37 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d88f1:	48 89 df	movq	%rbx, %rdi
+1000d88f4:	e8 07 9f 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d88f9:	c6 85 a0 fe ff ff 0c	movb	$0xc, -0x160(%rbp)
+1000d8900:	c7 85 a1 fe ff ff 53 68 61 72	movl	$0x72616853, -0x15f(%rbp)
+1000d890a:	66 c7 85 a5 fe ff ff 65 64	movw	$0x6465, -0x15b(%rbp)
+1000d8913:	c6 85 a7 fe ff ff 00	movb	$0x0, -0x159(%rbp)
+1000d891a:	48 8d b5 a0 fe ff ff	leaq	-0x160(%rbp), %rsi
+1000d8921:	48 89 df	movq	%rbx, %rdi
+1000d8924:	e8 77 9f 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d8929:	f6 85 a0 fe ff ff 01	testb	$0x1, -0x160(%rbp)
+1000d8930:	74 0c	je	0x1000d893e
+1000d8932:	48 8b bd b0 fe ff ff	movq	-0x150(%rbp), %rdi
+1000d8939:	e8 0e 37 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d893e:	48 89 df	movq	%rbx, %rdi
+1000d8941:	e8 ba 9e 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8946:	bf 1a 00 00 00	movl	$0x1a, %edi
+1000d894b:	e8 26 37 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8950:	49 8d b6 6c 03 00 00	leaq	0x36c(%r14), %rsi
+1000d8957:	48 89 85 90 fa ff ff	movq	%rax, -0x570(%rbp)
+1000d895e:	48 c7 85 80 fa ff ff 1b 00 00 00	movq	$0x1b, -0x580(%rbp)
+1000d8969:	48 c7 85 88 fa ff ff 17 00 00 00	movq	$0x17, -0x578(%rbp)
+1000d8974:	0f 10 05 7b 4d 07 00	movups	0x74d7b(%rip), %xmm0 ## literal pool for: "Shared::is_anti_aliased" ; @0x10014d6f6 'Shared::is_anti_aliased'
+1000d897b:	0f 11 00	movups	%xmm0, (%rax)
+1000d897e:	48 b9 5f 61 6c 69 61 73 65 64	movabsq	$0x64657361696c615f, %rcx
+1000d8988:	48 89 48 0f	movq	%rcx, 0xf(%rax)
+1000d898c:	c6 40 17 00	movb	$0x0, 0x17(%rax)
+1000d8990:	48 8d 95 80 fa ff ff	leaq	-0x580(%rbp), %rdx
+1000d8997:	48 89 df	movq	%rbx, %rdi
+1000d899a:	e8 c1 2e 00 00	callq	0x1000db860
+1000d899f:	f6 85 80 fa ff ff 01	testb	$0x1, -0x580(%rbp)
+1000d89a6:	74 0c	je	0x1000d89b4
+1000d89a8:	48 8b bd 90 fa ff ff	movq	-0x570(%rbp), %rdi
+1000d89af:	e8 98 36 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d89b4:	bf 1a 00 00 00	movl	$0x1a, %edi
+1000d89b9:	e8 b8 36 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d89be:	49 8d b6 7c 03 00 00	leaq	0x37c(%r14), %rsi
+1000d89c5:	48 89 85 a8 fa ff ff	movq	%rax, -0x558(%rbp)
+1000d89cc:	48 c7 85 98 fa ff ff 1b 00 00 00	movq	$0x1b, -0x568(%rbp)
+1000d89d7:	48 c7 85 a0 fa ff ff 17 00 00 00	movq	$0x17, -0x560(%rbp)
+1000d89e2:	0f 10 05 25 4d 07 00	movups	0x74d25(%rip), %xmm0 ## literal pool for: "Shared::image_type_code" ; @0x10014d70e 'Shared::image_type_code'
+1000d89e9:	0f 11 00	movups	%xmm0, (%rax)
+1000d89ec:	48 b9 79 70 65 5f 63 6f 64 65	movabsq	$0x65646f635f657079, %rcx
+1000d89f6:	48 89 48 0f	movq	%rcx, 0xf(%rax)
+1000d89fa:	c6 40 17 00	movb	$0x0, 0x17(%rax)
+1000d89fe:	48 8d 95 98 fa ff ff	leaq	-0x568(%rbp), %rdx
+1000d8a05:	48 89 df	movq	%rbx, %rdi
+1000d8a08:	e8 53 2e 00 00	callq	0x1000db860
+1000d8a0d:	f6 85 98 fa ff ff 01	testb	$0x1, -0x568(%rbp)
+1000d8a14:	74 0c	je	0x1000d8a22
+1000d8a16:	48 8b bd a8 fa ff ff	movq	-0x558(%rbp), %rdi
+1000d8a1d:	e8 2a 36 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8a22:	48 89 df	movq	%rbx, %rdi
+1000d8a25:	e8 d6 9d 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8a2a:	48 89 df	movq	%rbx, %rdi
+1000d8a2d:	e8 ce 9d 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8a32:	c6 85 b8 fe ff ff 18	movb	$0x18, -0x148(%rbp)
+1000d8a39:	48 b8 50 72 65 70 72 6f 63 65	movabsq	$0x65636f7270657250, %rax
+1000d8a43:	48 89 85 b9 fe ff ff	movq	%rax, -0x147(%rbp)
+1000d8a4a:	c7 85 c1 fe ff ff 73 73 6f 72	movl	$0x726f7373, -0x13f(%rbp)
+1000d8a54:	c6 85 c5 fe ff ff 00	movb	$0x0, -0x13b(%rbp)
+1000d8a5b:	48 8d b5 b8 fe ff ff	leaq	-0x148(%rbp), %rsi
+1000d8a62:	48 89 df	movq	%rbx, %rdi
+1000d8a65:	e8 36 9e 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d8a6a:	f6 85 b8 fe ff ff 01	testb	$0x1, -0x148(%rbp)
+1000d8a71:	74 0c	je	0x1000d8a7f
+1000d8a73:	48 8b bd c8 fe ff ff	movq	-0x138(%rbp), %rdi
+1000d8a7a:	e8 cd 35 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8a7f:	48 89 df	movq	%rbx, %rdi
+1000d8a82:	e8 79 9d 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8a87:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8a8c:	e8 e5 35 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8a91:	49 8d b6 c8 04 00 00	leaq	0x4c8(%r14), %rsi
+1000d8a98:	48 89 85 c0 fa ff ff	movq	%rax, -0x540(%rbp)
+1000d8a9f:	48 c7 85 b0 fa ff ff 21 00 00 00	movq	$0x21, -0x550(%rbp)
+1000d8aaa:	48 c7 85 b8 fa ff ff 19 00 00 00	movq	$0x19, -0x548(%rbp)
+1000d8ab5:	0f 10 05 80 4c 07 00	movups	0x74c80(%rip), %xmm0 ## literal pool for: "sor::filter_type" ; @0x10014d73c 'sor::filter_type'
+1000d8abc:	0f 11 40 09	movups	%xmm0, 0x9(%rax)
+1000d8ac0:	0f 10 05 6c 4c 07 00	movups	0x74c6c(%rip), %xmm0 ## literal pool for: "Preprocessor::filter_type" ; @0x10014d733 'Preprocessor::filter_type'
+1000d8ac7:	0f 11 00	movups	%xmm0, (%rax)
+1000d8aca:	c6 40 19 00	movb	$0x0, 0x19(%rax)
+1000d8ace:	48 8d 95 b0 fa ff ff	leaq	-0x550(%rbp), %rdx
+1000d8ad5:	48 89 df	movq	%rbx, %rdi
+1000d8ad8:	e8 83 2d 00 00	callq	0x1000db860
+1000d8add:	f6 85 b0 fa ff ff 01	testb	$0x1, -0x550(%rbp)
+1000d8ae4:	74 0c	je	0x1000d8af2
+1000d8ae6:	48 8b bd c0 fa ff ff	movq	-0x540(%rbp), %rdi
+1000d8aed:	e8 5a 35 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8af2:	bf 28 00 00 00	movl	$0x28, %edi
+1000d8af7:	e8 7a 35 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8afc:	49 8d b6 cc 04 00 00	leaq	0x4cc(%r14), %rsi
+1000d8b03:	48 89 85 d8 fa ff ff	movq	%rax, -0x528(%rbp)
+1000d8b0a:	48 c7 85 c8 fa ff ff 29 00 00 00	movq	$0x29, -0x538(%rbp)
+1000d8b15:	48 c7 85 d0 fa ff ff 20 00 00 00	movq	$0x20, -0x530(%rbp)
+1000d8b20:	0f 10 05 36 4c 07 00	movups	0x74c36(%rip), %xmm0 ## literal pool for: "duce_noise_order" ; @0x10014d75d 'duce_noise_order'
+1000d8b27:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d8b2b:	0f 10 05 1b 4c 07 00	movups	0x74c1b(%rip), %xmm0 ## literal pool for: "Preprocessor::reduce_noise_order" ; @0x10014d74d 'Preprocessor::reduce_noise_order'
+1000d8b32:	0f 11 00	movups	%xmm0, (%rax)
+1000d8b35:	c6 40 20 00	movb	$0x0, 0x20(%rax)
+1000d8b39:	48 8d 95 c8 fa ff ff	leaq	-0x538(%rbp), %rdx
+1000d8b40:	48 89 df	movq	%rbx, %rdi
+1000d8b43:	e8 18 2d 00 00	callq	0x1000db860
+1000d8b48:	f6 85 c8 fa ff ff 01	testb	$0x1, -0x538(%rbp)
+1000d8b4f:	74 0c	je	0x1000d8b5d
+1000d8b51:	48 8b bd d8 fa ff ff	movq	-0x528(%rbp), %rdi
+1000d8b58:	e8 ef 34 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8b5d:	48 89 df	movq	%rbx, %rdi
+1000d8b60:	e8 9b 9c 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8b65:	48 89 df	movq	%rbx, %rdi
+1000d8b68:	e8 93 9c 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8b6d:	c6 85 d0 fe ff ff 2a	movb	$0x2a, -0x130(%rbp)
+1000d8b74:	0f 10 05 f3 4b 07 00	movups	0x74bf3(%rip), %xmm0 ## literal pool for: "Palette Finder et al." ; @0x10014d76e 'Palette Finder et al.'
+1000d8b7b:	0f 11 85 d1 fe ff ff	movups	%xmm0, -0x12f(%rbp)
+1000d8b82:	48 b8 72 20 65 74 20 61 6c 2e	movabsq	$0x2e6c612074652072, %rax
+1000d8b8c:	48 89 85 de fe ff ff	movq	%rax, -0x122(%rbp)
+1000d8b93:	c6 85 e6 fe ff ff 00	movb	$0x0, -0x11a(%rbp)
+1000d8b9a:	48 8d b5 d0 fe ff ff	leaq	-0x130(%rbp), %rsi
+1000d8ba1:	48 89 df	movq	%rbx, %rdi
+1000d8ba4:	e8 f7 9c 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d8ba9:	f6 85 d0 fe ff ff 01	testb	$0x1, -0x130(%rbp)
+1000d8bb0:	74 0c	je	0x1000d8bbe
+1000d8bb2:	48 8b bd e0 fe ff ff	movq	-0x120(%rbp), %rdi
+1000d8bb9:	e8 8e 34 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8bbe:	48 89 df	movq	%rbx, %rdi
+1000d8bc1:	e8 3a 9c 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8bc6:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8bcb:	e8 a6 34 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8bd0:	49 8d b6 14 0a 00 00	leaq	0xa14(%r14), %rsi
+1000d8bd7:	48 89 85 f0 fa ff ff	movq	%rax, -0x510(%rbp)
+1000d8bde:	48 c7 85 e0 fa ff ff 21 00 00 00	movq	$0x21, -0x520(%rbp)
+1000d8be9:	48 c7 85 e8 fa ff ff 1d 00 00 00	movq	$0x1d, -0x518(%rbp)
+1000d8bf4:	0f 10 05 96 4b 07 00	movups	0x74b96(%rip), %xmm0 ## literal pool for: "::cost_per_color" ; @0x10014d791 '::cost_per_color'
+1000d8bfb:	0f 11 40 0d	movups	%xmm0, 0xd(%rax)
+1000d8bff:	0f 10 05 7e 4b 07 00	movups	0x74b7e(%rip), %xmm0 ## literal pool for: "PaletteFinder::cost_per_color" ; @0x10014d784 'PaletteFinder::cost_per_color'
+1000d8c06:	0f 11 00	movups	%xmm0, (%rax)
+1000d8c09:	c6 40 1d 00	movb	$0x0, 0x1d(%rax)
+1000d8c0d:	48 8d 95 e0 fa ff ff	leaq	-0x520(%rbp), %rdx
+1000d8c14:	48 89 df	movq	%rbx, %rdi
+1000d8c17:	e8 34 2d 00 00	callq	0x1000db950
+1000d8c1c:	f6 85 e0 fa ff ff 01	testb	$0x1, -0x520(%rbp)
+1000d8c23:	74 0c	je	0x1000d8c31
+1000d8c25:	48 8b bd f0 fa ff ff	movq	-0x510(%rbp), %rdi
+1000d8c2c:	e8 1b 34 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8c31:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8c36:	e8 3b 34 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8c3b:	49 8d b6 18 0a 00 00	leaq	0xa18(%r14), %rsi
+1000d8c42:	48 89 85 08 fb ff ff	movq	%rax, -0x4f8(%rbp)
+1000d8c49:	48 c7 85 f8 fa ff ff 21 00 00 00	movq	$0x21, -0x508(%rbp)
+1000d8c54:	48 c7 85 00 fb ff ff 1f 00 00 00	movq	$0x1f, -0x500(%rbp)
+1000d8c5f:	0f 10 05 4b 4b 07 00	movups	0x74b4b(%rip), %xmm0 ## literal pool for: "use_16_hist_bins" ; @0x10014d7b1 'use_16_hist_bins'
+1000d8c66:	0f 11 40 0f	movups	%xmm0, 0xf(%rax)
+1000d8c6a:	0f 10 05 31 4b 07 00	movups	0x74b31(%rip), %xmm0 ## literal pool for: "PaletteFinder::use_16_hist_bins" ; @0x10014d7a2 'PaletteFinder::use_16_hist_bins'
+1000d8c71:	0f 11 00	movups	%xmm0, (%rax)
+1000d8c74:	c6 40 1f 00	movb	$0x0, 0x1f(%rax)
+1000d8c78:	48 8d 95 f8 fa ff ff	leaq	-0x508(%rbp), %rdx
+1000d8c7f:	48 89 df	movq	%rbx, %rdi
+1000d8c82:	e8 d9 2b 00 00	callq	0x1000db860
+1000d8c87:	f6 85 f8 fa ff ff 01	testb	$0x1, -0x508(%rbp)
+1000d8c8e:	74 0c	je	0x1000d8c9c
+1000d8c90:	48 8b bd 08 fb ff ff	movq	-0x4f8(%rbp), %rdi
+1000d8c97:	e8 b0 33 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8c9c:	bf 28 00 00 00	movl	$0x28, %edi
+1000d8ca1:	e8 d0 33 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8ca6:	49 8d b6 1c 0a 00 00	leaq	0xa1c(%r14), %rsi
+1000d8cad:	48 89 85 20 fb ff ff	movq	%rax, -0x4e0(%rbp)
+1000d8cb4:	48 c7 85 10 fb ff ff 29 00 00 00	movq	$0x29, -0x4f0(%rbp)
+1000d8cbf:	48 c7 85 18 fb ff ff 25 00 00 00	movq	$0x25, -0x4e8(%rbp)
+1000d8cca:	0f 10 05 01 4b 07 00	movups	0x74b01(%rip), %xmm0 ## literal pool for: "se_26_connected_peaks" ; @0x10014d7d2 'se_26_connected_peaks'
+1000d8cd1:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d8cd5:	0f 10 05 e6 4a 07 00	movups	0x74ae6(%rip), %xmm0 ## literal pool for: "PaletteFinder::use_26_connected_peaks" ; @0x10014d7c2 'PaletteFinder::use_26_connected_peaks'
+1000d8cdc:	0f 11 00	movups	%xmm0, (%rax)
+1000d8cdf:	48 b9 65 64 5f 70 65 61 6b 73	movabsq	$0x736b6165705f6465, %rcx
+1000d8ce9:	48 89 48 1d	movq	%rcx, 0x1d(%rax)
+1000d8ced:	c6 40 25 00	movb	$0x0, 0x25(%rax)
+1000d8cf1:	48 8d 95 10 fb ff ff	leaq	-0x4f0(%rbp), %rdx
+1000d8cf8:	48 89 df	movq	%rbx, %rdi
+1000d8cfb:	e8 60 2b 00 00	callq	0x1000db860
+1000d8d00:	f6 85 10 fb ff ff 01	testb	$0x1, -0x4f0(%rbp)
+1000d8d07:	74 0c	je	0x1000d8d15
+1000d8d09:	48 8b bd 20 fb ff ff	movq	-0x4e0(%rbp), %rdi
+1000d8d10:	e8 37 33 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8d15:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8d1a:	e8 57 33 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8d1f:	49 8d 76 70	leaq	0x70(%r14), %rsi
+1000d8d23:	48 89 85 38 fb ff ff	movq	%rax, -0x4c8(%rbp)
+1000d8d2a:	48 c7 85 28 fb ff ff 21 00 00 00	movq	$0x21, -0x4d8(%rbp)
+1000d8d35:	48 c7 85 30 fb ff ff 1c 00 00 00	movq	$0x1c, -0x4d0(%rbp)
+1000d8d40:	0f 10 05 ad 4a 07 00	movups	0x74aad(%rip), %xmm0 ## literal pool for: "dge_weight_scale" ; @0x10014d7f4 'dge_weight_scale'
+1000d8d47:	0f 11 40 0c	movups	%xmm0, 0xc(%rax)
+1000d8d4b:	0f 10 05 96 4a 07 00	movups	0x74a96(%rip), %xmm0 ## literal pool for: "EdgeImage::edge_weight_scale" ; @0x10014d7e8 'EdgeImage::edge_weight_scale'
+1000d8d52:	0f 11 00	movups	%xmm0, (%rax)
+1000d8d55:	c6 40 1c 00	movb	$0x0, 0x1c(%rax)
+1000d8d59:	48 8d 95 28 fb ff ff	leaq	-0x4d8(%rbp), %rdx
+1000d8d60:	48 89 df	movq	%rbx, %rdi
+1000d8d63:	e8 d8 2c 00 00	callq	0x1000dba40
+1000d8d68:	f6 85 28 fb ff ff 01	testb	$0x1, -0x4d8(%rbp)
+1000d8d6f:	74 0c	je	0x1000d8d7d
+1000d8d71:	48 8b bd 38 fb ff ff	movq	-0x4c8(%rbp), %rdi
+1000d8d78:	e8 cf 32 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8d7d:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8d82:	e8 ef 32 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8d87:	49 8d 76 78	leaq	0x78(%r14), %rsi
+1000d8d8b:	48 89 85 50 fb ff ff	movq	%rax, -0x4b0(%rbp)
+1000d8d92:	48 c7 85 40 fb ff ff 21 00 00 00	movq	$0x21, -0x4c0(%rbp)
+1000d8d9d:	48 c7 85 48 fb ff ff 1c 00 00 00	movq	$0x1c, -0x4b8(%rbp)
+1000d8da8:	0f 10 05 62 4a 07 00	movups	0x74a62(%rip), %xmm0 ## literal pool for: "dge_weight_floor" ; @0x10014d811 'dge_weight_floor'
+1000d8daf:	0f 11 40 0c	movups	%xmm0, 0xc(%rax)
+1000d8db3:	0f 10 05 4b 4a 07 00	movups	0x74a4b(%rip), %xmm0 ## literal pool for: "EdgeImage::edge_weight_floor" ; @0x10014d805 'EdgeImage::edge_weight_floor'
+1000d8dba:	0f 11 00	movups	%xmm0, (%rax)
+1000d8dbd:	c6 40 1c 00	movb	$0x0, 0x1c(%rax)
+1000d8dc1:	48 8d 95 40 fb ff ff	leaq	-0x4c0(%rbp), %rdx
+1000d8dc8:	48 89 df	movq	%rbx, %rdi
+1000d8dcb:	e8 70 2c 00 00	callq	0x1000dba40
+1000d8dd0:	f6 85 40 fb ff ff 01	testb	$0x1, -0x4c0(%rbp)
+1000d8dd7:	74 0c	je	0x1000d8de5
+1000d8dd9:	48 8b bd 50 fb ff ff	movq	-0x4b0(%rbp), %rdi
+1000d8de0:	e8 67 32 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8de5:	48 89 df	movq	%rbx, %rdi
+1000d8de8:	e8 13 9a 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8ded:	48 89 df	movq	%rbx, %rdi
+1000d8df0:	e8 0b 9a 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8df5:	c6 85 58 fb ff ff 12	movb	$0x12, -0x4a8(%rbp)
+1000d8dfc:	48 b8 53 65 67 6d 65 6e 74 65	movabsq	$0x65746e656d676553, %rax
+1000d8e06:	48 89 85 59 fb ff ff	movq	%rax, -0x4a7(%rbp)
+1000d8e0d:	66 c7 85 61 fb ff ff 72 00	movw	$0x72, -0x49f(%rbp)
+1000d8e16:	48 8d b5 58 fb ff ff	leaq	-0x4a8(%rbp), %rsi
+1000d8e1d:	48 89 df	movq	%rbx, %rdi
+1000d8e20:	e8 7b 9a 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d8e25:	f6 85 58 fb ff ff 01	testb	$0x1, -0x4a8(%rbp)
+1000d8e2c:	74 0c	je	0x1000d8e3a
+1000d8e2e:	48 8b bd 68 fb ff ff	movq	-0x498(%rbp), %rdi
+1000d8e35:	e8 12 32 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8e3a:	48 89 df	movq	%rbx, %rdi
+1000d8e3d:	e8 be 99 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d8e42:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8e47:	e8 2a 32 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8e4c:	49 8d b6 20 0d 00 00	leaq	0xd20(%r14), %rsi
+1000d8e53:	48 89 85 80 fb ff ff	movq	%rax, -0x480(%rbp)
+1000d8e5a:	48 c7 85 70 fb ff ff 21 00 00 00	movq	$0x21, -0x490(%rbp)
+1000d8e65:	48 c7 85 78 fb ff ff 19 00 00 00	movq	$0x19, -0x488(%rbp)
+1000d8e70:	0f 10 05 be 49 07 00	movups	0x749be(%rip), %xmm0 ## literal pool for: "::max_iterations" ; @0x10014d835 '::max_iterations'
+1000d8e77:	0f 11 40 09	movups	%xmm0, 0x9(%rax)
+1000d8e7b:	0f 10 05 aa 49 07 00	movups	0x749aa(%rip), %xmm0 ## literal pool for: "Segmenter::max_iterations" ; @0x10014d82c 'Segmenter::max_iterations'
+1000d8e82:	0f 11 00	movups	%xmm0, (%rax)
+1000d8e85:	c6 40 19 00	movb	$0x0, 0x19(%rax)
+1000d8e89:	48 8d 95 70 fb ff ff	leaq	-0x490(%rbp), %rdx
+1000d8e90:	48 89 df	movq	%rbx, %rdi
+1000d8e93:	e8 c8 29 00 00	callq	0x1000db860
+1000d8e98:	f6 85 70 fb ff ff 01	testb	$0x1, -0x490(%rbp)
+1000d8e9f:	74 0c	je	0x1000d8ead
+1000d8ea1:	48 8b bd 80 fb ff ff	movq	-0x480(%rbp), %rdi
+1000d8ea8:	e8 9f 31 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8ead:	49 8d b6 24 0d 00 00	leaq	0xd24(%r14), %rsi
+1000d8eb4:	c6 85 e8 fe ff ff 2a	movb	$0x2a, -0x118(%rbp)
+1000d8ebb:	0f 10 05 84 49 07 00	movups	0x74984(%rip), %xmm0 ## literal pool for: "Segmenter::lambda_pre" ; @0x10014d846 'Segmenter::lambda_pre'
+1000d8ec2:	0f 11 85 e9 fe ff ff	movups	%xmm0, -0x117(%rbp)
+1000d8ec9:	48 b8 6d 62 64 61 5f 70 72 65	movabsq	$0x6572705f6164626d, %rax
+1000d8ed3:	48 89 85 f6 fe ff ff	movq	%rax, -0x10a(%rbp)
+1000d8eda:	c6 85 fe fe ff ff 00	movb	$0x0, -0x102(%rbp)
+1000d8ee1:	48 8d 95 e8 fe ff ff	leaq	-0x118(%rbp), %rdx
+1000d8ee8:	48 89 df	movq	%rbx, %rdi
+1000d8eeb:	e8 60 2a 00 00	callq	0x1000db950
+1000d8ef0:	f6 85 e8 fe ff ff 01	testb	$0x1, -0x118(%rbp)
+1000d8ef7:	74 0c	je	0x1000d8f05
+1000d8ef9:	48 8b bd f8 fe ff ff	movq	-0x108(%rbp), %rdi
+1000d8f00:	e8 47 31 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8f05:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8f0a:	e8 67 31 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8f0f:	49 8d b6 28 0d 00 00	leaq	0xd28(%r14), %rsi
+1000d8f16:	48 89 85 98 fb ff ff	movq	%rax, -0x468(%rbp)
+1000d8f1d:	48 c7 85 88 fb ff ff 21 00 00 00	movq	$0x21, -0x478(%rbp)
+1000d8f28:	48 c7 85 90 fb ff ff 19 00 00 00	movq	$0x19, -0x470(%rbp)
+1000d8f33:	0f 10 05 2b 49 07 00	movups	0x7492b(%rip), %xmm0 ## literal pool for: "::lambda_initial" ; @0x10014d865 '::lambda_initial'
+1000d8f3a:	0f 11 40 09	movups	%xmm0, 0x9(%rax)
+1000d8f3e:	0f 10 05 17 49 07 00	movups	0x74917(%rip), %xmm0 ## literal pool for: "Segmenter::lambda_initial" ; @0x10014d85c 'Segmenter::lambda_initial'
+1000d8f45:	0f 11 00	movups	%xmm0, (%rax)
+1000d8f48:	c6 40 19 00	movb	$0x0, 0x19(%rax)
+1000d8f4c:	48 8d 95 88 fb ff ff	leaq	-0x478(%rbp), %rdx
+1000d8f53:	48 89 df	movq	%rbx, %rdi
+1000d8f56:	e8 f5 29 00 00	callq	0x1000db950
+1000d8f5b:	f6 85 88 fb ff ff 01	testb	$0x1, -0x478(%rbp)
+1000d8f62:	74 0c	je	0x1000d8f70
+1000d8f64:	48 8b bd 98 fb ff ff	movq	-0x468(%rbp), %rdi
+1000d8f6b:	e8 dc 30 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8f70:	bf 1a 00 00 00	movl	$0x1a, %edi
+1000d8f75:	e8 fc 30 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8f7a:	49 8d b6 2c 0d 00 00	leaq	0xd2c(%r14), %rsi
+1000d8f81:	48 89 85 b0 fb ff ff	movq	%rax, -0x450(%rbp)
+1000d8f88:	48 c7 85 a0 fb ff ff 1b 00 00 00	movq	$0x1b, -0x460(%rbp)
+1000d8f93:	48 c7 85 a8 fb ff ff 17 00 00 00	movq	$0x17, -0x458(%rbp)
+1000d8f9e:	0f 10 05 d1 48 07 00	movups	0x748d1(%rip), %xmm0 ## literal pool for: "Segmenter::lambda_final" ; @0x10014d876 'Segmenter::lambda_final'
+1000d8fa5:	0f 11 00	movups	%xmm0, (%rax)
+1000d8fa8:	48 b9 64 61 5f 66 69 6e 61 6c	movabsq	$0x6c616e69665f6164, %rcx
+1000d8fb2:	48 89 48 0f	movq	%rcx, 0xf(%rax)
+1000d8fb6:	c6 40 17 00	movb	$0x0, 0x17(%rax)
+1000d8fba:	48 8d 95 a0 fb ff ff	leaq	-0x460(%rbp), %rdx
+1000d8fc1:	48 89 df	movq	%rbx, %rdi
+1000d8fc4:	e8 87 29 00 00	callq	0x1000db950
+1000d8fc9:	f6 85 a0 fb ff ff 01	testb	$0x1, -0x460(%rbp)
+1000d8fd0:	74 0c	je	0x1000d8fde
+1000d8fd2:	48 8b bd b0 fb ff ff	movq	-0x450(%rbp), %rdi
+1000d8fd9:	e8 6e 30 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d8fde:	bf 20 00 00 00	movl	$0x20, %edi
+1000d8fe3:	e8 8e 30 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d8fe8:	49 8d b6 30 0d 00 00	leaq	0xd30(%r14), %rsi
+1000d8fef:	48 89 85 c8 fb ff ff	movq	%rax, -0x438(%rbp)
+1000d8ff6:	48 c7 85 b8 fb ff ff 21 00 00 00	movq	$0x21, -0x448(%rbp)
+1000d9001:	48 c7 85 c0 fb ff ff 19 00 00 00	movq	$0x19, -0x440(%rbp)
+1000d900c:	0f 10 05 84 48 07 00	movups	0x74884(%rip), %xmm0 ## literal pool for: "::min_num_pixels" ; @0x10014d897 '::min_num_pixels'
+1000d9013:	0f 11 40 09	movups	%xmm0, 0x9(%rax)
+1000d9017:	0f 10 05 70 48 07 00	movups	0x74870(%rip), %xmm0 ## literal pool for: "Segmenter::min_num_pixels" ; @0x10014d88e 'Segmenter::min_num_pixels'
+1000d901e:	0f 11 00	movups	%xmm0, (%rax)
+1000d9021:	c6 40 19 00	movb	$0x0, 0x19(%rax)
+1000d9025:	48 8d 95 b8 fb ff ff	leaq	-0x448(%rbp), %rdx
+1000d902c:	48 89 df	movq	%rbx, %rdi
+1000d902f:	e8 2c 28 00 00	callq	0x1000db860
+1000d9034:	f6 85 b8 fb ff ff 01	testb	$0x1, -0x448(%rbp)
+1000d903b:	74 0c	je	0x1000d9049
+1000d903d:	48 8b bd c8 fb ff ff	movq	-0x438(%rbp), %rdi
+1000d9044:	e8 03 30 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9049:	bf 20 00 00 00	movl	$0x20, %edi
+1000d904e:	e8 23 30 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9053:	49 8d b6 34 0d 00 00	leaq	0xd34(%r14), %rsi
+1000d905a:	48 89 85 e0 fb ff ff	movq	%rax, -0x420(%rbp)
+1000d9061:	48 c7 85 d0 fb ff ff 21 00 00 00	movq	$0x21, -0x430(%rbp)
+1000d906c:	48 c7 85 d8 fb ff ff 1e 00 00 00	movq	$0x1e, -0x428(%rbp)
+1000d9077:	0f 10 05 38 48 07 00	movups	0x74838(%rip), %xmm0 ## literal pool for: "_iter_btwn_renum" ; @0x10014d8b6 '_iter_btwn_renum'
+1000d907e:	0f 11 40 0e	movups	%xmm0, 0xe(%rax)
+1000d9082:	0f 10 05 1f 48 07 00	movups	0x7481f(%rip), %xmm0 ## literal pool for: "Segmenter::num_iter_btwn_renum" ; @0x10014d8a8 'Segmenter::num_iter_btwn_renum'
+1000d9089:	0f 11 00	movups	%xmm0, (%rax)
+1000d908c:	c6 40 1e 00	movb	$0x0, 0x1e(%rax)
+1000d9090:	48 8d 95 d0 fb ff ff	leaq	-0x430(%rbp), %rdx
+1000d9097:	48 89 df	movq	%rbx, %rdi
+1000d909a:	e8 c1 27 00 00	callq	0x1000db860
+1000d909f:	f6 85 d0 fb ff ff 01	testb	$0x1, -0x430(%rbp)
+1000d90a6:	74 0c	je	0x1000d90b4
+1000d90a8:	48 8b bd e0 fb ff ff	movq	-0x420(%rbp), %rdi
+1000d90af:	e8 98 2f 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d90b4:	bf 20 00 00 00	movl	$0x20, %edi
+1000d90b9:	e8 b8 2f 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d90be:	49 8d b6 38 0d 00 00	leaq	0xd38(%r14), %rsi
+1000d90c5:	48 89 85 f8 fb ff ff	movq	%rax, -0x408(%rbp)
+1000d90cc:	48 c7 85 e8 fb ff ff 21 00 00 00	movq	$0x21, -0x418(%rbp)
+1000d90d7:	48 c7 85 f0 fb ff ff 18 00 00 00	movq	$0x18, -0x410(%rbp)
+1000d90e2:	0f 10 05 de 47 07 00	movups	0x747de(%rip), %xmm0 ## literal pool for: "Segmenter::rise_fraction" ; @0x10014d8c7 'Segmenter::rise_fraction'
+1000d90e9:	0f 11 00	movups	%xmm0, (%rax)
+1000d90ec:	48 b9 66 72 61 63 74 69 6f 6e	movabsq	$0x6e6f697463617266, %rcx
+1000d90f6:	48 89 48 10	movq	%rcx, 0x10(%rax)
+1000d90fa:	c6 40 18 00	movb	$0x0, 0x18(%rax)
+1000d90fe:	48 8d 95 e8 fb ff ff	leaq	-0x418(%rbp), %rdx
+1000d9105:	48 89 df	movq	%rbx, %rdi
+1000d9108:	e8 43 28 00 00	callq	0x1000db950
+1000d910d:	f6 85 e8 fb ff ff 01	testb	$0x1, -0x418(%rbp)
+1000d9114:	74 0c	je	0x1000d9122
+1000d9116:	48 8b bd f8 fb ff ff	movq	-0x408(%rbp), %rdi
+1000d911d:	e8 2a 2f 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9122:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9127:	e8 4a 2f 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d912c:	49 8d b6 3c 0d 00 00	leaq	0xd3c(%r14), %rsi
+1000d9133:	48 89 85 10 fc ff ff	movq	%rax, -0x3f0(%rbp)
+1000d913a:	48 c7 85 00 fc ff ff 21 00 00 00	movq	$0x21, -0x400(%rbp)
+1000d9145:	48 c7 85 08 fc ff ff 1e 00 00 00	movq	$0x1e, -0x3f8(%rbp)
+1000d9150:	0f 10 05 97 47 07 00	movups	0x74797(%rip), %xmm0 ## literal pool for: "e_penalty_weight" ; @0x10014d8ee 'e_penalty_weight'
+1000d9157:	0f 11 40 0e	movups	%xmm0, 0xe(%rax)
+1000d915b:	0f 10 05 7e 47 07 00	movups	0x7477e(%rip), %xmm0 ## literal pool for: "Segmenter::size_penalty_weight" ; @0x10014d8e0 'Segmenter::size_penalty_weight'
+1000d9162:	0f 11 00	movups	%xmm0, (%rax)
+1000d9165:	c6 40 1e 00	movb	$0x0, 0x1e(%rax)
+1000d9169:	48 8d 95 00 fc ff ff	leaq	-0x400(%rbp), %rdx
+1000d9170:	48 89 df	movq	%rbx, %rdi
+1000d9173:	e8 d8 27 00 00	callq	0x1000db950
+1000d9178:	f6 85 00 fc ff ff 01	testb	$0x1, -0x400(%rbp)
+1000d917f:	74 0c	je	0x1000d918d
+1000d9181:	48 8b bd 10 fc ff ff	movq	-0x3f0(%rbp), %rdi
+1000d9188:	e8 bf 2e 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d918d:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9192:	e8 df 2e 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9197:	49 8d b6 40 0d 00 00	leaq	0xd40(%r14), %rsi
+1000d919e:	48 89 85 28 fc ff ff	movq	%rax, -0x3d8(%rbp)
+1000d91a5:	48 c7 85 18 fc ff ff 21 00 00 00	movq	$0x21, -0x3e8(%rbp)
+1000d91b0:	48 c7 85 20 fc ff ff 1d 00 00 00	movq	$0x1d, -0x3e0(%rbp)
+1000d91bb:	0f 10 05 4a 47 07 00	movups	0x7474a(%rip), %xmm0 ## literal pool for: "ze_penalty_power" ; @0x10014d90c 'ze_penalty_power'
+1000d91c2:	0f 11 40 0d	movups	%xmm0, 0xd(%rax)
+1000d91c6:	0f 10 05 32 47 07 00	movups	0x74732(%rip), %xmm0 ## literal pool for: "Segmenter::size_penalty_power" ; @0x10014d8ff 'Segmenter::size_penalty_power'
+1000d91cd:	0f 11 00	movups	%xmm0, (%rax)
+1000d91d0:	c6 40 1d 00	movb	$0x0, 0x1d(%rax)
+1000d91d4:	48 8d 95 18 fc ff ff	leaq	-0x3e8(%rbp), %rdx
+1000d91db:	48 89 df	movq	%rbx, %rdi
+1000d91de:	e8 6d 27 00 00	callq	0x1000db950
+1000d91e3:	f6 85 18 fc ff ff 01	testb	$0x1, -0x3e8(%rbp)
+1000d91ea:	74 0c	je	0x1000d91f8
+1000d91ec:	48 8b bd 28 fc ff ff	movq	-0x3d8(%rbp), %rdi
+1000d91f3:	e8 54 2e 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d91f8:	bf 28 00 00 00	movl	$0x28, %edi
+1000d91fd:	e8 74 2e 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9202:	49 8d b6 18 0d 00 00	leaq	0xd18(%r14), %rsi
+1000d9209:	48 89 85 40 fc ff ff	movq	%rax, -0x3c0(%rbp)
+1000d9210:	48 c7 85 30 fc ff ff 29 00 00 00	movq	$0x29, -0x3d0(%rbp)
+1000d921b:	48 c7 85 38 fc ff ff 21 00 00 00	movq	$0x21, -0x3c8(%rbp)
+1000d9226:	0f 10 05 00 47 07 00	movups	0x74700(%rip), %xmm0 ## literal pool for: "ver_seg_diag_extr" ; @0x10014d92d 'ver_seg_diag_extr'
+1000d922d:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9231:	0f 10 05 e5 46 07 00	movups	0x746e5(%rip), %xmm0 ## literal pool for: "Segmenter::use_over_seg_diag_extr" ; @0x10014d91d 'Segmenter::use_over_seg_diag_extr'
+1000d9238:	0f 11 00	movups	%xmm0, (%rax)
+1000d923b:	66 c7 40 20 72 00	movw	$0x72, 0x20(%rax)
+1000d9241:	48 8d 95 30 fc ff ff	leaq	-0x3d0(%rbp), %rdx
+1000d9248:	48 89 df	movq	%rbx, %rdi
+1000d924b:	e8 10 26 00 00	callq	0x1000db860
+1000d9250:	f6 85 30 fc ff ff 01	testb	$0x1, -0x3d0(%rbp)
+1000d9257:	74 0c	je	0x1000d9265
+1000d9259:	48 8b bd 40 fc ff ff	movq	-0x3c0(%rbp), %rdi
+1000d9260:	e8 e7 2d 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9265:	48 89 df	movq	%rbx, %rdi
+1000d9268:	e8 93 95 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d926d:	48 89 df	movq	%rbx, %rdi
+1000d9270:	e8 8b 95 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9275:	c6 85 48 fc ff ff 22	movb	$0x22, -0x3b8(%rbp)
+1000d927c:	0f 10 05 bc 46 07 00	movups	0x746bc(%rip), %xmm0 ## literal pool for: "SubPixelSegmenter" ; @0x10014d93f 'SubPixelSegmenter'
+1000d9283:	0f 11 85 49 fc ff ff	movups	%xmm0, -0x3b7(%rbp)
+1000d928a:	66 c7 85 59 fc ff ff 72 00	movw	$0x72, -0x3a7(%rbp)
+1000d9293:	48 8d b5 48 fc ff ff	leaq	-0x3b8(%rbp), %rsi
+1000d929a:	48 89 df	movq	%rbx, %rdi
+1000d929d:	e8 fe 95 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d92a2:	f6 85 48 fc ff ff 01	testb	$0x1, -0x3b8(%rbp)
+1000d92a9:	74 0c	je	0x1000d92b7
+1000d92ab:	48 8b bd 58 fc ff ff	movq	-0x3a8(%rbp), %rdi
+1000d92b2:	e8 95 2d 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d92b7:	48 89 df	movq	%rbx, %rdi
+1000d92ba:	e8 41 95 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d92bf:	bf 20 00 00 00	movl	$0x20, %edi
+1000d92c4:	e8 ad 2d 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d92c9:	49 8d b6 ac 0d 00 00	leaq	0xdac(%r14), %rsi
+1000d92d0:	48 89 85 70 fc ff ff	movq	%rax, -0x390(%rbp)
+1000d92d7:	48 c7 85 60 fc ff ff 21 00 00 00	movq	$0x21, -0x3a0(%rbp)
+1000d92e2:	48 c7 85 68 fc ff ff 1b 00 00 00	movq	$0x1b, -0x398(%rbp)
+1000d92ed:	0f 10 05 68 46 07 00	movups	0x74668(%rip), %xmm0 ## literal pool for: "menter::lambda_f" ; @0x10014d95c 'menter::lambda_f'
+1000d92f4:	0f 11 40 0b	movups	%xmm0, 0xb(%rax)
+1000d92f8:	0f 10 05 52 46 07 00	movups	0x74652(%rip), %xmm0 ## literal pool for: "SubPixelSegmenter::lambda_f" ; @0x10014d951 'SubPixelSegmenter::lambda_f'
+1000d92ff:	0f 11 00	movups	%xmm0, (%rax)
+1000d9302:	c6 40 1b 00	movb	$0x0, 0x1b(%rax)
+1000d9306:	48 8d 95 60 fc ff ff	leaq	-0x3a0(%rbp), %rdx
+1000d930d:	48 89 df	movq	%rbx, %rdi
+1000d9310:	e8 3b 26 00 00	callq	0x1000db950
+1000d9315:	f6 85 60 fc ff ff 01	testb	$0x1, -0x3a0(%rbp)
+1000d931c:	74 0c	je	0x1000d932a
+1000d931e:	48 8b bd 70 fc ff ff	movq	-0x390(%rbp), %rdi
+1000d9325:	e8 22 2d 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d932a:	bf 28 00 00 00	movl	$0x28, %edi
+1000d932f:	e8 42 2d 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9334:	49 8d b6 94 0d 00 00	leaq	0xd94(%r14), %rsi
+1000d933b:	48 89 85 88 fc ff ff	movq	%rax, -0x378(%rbp)
+1000d9342:	48 c7 85 78 fc ff ff 29 00 00 00	movq	$0x29, -0x388(%rbp)
+1000d934d:	48 c7 85 80 fc ff ff 21 00 00 00	movq	$0x21, -0x380(%rbp)
+1000d9358:	0f 10 05 1e 46 07 00	movups	0x7461e(%rip), %xmm0 ## literal pool for: "r::beach_lambda_f" ; @0x10014d97d 'r::beach_lambda_f'
+1000d935f:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9363:	0f 10 05 03 46 07 00	movups	0x74603(%rip), %xmm0 ## literal pool for: "SubPixelSegmenter::beach_lambda_f" ; @0x10014d96d 'SubPixelSegmenter::beach_lambda_f'
+1000d936a:	0f 11 00	movups	%xmm0, (%rax)
+1000d936d:	66 c7 40 20 66 00	movw	$0x66, 0x20(%rax)
+1000d9373:	48 8d 95 78 fc ff ff	leaq	-0x388(%rbp), %rdx
+1000d937a:	48 89 df	movq	%rbx, %rdi
+1000d937d:	e8 ce 25 00 00	callq	0x1000db950
+1000d9382:	f6 85 78 fc ff ff 01	testb	$0x1, -0x388(%rbp)
+1000d9389:	74 0c	je	0x1000d9397
+1000d938b:	48 8b bd 88 fc ff ff	movq	-0x378(%rbp), %rdi
+1000d9392:	e8 b5 2c 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9397:	bf 28 00 00 00	movl	$0x28, %edi
+1000d939c:	e8 d5 2c 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d93a1:	49 8d b6 98 0d 00 00	leaq	0xd98(%r14), %rsi
+1000d93a8:	48 89 85 a0 fc ff ff	movq	%rax, -0x360(%rbp)
+1000d93af:	48 c7 85 90 fc ff ff 29 00 00 00	movq	$0x29, -0x370(%rbp)
+1000d93ba:	48 c7 85 98 fc ff ff 27 00 00 00	movq	$0x27, -0x368(%rbp)
+1000d93c5:	0f 10 05 d3 45 07 00	movups	0x745d3(%rip), %xmm0 ## literal pool for: "r::color_cluster_margin" ; @0x10014d99f 'r::color_cluster_margin'
+1000d93cc:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d93d0:	0f 10 05 b8 45 07 00	movups	0x745b8(%rip), %xmm0 ## literal pool for: "SubPixelSegmenter::color_cluster_margin" ; @0x10014d98f 'SubPixelSegmenter::color_cluster_margin'
+1000d93d7:	0f 11 00	movups	%xmm0, (%rax)
+1000d93da:	48 b9 72 5f 6d 61 72 67 69 6e	movabsq	$0x6e696772616d5f72, %rcx
+1000d93e4:	48 89 48 1f	movq	%rcx, 0x1f(%rax)
+1000d93e8:	c6 40 27 00	movb	$0x0, 0x27(%rax)
+1000d93ec:	48 8d 95 90 fc ff ff	leaq	-0x370(%rbp), %rdx
+1000d93f3:	48 89 df	movq	%rbx, %rdi
+1000d93f6:	e8 55 25 00 00	callq	0x1000db950
+1000d93fb:	f6 85 90 fc ff ff 01	testb	$0x1, -0x370(%rbp)
+1000d9402:	74 0c	je	0x1000d9410
+1000d9404:	48 8b bd a0 fc ff ff	movq	-0x360(%rbp), %rdi
+1000d940b:	e8 3c 2c 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9410:	bf 30 00 00 00	movl	$0x30, %edi
+1000d9415:	e8 5c 2c 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d941a:	49 8d b6 9c 0d 00 00	leaq	0xd9c(%r14), %rsi
+1000d9421:	48 89 85 b8 fc ff ff	movq	%rax, -0x348(%rbp)
+1000d9428:	48 c7 85 a8 fc ff ff 31 00 00 00	movq	$0x31, -0x358(%rbp)
+1000d9433:	48 c7 85 b0 fc ff ff 2d 00 00 00	movq	$0x2d, -0x350(%rbp)
+1000d943e:	0f 10 05 8f 45 07 00	movups	0x7458f(%rip), %xmm0 ## literal pool for: "ted_24_iteration" ; @0x10014d9d4 'ted_24_iteration'
+1000d9445:	0f 11 40 1d	movups	%xmm0, 0x1d(%rax)
+1000d9449:	0f 10 05 77 45 07 00	movups	0x74577(%rip), %xmm0 ## literal pool for: "r::use_connected_24_iteration" ; @0x10014d9c7 'r::use_connected_24_iteration'
+1000d9450:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9454:	0f 10 05 5c 45 07 00	movups	0x7455c(%rip), %xmm0 ## literal pool for: "SubPixelSegmenter::use_connected_24_iteration" ; @0x10014d9b7 'SubPixelSegmenter::use_connected_24_iteration'
+1000d945b:	0f 11 00	movups	%xmm0, (%rax)
+1000d945e:	c6 40 2d 00	movb	$0x0, 0x2d(%rax)
+1000d9462:	48 8d 95 a8 fc ff ff	leaq	-0x358(%rbp), %rdx
+1000d9469:	48 89 df	movq	%rbx, %rdi
+1000d946c:	e8 ef 23 00 00	callq	0x1000db860
+1000d9471:	f6 85 a8 fc ff ff 01	testb	$0x1, -0x358(%rbp)
+1000d9478:	74 0c	je	0x1000d9486
+1000d947a:	48 8b bd b8 fc ff ff	movq	-0x348(%rbp), %rdi
+1000d9481:	e8 c6 2b 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9486:	48 89 df	movq	%rbx, %rdi
+1000d9489:	e8 72 93 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d948e:	48 89 df	movq	%rbx, %rdi
+1000d9491:	e8 6a 93 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9496:	c6 85 00 ff ff ff 26	movb	$0x26, -0x100(%rbp)
+1000d949d:	0f 10 05 41 45 07 00	movups	0x74541(%rip), %xmm0 ## literal pool for: "SuperPixelSegmenter" ; @0x10014d9e5 'SuperPixelSegmenter'
+1000d94a4:	0f 11 85 01 ff ff ff	movups	%xmm0, -0xff(%rbp)
+1000d94ab:	c7 85 10 ff ff ff 6e 74 65 72	movl	$0x7265746e, -0xf0(%rbp)
+1000d94b5:	c6 85 14 ff ff ff 00	movb	$0x0, -0xec(%rbp)
+1000d94bc:	48 8d b5 00 ff ff ff	leaq	-0x100(%rbp), %rsi
+1000d94c3:	48 89 df	movq	%rbx, %rdi
+1000d94c6:	e8 d5 93 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d94cb:	f6 85 00 ff ff ff 01	testb	$0x1, -0x100(%rbp)
+1000d94d2:	74 0c	je	0x1000d94e0
+1000d94d4:	48 8b bd 10 ff ff ff	movq	-0xf0(%rbp), %rdi
+1000d94db:	e8 6c 2b 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d94e0:	48 89 df	movq	%rbx, %rdi
+1000d94e3:	e8 18 93 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d94e8:	bf 20 00 00 00	movl	$0x20, %edi
+1000d94ed:	e8 84 2b 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d94f2:	49 8d b6 34 0e 00 00	leaq	0xe34(%r14), %rsi
+1000d94f9:	48 89 85 d0 fc ff ff	movq	%rax, -0x330(%rbp)
+1000d9500:	48 c7 85 c0 fc ff ff 21 00 00 00	movq	$0x21, -0x340(%rbp)
+1000d950b:	48 c7 85 c8 fc ff ff 1d 00 00 00	movq	$0x1d, -0x338(%rbp)
+1000d9516:	0f 10 05 e9 44 07 00	movups	0x744e9(%rip), %xmm0 ## literal pool for: "menter::lambda_f" ; @0x10014da06 'menter::lambda_f'
+1000d951d:	0f 11 40 0d	movups	%xmm0, 0xd(%rax)
+1000d9521:	0f 10 05 d1 44 07 00	movups	0x744d1(%rip), %xmm0 ## literal pool for: "SuperPixelSegmenter::lambda_f" ; @0x10014d9f9 'SuperPixelSegmenter::lambda_f'
+1000d9528:	0f 11 00	movups	%xmm0, (%rax)
+1000d952b:	c6 40 1d 00	movb	$0x0, 0x1d(%rax)
+1000d952f:	48 8d 95 c0 fc ff ff	leaq	-0x340(%rbp), %rdx
+1000d9536:	48 89 df	movq	%rbx, %rdi
+1000d9539:	e8 12 24 00 00	callq	0x1000db950
+1000d953e:	f6 85 c0 fc ff ff 01	testb	$0x1, -0x340(%rbp)
+1000d9545:	74 0c	je	0x1000d9553
+1000d9547:	48 8b bd d0 fc ff ff	movq	-0x330(%rbp), %rdi
+1000d954e:	e8 f9 2a 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9553:	bf 30 00 00 00	movl	$0x30, %edi
+1000d9558:	e8 19 2b 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d955d:	49 8d b6 38 0e 00 00	leaq	0xe38(%r14), %rsi
+1000d9564:	48 89 85 e8 fc ff ff	movq	%rax, -0x318(%rbp)
+1000d956b:	48 c7 85 d8 fc ff ff 31 00 00 00	movq	$0x31, -0x328(%rbp)
+1000d9576:	48 c7 85 e0 fc ff ff 2f 00 00 00	movq	$0x2f, -0x320(%rbp)
+1000d9581:	0f 10 05 ae 44 07 00	movups	0x744ae(%rip), %xmm0 ## literal pool for: "ted_24_iteration" ; @0x10014da36 'ted_24_iteration'
+1000d9588:	0f 11 40 1f	movups	%xmm0, 0x1f(%rax)
+1000d958c:	0f 10 05 94 44 07 00	movups	0x74494(%rip), %xmm0 ## literal pool for: "ter::use_connected_24_iteration" ; @0x10014da27 'ter::use_connected_24_iteration'
+1000d9593:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9597:	0f 10 05 79 44 07 00	movups	0x74479(%rip), %xmm0 ## literal pool for: "SuperPixelSegmenter::use_connected_24_iteration" ; @0x10014da17 'SuperPixelSegmenter::use_connected_24_iteration'
+1000d959e:	0f 11 00	movups	%xmm0, (%rax)
+1000d95a1:	c6 40 2f 00	movb	$0x0, 0x2f(%rax)
+1000d95a5:	48 8d 95 d8 fc ff ff	leaq	-0x328(%rbp), %rdx
+1000d95ac:	48 89 df	movq	%rbx, %rdi
+1000d95af:	e8 ac 22 00 00	callq	0x1000db860
+1000d95b4:	f6 85 d8 fc ff ff 01	testb	$0x1, -0x328(%rbp)
+1000d95bb:	74 0c	je	0x1000d95c9
+1000d95bd:	48 8b bd e8 fc ff ff	movq	-0x318(%rbp), %rdi
+1000d95c4:	e8 83 2a 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d95c9:	48 89 df	movq	%rbx, %rdi
+1000d95cc:	e8 2f 92 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d95d1:	48 89 df	movq	%rbx, %rdi
+1000d95d4:	e8 27 92 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d95d9:	c6 85 18 ff ff ff 28	movb	$0x28, -0xe8(%rbp)
+1000d95e0:	0f 10 05 60 44 07 00	movups	0x74460(%rip), %xmm0 ## literal pool for: "SubPixelSegmentation" ; @0x10014da47 'SubPixelSegmentation'
+1000d95e7:	0f 11 85 19 ff ff ff	movups	%xmm0, -0xe7(%rbp)
+1000d95ee:	c7 85 29 ff ff ff 74 69 6f 6e	movl	$0x6e6f6974, -0xd7(%rbp)
+1000d95f8:	c6 85 2d ff ff ff 00	movb	$0x0, -0xd3(%rbp)
+1000d95ff:	48 8d b5 18 ff ff ff	leaq	-0xe8(%rbp), %rsi
+1000d9606:	48 89 df	movq	%rbx, %rdi
+1000d9609:	e8 92 92 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d960e:	f6 85 18 ff ff ff 01	testb	$0x1, -0xe8(%rbp)
+1000d9615:	74 0c	je	0x1000d9623
+1000d9617:	48 8b bd 28 ff ff ff	movq	-0xd8(%rbp), %rdi
+1000d961e:	e8 29 2a 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9623:	48 89 df	movq	%rbx, %rdi
+1000d9626:	e8 d5 91 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d962b:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9630:	e8 41 2a 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9635:	49 8d b6 38 02 00 00	leaq	0x238(%r14), %rsi
+1000d963c:	48 89 85 00 fd ff ff	movq	%rax, -0x300(%rbp)
+1000d9643:	48 c7 85 f0 fc ff ff 29 00 00 00	movq	$0x29, -0x310(%rbp)
+1000d964e:	48 c7 85 f8 fc ff ff 25 00 00 00	movq	$0x25, -0x308(%rbp)
+1000d9659:	0f 10 05 0c 44 07 00	movups	0x7440c(%rip), %xmm0 ## literal pool for: "tion::self_weight_eps" ; @0x10014da6c 'tion::self_weight_eps'
+1000d9660:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9664:	0f 10 05 f1 43 07 00	movups	0x743f1(%rip), %xmm0 ## literal pool for: "SubPixelSegmentation::self_weight_eps" ; @0x10014da5c 'SubPixelSegmentation::self_weight_eps'
+1000d966b:	0f 11 00	movups	%xmm0, (%rax)
+1000d966e:	48 b9 69 67 68 74 5f 65 70 73	movabsq	$0x7370655f74686769, %rcx
+1000d9678:	48 89 48 1d	movq	%rcx, 0x1d(%rax)
+1000d967c:	c6 40 25 00	movb	$0x0, 0x25(%rax)
+1000d9680:	48 8d 95 f0 fc ff ff	leaq	-0x310(%rbp), %rdx
+1000d9687:	48 89 df	movq	%rbx, %rdi
+1000d968a:	e8 c1 22 00 00	callq	0x1000db950
+1000d968f:	f6 85 f0 fc ff ff 01	testb	$0x1, -0x310(%rbp)
+1000d9696:	74 0c	je	0x1000d96a4
+1000d9698:	48 8b bd 00 fd ff ff	movq	-0x300(%rbp), %rdi
+1000d969f:	e8 a8 29 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d96a4:	bf 30 00 00 00	movl	$0x30, %edi
+1000d96a9:	e8 c8 29 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d96ae:	49 8d b6 3c 02 00 00	leaq	0x23c(%r14), %rsi
+1000d96b5:	48 89 85 18 fd ff ff	movq	%rax, -0x2e8(%rbp)
+1000d96bc:	48 c7 85 08 fd ff ff 31 00 00 00	movq	$0x31, -0x2f8(%rbp)
+1000d96c7:	48 c7 85 10 fd ff ff 2d 00 00 00	movq	$0x2d, -0x2f0(%rbp)
+1000d96d2:	0f 10 05 c6 43 07 00	movups	0x743c6(%rip), %xmm0 ## literal pool for: "ight_penalty_low" ; @0x10014da9f 'ight_penalty_low'
+1000d96d9:	0f 11 40 1d	movups	%xmm0, 0x1d(%rax)
+1000d96dd:	0f 10 05 ae 43 07 00	movups	0x743ae(%rip), %xmm0 ## literal pool for: "tion::self_weight_penalty_low" ; @0x10014da92 'tion::self_weight_penalty_low'
+1000d96e4:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d96e8:	0f 10 05 93 43 07 00	movups	0x74393(%rip), %xmm0 ## literal pool for: "SubPixelSegmentation::self_weight_penalty_low" ; @0x10014da82 'SubPixelSegmentation::self_weight_penalty_low'
+1000d96ef:	0f 11 00	movups	%xmm0, (%rax)
+1000d96f2:	c6 40 2d 00	movb	$0x0, 0x2d(%rax)
+1000d96f6:	48 8d 95 08 fd ff ff	leaq	-0x2f8(%rbp), %rdx
+1000d96fd:	48 89 df	movq	%rbx, %rdi
+1000d9700:	e8 4b 22 00 00	callq	0x1000db950
+1000d9705:	f6 85 08 fd ff ff 01	testb	$0x1, -0x2f8(%rbp)
+1000d970c:	74 0c	je	0x1000d971a
+1000d970e:	48 8b bd 18 fd ff ff	movq	-0x2e8(%rbp), %rdi
+1000d9715:	e8 32 29 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d971a:	bf 30 00 00 00	movl	$0x30, %edi
+1000d971f:	e8 52 29 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9724:	49 8d b6 40 02 00 00	leaq	0x240(%r14), %rsi
+1000d972b:	48 89 85 30 fd ff ff	movq	%rax, -0x2d0(%rbp)
+1000d9732:	48 c7 85 20 fd ff ff 31 00 00 00	movq	$0x31, -0x2e0(%rbp)
+1000d973d:	48 c7 85 28 fd ff ff 2e 00 00 00	movq	$0x2e, -0x2d8(%rbp)
+1000d9748:	0f 10 05 7f 43 07 00	movups	0x7437f(%rip), %xmm0 ## literal pool for: "ght_penalty_high" ; @0x10014dace 'ght_penalty_high'
+1000d974f:	0f 11 40 1e	movups	%xmm0, 0x1e(%rax)
+1000d9753:	0f 10 05 66 43 07 00	movups	0x74366(%rip), %xmm0 ## literal pool for: "tion::self_weight_penalty_high" ; @0x10014dac0 'tion::self_weight_penalty_high'
+1000d975a:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d975e:	0f 10 05 4b 43 07 00	movups	0x7434b(%rip), %xmm0 ## literal pool for: "SubPixelSegmentation::self_weight_penalty_high" ; @0x10014dab0 'SubPixelSegmentation::self_weight_penalty_high'
+1000d9765:	0f 11 00	movups	%xmm0, (%rax)
+1000d9768:	c6 40 2e 00	movb	$0x0, 0x2e(%rax)
+1000d976c:	48 8d 95 20 fd ff ff	leaq	-0x2e0(%rbp), %rdx
+1000d9773:	48 89 df	movq	%rbx, %rdi
+1000d9776:	e8 d5 21 00 00	callq	0x1000db950
+1000d977b:	f6 85 20 fd ff ff 01	testb	$0x1, -0x2e0(%rbp)
+1000d9782:	74 0c	je	0x1000d9790
+1000d9784:	48 8b bd 30 fd ff ff	movq	-0x2d0(%rbp), %rdi
+1000d978b:	e8 bc 28 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9790:	48 89 df	movq	%rbx, %rdi
+1000d9793:	e8 68 90 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9798:	48 89 df	movq	%rbx, %rdi
+1000d979b:	e8 60 90 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d97a0:	c6 85 30 ff ff ff 16	movb	$0x16, -0xd0(%rbp)
+1000d97a7:	48 b8 53 75 70 65 72 50 69 78	movabsq	$0x7869507265707553, %rax
+1000d97b1:	48 89 85 31 ff ff ff	movq	%rax, -0xcf(%rbp)
+1000d97b8:	c7 85 38 ff ff ff 78 65 6c 73	movl	$0x736c6578, -0xc8(%rbp)
+1000d97c2:	c6 85 3c ff ff ff 00	movb	$0x0, -0xc4(%rbp)
+1000d97c9:	48 8d b5 30 ff ff ff	leaq	-0xd0(%rbp), %rsi
+1000d97d0:	48 89 df	movq	%rbx, %rdi
+1000d97d3:	e8 c8 90 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d97d8:	f6 85 30 ff ff ff 01	testb	$0x1, -0xd0(%rbp)
+1000d97df:	74 0c	je	0x1000d97ed
+1000d97e1:	48 8b bd 40 ff ff ff	movq	-0xc0(%rbp), %rdi
+1000d97e8:	e8 5f 28 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d97ed:	48 89 df	movq	%rbx, %rdi
+1000d97f0:	e8 0b 90 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d97f5:	bf 20 00 00 00	movl	$0x20, %edi
+1000d97fa:	e8 77 28 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d97ff:	49 8d b6 c8 02 00 00	leaq	0x2c8(%r14), %rsi
+1000d9806:	48 89 85 48 fd ff ff	movq	%rax, -0x2b8(%rbp)
+1000d980d:	48 c7 85 38 fd ff ff 21 00 00 00	movq	$0x21, -0x2c8(%rbp)
+1000d9818:	48 c7 85 40 fd ff ff 1c 00 00 00	movq	$0x1c, -0x2c0(%rbp)
+1000d9823:	0f 10 05 cd 42 07 00	movups	0x742cd(%rip), %xmm0 ## literal pool for: ":self_weight_eps" ; @0x10014daf7 ':self_weight_eps'
+1000d982a:	0f 11 40 0c	movups	%xmm0, 0xc(%rax)
+1000d982e:	0f 10 05 b6 42 07 00	movups	0x742b6(%rip), %xmm0 ## literal pool for: "SuperPixels::self_weight_eps" ; @0x10014daeb 'SuperPixels::self_weight_eps'
+1000d9835:	0f 11 00	movups	%xmm0, (%rax)
+1000d9838:	c6 40 1c 00	movb	$0x0, 0x1c(%rax)
+1000d983c:	48 8d 95 38 fd ff ff	leaq	-0x2c8(%rbp), %rdx
+1000d9843:	48 89 df	movq	%rbx, %rdi
+1000d9846:	e8 05 21 00 00	callq	0x1000db950
+1000d984b:	f6 85 38 fd ff ff 01	testb	$0x1, -0x2c8(%rbp)
+1000d9852:	74 0c	je	0x1000d9860
+1000d9854:	48 8b bd 48 fd ff ff	movq	-0x2b8(%rbp), %rdi
+1000d985b:	e8 ec 27 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9860:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9865:	e8 0c 28 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d986a:	49 8d b6 cc 02 00 00	leaq	0x2cc(%r14), %rsi
+1000d9871:	48 89 85 60 fd ff ff	movq	%rax, -0x2a0(%rbp)
+1000d9878:	48 c7 85 50 fd ff ff 29 00 00 00	movq	$0x29, -0x2b0(%rbp)
+1000d9883:	48 c7 85 58 fd ff ff 24 00 00 00	movq	$0x24, -0x2a8(%rbp)
+1000d988e:	0f 10 05 83 42 07 00	movups	0x74283(%rip), %xmm0 ## literal pool for: "f_weight_penalty_low" ; @0x10014db18 'f_weight_penalty_low'
+1000d9895:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9899:	0f 10 05 68 42 07 00	movups	0x74268(%rip), %xmm0 ## literal pool for: "SuperPixels::self_weight_penalty_low" ; @0x10014db08 'SuperPixels::self_weight_penalty_low'
+1000d98a0:	0f 11 00	movups	%xmm0, (%rax)
+1000d98a3:	c7 40 20 5f 6c 6f 77	movl	$0x776f6c5f, 0x20(%rax)
+1000d98aa:	c6 40 24 00	movb	$0x0, 0x24(%rax)
+1000d98ae:	48 8d 95 50 fd ff ff	leaq	-0x2b0(%rbp), %rdx
+1000d98b5:	48 89 df	movq	%rbx, %rdi
+1000d98b8:	e8 93 20 00 00	callq	0x1000db950
+1000d98bd:	f6 85 50 fd ff ff 01	testb	$0x1, -0x2b0(%rbp)
+1000d98c4:	74 0c	je	0x1000d98d2
+1000d98c6:	48 8b bd 60 fd ff ff	movq	-0x2a0(%rbp), %rdi
+1000d98cd:	e8 7a 27 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d98d2:	bf 28 00 00 00	movl	$0x28, %edi
+1000d98d7:	e8 9a 27 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d98dc:	49 8d b6 d0 02 00 00	leaq	0x2d0(%r14), %rsi
+1000d98e3:	48 89 85 78 fd ff ff	movq	%rax, -0x288(%rbp)
+1000d98ea:	48 c7 85 68 fd ff ff 29 00 00 00	movq	$0x29, -0x298(%rbp)
+1000d98f5:	48 c7 85 70 fd ff ff 25 00 00 00	movq	$0x25, -0x290(%rbp)
+1000d9900:	0f 10 05 36 42 07 00	movups	0x74236(%rip), %xmm0 ## literal pool for: "f_weight_penalty_high" ; @0x10014db3d 'f_weight_penalty_high'
+1000d9907:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d990b:	0f 10 05 1b 42 07 00	movups	0x7421b(%rip), %xmm0 ## literal pool for: "SuperPixels::self_weight_penalty_high" ; @0x10014db2d 'SuperPixels::self_weight_penalty_high'
+1000d9912:	0f 11 00	movups	%xmm0, (%rax)
+1000d9915:	48 b9 6c 74 79 5f 68 69 67 68	movabsq	$0x686769685f79746c, %rcx
+1000d991f:	48 89 48 1d	movq	%rcx, 0x1d(%rax)
+1000d9923:	c6 40 25 00	movb	$0x0, 0x25(%rax)
+1000d9927:	48 8d 95 68 fd ff ff	leaq	-0x298(%rbp), %rdx
+1000d992e:	48 89 df	movq	%rbx, %rdi
+1000d9931:	e8 1a 20 00 00	callq	0x1000db950
+1000d9936:	f6 85 68 fd ff ff 01	testb	$0x1, -0x298(%rbp)
+1000d993d:	74 0c	je	0x1000d994b
+1000d993f:	48 8b bd 78 fd ff ff	movq	-0x288(%rbp), %rdi
+1000d9946:	e8 01 27 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d994b:	48 89 df	movq	%rbx, %rdi
+1000d994e:	e8 ad 8e 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9953:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9958:	e8 19 27 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d995d:	49 8d b6 40 01 00 00	leaq	0x140(%r14), %rsi
+1000d9964:	48 89 85 90 fd ff ff	movq	%rax, -0x270(%rbp)
+1000d996b:	48 c7 85 80 fd ff ff 21 00 00 00	movq	$0x21, -0x280(%rbp)
+1000d9976:	48 c7 85 88 fd ff ff 1e 00 00 00	movq	$0x1e, -0x278(%rbp)
+1000d9981:	0f 10 05 d9 41 07 00	movups	0x741d9(%rip), %xmm0 ## literal pool for: "inity_cost_scale" ; @0x10014db61 'inity_cost_scale'
+1000d9988:	0f 11 40 0e	movups	%xmm0, 0xe(%rax)
+1000d998c:	0f 10 05 c0 41 07 00	movups	0x741c0(%rip), %xmm0 ## literal pool for: "FlowField::affinity_cost_scale" ; @0x10014db53 'FlowField::affinity_cost_scale'
+1000d9993:	0f 11 00	movups	%xmm0, (%rax)
+1000d9996:	c6 40 1e 00	movb	$0x0, 0x1e(%rax)
+1000d999a:	48 8d 95 80 fd ff ff	leaq	-0x280(%rbp), %rdx
+1000d99a1:	48 89 df	movq	%rbx, %rdi
+1000d99a4:	e8 a7 1f 00 00	callq	0x1000db950
+1000d99a9:	f6 85 80 fd ff ff 01	testb	$0x1, -0x280(%rbp)
+1000d99b0:	74 0c	je	0x1000d99be
+1000d99b2:	48 8b bd 90 fd ff ff	movq	-0x270(%rbp), %rdi
+1000d99b9:	e8 8e 26 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d99be:	48 89 df	movq	%rbx, %rdi
+1000d99c1:	e8 3a 8e 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d99c6:	48 89 df	movq	%rbx, %rdi
+1000d99c9:	e8 32 8e 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d99ce:	c6 85 48 ff ff ff 1e	movb	$0x1e, -0xb8(%rbp)
+1000d99d5:	48 b8 43 6f 6e 74 6f 75 72 53	movabsq	$0x5372756f746e6f43, %rax
+1000d99df:	48 89 85 49 ff ff ff	movq	%rax, -0xb7(%rbp)
+1000d99e6:	48 b8 53 6d 6f 6f 74 68 65 72	movabsq	$0x726568746f6f6d53, %rax
+1000d99f0:	48 89 85 50 ff ff ff	movq	%rax, -0xb0(%rbp)
+1000d99f7:	c6 85 58 ff ff ff 00	movb	$0x0, -0xa8(%rbp)
+1000d99fe:	48 8d b5 48 ff ff ff	leaq	-0xb8(%rbp), %rsi
+1000d9a05:	48 89 df	movq	%rbx, %rdi
+1000d9a08:	e8 93 8e 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9a0d:	f6 85 48 ff ff ff 01	testb	$0x1, -0xb8(%rbp)
+1000d9a14:	74 0c	je	0x1000d9a22
+1000d9a16:	48 8b bd 58 ff ff ff	movq	-0xa8(%rbp), %rdi
+1000d9a1d:	e8 2a 26 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9a22:	48 89 df	movq	%rbx, %rdi
+1000d9a25:	e8 d6 8d 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9a2a:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9a2f:	e8 42 26 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9a34:	49 89 c7	movq	%rax, %r15
+1000d9a37:	0f 10 05 54 41 07 00	movups	0x74154(%rip), %xmm0 ## literal pool for: ":measurement_types" ; @0x10014db92 ':measurement_types'
+1000d9a3e:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9a42:	0f 10 05 39 41 07 00	movups	0x74139(%rip), %xmm0 ## literal pool for: "ContourSmoother::measurement_types" ; @0x10014db82 'ContourSmoother::measurement_types'
+1000d9a49:	0f 11 00	movups	%xmm0, (%rax)
+1000d9a4c:	66 c7 40 20 65 73	movw	$0x7365, 0x20(%rax)
+1000d9a52:	c6 40 22 00	movb	$0x0, 0x22(%rax)
+1000d9a56:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9a5a:	ba 22 00 00 00	movl	$0x22, %edx
+1000d9a5f:	48 89 c6	movq	%rax, %rsi
+1000d9a62:	e8 29 e2 fd ff	callq	0x1000b7c90
+1000d9a67:	49 8d b6 70 1d 00 00	leaq	0x1d70(%r14), %rsi
+1000d9a6e:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9a72:	48 89 df	movq	%rbx, %rdi
+1000d9a75:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9a7a:	b9 03 00 00 00	movl	$0x3, %ecx
+1000d9a7f:	e8 2c 8c 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9a84:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9a88:	74 09	je	0x1000d9a93
+1000d9a8a:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9a8e:	e8 b9 25 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9a93:	4c 89 ff	movq	%r15, %rdi
+1000d9a96:	e8 b1 25 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9a9b:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9aa0:	e8 d1 25 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9aa5:	49 89 c7	movq	%rax, %r15
+1000d9aa8:	0f 10 05 05 41 07 00	movups	0x74105(%rip), %xmm0 ## literal pool for: "::optimizer_type" ; @0x10014dbb4 '::optimizer_type'
+1000d9aaf:	0f 11 40 0f	movups	%xmm0, 0xf(%rax)
+1000d9ab3:	0f 10 05 eb 40 07 00	movups	0x740eb(%rip), %xmm0 ## literal pool for: "ContourSmoother::optimizer_type" ; @0x10014dba5 'ContourSmoother::optimizer_type'
+1000d9aba:	0f 11 00	movups	%xmm0, (%rax)
+1000d9abd:	c6 40 1f 00	movb	$0x0, 0x1f(%rax)
+1000d9ac1:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9ac5:	ba 1f 00 00 00	movl	$0x1f, %edx
+1000d9aca:	48 89 c6	movq	%rax, %rsi
+1000d9acd:	e8 be e1 fd ff	callq	0x1000b7c90
+1000d9ad2:	49 8d b6 d0 1d 00 00	leaq	0x1dd0(%r14), %rsi
+1000d9ad9:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9add:	48 89 df	movq	%rbx, %rdi
+1000d9ae0:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9ae5:	b9 03 00 00 00	movl	$0x3, %ecx
+1000d9aea:	e8 c1 8b 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9aef:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9af3:	74 09	je	0x1000d9afe
+1000d9af5:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9af9:	e8 4e 25 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9afe:	4c 89 ff	movq	%r15, %rdi
+1000d9b01:	e8 46 25 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9b06:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9b0b:	e8 66 25 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9b10:	49 89 c7	movq	%rax, %r15
+1000d9b13:	0f 10 05 b7 40 07 00	movups	0x740b7(%rip), %xmm0 ## literal pool for: "her::prior_types" ; @0x10014dbd1 'her::prior_types'
+1000d9b1a:	0f 11 40 0c	movups	%xmm0, 0xc(%rax)
+1000d9b1e:	0f 10 05 a0 40 07 00	movups	0x740a0(%rip), %xmm0 ## literal pool for: "ContourSmoother::prior_types" ; @0x10014dbc5 'ContourSmoother::prior_types'
+1000d9b25:	0f 11 00	movups	%xmm0, (%rax)
+1000d9b28:	c6 40 1c 00	movb	$0x0, 0x1c(%rax)
+1000d9b2c:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9b30:	ba 1c 00 00 00	movl	$0x1c, %edx
+1000d9b35:	48 89 c6	movq	%rax, %rsi
+1000d9b38:	e8 53 e1 fd ff	callq	0x1000b7c90
+1000d9b3d:	49 8d b6 7c 1d 00 00	leaq	0x1d7c(%r14), %rsi
+1000d9b44:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9b48:	48 89 df	movq	%rbx, %rdi
+1000d9b4b:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9b50:	b9 03 00 00 00	movl	$0x3, %ecx
+1000d9b55:	e8 56 8b 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9b5a:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9b5e:	74 09	je	0x1000d9b69
+1000d9b60:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9b64:	e8 e3 24 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9b69:	4c 89 ff	movq	%r15, %rdi
+1000d9b6c:	e8 db 24 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9b71:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9b76:	e8 fb 24 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9b7b:	49 89 c7	movq	%rax, %r15
+1000d9b7e:	0f 10 05 6d 40 07 00	movups	0x7406d(%rip), %xmm0 ## literal pool for: ":prior_strengths" ; @0x10014dbf2 ':prior_strengths'
+1000d9b85:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9b89:	0f 10 05 52 40 07 00	movups	0x74052(%rip), %xmm0 ## literal pool for: "ContourSmoother::prior_strengths" ; @0x10014dbe2 'ContourSmoother::prior_strengths'
+1000d9b90:	0f 11 00	movups	%xmm0, (%rax)
+1000d9b93:	c6 40 20 00	movb	$0x0, 0x20(%rax)
+1000d9b97:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9b9b:	ba 20 00 00 00	movl	$0x20, %edx
+1000d9ba0:	48 89 c6	movq	%rax, %rsi
+1000d9ba3:	e8 e8 e0 fd ff	callq	0x1000b7c90
+1000d9ba8:	49 8d b6 88 1d 00 00	leaq	0x1d88(%r14), %rsi
+1000d9baf:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9bb3:	48 89 df	movq	%rbx, %rdi
+1000d9bb6:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9bbb:	b9 05 00 00 00	movl	$0x5, %ecx
+1000d9bc0:	e8 eb 8a 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9bc5:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9bc9:	74 09	je	0x1000d9bd4
+1000d9bcb:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9bcf:	e8 78 24 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9bd4:	4c 89 ff	movq	%r15, %rdi
+1000d9bd7:	e8 70 24 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9bdc:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9be1:	e8 90 24 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9be6:	49 89 c7	movq	%rax, %r15
+1000d9be9:	0f 10 05 23 40 07 00	movups	0x74023(%rip), %xmm0 ## literal pool for: ":length_penalty_weights" ; @0x10014dc13 ':length_penalty_weights'
+1000d9bf0:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9bf4:	0f 10 05 08 40 07 00	movups	0x74008(%rip), %xmm0 ## literal pool for: "ContourSmoother::length_penalty_weights" ; @0x10014dc03 'ContourSmoother::length_penalty_weights'
+1000d9bfb:	0f 11 00	movups	%xmm0, (%rax)
+1000d9bfe:	48 b8 5f 77 65 69 67 68 74 73	movabsq	$0x737468676965775f, %rax
+1000d9c08:	49 89 47 1f	movq	%rax, 0x1f(%r15)
+1000d9c0c:	41 c6 47 27 00	movb	$0x0, 0x27(%r15)
+1000d9c11:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9c15:	ba 27 00 00 00	movl	$0x27, %edx
+1000d9c1a:	4c 89 fe	movq	%r15, %rsi
+1000d9c1d:	e8 6e e0 fd ff	callq	0x1000b7c90
+1000d9c22:	49 8d b6 a0 1d 00 00	leaq	0x1da0(%r14), %rsi
+1000d9c29:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9c2d:	48 89 df	movq	%rbx, %rdi
+1000d9c30:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9c35:	b9 05 00 00 00	movl	$0x5, %ecx
+1000d9c3a:	e8 71 8a 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9c3f:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9c43:	74 09	je	0x1000d9c4e
+1000d9c45:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9c49:	e8 fe 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9c4e:	4c 89 ff	movq	%r15, %rdi
+1000d9c51:	e8 f6 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9c56:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9c5b:	e8 16 24 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9c60:	49 89 c7	movq	%rax, %r15
+1000d9c63:	0f 10 05 d1 3f 07 00	movups	0x73fd1(%rip), %xmm0 ## literal pool for: ":do_puncture_corners" ; @0x10014dc3b ':do_puncture_corners'
+1000d9c6a:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9c6e:	0f 10 05 b6 3f 07 00	movups	0x73fb6(%rip), %xmm0 ## literal pool for: "ContourSmoother::do_puncture_corners" ; @0x10014dc2b 'ContourSmoother::do_puncture_corners'
+1000d9c75:	0f 11 00	movups	%xmm0, (%rax)
+1000d9c78:	c7 40 20 6e 65 72 73	movl	$0x7372656e, 0x20(%rax)
+1000d9c7f:	c6 40 24 00	movb	$0x0, 0x24(%rax)
+1000d9c83:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9c87:	ba 24 00 00 00	movl	$0x24, %edx
+1000d9c8c:	48 89 c6	movq	%rax, %rsi
+1000d9c8f:	e8 fc df fd ff	callq	0x1000b7c90
+1000d9c94:	49 8d b6 b8 1d 00 00	leaq	0x1db8(%r14), %rsi
+1000d9c9b:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9c9f:	48 89 df	movq	%rbx, %rdi
+1000d9ca2:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9ca7:	b9 03 00 00 00	movl	$0x3, %ecx
+1000d9cac:	e8 ff 89 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9cb1:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9cb5:	74 09	je	0x1000d9cc0
+1000d9cb7:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9cbb:	e8 8c 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9cc0:	4c 89 ff	movq	%r15, %rdi
+1000d9cc3:	e8 84 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9cc8:	bf 20 00 00 00	movl	$0x20, %edi
+1000d9ccd:	e8 a4 23 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9cd2:	49 89 c7	movq	%rax, %r15
+1000d9cd5:	0f 10 05 7f 3f 07 00	movups	0x73f7f(%rip), %xmm0 ## literal pool for: "ther::is_enabled" ; @0x10014dc5b 'ther::is_enabled'
+1000d9cdc:	0f 11 40 0b	movups	%xmm0, 0xb(%rax)
+1000d9ce0:	0f 10 05 69 3f 07 00	movups	0x73f69(%rip), %xmm0 ## literal pool for: "ContourSmoother::is_enabled" ; @0x10014dc50 'ContourSmoother::is_enabled'
+1000d9ce7:	0f 11 00	movups	%xmm0, (%rax)
+1000d9cea:	c6 40 1b 00	movb	$0x0, 0x1b(%rax)
+1000d9cee:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000d9cf2:	ba 1b 00 00 00	movl	$0x1b, %edx
+1000d9cf7:	48 89 c6	movq	%rax, %rsi
+1000d9cfa:	e8 91 df fd ff	callq	0x1000b7c90
+1000d9cff:	49 8d b6 c4 1d 00 00	leaq	0x1dc4(%r14), %rsi
+1000d9d06:	4c 8d 45 90	leaq	-0x70(%rbp), %r8
+1000d9d0a:	48 89 df	movq	%rbx, %rdi
+1000d9d0d:	ba 03 00 00 00	movl	$0x3, %edx
+1000d9d12:	b9 03 00 00 00	movl	$0x3, %ecx
+1000d9d17:	e8 94 89 02 00	callq	__ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## ParameterFiler::addParameter(void*, int, ParameterTypeCodeType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000d9d1c:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000d9d20:	74 09	je	0x1000d9d2b
+1000d9d22:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000d9d26:	e8 21 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9d2b:	4c 89 ff	movq	%r15, %rdi
+1000d9d2e:	e8 19 23 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9d33:	48 89 df	movq	%rbx, %rdi
+1000d9d36:	e8 c5 8a 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000d9d3b:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9d40:	e8 31 23 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9d45:	49 8d b6 f0 1d 00 00	leaq	0x1df0(%r14), %rsi
+1000d9d4c:	48 89 85 a8 fd ff ff	movq	%rax, -0x258(%rbp)
+1000d9d53:	48 c7 85 98 fd ff ff 29 00 00 00	movq	$0x29, -0x268(%rbp)
+1000d9d5e:	48 c7 85 a0 fd ff ff 26 00 00 00	movq	$0x26, -0x260(%rbp)
+1000d9d69:	0f 10 05 0c 3f 07 00	movups	0x73f0c(%rip), %xmm0 ## literal pool for: ":length_barrier_weight" ; @0x10014dc7c ':length_barrier_weight'
+1000d9d70:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9d74:	0f 10 05 f1 3e 07 00	movups	0x73ef1(%rip), %xmm0 ## literal pool for: "ContourSmoother::length_barrier_weight" ; @0x10014dc6c 'ContourSmoother::length_barrier_weight'
+1000d9d7b:	0f 11 00	movups	%xmm0, (%rax)
+1000d9d7e:	48 b9 72 5f 77 65 69 67 68 74	movabsq	$0x7468676965775f72, %rcx
+1000d9d88:	48 89 48 1e	movq	%rcx, 0x1e(%rax)
+1000d9d8c:	c6 40 26 00	movb	$0x0, 0x26(%rax)
+1000d9d90:	48 8d 95 98 fd ff ff	leaq	-0x268(%rbp), %rdx
+1000d9d97:	48 89 df	movq	%rbx, %rdi
+1000d9d9a:	e8 a1 1c 00 00	callq	0x1000dba40
+1000d9d9f:	f6 85 98 fd ff ff 01	testb	$0x1, -0x268(%rbp)
+1000d9da6:	74 0c	je	0x1000d9db4
+1000d9da8:	48 8b bd a8 fd ff ff	movq	-0x258(%rbp), %rdi
+1000d9daf:	e8 98 22 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9db4:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9db9:	e8 b8 22 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9dbe:	49 8d b6 e0 1d 00 00	leaq	0x1de0(%r14), %rsi
+1000d9dc5:	48 89 85 c0 fd ff ff	movq	%rax, -0x240(%rbp)
+1000d9dcc:	48 c7 85 b0 fd ff ff 29 00 00 00	movq	$0x29, -0x250(%rbp)
+1000d9dd7:	48 c7 85 b8 fd ff ff 24 00 00 00	movq	$0x24, -0x248(%rbp)
+1000d9de2:	0f 10 05 ba 3e 07 00	movups	0x73eba(%rip), %xmm0 ## literal pool for: ":air_pressure_weight" ; @0x10014dca3 ':air_pressure_weight'
+1000d9de9:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9ded:	0f 10 05 9f 3e 07 00	movups	0x73e9f(%rip), %xmm0 ## literal pool for: "ContourSmoother::air_pressure_weight" ; @0x10014dc93 'ContourSmoother::air_pressure_weight'
+1000d9df4:	0f 11 00	movups	%xmm0, (%rax)
+1000d9df7:	c7 40 20 69 67 68 74	movl	$0x74686769, 0x20(%rax)
+1000d9dfe:	c6 40 24 00	movb	$0x0, 0x24(%rax)
+1000d9e02:	48 8d 95 b0 fd ff ff	leaq	-0x250(%rbp), %rdx
+1000d9e09:	48 89 df	movq	%rbx, %rdi
+1000d9e0c:	e8 2f 1c 00 00	callq	0x1000dba40
+1000d9e11:	f6 85 b0 fd ff ff 01	testb	$0x1, -0x250(%rbp)
+1000d9e18:	74 0c	je	0x1000d9e26
+1000d9e1a:	48 8b bd c0 fd ff ff	movq	-0x240(%rbp), %rdi
+1000d9e21:	e8 26 22 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9e26:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9e2b:	e8 46 22 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9e30:	49 8d b6 e8 1d 00 00	leaq	0x1de8(%r14), %rsi
+1000d9e37:	48 89 85 d8 fd ff ff	movq	%rax, -0x228(%rbp)
+1000d9e3e:	48 c7 85 c8 fd ff ff 29 00 00 00	movq	$0x29, -0x238(%rbp)
+1000d9e49:	48 c7 85 d0 fd ff ff 23 00 00 00	movq	$0x23, -0x230(%rbp)
+1000d9e54:	0f 10 05 6d 3e 07 00	movups	0x73e6d(%rip), %xmm0 ## literal pool for: ":perturbation_range" ; @0x10014dcc8 ':perturbation_range'
+1000d9e5b:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9e5f:	0f 10 05 52 3e 07 00	movups	0x73e52(%rip), %xmm0 ## literal pool for: "ContourSmoother::perturbation_range" ; @0x10014dcb8 'ContourSmoother::perturbation_range'
+1000d9e66:	0f 11 00	movups	%xmm0, (%rax)
+1000d9e69:	c7 40 1f 61 6e 67 65	movl	$0x65676e61, 0x1f(%rax)
+1000d9e70:	c6 40 23 00	movb	$0x0, 0x23(%rax)
+1000d9e74:	48 8d 95 c8 fd ff ff	leaq	-0x238(%rbp), %rdx
+1000d9e7b:	48 89 df	movq	%rbx, %rdi
+1000d9e7e:	e8 bd 1b 00 00	callq	0x1000dba40
+1000d9e83:	f6 85 c8 fd ff ff 01	testb	$0x1, -0x238(%rbp)
+1000d9e8a:	74 0c	je	0x1000d9e98
+1000d9e8c:	48 8b bd d8 fd ff ff	movq	-0x228(%rbp), %rdi
+1000d9e93:	e8 b4 21 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9e98:	bf 30 00 00 00	movl	$0x30, %edi
+1000d9e9d:	e8 d4 21 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9ea2:	49 8d b6 f8 1d 00 00	leaq	0x1df8(%r14), %rsi
+1000d9ea9:	48 89 85 f0 fd ff ff	movq	%rax, -0x210(%rbp)
+1000d9eb0:	48 c7 85 e0 fd ff ff 31 00 00 00	movq	$0x31, -0x220(%rbp)
+1000d9ebb:	48 c7 85 e8 fd ff ff 29 00 00 00	movq	$0x29, -0x218(%rbp)
+1000d9ec6:	0f 10 05 28 3e 07 00	movups	0x73e28(%rip), %xmm0 ## literal pool for: "_flatness_thresh" ; @0x10014dcf5 '_flatness_thresh'
+1000d9ecd:	0f 11 40 19	movups	%xmm0, 0x19(%rax)
+1000d9ed1:	0f 10 05 14 3e 07 00	movups	0x73e14(%rip), %xmm0 ## literal pool for: ":puncture_flatness_thresh" ; @0x10014dcec ':puncture_flatness_thresh'
+1000d9ed8:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9edc:	0f 10 05 f9 3d 07 00	movups	0x73df9(%rip), %xmm0 ## literal pool for: "ContourSmoother::puncture_flatness_thresh" ; @0x10014dcdc 'ContourSmoother::puncture_flatness_thresh'
+1000d9ee3:	0f 11 00	movups	%xmm0, (%rax)
+1000d9ee6:	c6 40 29 00	movb	$0x0, 0x29(%rax)
+1000d9eea:	48 8d 95 e0 fd ff ff	leaq	-0x220(%rbp), %rdx
+1000d9ef1:	48 89 df	movq	%rbx, %rdi
+1000d9ef4:	e8 47 1b 00 00	callq	0x1000dba40
+1000d9ef9:	f6 85 e0 fd ff ff 01	testb	$0x1, -0x220(%rbp)
+1000d9f00:	74 0c	je	0x1000d9f0e
+1000d9f02:	48 8b bd f0 fd ff ff	movq	-0x210(%rbp), %rdi
+1000d9f09:	e8 3e 21 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9f0e:	bf 28 00 00 00	movl	$0x28, %edi
+1000d9f13:	e8 5e 21 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9f18:	49 8d b6 00 1e 00 00	leaq	0x1e00(%r14), %rsi
+1000d9f1f:	48 89 85 08 fe ff ff	movq	%rax, -0x1f8(%rbp)
+1000d9f26:	48 c7 85 f8 fd ff ff 29 00 00 00	movq	$0x29, -0x208(%rbp)
+1000d9f31:	48 c7 85 00 fe ff ff 27 00 00 00	movq	$0x27, -0x200(%rbp)
+1000d9f3c:	0f 10 05 d3 3d 07 00	movups	0x73dd3(%rip), %xmm0 ## literal pool for: ":puncture_corner_thresh" ; @0x10014dd16 ':puncture_corner_thresh'
+1000d9f43:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9f47:	0f 10 05 b8 3d 07 00	movups	0x73db8(%rip), %xmm0 ## literal pool for: "ContourSmoother::puncture_corner_thresh" ; @0x10014dd06 'ContourSmoother::puncture_corner_thresh'
+1000d9f4e:	0f 11 00	movups	%xmm0, (%rax)
+1000d9f51:	48 b9 72 5f 74 68 72 65 73 68	movabsq	$0x6873657268745f72, %rcx
+1000d9f5b:	48 89 48 1f	movq	%rcx, 0x1f(%rax)
+1000d9f5f:	c6 40 27 00	movb	$0x0, 0x27(%rax)
+1000d9f63:	48 8d 95 f8 fd ff ff	leaq	-0x208(%rbp), %rdx
+1000d9f6a:	48 89 df	movq	%rbx, %rdi
+1000d9f6d:	e8 ce 1a 00 00	callq	0x1000dba40
+1000d9f72:	f6 85 f8 fd ff ff 01	testb	$0x1, -0x208(%rbp)
+1000d9f79:	74 0c	je	0x1000d9f87
+1000d9f7b:	48 8b bd 08 fe ff ff	movq	-0x1f8(%rbp), %rdi
+1000d9f82:	e8 c5 20 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000d9f87:	bf 30 00 00 00	movl	$0x30, %edi
+1000d9f8c:	e8 e5 20 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000d9f91:	49 8d b6 08 1e 00 00	leaq	0x1e08(%r14), %rsi
+1000d9f98:	48 89 85 20 fe ff ff	movq	%rax, -0x1e0(%rbp)
+1000d9f9f:	48 c7 85 10 fe ff ff 31 00 00 00	movq	$0x31, -0x1f0(%rbp)
+1000d9faa:	48 c7 85 18 fe ff ff 28 00 00 00	movq	$0x28, -0x1e8(%rbp)
+1000d9fb5:	0f 10 05 82 3d 07 00	movups	0x73d82(%rip), %xmm0 ## literal pool for: ":anti_inv_pot_meas_scale" ; @0x10014dd3e ':anti_inv_pot_meas_scale'
+1000d9fbc:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000d9fc0:	0f 10 05 67 3d 07 00	movups	0x73d67(%rip), %xmm0 ## literal pool for: "ContourSmoother::anti_inv_pot_meas_scale" ; @0x10014dd2e 'ContourSmoother::anti_inv_pot_meas_scale'
+1000d9fc7:	0f 11 00	movups	%xmm0, (%rax)
+1000d9fca:	48 b9 61 73 5f 73 63 61 6c 65	movabsq	$0x656c6163735f7361, %rcx
+1000d9fd4:	48 89 48 20	movq	%rcx, 0x20(%rax)
+1000d9fd8:	c6 40 28 00	movb	$0x0, 0x28(%rax)
+1000d9fdc:	48 8d 95 10 fe ff ff	leaq	-0x1f0(%rbp), %rdx
+1000d9fe3:	48 89 df	movq	%rbx, %rdi
+1000d9fe6:	e8 55 1a 00 00	callq	0x1000dba40
+1000d9feb:	f6 85 10 fe ff ff 01	testb	$0x1, -0x1f0(%rbp)
+1000d9ff2:	74 0c	je	0x1000da000
+1000d9ff4:	48 8b bd 20 fe ff ff	movq	-0x1e0(%rbp), %rdi
+1000d9ffb:	e8 4c 20 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da000:	bf 30 00 00 00	movl	$0x30, %edi
+1000da005:	e8 6c 20 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da00a:	49 8d b6 10 1e 00 00	leaq	0x1e10(%r14), %rsi
+1000da011:	48 89 85 38 fe ff ff	movq	%rax, -0x1c8(%rbp)
+1000da018:	48 c7 85 28 fe ff ff 31 00 00 00	movq	$0x31, -0x1d8(%rbp)
+1000da023:	48 c7 85 30 fe ff ff 29 00 00 00	movq	$0x29, -0x1d0(%rbp)
+1000da02e:	0f 10 05 3b 3d 07 00	movups	0x73d3b(%rip), %xmm0 ## literal pool for: "_pot_prior_scale" ; @0x10014dd70 '_pot_prior_scale'
+1000da035:	0f 11 40 19	movups	%xmm0, 0x19(%rax)
+1000da039:	0f 10 05 27 3d 07 00	movups	0x73d27(%rip), %xmm0 ## literal pool for: ":anti_inv_pot_prior_scale" ; @0x10014dd67 ':anti_inv_pot_prior_scale'
+1000da040:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000da044:	0f 10 05 0c 3d 07 00	movups	0x73d0c(%rip), %xmm0 ## literal pool for: "ContourSmoother::anti_inv_pot_prior_scale" ; @0x10014dd57 'ContourSmoother::anti_inv_pot_prior_scale'
+1000da04b:	0f 11 00	movups	%xmm0, (%rax)
+1000da04e:	c6 40 29 00	movb	$0x0, 0x29(%rax)
+1000da052:	48 8d 95 28 fe ff ff	leaq	-0x1d8(%rbp), %rdx
+1000da059:	48 89 df	movq	%rbx, %rdi
+1000da05c:	e8 df 19 00 00	callq	0x1000dba40
+1000da061:	f6 85 28 fe ff ff 01	testb	$0x1, -0x1d8(%rbp)
+1000da068:	74 0c	je	0x1000da076
+1000da06a:	48 8b bd 38 fe ff ff	movq	-0x1c8(%rbp), %rdi
+1000da071:	e8 d6 1f 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da076:	48 89 df	movq	%rbx, %rdi
+1000da079:	e8 82 87 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da07e:	bf 20 00 00 00	movl	$0x20, %edi
+1000da083:	e8 ee 1f 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da088:	48 89 85 50 fe ff ff	movq	%rax, -0x1b0(%rbp)
+1000da08f:	48 c7 85 40 fe ff ff 21 00 00 00	movq	$0x21, -0x1c0(%rbp)
+1000da09a:	48 c7 85 48 fe ff ff 1b 00 00 00	movq	$0x1b, -0x1b8(%rbp)
+1000da0a5:	0f 10 05 e0 3c 07 00	movups	0x73ce0(%rip), %xmm0 ## literal pool for: "ther - Optimizer" ; @0x10014dd8c 'ther - Optimizer'
+1000da0ac:	0f 11 40 0b	movups	%xmm0, 0xb(%rax)
+1000da0b0:	0f 10 05 ca 3c 07 00	movups	0x73cca(%rip), %xmm0 ## literal pool for: "ContourSmoother - Optimizer" ; @0x10014dd81 'ContourSmoother - Optimizer'
+1000da0b7:	0f 11 00	movups	%xmm0, (%rax)
+1000da0ba:	c6 40 1b 00	movb	$0x0, 0x1b(%rax)
+1000da0be:	48 8d b5 40 fe ff ff	leaq	-0x1c0(%rbp), %rsi
+1000da0c5:	48 89 df	movq	%rbx, %rdi
+1000da0c8:	e8 d3 87 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000da0cd:	f6 85 40 fe ff ff 01	testb	$0x1, -0x1c0(%rbp)
+1000da0d4:	74 0c	je	0x1000da0e2
+1000da0d6:	48 8b bd 50 fe ff ff	movq	-0x1b0(%rbp), %rdi
+1000da0dd:	e8 6a 1f 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da0e2:	48 8d 35 b4 3c 07 00	leaq	0x73cb4(%rip), %rsi ## literal pool for: "ContourSmoother::phase_%d" ; @0x10014dd9d 'ContourSmoother::phase_%d'
+1000da0e9:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da0ed:	31 d2	xorl	%edx, %edx
+1000da0ef:	31 c0	xorl	%eax, %eax
+1000da0f1:	e8 e8 20 05 00	callq	0x10012c1de ## symbol stub for: _sprintf
+1000da0f6:	48 89 df	movq	%rbx, %rdi
+1000da0f9:	e8 02 87 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da0fe:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da102:	e8 07 21 05 00	callq	0x10012c20e ## symbol stub for: _strlen
+1000da107:	48 83 f8 f6	cmpq	$-0xa, %rax
+1000da10b:	0f 87 f8 03 00 00	ja	0x1000da509
+1000da111:	49 89 c4	movq	%rax, %r12
+1000da114:	4c 8d ad 79 ff ff ff	leaq	-0x87(%rbp), %r13
+1000da11b:	48 83 f8 17	cmpq	$0x17, %rax
+1000da11f:	73 11	jae	0x1000da132
+1000da121:	43 8d 04 24	leal	(%r12,%r12), %eax
+1000da125:	88 85 78 ff ff ff	movb	%al, -0x88(%rbp)
+1000da12b:	4d 85 e4	testq	%r12, %r12
+1000da12e:	75 39	jne	0x1000da169
+1000da130:	eb 46	jmp	0x1000da178
+1000da132:	4c 89 e0	movq	%r12, %rax
+1000da135:	48 83 c8 07	orq	$0x7, %rax
+1000da139:	48 8d 48 01	leaq	0x1(%rax), %rcx
+1000da13d:	48 83 f8 17	cmpq	$0x17, %rax
+1000da141:	41 bf 1a 00 00 00	movl	$0x1a, %r15d
+1000da147:	4c 0f 45 f9	cmovneq	%rcx, %r15
+1000da14b:	4c 89 ff	movq	%r15, %rdi
+1000da14e:	e8 23 1f 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da153:	49 89 c5	movq	%rax, %r13
+1000da156:	48 89 45 88	movq	%rax, -0x78(%rbp)
+1000da15a:	49 83 cf 01	orq	$0x1, %r15
+1000da15e:	4c 89 bd 78 ff ff ff	movq	%r15, -0x88(%rbp)
+1000da165:	4c 89 65 80	movq	%r12, -0x80(%rbp)
+1000da169:	48 8d 75 90	leaq	-0x70(%rbp), %rsi
+1000da16d:	4c 89 ef	movq	%r13, %rdi
+1000da170:	4c 89 e2	movq	%r12, %rdx
+1000da173:	e8 24 20 05 00	callq	0x10012c19c ## symbol stub for: _memcpy
+1000da178:	49 8d b6 90 1f 00 00	leaq	0x1f90(%r14), %rsi
+1000da17f:	43 c6 44 25 00 00	movb	$0x0, (%r13,%r12)
+1000da185:	48 8d 95 78 ff ff ff	leaq	-0x88(%rbp), %rdx
+1000da18c:	4c 89 f7	movq	%r14, %rdi
+1000da18f:	e8 9c 19 00 00	callq	__ZN10CoreEngine27registerOptimizerParametersER17OptimizerSettingsNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## CoreEngine::registerOptimizerParameters(OptimizerSettings&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000da194:	f6 85 78 ff ff ff 01	testb	$0x1, -0x88(%rbp)
+1000da19b:	74 09	je	0x1000da1a6
+1000da19d:	48 8b 7d 88	movq	-0x78(%rbp), %rdi
+1000da1a1:	e8 a6 1e 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da1a6:	48 8d 35 f0 3b 07 00	leaq	0x73bf0(%rip), %rsi ## literal pool for: "ContourSmoother::phase_%d" ; @0x10014dd9d 'ContourSmoother::phase_%d'
+1000da1ad:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da1b1:	ba 01 00 00 00	movl	$0x1, %edx
+1000da1b6:	31 c0	xorl	%eax, %eax
+1000da1b8:	e8 21 20 05 00	callq	0x10012c1de ## symbol stub for: _sprintf
+1000da1bd:	48 89 df	movq	%rbx, %rdi
+1000da1c0:	e8 3b 86 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da1c5:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da1c9:	e8 40 20 05 00	callq	0x10012c20e ## symbol stub for: _strlen
+1000da1ce:	48 83 f8 f6	cmpq	$-0xa, %rax
+1000da1d2:	0f 87 31 03 00 00	ja	0x1000da509
+1000da1d8:	49 89 c4	movq	%rax, %r12
+1000da1db:	48 83 f8 17	cmpq	$0x17, %rax
+1000da1df:	73 18	jae	0x1000da1f9
+1000da1e1:	43 8d 04 24	leal	(%r12,%r12), %eax
+1000da1e5:	88 85 78 ff ff ff	movb	%al, -0x88(%rbp)
+1000da1eb:	4c 8d ad 79 ff ff ff	leaq	-0x87(%rbp), %r13
+1000da1f2:	4d 85 e4	testq	%r12, %r12
+1000da1f5:	75 39	jne	0x1000da230
+1000da1f7:	eb 46	jmp	0x1000da23f
+1000da1f9:	4c 89 e0	movq	%r12, %rax
+1000da1fc:	48 83 c8 07	orq	$0x7, %rax
+1000da200:	48 8d 48 01	leaq	0x1(%rax), %rcx
+1000da204:	48 83 f8 17	cmpq	$0x17, %rax
+1000da208:	41 bf 1a 00 00 00	movl	$0x1a, %r15d
+1000da20e:	4c 0f 45 f9	cmovneq	%rcx, %r15
+1000da212:	4c 89 ff	movq	%r15, %rdi
+1000da215:	e8 5c 1e 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da21a:	49 89 c5	movq	%rax, %r13
+1000da21d:	48 89 45 88	movq	%rax, -0x78(%rbp)
+1000da221:	49 83 cf 01	orq	$0x1, %r15
+1000da225:	4c 89 bd 78 ff ff ff	movq	%r15, -0x88(%rbp)
+1000da22c:	4c 89 65 80	movq	%r12, -0x80(%rbp)
+1000da230:	48 8d 75 90	leaq	-0x70(%rbp), %rsi
+1000da234:	4c 89 ef	movq	%r13, %rdi
+1000da237:	4c 89 e2	movq	%r12, %rdx
+1000da23a:	e8 5d 1f 05 00	callq	0x10012c19c ## symbol stub for: _memcpy
+1000da23f:	49 8d b6 58 20 00 00	leaq	0x2058(%r14), %rsi
+1000da246:	43 c6 44 25 00 00	movb	$0x0, (%r13,%r12)
+1000da24c:	48 8d 95 78 ff ff ff	leaq	-0x88(%rbp), %rdx
+1000da253:	4c 89 f7	movq	%r14, %rdi
+1000da256:	e8 d5 18 00 00	callq	__ZN10CoreEngine27registerOptimizerParametersER17OptimizerSettingsNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## CoreEngine::registerOptimizerParameters(OptimizerSettings&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000da25b:	f6 85 78 ff ff ff 01	testb	$0x1, -0x88(%rbp)
+1000da262:	74 09	je	0x1000da26d
+1000da264:	48 8b 7d 88	movq	-0x78(%rbp), %rdi
+1000da268:	e8 df 1d 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da26d:	48 8d 35 29 3b 07 00	leaq	0x73b29(%rip), %rsi ## literal pool for: "ContourSmoother::phase_%d" ; @0x10014dd9d 'ContourSmoother::phase_%d'
+1000da274:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da278:	ba 02 00 00 00	movl	$0x2, %edx
+1000da27d:	31 c0	xorl	%eax, %eax
+1000da27f:	e8 5a 1f 05 00	callq	0x10012c1de ## symbol stub for: _sprintf
+1000da284:	48 89 df	movq	%rbx, %rdi
+1000da287:	e8 74 85 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da28c:	48 8d 7d 90	leaq	-0x70(%rbp), %rdi
+1000da290:	e8 79 1f 05 00	callq	0x10012c20e ## symbol stub for: _strlen
+1000da295:	48 83 f8 f6	cmpq	$-0xa, %rax
+1000da299:	0f 87 6a 02 00 00	ja	0x1000da509
+1000da29f:	49 89 c4	movq	%rax, %r12
+1000da2a2:	48 83 f8 17	cmpq	$0x17, %rax
+1000da2a6:	73 18	jae	0x1000da2c0
+1000da2a8:	43 8d 04 24	leal	(%r12,%r12), %eax
+1000da2ac:	88 85 78 ff ff ff	movb	%al, -0x88(%rbp)
+1000da2b2:	4d 85 e4	testq	%r12, %r12
+1000da2b5:	4c 8d ad 79 ff ff ff	leaq	-0x87(%rbp), %r13
+1000da2bc:	75 39	jne	0x1000da2f7
+1000da2be:	eb 46	jmp	0x1000da306
+1000da2c0:	4c 89 e0	movq	%r12, %rax
+1000da2c3:	48 83 c8 07	orq	$0x7, %rax
+1000da2c7:	48 8d 48 01	leaq	0x1(%rax), %rcx
+1000da2cb:	48 83 f8 17	cmpq	$0x17, %rax
+1000da2cf:	41 bf 1a 00 00 00	movl	$0x1a, %r15d
+1000da2d5:	4c 0f 45 f9	cmovneq	%rcx, %r15
+1000da2d9:	4c 89 ff	movq	%r15, %rdi
+1000da2dc:	e8 95 1d 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da2e1:	49 89 c5	movq	%rax, %r13
+1000da2e4:	48 89 45 88	movq	%rax, -0x78(%rbp)
+1000da2e8:	49 83 cf 01	orq	$0x1, %r15
+1000da2ec:	4c 89 bd 78 ff ff ff	movq	%r15, -0x88(%rbp)
+1000da2f3:	4c 89 65 80	movq	%r12, -0x80(%rbp)
+1000da2f7:	48 8d 75 90	leaq	-0x70(%rbp), %rsi
+1000da2fb:	4c 89 ef	movq	%r13, %rdi
+1000da2fe:	4c 89 e2	movq	%r12, %rdx
+1000da301:	e8 96 1e 05 00	callq	0x10012c19c ## symbol stub for: _memcpy
+1000da306:	49 8d b6 20 21 00 00	leaq	0x2120(%r14), %rsi
+1000da30d:	43 c6 44 25 00 00	movb	$0x0, (%r13,%r12)
+1000da313:	48 8d 95 78 ff ff ff	leaq	-0x88(%rbp), %rdx
+1000da31a:	4c 89 f7	movq	%r14, %rdi
+1000da31d:	e8 0e 18 00 00	callq	__ZN10CoreEngine27registerOptimizerParametersER17OptimizerSettingsNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE ## CoreEngine::registerOptimizerParameters(OptimizerSettings&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000da322:	f6 85 78 ff ff ff 01	testb	$0x1, -0x88(%rbp)
+1000da329:	74 09	je	0x1000da334
+1000da32b:	48 8b 7d 88	movq	-0x78(%rbp), %rdi
+1000da32f:	e8 18 1d 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da334:	48 89 df	movq	%rbx, %rdi
+1000da337:	e8 c4 84 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da33c:	48 89 df	movq	%rbx, %rdi
+1000da33f:	e8 bc 84 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da344:	c6 85 60 ff ff ff 18	movb	$0x18, -0xa0(%rbp)
+1000da34b:	48 b8 42 65 7a 69 65 72 46 69	movabsq	$0x69467265697a6542, %rax
+1000da355:	48 89 85 61 ff ff ff	movq	%rax, -0x9f(%rbp)
+1000da35c:	c7 85 69 ff ff ff 74 74 65 72	movl	$0x72657474, -0x97(%rbp)
+1000da366:	c6 85 6d ff ff ff 00	movb	$0x0, -0x93(%rbp)
+1000da36d:	48 8d b5 60 ff ff ff	leaq	-0xa0(%rbp), %rsi
+1000da374:	48 89 df	movq	%rbx, %rdi
+1000da377:	e8 24 85 02 00	callq	__ZN14ParameterFiler10addCommentENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE ## ParameterFiler::addComment(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>)
+1000da37c:	f6 85 60 ff ff ff 01	testb	$0x1, -0xa0(%rbp)
+1000da383:	74 0c	je	0x1000da391
+1000da385:	48 8b bd 70 ff ff ff	movq	-0x90(%rbp), %rdi
+1000da38c:	e8 bb 1c 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da391:	48 89 df	movq	%rbx, %rdi
+1000da394:	e8 67 84 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da399:	bf 20 00 00 00	movl	$0x20, %edi
+1000da39e:	e8 d3 1c 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da3a3:	49 8d b6 38 24 00 00	leaq	0x2438(%r14), %rsi
+1000da3aa:	48 89 85 68 fe ff ff	movq	%rax, -0x198(%rbp)
+1000da3b1:	48 c7 85 58 fe ff ff 21 00 00 00	movq	$0x21, -0x1a8(%rbp)
+1000da3bc:	48 c7 85 60 fe ff ff 1c 00 00 00	movq	$0x1c, -0x1a0(%rbp)
+1000da3c7:	0f 10 05 02 3a 07 00	movups	0x73a02(%rip), %xmm0 ## literal pool for: "::max_iterations" ; @0x10014ddd0 '::max_iterations'
+1000da3ce:	0f 11 40 0c	movups	%xmm0, 0xc(%rax)
+1000da3d2:	0f 10 05 eb 39 07 00	movups	0x739eb(%rip), %xmm0 ## literal pool for: "BezierFitter::max_iterations" ; @0x10014ddc4 'BezierFitter::max_iterations'
+1000da3d9:	0f 11 00	movups	%xmm0, (%rax)
+1000da3dc:	c6 40 1c 00	movb	$0x0, 0x1c(%rax)
+1000da3e0:	48 8d 95 58 fe ff ff	leaq	-0x1a8(%rbp), %rdx
+1000da3e7:	48 89 df	movq	%rbx, %rdi
+1000da3ea:	e8 71 14 00 00	callq	0x1000db860
+1000da3ef:	f6 85 58 fe ff ff 01	testb	$0x1, -0x1a8(%rbp)
+1000da3f6:	74 0c	je	0x1000da404
+1000da3f8:	48 8b bd 68 fe ff ff	movq	-0x198(%rbp), %rdi
+1000da3ff:	e8 48 1c 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da404:	bf 28 00 00 00	movl	$0x28, %edi
+1000da409:	e8 68 1c 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da40e:	49 8d b6 20 24 00 00	leaq	0x2420(%r14), %rsi
+1000da415:	48 89 85 80 fe ff ff	movq	%rax, -0x180(%rbp)
+1000da41c:	48 c7 85 70 fe ff ff 29 00 00 00	movq	$0x29, -0x190(%rbp)
+1000da427:	48 c7 85 78 fe ff ff 21 00 00 00	movq	$0x21, -0x188(%rbp)
+1000da432:	0f 10 05 b8 39 07 00	movups	0x739b8(%rip), %xmm0 ## literal pool for: "at_thresh_initial" ; @0x10014ddf1 'at_thresh_initial'
+1000da439:	0f 11 40 10	movups	%xmm0, 0x10(%rax)
+1000da43d:	0f 10 05 9d 39 07 00	movups	0x7399d(%rip), %xmm0 ## literal pool for: "BezierFitter::stat_thresh_initial" ; @0x10014dde1 'BezierFitter::stat_thresh_initial'
+1000da444:	0f 11 00	movups	%xmm0, (%rax)
+1000da447:	66 c7 40 20 6c 00	movw	$0x6c, 0x20(%rax)
+1000da44d:	48 8d 95 70 fe ff ff	leaq	-0x190(%rbp), %rdx
+1000da454:	48 89 df	movq	%rbx, %rdi
+1000da457:	e8 e4 15 00 00	callq	0x1000dba40
+1000da45c:	f6 85 70 fe ff ff 01	testb	$0x1, -0x190(%rbp)
+1000da463:	74 0c	je	0x1000da471
+1000da465:	48 8b bd 80 fe ff ff	movq	-0x180(%rbp), %rdi
+1000da46c:	e8 db 1b 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da471:	bf 20 00 00 00	movl	$0x20, %edi
+1000da476:	e8 fb 1b 05 00	callq	0x10012c076 ## symbol stub for: __Znwm
+1000da47b:	49 81 c6 28 24 00 00	addq	$0x2428, %r14
+1000da482:	48 89 85 98 fe ff ff	movq	%rax, -0x168(%rbp)
+1000da489:	48 c7 85 88 fe ff ff 21 00 00 00	movq	$0x21, -0x178(%rbp)
+1000da494:	48 c7 85 90 fe ff ff 1f 00 00 00	movq	$0x1f, -0x170(%rbp)
+1000da49f:	0f 10 05 6c 39 07 00	movups	0x7396c(%rip), %xmm0 ## literal pool for: "tat_thresh_final" ; @0x10014de12 'tat_thresh_final'
+1000da4a6:	0f 11 40 0f	movups	%xmm0, 0xf(%rax)
+1000da4aa:	0f 10 05 52 39 07 00	movups	0x73952(%rip), %xmm0 ## literal pool for: "BezierFitter::stat_thresh_final" ; @0x10014de03 'BezierFitter::stat_thresh_final'
+1000da4b1:	0f 11 00	movups	%xmm0, (%rax)
+1000da4b4:	c6 40 1f 00	movb	$0x0, 0x1f(%rax)
+1000da4b8:	48 8d 95 88 fe ff ff	leaq	-0x178(%rbp), %rdx
+1000da4bf:	48 89 df	movq	%rbx, %rdi
+1000da4c2:	4c 89 f6	movq	%r14, %rsi
+1000da4c5:	e8 76 15 00 00	callq	0x1000dba40
+1000da4ca:	f6 85 88 fe ff ff 01	testb	$0x1, -0x178(%rbp)
+1000da4d1:	74 0c	je	0x1000da4df
+1000da4d3:	48 8b bd 98 fe ff ff	movq	-0x168(%rbp), %rdi
+1000da4da:	e8 6d 1b 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da4df:	48 89 df	movq	%rbx, %rdi
+1000da4e2:	e8 19 83 02 00	callq	__ZN14ParameterFiler12addBlankLineEv ## ParameterFiler::addBlankLine()
+1000da4e7:	48 8b 05 1a 6c 21 00	movq	0x216c1a(%rip), %rax ## literal pool symbol address: ___stack_chk_guard ; @0x1002f1108 f64=0.0 f32=0.0
+1000da4ee:	48 8b 00	movq	(%rax), %rax
+1000da4f1:	48 3b 45 d0	cmpq	-0x30(%rbp), %rax
+1000da4f5:	75 19	jne	0x1000da510
+1000da4f7:	48 81 c4 78 05 00 00	addq	$0x578, %rsp
+1000da4fe:	5b	popq	%rbx
+1000da4ff:	41 5c	popq	%r12
+1000da501:	41 5d	popq	%r13
+1000da503:	41 5e	popq	%r14
+1000da505:	41 5f	popq	%r15
+1000da507:	5d	popq	%rbp
+1000da508:	c3	retq
+1000da509:	e8 32 36 f8 ff	callq	0x10005db40
+1000da50e:	0f 0b	ud2
+1000da510:	e8 c1 1b 05 00	callq	0x10012c0d6 ## symbol stub for: ___stack_chk_fail
+1000da515:	48 89 c3	movq	%rax, %rbx
+1000da518:	f6 85 88 fe ff ff 01	testb	$0x1, -0x178(%rbp)
+1000da51f:	0f 84 07 06 00 00	je	0x1000dab2c
+1000da525:	48 8b bd 98 fe ff ff	movq	-0x168(%rbp), %rdi
+1000da52c:	e9 5a 01 00 00	jmp	0x1000da68b
+1000da531:	48 89 c3	movq	%rax, %rbx
+1000da534:	f6 85 70 fe ff ff 01	testb	$0x1, -0x190(%rbp)
+1000da53b:	0f 84 eb 05 00 00	je	0x1000dab2c
+1000da541:	48 8b bd 80 fe ff ff	movq	-0x180(%rbp), %rdi
+1000da548:	e9 3e 01 00 00	jmp	0x1000da68b
+1000da54d:	48 89 c3	movq	%rax, %rbx
+1000da550:	f6 85 58 fe ff ff 01	testb	$0x1, -0x1a8(%rbp)
+1000da557:	0f 84 cf 05 00 00	je	0x1000dab2c
+1000da55d:	48 8b bd 68 fe ff ff	movq	-0x198(%rbp), %rdi
+1000da564:	e9 22 01 00 00	jmp	0x1000da68b
+1000da569:	48 89 c3	movq	%rax, %rbx
+1000da56c:	f6 85 60 ff ff ff 01	testb	$0x1, -0xa0(%rbp)
+1000da573:	0f 84 b3 05 00 00	je	0x1000dab2c
+1000da579:	48 8b bd 70 ff ff ff	movq	-0x90(%rbp), %rdi
+1000da580:	e9 06 01 00 00	jmp	0x1000da68b
+1000da585:	48 89 c3	movq	%rax, %rbx
+1000da588:	f6 85 40 fe ff ff 01	testb	$0x1, -0x1c0(%rbp)
+1000da58f:	0f 84 97 05 00 00	je	0x1000dab2c
+1000da595:	48 8b bd 50 fe ff ff	movq	-0x1b0(%rbp), %rdi
+1000da59c:	e9 ea 00 00 00	jmp	0x1000da68b
+1000da5a1:	48 89 c3	movq	%rax, %rbx
+1000da5a4:	f6 85 28 fe ff ff 01	testb	$0x1, -0x1d8(%rbp)
+1000da5ab:	0f 84 7b 05 00 00	je	0x1000dab2c
+1000da5b1:	48 8b bd 38 fe ff ff	movq	-0x1c8(%rbp), %rdi
+1000da5b8:	e9 ce 00 00 00	jmp	0x1000da68b
+1000da5bd:	48 89 c3	movq	%rax, %rbx
+1000da5c0:	f6 85 10 fe ff ff 01	testb	$0x1, -0x1f0(%rbp)
+1000da5c7:	0f 84 5f 05 00 00	je	0x1000dab2c
+1000da5cd:	48 8b bd 20 fe ff ff	movq	-0x1e0(%rbp), %rdi
+1000da5d4:	e9 b2 00 00 00	jmp	0x1000da68b
+1000da5d9:	48 89 c3	movq	%rax, %rbx
+1000da5dc:	f6 85 f8 fd ff ff 01	testb	$0x1, -0x208(%rbp)
+1000da5e3:	0f 84 43 05 00 00	je	0x1000dab2c
+1000da5e9:	48 8b bd 08 fe ff ff	movq	-0x1f8(%rbp), %rdi
+1000da5f0:	e9 96 00 00 00	jmp	0x1000da68b
+1000da5f5:	48 89 c3	movq	%rax, %rbx
+1000da5f8:	f6 85 e0 fd ff ff 01	testb	$0x1, -0x220(%rbp)
+1000da5ff:	0f 84 27 05 00 00	je	0x1000dab2c
+1000da605:	48 8b bd f0 fd ff ff	movq	-0x210(%rbp), %rdi
+1000da60c:	eb 7d	jmp	0x1000da68b
+1000da60e:	48 89 c3	movq	%rax, %rbx
+1000da611:	f6 85 c8 fd ff ff 01	testb	$0x1, -0x238(%rbp)
+1000da618:	0f 84 0e 05 00 00	je	0x1000dab2c
+1000da61e:	48 8b bd d8 fd ff ff	movq	-0x228(%rbp), %rdi
+1000da625:	eb 64	jmp	0x1000da68b
+1000da627:	48 89 c3	movq	%rax, %rbx
+1000da62a:	f6 85 b0 fd ff ff 01	testb	$0x1, -0x250(%rbp)
+1000da631:	0f 84 f5 04 00 00	je	0x1000dab2c
+1000da637:	48 8b bd c0 fd ff ff	movq	-0x240(%rbp), %rdi
+1000da63e:	eb 4b	jmp	0x1000da68b
+1000da640:	48 89 c3	movq	%rax, %rbx
+1000da643:	f6 85 98 fd ff ff 01	testb	$0x1, -0x268(%rbp)
+1000da64a:	0f 84 dc 04 00 00	je	0x1000dab2c
+1000da650:	48 8b bd a8 fd ff ff	movq	-0x258(%rbp), %rdi
+1000da657:	eb 32	jmp	0x1000da68b
+1000da659:	eb 16	jmp	0x1000da671
+1000da65b:	eb 28	jmp	0x1000da685
+1000da65d:	eb 12	jmp	0x1000da671
+1000da65f:	eb 24	jmp	0x1000da685
+1000da661:	eb 0e	jmp	0x1000da671
+1000da663:	eb 20	jmp	0x1000da685
+1000da665:	eb 0a	jmp	0x1000da671
+1000da667:	eb 1c	jmp	0x1000da685
+1000da669:	eb 06	jmp	0x1000da671
+1000da66b:	eb 18	jmp	0x1000da685
+1000da66d:	eb 02	jmp	0x1000da671
+1000da66f:	eb 14	jmp	0x1000da685
+1000da671:	48 89 c3	movq	%rax, %rbx
+1000da674:	f6 45 90 01	testb	$0x1, -0x70(%rbp)
+1000da678:	74 0e	je	0x1000da688
+1000da67a:	48 8b 7d a0	movq	-0x60(%rbp), %rdi
+1000da67e:	e8 c9 19 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da683:	eb 03	jmp	0x1000da688
+1000da685:	48 89 c3	movq	%rax, %rbx
+1000da688:	4c 89 ff	movq	%r15, %rdi
+1000da68b:	e8 bc 19 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000da690:	48 89 df	movq	%rbx, %rdi
+1000da693:	e8 52 06 05 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+1000da698:	48 89 c3	movq	%rax, %rbx
+1000da69b:	f6 85 48 ff ff ff 01	testb	$0x1, -0xb8(%rbp)
+1000da6a2:	0f 84 84 04 00 00	je	0x1000dab2c
+1000da6a8:	48 8b bd 58 ff ff ff	movq	-0xa8(%rbp), %rdi
+1000da6af:	eb da	jmp	0x1000da68b
+1000da6b1:	48 89 c3	movq	%rax, %rbx
+1000da6b4:	f6 85 80 fd ff ff 01	testb	$0x1, -0x280(%rbp)
+1000da6bb:	0f 84 6b 04 00 00	je	0x1000dab2c
+1000da6c1:	48 8b bd 90 fd ff ff	movq	-0x270(%rbp), %rdi
+1000da6c8:	eb c1	jmp	0x1000da68b
+1000da6ca:	48 89 c3	movq	%rax, %rbx
+1000da6cd:	f6 85 68 fd ff ff 01	testb	$0x1, -0x298(%rbp)
+1000da6d4:	0f 84 52 04 00 00	je	0x1000dab2c
+1000da6da:	48 8b bd 78 fd ff ff	movq	-0x288(%rbp), %rdi
+1000da6e1:	eb a8	jmp	0x1000da68b
+1000da6e3:	48 89 c3	movq	%rax, %rbx
+1000da6e6:	f6 85 50 fd ff ff 01	testb	$0x1, -0x2b0(%rbp)
+1000da6ed:	0f 84 39 04 00 00	je	0x1000dab2c
+1000da6f3:	48 8b bd 60 fd ff ff	movq	-0x2a0(%rbp), %rdi
+1000da6fa:	eb 8f	jmp	0x1000da68b
+1000da6fc:	48 89 c3	movq	%rax, %rbx
+1000da6ff:	f6 85 38 fd ff ff 01	testb	$0x1, -0x2c8(%rbp)
+1000da706:	0f 84 20 04 00 00	je	0x1000dab2c
+1000da70c:	48 8b bd 48 fd ff ff	movq	-0x2b8(%rbp), %rdi
+1000da713:	e9 73 ff ff ff	jmp	0x1000da68b
+1000da718:	48 89 c3	movq	%rax, %rbx
+1000da71b:	f6 85 30 ff ff ff 01	testb	$0x1, -0xd0(%rbp)
+1000da722:	0f 84 04 04 00 00	je	0x1000dab2c
+1000da728:	48 8b bd 40 ff ff ff	movq	-0xc0(%rbp), %rdi
+1000da72f:	e9 57 ff ff ff	jmp	0x1000da68b
+1000da734:	48 89 c3	movq	%rax, %rbx
+1000da737:	f6 85 20 fd ff ff 01	testb	$0x1, -0x2e0(%rbp)
+1000da73e:	0f 84 e8 03 00 00	je	0x1000dab2c
+1000da744:	48 8b bd 30 fd ff ff	movq	-0x2d0(%rbp), %rdi
+1000da74b:	e9 3b ff ff ff	jmp	0x1000da68b
+1000da750:	48 89 c3	movq	%rax, %rbx
+1000da753:	f6 85 08 fd ff ff 01	testb	$0x1, -0x2f8(%rbp)
+1000da75a:	0f 84 cc 03 00 00	je	0x1000dab2c
+1000da760:	48 8b bd 18 fd ff ff	movq	-0x2e8(%rbp), %rdi
+1000da767:	e9 1f ff ff ff	jmp	0x1000da68b
+1000da76c:	48 89 c3	movq	%rax, %rbx
+1000da76f:	f6 85 f0 fc ff ff 01	testb	$0x1, -0x310(%rbp)
+1000da776:	0f 84 b0 03 00 00	je	0x1000dab2c
+1000da77c:	48 8b bd 00 fd ff ff	movq	-0x300(%rbp), %rdi
+1000da783:	e9 03 ff ff ff	jmp	0x1000da68b
+1000da788:	48 89 c3	movq	%rax, %rbx
+1000da78b:	f6 85 18 ff ff ff 01	testb	$0x1, -0xe8(%rbp)
+1000da792:	0f 84 94 03 00 00	je	0x1000dab2c
+1000da798:	48 8b bd 28 ff ff ff	movq	-0xd8(%rbp), %rdi
+1000da79f:	e9 e7 fe ff ff	jmp	0x1000da68b
+1000da7a4:	48 89 c3	movq	%rax, %rbx
+1000da7a7:	f6 85 d8 fc ff ff 01	testb	$0x1, -0x328(%rbp)
+1000da7ae:	0f 84 78 03 00 00	je	0x1000dab2c
+1000da7b4:	48 8b bd e8 fc ff ff	movq	-0x318(%rbp), %rdi
+1000da7bb:	e9 cb fe ff ff	jmp	0x1000da68b
+1000da7c0:	48 89 c3	movq	%rax, %rbx
+1000da7c3:	f6 85 c0 fc ff ff 01	testb	$0x1, -0x340(%rbp)
+1000da7ca:	0f 84 5c 03 00 00	je	0x1000dab2c
+1000da7d0:	48 8b bd d0 fc ff ff	movq	-0x330(%rbp), %rdi
+1000da7d7:	e9 af fe ff ff	jmp	0x1000da68b
+1000da7dc:	48 89 c3	movq	%rax, %rbx
+1000da7df:	f6 85 00 ff ff ff 01	testb	$0x1, -0x100(%rbp)
+1000da7e6:	0f 84 40 03 00 00	je	0x1000dab2c
+1000da7ec:	48 8b bd 10 ff ff ff	movq	-0xf0(%rbp), %rdi
+1000da7f3:	e9 93 fe ff ff	jmp	0x1000da68b
+1000da7f8:	48 89 c3	movq	%rax, %rbx
+1000da7fb:	f6 85 a8 fc ff ff 01	testb	$0x1, -0x358(%rbp)
+1000da802:	0f 84 24 03 00 00	je	0x1000dab2c
+1000da808:	48 8b bd b8 fc ff ff	movq	-0x348(%rbp), %rdi
+1000da80f:	e9 77 fe ff ff	jmp	0x1000da68b
+1000da814:	48 89 c3	movq	%rax, %rbx
+1000da817:	f6 85 90 fc ff ff 01	testb	$0x1, -0x370(%rbp)
+1000da81e:	0f 84 08 03 00 00	je	0x1000dab2c
+1000da824:	48 8b bd a0 fc ff ff	movq	-0x360(%rbp), %rdi
+1000da82b:	e9 5b fe ff ff	jmp	0x1000da68b
+1000da830:	48 89 c3	movq	%rax, %rbx
+1000da833:	f6 85 78 fc ff ff 01	testb	$0x1, -0x388(%rbp)
+1000da83a:	0f 84 ec 02 00 00	je	0x1000dab2c
+1000da840:	48 8b bd 88 fc ff ff	movq	-0x378(%rbp), %rdi
+1000da847:	e9 3f fe ff ff	jmp	0x1000da68b
+1000da84c:	48 89 c3	movq	%rax, %rbx
+1000da84f:	f6 85 60 fc ff ff 01	testb	$0x1, -0x3a0(%rbp)
+1000da856:	0f 84 d0 02 00 00	je	0x1000dab2c
+1000da85c:	48 8b bd 70 fc ff ff	movq	-0x390(%rbp), %rdi
+1000da863:	e9 23 fe ff ff	jmp	0x1000da68b
+1000da868:	48 89 c3	movq	%rax, %rbx
+1000da86b:	f6 85 48 fc ff ff 01	testb	$0x1, -0x3b8(%rbp)
+1000da872:	0f 84 b4 02 00 00	je	0x1000dab2c
+1000da878:	48 8b bd 58 fc ff ff	movq	-0x3a8(%rbp), %rdi
+1000da87f:	e9 07 fe ff ff	jmp	0x1000da68b
+1000da884:	48 89 c3	movq	%rax, %rbx
+1000da887:	f6 85 30 fc ff ff 01	testb	$0x1, -0x3d0(%rbp)
+1000da88e:	0f 84 98 02 00 00	je	0x1000dab2c
+1000da894:	48 8b bd 40 fc ff ff	movq	-0x3c0(%rbp), %rdi
+1000da89b:	e9 eb fd ff ff	jmp	0x1000da68b
+1000da8a0:	48 89 c3	movq	%rax, %rbx
+1000da8a3:	f6 85 18 fc ff ff 01	testb	$0x1, -0x3e8(%rbp)
+1000da8aa:	0f 84 7c 02 00 00	je	0x1000dab2c
+1000da8b0:	48 8b bd 28 fc ff ff	movq	-0x3d8(%rbp), %rdi
+1000da8b7:	e9 cf fd ff ff	jmp	0x1000da68b
+1000da8bc:	48 89 c3	movq	%rax, %rbx
+1000da8bf:	f6 85 00 fc ff ff 01	testb	$0x1, -0x400(%rbp)
+1000da8c6:	0f 84 60 02 00 00	je	0x1000dab2c
+1000da8cc:	48 8b bd 10 fc ff ff	movq	-0x3f0(%rbp), %rdi
+1000da8d3:	e9 b3 fd ff ff	jmp	0x1000da68b
+1000da8d8:	48 89 c3	movq	%rax, %rbx
+1000da8db:	f6 85 e8 fb ff ff 01	testb	$0x1, -0x418(%rbp)
+1000da8e2:	0f 84 44 02 00 00	je	0x1000dab2c
+1000da8e8:	48 8b bd f8 fb ff ff	movq	-0x408(%rbp), %rdi
+1000da8ef:	e9 97 fd ff ff	jmp	0x1000da68b
+1000da8f4:	48 89 c3	movq	%rax, %rbx
+1000da8f7:	f6 85 d0 fb ff ff 01	testb	$0x1, -0x430(%rbp)
+1000da8fe:	0f 84 28 02 00 00	je	0x1000dab2c
+1000da904:	48 8b bd e0 fb ff ff	movq	-0x420(%rbp), %rdi
+1000da90b:	e9 7b fd ff ff	jmp	0x1000da68b
+1000da910:	48 89 c3	movq	%rax, %rbx
+1000da913:	f6 85 b8 fb ff ff 01	testb	$0x1, -0x448(%rbp)
+1000da91a:	0f 84 0c 02 00 00	je	0x1000dab2c
+1000da920:	48 8b bd c8 fb ff ff	movq	-0x438(%rbp), %rdi
+1000da927:	e9 5f fd ff ff	jmp	0x1000da68b
+1000da92c:	48 89 c3	movq	%rax, %rbx
+1000da92f:	f6 85 a0 fb ff ff 01	testb	$0x1, -0x460(%rbp)
+1000da936:	0f 84 f0 01 00 00	je	0x1000dab2c
+1000da93c:	48 8b bd b0 fb ff ff	movq	-0x450(%rbp), %rdi
+1000da943:	e9 43 fd ff ff	jmp	0x1000da68b
+1000da948:	48 89 c3	movq	%rax, %rbx
+1000da94b:	f6 85 88 fb ff ff 01	testb	$0x1, -0x478(%rbp)
+1000da952:	0f 84 d4 01 00 00	je	0x1000dab2c
+1000da958:	48 8b bd 98 fb ff ff	movq	-0x468(%rbp), %rdi
+1000da95f:	e9 27 fd ff ff	jmp	0x1000da68b
+1000da964:	48 89 c3	movq	%rax, %rbx
+1000da967:	f6 85 e8 fe ff ff 01	testb	$0x1, -0x118(%rbp)
+1000da96e:	0f 84 b8 01 00 00	je	0x1000dab2c
+1000da974:	48 8b bd f8 fe ff ff	movq	-0x108(%rbp), %rdi
+1000da97b:	e9 0b fd ff ff	jmp	0x1000da68b
+1000da980:	48 89 c3	movq	%rax, %rbx
+1000da983:	f6 85 70 fb ff ff 01	testb	$0x1, -0x490(%rbp)
+1000da98a:	0f 84 9c 01 00 00	je	0x1000dab2c
+1000da990:	48 8b bd 80 fb ff ff	movq	-0x480(%rbp), %rdi
+1000da997:	e9 ef fc ff ff	jmp	0x1000da68b
+1000da99c:	48 89 c3	movq	%rax, %rbx
+1000da99f:	f6 85 58 fb ff ff 01	testb	$0x1, -0x4a8(%rbp)
+1000da9a6:	0f 84 80 01 00 00	je	0x1000dab2c
+1000da9ac:	48 8b bd 68 fb ff ff	movq	-0x498(%rbp), %rdi
+1000da9b3:	e9 d3 fc ff ff	jmp	0x1000da68b
+1000da9b8:	48 89 c3	movq	%rax, %rbx
+1000da9bb:	f6 85 40 fb ff ff 01	testb	$0x1, -0x4c0(%rbp)
+1000da9c2:	0f 84 64 01 00 00	je	0x1000dab2c
+1000da9c8:	48 8b bd 50 fb ff ff	movq	-0x4b0(%rbp), %rdi
+1000da9cf:	e9 b7 fc ff ff	jmp	0x1000da68b
+1000da9d4:	48 89 c3	movq	%rax, %rbx
+1000da9d7:	f6 85 28 fb ff ff 01	testb	$0x1, -0x4d8(%rbp)
+1000da9de:	0f 84 48 01 00 00	je	0x1000dab2c
+1000da9e4:	48 8b bd 38 fb ff ff	movq	-0x4c8(%rbp), %rdi
+1000da9eb:	e9 9b fc ff ff	jmp	0x1000da68b
+1000da9f0:	48 89 c3	movq	%rax, %rbx
+1000da9f3:	f6 85 10 fb ff ff 01	testb	$0x1, -0x4f0(%rbp)
+1000da9fa:	0f 84 2c 01 00 00	je	0x1000dab2c
+1000daa00:	48 8b bd 20 fb ff ff	movq	-0x4e0(%rbp), %rdi
+1000daa07:	e9 7f fc ff ff	jmp	0x1000da68b
+1000daa0c:	48 89 c3	movq	%rax, %rbx
+1000daa0f:	f6 85 f8 fa ff ff 01	testb	$0x1, -0x508(%rbp)
+1000daa16:	0f 84 10 01 00 00	je	0x1000dab2c
+1000daa1c:	48 8b bd 08 fb ff ff	movq	-0x4f8(%rbp), %rdi
+1000daa23:	e9 63 fc ff ff	jmp	0x1000da68b
+1000daa28:	48 89 c3	movq	%rax, %rbx
+1000daa2b:	f6 85 e0 fa ff ff 01	testb	$0x1, -0x520(%rbp)
+1000daa32:	0f 84 f4 00 00 00	je	0x1000dab2c
+1000daa38:	48 8b bd f0 fa ff ff	movq	-0x510(%rbp), %rdi
+1000daa3f:	e9 47 fc ff ff	jmp	0x1000da68b
+1000daa44:	48 89 c3	movq	%rax, %rbx
+1000daa47:	f6 85 d0 fe ff ff 01	testb	$0x1, -0x130(%rbp)
+1000daa4e:	0f 84 d8 00 00 00	je	0x1000dab2c
+1000daa54:	48 8b bd e0 fe ff ff	movq	-0x120(%rbp), %rdi
+1000daa5b:	e9 2b fc ff ff	jmp	0x1000da68b
+1000daa60:	48 89 c3	movq	%rax, %rbx
+1000daa63:	f6 85 c8 fa ff ff 01	testb	$0x1, -0x538(%rbp)
+1000daa6a:	0f 84 bc 00 00 00	je	0x1000dab2c
+1000daa70:	48 8b bd d8 fa ff ff	movq	-0x528(%rbp), %rdi
+1000daa77:	e9 0f fc ff ff	jmp	0x1000da68b
+1000daa7c:	48 89 c3	movq	%rax, %rbx
+1000daa7f:	f6 85 b0 fa ff ff 01	testb	$0x1, -0x550(%rbp)
+1000daa86:	0f 84 a0 00 00 00	je	0x1000dab2c
+1000daa8c:	48 8b bd c0 fa ff ff	movq	-0x540(%rbp), %rdi
+1000daa93:	e9 f3 fb ff ff	jmp	0x1000da68b
+1000daa98:	48 89 c3	movq	%rax, %rbx
+1000daa9b:	f6 85 b8 fe ff ff 01	testb	$0x1, -0x148(%rbp)
+1000daaa2:	0f 84 84 00 00 00	je	0x1000dab2c
+1000daaa8:	48 8b bd c8 fe ff ff	movq	-0x138(%rbp), %rdi
+1000daaaf:	e9 d7 fb ff ff	jmp	0x1000da68b
+1000daab4:	48 89 c3	movq	%rax, %rbx
+1000daab7:	f6 85 98 fa ff ff 01	testb	$0x1, -0x568(%rbp)
+1000daabe:	74 6c	je	0x1000dab2c
+1000daac0:	48 8b bd a8 fa ff ff	movq	-0x558(%rbp), %rdi
+1000daac7:	e9 bf fb ff ff	jmp	0x1000da68b
+1000daacc:	48 89 c3	movq	%rax, %rbx
+1000daacf:	f6 85 80 fa ff ff 01	testb	$0x1, -0x580(%rbp)
+1000daad6:	74 54	je	0x1000dab2c
+1000daad8:	48 8b bd 90 fa ff ff	movq	-0x570(%rbp), %rdi
+1000daadf:	e9 a7 fb ff ff	jmp	0x1000da68b
+1000daae4:	48 89 c3	movq	%rax, %rbx
+1000daae7:	f6 85 a0 fe ff ff 01	testb	$0x1, -0x160(%rbp)
+1000daaee:	74 3c	je	0x1000dab2c
+1000daaf0:	48 8b bd b0 fe ff ff	movq	-0x150(%rbp), %rdi
+1000daaf7:	e9 8f fb ff ff	jmp	0x1000da68b
+1000daafc:	48 89 c3	movq	%rax, %rbx
+1000daaff:	f6 85 68 fa ff ff 01	testb	$0x1, -0x598(%rbp)
+1000dab06:	74 24	je	0x1000dab2c
+1000dab08:	48 8b bd 78 fa ff ff	movq	-0x588(%rbp), %rdi
+1000dab0f:	e9 77 fb ff ff	jmp	0x1000da68b
+1000dab14:	48 89 c3	movq	%rax, %rbx
+1000dab17:	f6 85 78 ff ff ff 01	testb	$0x1, -0x88(%rbp)
+1000dab1e:	74 0c	je	0x1000dab2c
+1000dab20:	48 8b 7d 88	movq	-0x78(%rbp), %rdi
+1000dab24:	e9 62 fb ff ff	jmp	0x1000da68b
+1000dab29:	48 89 c3	movq	%rax, %rbx
+1000dab2c:	48 89 df	movq	%rbx, %rdi
+1000dab2f:	e8 b6 01 05 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+1000dab34:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000dab40:	55	pushq	%rbp
+1000dab41:	48 89 e5	movq	%rsp, %rbp
+1000dab44:	41 57	pushq	%r15
+1000dab46:	41 56	pushq	%r14
+1000dab48:	53	pushq	%rbx
+1000dab49:	50	pushq	%rax
+1000dab4a:	49 89 fe	movq	%rdi, %r14
+1000dab4d:	f6 47 20 01	testb	$0x1, 0x20(%rdi)
+1000dab51:	74 09	je	0x1000dab5c
+1000dab53:	49 8b 7e 30	movq	0x30(%r14), %rdi
+1000dab57:	e8 f0 14 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dab5c:	49 83 7e 18 00	cmpq	$0x0, 0x18(%r14)
+1000dab61:	74 27	je	0x1000dab8a
+1000dab63:	4d 8d 7e 08	leaq	0x8(%r14), %r15
+1000dab67:	49 8b 46 08	movq	0x8(%r14), %rax
+1000dab6b:	49 8b 5e 10	movq	0x10(%r14), %rbx
+1000dab6f:	48 8b 40 08	movq	0x8(%rax), %rax
+1000dab73:	48 8b 0b	movq	(%rbx), %rcx
+1000dab76:	48 89 41 08	movq	%rax, 0x8(%rcx)
+1000dab7a:	48 89 08	movq	%rcx, (%rax)
+1000dab7d:	49 c7 46 18 00 00 00 00	movq	$0x0, 0x18(%r14)
+1000dab85:	4c 39 fb	cmpq	%r15, %rbx
+1000dab88:	75 26	jne	0x1000dabb0
+1000dab8a:	48 83 c4 08	addq	$0x8, %rsp
+1000dab8e:	5b	popq	%rbx
+1000dab8f:	41 5e	popq	%r14
+1000dab91:	41 5f	popq	%r15
+1000dab93:	5d	popq	%rbp
+1000dab94:	c3	retq
+1000dab95:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000daba0:	48 89 df	movq	%rbx, %rdi
+1000daba3:	e8 a4 14 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000daba8:	4c 89 f3	movq	%r14, %rbx
+1000dabab:	4d 39 fe	cmpq	%r15, %r14
+1000dabae:	74 da	je	0x1000dab8a
+1000dabb0:	4c 8b 73 08	movq	0x8(%rbx), %r14
+1000dabb4:	f6 43 20 01	testb	$0x1, 0x20(%rbx)
+1000dabb8:	74 e6	je	0x1000daba0
+1000dabba:	48 8b 7b 30	movq	0x30(%rbx), %rdi
+1000dabbe:	e8 89 14 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dabc3:	eb db	jmp	0x1000daba0
+1000dabc5:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000dabd0:	55	pushq	%rbp
+1000dabd1:	48 89 e5	movq	%rsp, %rbp
+1000dabd4:	41 57	pushq	%r15
+1000dabd6:	41 56	pushq	%r14
+1000dabd8:	53	pushq	%rbx
+1000dabd9:	50	pushq	%rax
+1000dabda:	48 89 fb	movq	%rdi, %rbx
+1000dabdd:	4c 8d b7 c8 02 00 00	leaq	0x2c8(%rdi), %r14
+1000dabe4:	48 8d 05 dd 24 22 00	leaq	0x2224dd(%rip), %rax ; @0x1002fd0c8 f64=2.055e-321 f32=5.829401611591239e-43
+1000dabeb:	48 8d 48 18	leaq	0x18(%rax), %rcx
+1000dabef:	48 89 8f c8 02 00 00	movq	%rcx, 0x2c8(%rdi)
+1000dabf6:	4c 8d bf 68 04 00 00	leaq	0x468(%rdi), %r15
+1000dabfd:	48 83 c0 40	addq	$0x40, %rax
+1000dac01:	48 89 87 68 04 00 00	movq	%rax, 0x468(%rdi)
+1000dac08:	48 81 c7 d0 02 00 00	addq	$0x2d0, %rdi
+1000dac0f:	e8 ac cf fd ff	callq	0x1000b7bc0
+1000dac14:	48 8d 35 fd 24 22 00	leaq	0x2224fd(%rip), %rsi ; @0x1002fd118 f64=2.1235440267e-314 f32=4.3911985509099636e-39
+1000dac1b:	48 83 c6 08	addq	$0x8, %rsi
+1000dac1f:	4c 89 f7	movq	%r14, %rdi
+1000dac22:	e8 ad 13 05 00	callq	0x10012bfd4 ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEED2Ev
+1000dac27:	4c 89 ff	movq	%r15, %rdi
+1000dac2a:	e8 f3 13 05 00	callq	0x10012c022 ## symbol stub for: __ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
+1000dac2f:	f6 43 40 01	testb	$0x1, 0x40(%rbx)
+1000dac33:	74 09	je	0x1000dac3e
+1000dac35:	48 8b 7b 50	movq	0x50(%rbx), %rdi
+1000dac39:	e8 0e 14 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dac3e:	f6 43 20 01	testb	$0x1, 0x20(%rbx)
+1000dac42:	74 09	je	0x1000dac4d
+1000dac44:	48 8b 7b 30	movq	0x30(%rbx), %rdi
+1000dac48:	e8 ff 13 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dac4d:	0f 57 c0	xorps	%xmm0, %xmm0
+1000dac50:	0f 11 43 08	movups	%xmm0, 0x8(%rbx)
+1000dac54:	48 8b 3b	movq	(%rbx), %rdi
+1000dac57:	48 85 ff	testq	%rdi, %rdi
+1000dac5a:	74 0c	je	0x1000dac68
+1000dac5c:	e8 e5 13 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dac61:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000dac68:	48 83 c4 08	addq	$0x8, %rsp
+1000dac6c:	5b	popq	%rbx
+1000dac6d:	41 5e	popq	%r14
+1000dac6f:	41 5f	popq	%r15
+1000dac71:	5d	popq	%rbp
+1000dac72:	c3	retq
+1000dac73:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000dac80:	55	pushq	%rbp
+1000dac81:	48 89 e5	movq	%rsp, %rbp
+1000dac84:	53	pushq	%rbx
+1000dac85:	50	pushq	%rax
+1000dac86:	48 89 fb	movq	%rdi, %rbx
+1000dac89:	f6 87 90 00 00 00 01	testb	$0x1, 0x90(%rdi)
+1000dac90:	75 45	jne	0x1000dacd7
+1000dac92:	f6 43 78 01	testb	$0x1, 0x78(%rbx)
+1000dac96:	75 51	jne	0x1000dace9
+1000dac98:	f6 43 60 01	testb	$0x1, 0x60(%rbx)
+1000dac9c:	74 09	je	0x1000daca7
+1000dac9e:	48 8b 7b 70	movq	0x70(%rbx), %rdi
+1000daca2:	e8 a5 13 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000daca7:	48 8d 7b 48	leaq	0x48(%rbx), %rdi
+1000dacab:	48 8b 73 50	movq	0x50(%rbx), %rsi
+1000dacaf:	e8 2c 2c 00 00	callq	0x1000dd8e0
+1000dacb4:	48 8d 7b 30	leaq	0x30(%rbx), %rdi
+1000dacb8:	48 8b 73 38	movq	0x38(%rbx), %rsi
+1000dacbc:	e8 6f 2c 00 00	callq	0x1000dd930
+1000dacc1:	48 8b 73 20	movq	0x20(%rbx), %rsi
+1000dacc5:	48 83 c3 18	addq	$0x18, %rbx
+1000dacc9:	48 89 df	movq	%rbx, %rdi
+1000daccc:	48 83 c4 08	addq	$0x8, %rsp
+1000dacd0:	5b	popq	%rbx
+1000dacd1:	5d	popq	%rbp
+1000dacd2:	e9 a9 2c 00 00	jmp	0x1000dd980
+1000dacd7:	48 8b bb a0 00 00 00	movq	0xa0(%rbx), %rdi
+1000dacde:	e8 69 13 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dace3:	f6 43 78 01	testb	$0x1, 0x78(%rbx)
+1000dace7:	74 af	je	0x1000dac98
+1000dace9:	48 8b bb 88 00 00 00	movq	0x88(%rbx), %rdi
+1000dacf0:	e8 57 13 05 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1000dacf5:	f6 43 60 01	testb	$0x1, 0x60(%rbx)
+1000dacf9:	75 a3	jne	0x1000dac9e
+1000dacfb:	eb aa	jmp	0x1000daca7
+1000dacfd:	0f 1f 00	nopl	(%rax)
+1000dad00:	c7 87 e8 00 00 00 00 00 00 00	movl	$0x0, 0xe8(%rdi)
+1000dad0a:	48 8b 87 e0 00 00 00	movq	0xe0(%rdi), %rax
+1000dad11:	48 85 c0	testq	%rax, %rax
+1000dad14:	0f 84 86 0d 03 00	je	__ZN11SuperPixelsD1Ev ## SuperPixels::~SuperPixels()
+1000dad1a:	55	pushq	%rbp
+1000dad1b:	48 89 e5	movq	%rsp, %rbp
+1000dad1e:	53	pushq	%rbx
+1000dad1f:	50	pushq	%rax
+1000dad20:	48 89 fb	movq	%rdi, %rbx
+1000dad23:	48 89 c7	movq	%rax, %rdi
+1000dad26:	e8 1b 13 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dad2b:	48 89 df	movq	%rbx, %rdi
+1000dad2e:	48 c7 83 e0 00 00 00 00 00 00 00	movq	$0x0, 0xe0(%rbx)
+1000dad39:	48 83 c4 08	addq	$0x8, %rsp
+1000dad3d:	5b	popq	%rbx
+1000dad3e:	5d	popq	%rbp
+1000dad3f:	e9 5c 0d 03 00	jmp	__ZN11SuperPixelsD1Ev ## SuperPixels::~SuperPixels()
+1000dad44:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000dad50:	55	pushq	%rbp
+1000dad51:	48 89 e5	movq	%rsp, %rbp
+1000dad54:	53	pushq	%rbx
+1000dad55:	50	pushq	%rax
+1000dad56:	48 89 fb	movq	%rdi, %rbx
+1000dad59:	48 c7 47 18 00 00 00 00	movq	$0x0, 0x18(%rdi)
+1000dad61:	48 8b 7f 10	movq	0x10(%rdi), %rdi
+1000dad65:	48 85 ff	testq	%rdi, %rdi
+1000dad68:	74 0d	je	0x1000dad77
+1000dad6a:	e8 d7 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dad6f:	48 c7 43 10 00 00 00 00	movq	$0x0, 0x10(%rbx)
+1000dad77:	48 c7 43 08 00 00 00 00	movq	$0x0, 0x8(%rbx)
+1000dad7f:	48 8b 3b	movq	(%rbx), %rdi
+1000dad82:	48 85 ff	testq	%rdi, %rdi
+1000dad85:	74 0c	je	0x1000dad93
+1000dad87:	e8 ba 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dad8c:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000dad93:	48 83 c4 08	addq	$0x8, %rsp
+1000dad97:	5b	popq	%rbx
+1000dad98:	5d	popq	%rbp
+1000dad99:	c3	retq
+1000dad9a:	66 0f 1f 44 00 00	nopw	(%rax,%rax)
+1000dada0:	55	pushq	%rbp
+1000dada1:	48 89 e5	movq	%rsp, %rbp
+1000dada4:	53	pushq	%rbx
+1000dada5:	50	pushq	%rax
+1000dada6:	48 89 fb	movq	%rdi, %rbx
+1000dada9:	c7 47 20 00 00 00 00	movl	$0x0, 0x20(%rdi)
+1000dadb0:	48 8b 7f 18	movq	0x18(%rdi), %rdi
+1000dadb4:	48 85 ff	testq	%rdi, %rdi
+1000dadb7:	74 0d	je	0x1000dadc6
+1000dadb9:	e8 88 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dadbe:	48 c7 43 18 00 00 00 00	movq	$0x0, 0x18(%rbx)
+1000dadc6:	48 c7 43 08 00 00 00 00	movq	$0x0, 0x8(%rbx)
+1000dadce:	48 8b 3b	movq	(%rbx), %rdi
+1000dadd1:	48 85 ff	testq	%rdi, %rdi
+1000dadd4:	74 0c	je	0x1000dade2
+1000dadd6:	e8 6b 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000daddb:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000dade2:	48 83 c4 08	addq	$0x8, %rsp
+1000dade6:	5b	popq	%rbx
+1000dade7:	5d	popq	%rbp
+1000dade8:	c3	retq
+1000dade9:	0f 1f 80 00 00 00 00	nopl	(%rax)
+1000dadf0:	55	pushq	%rbp
+1000dadf1:	48 89 e5	movq	%rsp, %rbp
+1000dadf4:	53	pushq	%rbx
+1000dadf5:	50	pushq	%rax
+1000dadf6:	48 89 fb	movq	%rdi, %rbx
+1000dadf9:	48 83 c7 20	addq	$0x20, %rdi
+1000dadfd:	48 8b 73 28	movq	0x28(%rbx), %rsi
+1000dae01:	e8 aa a4 ff ff	callq	0x1000d52b0
+1000dae06:	c7 43 18 00 00 00 00	movl	$0x0, 0x18(%rbx)
+1000dae0d:	48 8b 7b 10	movq	0x10(%rbx), %rdi
+1000dae11:	48 85 ff	testq	%rdi, %rdi
+1000dae14:	74 0d	je	0x1000dae23
+1000dae16:	e8 2b 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dae1b:	48 c7 43 10 00 00 00 00	movq	$0x0, 0x10(%rbx)
+1000dae23:	c7 43 08 00 00 00 00	movl	$0x0, 0x8(%rbx)
+1000dae2a:	48 8b 3b	movq	(%rbx), %rdi
+1000dae2d:	48 85 ff	testq	%rdi, %rdi
+1000dae30:	74 0c	je	0x1000dae3e
+1000dae32:	e8 0f 12 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dae37:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000dae3e:	48 83 c4 08	addq	$0x8, %rsp
+1000dae42:	5b	popq	%rbx
+1000dae43:	5d	popq	%rbp
+1000dae44:	c3	retq
+1000dae45:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000dae50:	55	pushq	%rbp
+1000dae51:	48 89 e5	movq	%rsp, %rbp
+1000dae54:	53	pushq	%rbx
+1000dae55:	50	pushq	%rax
+1000dae56:	48 89 fb	movq	%rdi, %rbx
+1000dae59:	48 c7 47 20 00 00 00 00	movq	$0x0, 0x20(%rdi)
+1000dae61:	48 8b 7f 18	movq	0x18(%rdi), %rdi
+1000dae65:	48 85 ff	testq	%rdi, %rdi
+1000dae68:	74 0d	je	0x1000dae77
+1000dae6a:	e8 d7 11 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dae6f:	48 c7 43 18 00 00 00 00	movq	$0x0, 0x18(%rbx)
+1000dae77:	48 c7 43 10 00 00 00 00	movq	$0x0, 0x10(%rbx)
+1000dae7f:	48 8b 7b 08	movq	0x8(%rbx), %rdi
+1000dae83:	48 85 ff	testq	%rdi, %rdi
+1000dae86:	74 0d	je	0x1000dae95
+1000dae88:	e8 b9 11 05 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000dae8d:	48 c7 43 08 00 00 00 00	movq	$0x0, 0x8(%rbx)
+1000dae95:	48 83 c4 08	addq	$0x8, %rsp
+1000dae99:	5b	popq	%rbx
+1000dae9a:	5d	popq	%rbp
+1000dae9b:	c3	retq
+1000dae9c:	0f 1f 40 00	nopl	(%rax)

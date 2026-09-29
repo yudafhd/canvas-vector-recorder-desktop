@@ -1,0 +1,275 @@
+[
+  {
+    "site": "0x1000b87cd",
+    "kind": "call",
+    "caller_start": "0x1000b87b0",
+    "caller_name": "BezierFitter::execute()",
+    "target": "BezierFitter::initialize()"
+  },
+  {
+    "site": "0x1000b87e3",
+    "kind": "call",
+    "caller_start": "0x1000b87b0",
+    "caller_name": "BezierFitter::execute()",
+    "target": "BezierFitter::segmentContours()"
+  },
+  {
+    "site": "0x1000b87fc",
+    "kind": "call",
+    "caller_start": "0x1000b87b0",
+    "caller_name": "BezierFitter::execute()",
+    "target": "BezierFitter::fitBezierCurves()"
+  },
+  {
+    "site": "0x1000b8815",
+    "kind": "call",
+    "caller_start": "0x1000b87b0",
+    "caller_name": "BezierFitter::execute()",
+    "target": "BezierFitter::buildCurveReferenceArrays()"
+  },
+  {
+    "site": "0x1000b8a12",
+    "kind": "call",
+    "caller_start": "0x1000b8950",
+    "caller_name": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)"
+  },
+  {
+    "site": "0x1000b8a2b",
+    "kind": "call",
+    "caller_start": "0x1000b8950",
+    "caller_name": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)"
+  },
+  {
+    "site": "0x1000b8a5a",
+    "kind": "call",
+    "caller_start": "0x1000b8950",
+    "caller_name": "BezierFitter::segmentContours()",
+    "target": "BezierFitter::selectKeepers(int, int, int)"
+  },
+  {
+    "site": "0x1000b8b9a",
+    "kind": "call",
+    "caller_start": "0x1000b8ae0",
+    "caller_name": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)"
+  },
+  {
+    "site": "0x1000b8bba",
+    "kind": "call",
+    "caller_start": "0x1000b8ae0",
+    "caller_name": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::followContour(int, int, int, unsigned char)"
+  },
+  {
+    "site": "0x1000b8c1b",
+    "kind": "call",
+    "caller_start": "0x1000b8ae0",
+    "caller_name": "BezierFitter::fitBezierCurves()",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000b944c",
+    "kind": "call",
+    "caller_start": "0x1000b9430",
+    "caller_name": "BezierFitter::selectKeepers(int, int, int)",
+    "target": "BezierFitter::mergeAndSwapLoop(int, int, int)"
+  },
+  {
+    "site": "0x1000b97a5",
+    "kind": "call",
+    "caller_start": "0x1000b95d0",
+    "caller_name": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)",
+    "target": "BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)"
+  },
+  {
+    "site": "0x1000ba067",
+    "kind": "call",
+    "caller_start": "0x1000b9fa0",
+    "caller_name": "BezierFitter::findPotential()",
+    "target": "BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)"
+  },
+  {
+    "site": "0x1000bb0f0",
+    "kind": "call",
+    "caller_start": "0x1000bb090",
+    "caller_name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "target": "BezierFitter::findPotential()"
+  },
+  {
+    "site": "0x1000bb149",
+    "kind": "call",
+    "caller_start": "0x1000bb090",
+    "caller_name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "target": "BezierFitter::getStateVariable(int, int)"
+  },
+  {
+    "site": "0x1000bb169",
+    "kind": "call",
+    "caller_start": "0x1000bb090",
+    "caller_name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "target": "BezierFitter::setStateVariable(int, int, double)"
+  },
+  {
+    "site": "0x1000bb171",
+    "kind": "call",
+    "caller_start": "0x1000bb090",
+    "caller_name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "target": "BezierFitter::findPotential()"
+  },
+  {
+    "site": "0x1000bb189",
+    "kind": "call",
+    "caller_start": "0x1000bb090",
+    "caller_name": "BezierFitter::findNumericalGradient(double, sla::Array1<double>&)",
+    "target": "BezierFitter::setStateVariable(int, int, double)"
+  },
+  {
+    "site": "0x1000bbdd2",
+    "kind": "call",
+    "caller_start": "0x1000bbdc0",
+    "caller_name": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "BezierFitter::initializeFragments(int, int, int)"
+  },
+  {
+    "site": "0x1000bbe66",
+    "kind": "call",
+    "caller_start": "0x1000bbdc0",
+    "caller_name": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "target": "BezierFitter::considerMergeAndSwap(Fragment*)"
+  },
+  {
+    "site": "0x1000bbfd4",
+    "kind": "call",
+    "caller_start": "0x1000bbfc0",
+    "caller_name": "BezierFitter::considerMergeAndSwap(Fragment*)",
+    "target": "BezierFitter::computeMergeMetric(Fragment*)"
+  },
+  {
+    "site": "0x1000bc008",
+    "kind": "call",
+    "caller_start": "0x1000bbfc0",
+    "caller_name": "BezierFitter::considerMergeAndSwap(Fragment*)",
+    "target": "BezierFitter::computeSwapMetric(Fragment*, int)"
+  },
+  {
+    "site": "0x1000bc04d",
+    "kind": "call",
+    "caller_start": "0x1000bbfc0",
+    "caller_name": "BezierFitter::considerMergeAndSwap(Fragment*)",
+    "target": "BezierFitter::computeSwapMetric(Fragment*, int)"
+  },
+  {
+    "site": "0x1000bc11d",
+    "kind": "call",
+    "caller_start": "0x1000bc0d0",
+    "caller_name": "BezierFitter::computeMergeMetric(Fragment*)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc179",
+    "kind": "call",
+    "caller_start": "0x1000bc0d0",
+    "caller_name": "BezierFitter::computeMergeMetric(Fragment*)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc1b1",
+    "kind": "call",
+    "caller_start": "0x1000bc0d0",
+    "caller_name": "BezierFitter::computeMergeMetric(Fragment*)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc23e",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc281",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc2c2",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc30b",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc345",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc37c",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc3c8",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc406",
+    "kind": "call",
+    "caller_start": "0x1000bc1f0",
+    "caller_name": "BezierFitter::computeSwapMetric(Fragment*, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc48e",
+    "kind": "call",
+    "caller_start": "0x1000bc460",
+    "caller_name": "BezierFitter::computeSelfCost(Fragment*)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc4f9",
+    "kind": "call",
+    "caller_start": "0x1000bc4b0",
+    "caller_name": "BezierFitter::computeDislikeOf(Fragment*, int, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bc53a",
+    "kind": "call",
+    "caller_start": "0x1000bc4b0",
+    "caller_name": "BezierFitter::computeDislikeOf(Fragment*, int, int)",
+    "target": "BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)"
+  },
+  {
+    "site": "0x1000bdba1",
+    "kind": "call",
+    "caller_start": "0x1000bdb50",
+    "caller_name": "BezierFitter::findHessianAndGradient(sla::BezierCurve<double, 2, 3>&, int, int, int, bool, BezierOptimizationRecord&)",
+    "target": "BezierFitter::computeDataAndTime(sla::BezierCurve<double, 2, 3>&, int, int, int, sla::Array1<double>&, sla::Array1<sla::Vec<double, 2>>&, bool)"
+  },
+  {
+    "site": "0x10011b930",
+    "kind": "call",
+    "caller_start": "0x10011b8b0",
+    "caller_name": "VmController::bezierFitImage(VmVectorizationSettings const&)",
+    "target": "BezierFitter::execute()"
+  }
+]

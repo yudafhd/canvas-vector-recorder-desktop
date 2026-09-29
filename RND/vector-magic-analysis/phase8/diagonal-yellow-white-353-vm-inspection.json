@@ -1,0 +1,159 @@
+{
+  "file": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/vector-magic-analysis/phase8/diagonal-yellow-white-353-vm.svg",
+  "sha256": "270d208fb92e7a2a0243001b43349d9e6383231903afbd0756227753369638d0",
+  "bytes": 2613,
+  "svg_attributes": {
+    "version": "1.1",
+    "width": "3873",
+    "height": "3873",
+    "viewBox": "0 0 3873 3873",
+    "color-interpolation": "sRGB"
+  },
+  "elements": {
+    "svg": 1,
+    "title": 1,
+    "g": 2,
+    "path": 11
+  },
+  "fills": {
+    "none": 3,
+    "#000": 2,
+    "#ffffff": 5,
+    "#fcc101": 1
+  },
+  "strokes": {
+    "#000": 1,
+    "inherited": 8,
+    "#fcc101": 1,
+    "#ffffff": 1
+  },
+  "path_commands": {
+    "M": 11,
+    "h": 6,
+    "v": 3,
+    "Z": 11,
+    "C": 20
+  },
+  "drawables": [
+    {
+      "tag": "path",
+      "fill": "none",
+      "stroke": "#000",
+      "path_commands": {
+        "M": 1,
+        "h": 2,
+        "v": 1,
+        "Z": 1
+      },
+      "path_characters": 30
+    },
+    {
+      "tag": "path",
+      "fill": "#000",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "h": 2,
+        "v": 1,
+        "Z": 1
+      },
+      "path_characters": 30
+    },
+    {
+      "tag": "path",
+      "fill": "#000",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "h": 2,
+        "v": 1,
+        "Z": 1
+      },
+      "path_characters": 25
+    },
+    {
+      "tag": "path",
+      "fill": "#ffffff",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "Z": 1
+      },
+      "path_characters": 16
+    },
+    {
+      "tag": "path",
+      "fill": "#ffffff",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "Z": 1
+      },
+      "path_characters": 20
+    },
+    {
+      "tag": "path",
+      "fill": "none",
+      "stroke": "#fcc101",
+      "path_commands": {
+        "M": 1,
+        "C": 4,
+        "Z": 1
+      },
+      "path_characters": 169
+    },
+    {
+      "tag": "path",
+      "fill": "none",
+      "stroke": "#ffffff",
+      "path_commands": {
+        "M": 1,
+        "C": 6,
+        "Z": 1
+      },
+      "path_characters": 236
+    },
+    {
+      "tag": "path",
+      "fill": "#fcc101",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "C": 4,
+        "Z": 1
+      },
+      "path_characters": 169
+    },
+    {
+      "tag": "path",
+      "fill": "#ffffff",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "C": 6,
+        "Z": 1
+      },
+      "path_characters": 236
+    },
+    {
+      "tag": "path",
+      "fill": "#ffffff",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "Z": 1
+      },
+      "path_characters": 16
+    },
+    {
+      "tag": "path",
+      "fill": "#ffffff",
+      "stroke": "inherited",
+      "path_commands": {
+        "M": 1,
+        "Z": 1
+      },
+      "path_characters": 20
+    }
+  ]
+}

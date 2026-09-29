@@ -1,0 +1,75 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/tracing-quality/apple-v3/source.bmp",
+  "inputSha256": "954f60f7202f28e2b6a599ada903754aa497ffbdb6c46172e7d464df2f569f65",
+  "width": 512,
+  "height": 512,
+  "renderer": "Independent software polygon rasterizer; cubics flattened to 0.04 px; 4x4 sample grid; no browser antialias",
+  "panels": [
+    "source",
+    "before",
+    "after"
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 16,
+        "tolerance": 0.8,
+        "minArea": 24,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "9ed319f9ec598d06d95f07949bd48e84e2f37eb1acf66d251a3ff8baa9e1f959",
+      "colors": [
+        "#ffffff",
+        "#d93836",
+        "#6ac97e",
+        "#8f2b29",
+        "#fcd7c0",
+        "#e55651",
+        "#d23b38",
+        "#f1fff8",
+        "#fff3ee",
+        "#fefcf4",
+        "#e23437",
+        "#bb4c4c",
+        "#fee5e0",
+        "#cd8279",
+        "#f3a5a1"
+      ],
+      "contours": 409,
+      "segments": 1983,
+      "bytes": 60780,
+      "milliseconds": 235,
+      "meanAbsoluteRGBError": 0.5834910074869791,
+      "meanAbsoluteEdgeRGBError": 20.74648970955953,
+      "edgePixels": 3466
+    },
+    {
+      "name": "after",
+      "options": {
+        "colors": 16,
+        "tolerance": 0.8,
+        "minArea": 24,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "951a1d62e6ba4ca41e80bbf4dacb8ae591b28ad370ed8e49745bf3f50ac3a46b",
+      "colors": [
+        "#ffffff",
+        "#d93836",
+        "#6ac97e",
+        "#8f2b29",
+        "#fcd7c0",
+        "#e55651"
+      ],
+      "contours": 8,
+      "segments": 56,
+      "bytes": 2671,
+      "milliseconds": 274,
+      "meanAbsoluteRGBError": 0.600884755452474,
+      "meanAbsoluteEdgeRGBError": 20.895941527216774,
+      "edgePixels": 3466
+    }
+  ]
+}

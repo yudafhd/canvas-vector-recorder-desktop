@@ -1,0 +1,38 @@
+BezierFitter::execute()
+1000b87b0:	55	pushq	%rbp
+1000b87b1:	48 89 e5	movq	%rsp, %rbp
+1000b87b4:	53	pushq	%rbx
+1000b87b5:	50	pushq	%rax
+1000b87b6:	48 89 fb	movq	%rdi, %rbx
+1000b87b9:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b87be:	be ff ff ff ff	movl	$0xffffffff, %esi
+1000b87c3:	31 d2	xorl	%edx, %edx
+1000b87c5:	e8 76 43 02 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000b87ca:	48 89 df	movq	%rbx, %rdi
+1000b87cd:	e8 6e 00 00 00	callq	__ZN12BezierFitter10initializeEv ## BezierFitter::initialize()
+1000b87d2:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b87d7:	31 f6	xorl	%esi, %esi
+1000b87d9:	31 d2	xorl	%edx, %edx
+1000b87db:	e8 60 43 02 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000b87e0:	48 89 df	movq	%rbx, %rdi
+1000b87e3:	e8 68 01 00 00	callq	__ZN12BezierFitter15segmentContoursEv ## BezierFitter::segmentContours()
+1000b87e8:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b87ed:	be 02 00 00 00	movl	$0x2, %esi
+1000b87f2:	31 d2	xorl	%edx, %edx
+1000b87f4:	e8 47 43 02 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000b87f9:	48 89 df	movq	%rbx, %rdi
+1000b87fc:	e8 df 02 00 00	callq	__ZN12BezierFitter15fitBezierCurvesEv ## BezierFitter::fitBezierCurves()
+1000b8801:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b8806:	be 03 00 00 00	movl	$0x3, %esi
+1000b880b:	31 d2	xorl	%edx, %edx
+1000b880d:	e8 2e 43 02 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000b8812:	48 89 df	movq	%rbx, %rdi
+1000b8815:	e8 26 04 00 00	callq	__ZN12BezierFitter25buildCurveReferenceArraysEv ## BezierFitter::buildCurveReferenceArrays()
+1000b881a:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b881f:	be fe ff ff ff	movl	$0xfffffffe, %esi
+1000b8824:	31 d2	xorl	%edx, %edx
+1000b8826:	48 83 c4 08	addq	$0x8, %rsp
+1000b882a:	5b	popq	%rbx
+1000b882b:	5d	popq	%rbp
+1000b882c:	e9 0f 43 02 00	jmp	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1000b8831:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

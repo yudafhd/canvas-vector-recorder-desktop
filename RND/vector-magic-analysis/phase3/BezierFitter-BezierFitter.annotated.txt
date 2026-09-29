@@ -1,0 +1,47 @@
+BezierFitter::BezierFitter(CoreEngine&)
+1000b8650:	55	pushq	%rbp
+1000b8651:	48 89 e5	movq	%rsp, %rbp
+1000b8654:	48 8d 86 18 04 00 00	leaq	0x418(%rsi), %rax
+1000b865b:	48 89 47 20	movq	%rax, 0x20(%rdi)
+1000b865f:	48 89 47 28	movq	%rax, 0x28(%rdi)
+1000b8663:	48 8d 86 28 04 00 00	leaq	0x428(%rsi), %rax
+1000b866a:	48 89 47 30	movq	%rax, 0x30(%rdi)
+1000b866e:	48 8d 86 38 04 00 00	leaq	0x438(%rsi), %rax
+1000b8675:	48 89 47 38	movq	%rax, 0x38(%rdi)
+1000b8679:	48 81 c6 48 04 00 00	addq	$0x448, %rsi
+1000b8680:	48 89 77 40	movq	%rsi, 0x40(%rdi)
+1000b8684:	48 c7 47 58 00 00 00 00	movq	$0x0, 0x58(%rdi)
+1000b868c:	c7 47 60 00 00 00 00	movl	$0x0, 0x60(%rdi)
+1000b8693:	c7 47 18 0a 00 00 00	movl	$0xa, 0x18(%rdi)
+1000b869a:	0f 28 05 6f 33 23 00	movaps	0x23336f(%rip), %xmm0 ; @0x1002eba10 f64=9.999999747378752e-05 f32=-3.6893488147419103e+19
+1000b86a1:	0f 11 07	movups	%xmm0, (%rdi)
+1000b86a4:	48 b8 00 00 00 00 00 00 e0 3f	movabsq	$0x3fe0000000000000, %rax
+1000b86ae:	48 89 47 10	movq	%rax, 0x10(%rdi)
+1000b86b2:	48 b8 00 00 00 00 00 00 24 40	movabsq	$0x4024000000000000, %rax
+1000b86bc:	48 89 47 50	movq	%rax, 0x50(%rdi)
+1000b86c0:	5d	popq	%rbp
+1000b86c1:	c3	retq
+1000b86c2:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000b86d0:	55	pushq	%rbp
+1000b86d1:	48 89 e5	movq	%rsp, %rbp
+1000b86d4:	48 8d 86 18 04 00 00	leaq	0x418(%rsi), %rax
+1000b86db:	48 89 47 20	movq	%rax, 0x20(%rdi)
+1000b86df:	48 89 47 28	movq	%rax, 0x28(%rdi)
+1000b86e3:	48 8d 86 28 04 00 00	leaq	0x428(%rsi), %rax
+1000b86ea:	48 89 47 30	movq	%rax, 0x30(%rdi)
+1000b86ee:	48 8d 86 38 04 00 00	leaq	0x438(%rsi), %rax
+1000b86f5:	48 89 47 38	movq	%rax, 0x38(%rdi)
+1000b86f9:	48 81 c6 48 04 00 00	addq	$0x448, %rsi
+1000b8700:	48 89 77 40	movq	%rsi, 0x40(%rdi)
+1000b8704:	48 c7 47 58 00 00 00 00	movq	$0x0, 0x58(%rdi)
+1000b870c:	c7 47 60 00 00 00 00	movl	$0x0, 0x60(%rdi)
+1000b8713:	c7 47 18 0a 00 00 00	movl	$0xa, 0x18(%rdi)
+1000b871a:	0f 28 05 ef 32 23 00	movaps	0x2332ef(%rip), %xmm0 ; @0x1002eba10 f64=9.999999747378752e-05 f32=-3.6893488147419103e+19
+1000b8721:	0f 11 07	movups	%xmm0, (%rdi)
+1000b8724:	48 b8 00 00 00 00 00 00 e0 3f	movabsq	$0x3fe0000000000000, %rax
+1000b872e:	48 89 47 10	movq	%rax, 0x10(%rdi)
+1000b8732:	48 b8 00 00 00 00 00 00 24 40	movabsq	$0x4024000000000000, %rax
+1000b873c:	48 89 47 50	movq	%rax, 0x50(%rdi)
+1000b8740:	5d	popq	%rbp
+1000b8741:	c3	retq
+1000b8742:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

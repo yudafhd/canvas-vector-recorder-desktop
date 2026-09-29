@@ -1,0 +1,104 @@
+PixelSegmenter::computeMergeMetric(int, int)
+100105380:	55	pushq	%rbp
+100105381:	48 89 e5	movq	%rsp, %rbp
+100105384:	41 57	pushq	%r15
+100105386:	41 56	pushq	%r14
+100105388:	53	pushq	%rbx
+100105389:	48 83 ec 48	subq	$0x48, %rsp
+10010538d:	41 89 d7	movl	%edx, %r15d
+100105390:	48 89 fb	movq	%rdi, %rbx
+100105393:	48 8b 7f 38	movq	0x38(%rdi), %rdi
+100105397:	48 8b 07	movq	(%rdi), %rax
+10010539a:	ff 10	callq	*(%rax)
+10010539c:	49 89 c6	movq	%rax, %r14
+10010539f:	48 8b 7b 38	movq	0x38(%rbx), %rdi
+1001053a3:	48 8b 07	movq	(%rdi), %rax
+1001053a6:	44 89 fe	movl	%r15d, %esi
+1001053a9:	ff 10	callq	*(%rax)
+1001053ab:	41 8b 4e 08	movl	0x8(%r14), %ecx
+1001053af:	f2 0f 10 68 0c	movsd	0xc(%rax), %xmm5
+1001053b4:	f2 41 0f 10 4e 0c	movsd	0xc(%r14), %xmm1
+1001053ba:	0f 28 d9	movaps	%xmm1, %xmm3
+1001053bd:	0f 58 dd	addps	%xmm5, %xmm3
+1001053c0:	f3 0f 16 e5	movshdup	%xmm5, %xmm4
+1001053c4:	0f 59 ed	mulps	%xmm5, %xmm5
+1001053c7:	f2 0f 10 70 14	movsd	0x14(%rax), %xmm6
+1001053cc:	f2 41 0f 10 46 14	movsd	0x14(%r14), %xmm0
+1001053d2:	0f 28 f8	movaps	%xmm0, %xmm7
+1001053d5:	0f 58 fe	addps	%xmm6, %xmm7
+1001053d8:	f3 0f 16 d6	movshdup	%xmm6, %xmm2
+1001053dc:	0f 59 f6	mulps	%xmm6, %xmm6
+1001053df:	f3 44 0f 16 c5	movshdup	%xmm5, %xmm8
+1001053e4:	f3 44 0f 58 c5	addss	%xmm5, %xmm8
+1001053e9:	f3 44 0f 58 c6	addss	%xmm6, %xmm8
+1001053ee:	f3 0f 16 f6	movshdup	%xmm6, %xmm6
+1001053f2:	8b 40 08	movl	0x8(%rax), %eax
+1001053f5:	f3 44 0f 2a c8	cvtsi2ss	%eax, %xmm9
+1001053fa:	f3 41 0f 58 f0	addss	%xmm8, %xmm6
+1001053ff:	f3 41 0f 5e f1	divss	%xmm9, %xmm6
+100105404:	f3 41 0f 58 66 10	addss	0x10(%r14), %xmm4
+10010540a:	01 c8	addl	%ecx, %eax
+10010540c:	f3 41 0f 58 56 18	addss	0x18(%r14), %xmm2
+100105412:	f3 0f 16 e9	movshdup	%xmm1, %xmm5
+100105416:	66 0f 3a 21 cb 1c	insertps	$0x1c, %xmm3, %xmm1
+10010541c:	0f 59 c9	mulps	%xmm1, %xmm1
+10010541f:	66 0f 3a 21 ec 10	insertps	$0x10, %xmm4, %xmm5
+100105425:	0f 59 ed	mulps	%xmm5, %xmm5
+100105428:	0f 58 e9	addps	%xmm1, %xmm5
+10010542b:	f3 0f 16 c8	movshdup	%xmm0, %xmm1
+10010542f:	66 0f 3a 21 c7 1c	insertps	$0x1c, %xmm7, %xmm0
+100105435:	0f 59 c0	mulps	%xmm0, %xmm0
+100105438:	0f 58 c5	addps	%xmm5, %xmm0
+10010543b:	66 0f 3a 21 ca 10	insertps	$0x10, %xmm2, %xmm1
+100105441:	0f 59 c9	mulps	%xmm1, %xmm1
+100105444:	0f 58 c8	addps	%xmm0, %xmm1
+100105447:	66 0f 6e c1	movd	%ecx, %xmm0
+10010544b:	66 0f 3a 22 c0 01	pinsrd	$0x1, %eax, %xmm0
+100105451:	0f 5b c0	cvtdq2ps	%xmm0, %xmm0
+100105454:	0f 5e c8	divps	%xmm0, %xmm1
+100105457:	f3 0f 58 f1	addss	%xmm1, %xmm6
+10010545b:	f3 0f 16 c9	movshdup	%xmm1, %xmm1
+10010545f:	f3 0f 5c f1	subss	%xmm1, %xmm6
+100105463:	f3 0f 10 5b 1c	movss	0x1c(%rbx), %xmm3
+100105468:	0f 57 d2	xorps	%xmm2, %xmm2
+10010546b:	0f 2e da	ucomiss	%xmm2, %xmm3
+10010546e:	0f 86 90 00 00 00	jbe	0x100105504
+100105474:	f3 0f 10 4b 20	movss	0x20(%rbx), %xmm1
+100105479:	f3 0f 11 4d e0	movss	%xmm1, -0x20(%rbp)
+10010547e:	f3 0f 11 5d dc	movss	%xmm3, -0x24(%rbp)
+100105483:	0f 29 75 a0	movaps	%xmm6, -0x60(%rbp)
+100105487:	f3 44 0f 11 4d e4	movss	%xmm9, -0x1c(%rbp)
+10010548d:	0f 29 45 c0	movaps	%xmm0, -0x40(%rbp)
+100105491:	e8 1e 6d 02 00	callq	0x10012c1b4 ## symbol stub for: _powf
+100105496:	0f 29 45 b0	movaps	%xmm0, -0x50(%rbp)
+10010549a:	f3 0f 10 45 e4	movss	-0x1c(%rbp), %xmm0
+10010549f:	f3 0f 10 4d e0	movss	-0x20(%rbp), %xmm1
+1001054a4:	e8 0b 6d 02 00	callq	0x10012c1b4 ## symbol stub for: _powf
+1001054a9:	f3 0f 10 0d eb 6a 1e 00	movss	0x1e6aeb(%rip), %xmm1
+1001054b1:	f3 0f 5e c8	divss	%xmm0, %xmm1
+1001054b5:	f3 0f 11 4d e4	movss	%xmm1, -0x1c(%rbp)
+1001054ba:	f3 0f 16 45 c0	movshdup	-0x40(%rbp), %xmm0
+1001054bf:	f3 0f 10 4d e0	movss	-0x20(%rbp), %xmm1
+1001054c4:	e8 eb 6c 02 00	callq	0x10012c1b4 ## symbol stub for: _powf
+1001054c9:	0f 28 4d b0	movaps	-0x50(%rbp), %xmm1
+1001054cd:	66 0f 3a 21 c8 10	insertps	$0x10, %xmm0, %xmm1
+1001054d3:	0f 28 05 26 6a 1e 00	movaps	0x1e6a26(%rip), %xmm0
+1001054da:	0f 5e c1	divps	%xmm1, %xmm0
+1001054dd:	f3 0f 10 4d e4	movss	-0x1c(%rbp), %xmm1
+1001054e2:	f3 0f 58 c8	addss	%xmm0, %xmm1
+1001054e6:	f3 0f 16 c0	movshdup	%xmm0, %xmm0
+1001054ea:	f3 0f 5c c8	subss	%xmm0, %xmm1
+1001054ee:	0f 28 c1	movaps	%xmm1, %xmm0
+1001054f1:	f3 0f 10 4d dc	movss	-0x24(%rbp), %xmm1
+1001054f6:	f3 0f 59 c8	mulss	%xmm0, %xmm1
+1001054fa:	0f 28 45 a0	movaps	-0x60(%rbp), %xmm0
+1001054fe:	f3 0f 5c c1	subss	%xmm1, %xmm0
+100105502:	eb 03	jmp	0x100105507
+100105504:	0f 28 c6	movaps	%xmm6, %xmm0
+100105507:	48 83 c4 48	addq	$0x48, %rsp
+10010550b:	5b	popq	%rbx
+10010550c:	41 5e	popq	%r14
+10010550e:	41 5f	popq	%r15
+100105510:	5d	popq	%rbp
+100105511:	c3	retq
+100105512:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

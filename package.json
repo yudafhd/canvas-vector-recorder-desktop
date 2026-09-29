@@ -10,7 +10,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "test": "npm run compile && npm run test:frontend && npm run test:rust",
-    "test:frontend": "node --test tests/bridge.test.mjs",
+    "test:frontend": "node --test tests/bridge.test.mjs tests/tracing.test.mjs",
     "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "compile": "tsc --noEmit",
     "license:keygen": "node tools/license-keygen.mjs",

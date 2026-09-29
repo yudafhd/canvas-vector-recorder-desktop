@@ -1,0 +1,90 @@
+1000bb090:	55	pushq	%rbp
+1000bb091:	48 89 e5	movq	%rsp, %rbp
+1000bb094:	41 57	pushq	%r15
+1000bb096:	41 56	pushq	%r14
+1000bb098:	41 55	pushq	%r13
+1000bb09a:	41 54	pushq	%r12
+1000bb09c:	53	pushq	%rbx
+1000bb09d:	48 83 ec 28	subq	$0x28, %rsp
+1000bb0a1:	48 89 f3	movq	%rsi, %rbx
+1000bb0a4:	f2 0f 11 45 c8	movsd	%xmm0, -0x38(%rbp)
+1000bb0a9:	49 89 fe	movq	%rdi, %r14
+1000bb0ac:	44 8b 7f 48	movl	0x48(%rdi), %r15d
+1000bb0b0:	44 3b 7e 08	cmpl	0x8(%rsi), %r15d
+1000bb0b4:	74 33	je	0x1000bb0e9
+1000bb0b6:	48 8b 3b	movq	(%rbx), %rdi
+1000bb0b9:	48 85 ff	testq	%rdi, %rdi
+1000bb0bc:	74 13	je	0x1000bb0d1
+1000bb0be:	c7 43 08 00 00 00 00	movl	$0x0, 0x8(%rbx)
+1000bb0c5:	e8 7c 0f 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000bb0ca:	48 c7 03 00 00 00 00	movq	$0x0, (%rbx)
+1000bb0d1:	44 89 7b 08	movl	%r15d, 0x8(%rbx)
+1000bb0d5:	45 85 ff	testl	%r15d, %r15d
+1000bb0d8:	7e 0f	jle	0x1000bb0e9
+1000bb0da:	49 c1 e7 03	shlq	$0x3, %r15
+1000bb0de:	4c 89 ff	movq	%r15, %rdi
+1000bb0e1:	e8 8a 0f 07 00	callq	0x10012c070 ## symbol stub for: __Znam
+1000bb0e6:	48 89 03	movq	%rax, (%rbx)
+1000bb0e9:	48 89 5d b8	movq	%rbx, -0x48(%rbp)
+1000bb0ed:	4c 89 f7	movq	%r14, %rdi
+1000bb0f0:	e8 ab ee ff ff	callq	__ZN12BezierFitter13findPotentialEv ## BezierFitter::findPotential()
+1000bb0f5:	f2 0f 11 45 c0	movsd	%xmm0, -0x40(%rbp)
+1000bb0fa:	41 83 7e 68 00	cmpl	$0x0, 0x68(%r14)
+1000bb0ff:	0f 8e c9 00 00 00	jle	0x1000bb1ce
+1000bb105:	45 31 ff	xorl	%r15d, %r15d
+1000bb108:	eb 13	jmp	0x1000bb11d
+1000bb10a:	66 0f 1f 44 00 00	nopw	(%rax,%rax)
+1000bb110:	41 ff c7	incl	%r15d
+1000bb113:	45 3b 7e 68	cmpl	0x68(%r14), %r15d
+1000bb117:	0f 8d b1 00 00 00	jge	0x1000bb1ce
+1000bb11d:	49 8b 7e 40	movq	0x40(%r14), %rdi
+1000bb121:	44 89 fe	movl	%r15d, %esi
+1000bb124:	e8 d7 f2 ff ff	callq	0x1000ba400
+1000bb129:	83 b8 a0 00 00 00 00	cmpl	$0x0, 0xa0(%rax)
+1000bb130:	7e de	jle	0x1000bb110
+1000bb132:	49 89 c4	movq	%rax, %r12
+1000bb135:	8b 98 a4 00 00 00	movl	0xa4(%rax), %ebx
+1000bb13b:	45 31 ed	xorl	%r13d, %r13d
+1000bb13e:	66 90	nop
+1000bb140:	4c 89 f7	movq	%r14, %rdi
+1000bb143:	44 89 fe	movl	%r15d, %esi
+1000bb146:	44 89 ea	movl	%r13d, %edx
+1000bb149:	e8 a2 f6 ff ff	callq	__ZN12BezierFitter16getStateVariableEii ## BezierFitter::getStateVariable(int, int)
+1000bb14e:	66 0f 28 c8	movapd	%xmm0, %xmm1
+1000bb152:	f2 0f 11 45 b0	movsd	%xmm0, -0x50(%rbp)
+1000bb157:	f2 0f 10 45 c8	movsd	-0x38(%rbp), %xmm0
+1000bb15c:	f2 0f 58 c1	addsd	%xmm1, %xmm0
+1000bb160:	4c 89 f7	movq	%r14, %rdi
+1000bb163:	44 89 fe	movl	%r15d, %esi
+1000bb166:	44 89 ea	movl	%r13d, %edx
+1000bb169:	e8 62 f9 ff ff	callq	__ZN12BezierFitter16setStateVariableEiid ## BezierFitter::setStateVariable(int, int, double)
+1000bb16e:	4c 89 f7	movq	%r14, %rdi
+1000bb171:	e8 2a ee ff ff	callq	__ZN12BezierFitter13findPotentialEv ## BezierFitter::findPotential()
+1000bb176:	f2 0f 11 45 d0	movsd	%xmm0, -0x30(%rbp)
+1000bb17b:	4c 89 f7	movq	%r14, %rdi
+1000bb17e:	44 89 fe	movl	%r15d, %esi
+1000bb181:	44 89 ea	movl	%r13d, %edx
+1000bb184:	f2 0f 10 45 b0	movsd	-0x50(%rbp), %xmm0
+1000bb189:	e8 42 f9 ff ff	callq	__ZN12BezierFitter16setStateVariableEiid ## BezierFitter::setStateVariable(int, int, double)
+1000bb18e:	f2 0f 10 45 d0	movsd	-0x30(%rbp), %xmm0
+1000bb193:	f2 0f 5c 45 c0	subsd	-0x40(%rbp), %xmm0
+1000bb198:	f2 0f 5e 45 c8	divsd	-0x38(%rbp), %xmm0
+1000bb19d:	f2 0f 11 45 d0	movsd	%xmm0, -0x30(%rbp)
+1000bb1a2:	42 8d 34 2b	leal	(%rbx,%r13), %esi
+1000bb1a6:	48 8b 7d b8	movq	-0x48(%rbp), %rdi
+1000bb1aa:	e8 11 f6 ff ff	callq	0x1000ba7c0
+1000bb1af:	f2 0f 10 45 d0	movsd	-0x30(%rbp), %xmm0
+1000bb1b4:	f2 0f 11 00	movsd	%xmm0, (%rax)
+1000bb1b8:	41 ff c5	incl	%r13d
+1000bb1bb:	45 3b ac 24 a0 00 00 00	cmpl	0xa0(%r12), %r13d
+1000bb1c3:	0f 8c 77 ff ff ff	jl	0x1000bb140
+1000bb1c9:	e9 42 ff ff ff	jmp	0x1000bb110
+1000bb1ce:	48 83 c4 28	addq	$0x28, %rsp
+1000bb1d2:	5b	popq	%rbx
+1000bb1d3:	41 5c	popq	%r12
+1000bb1d5:	41 5d	popq	%r13
+1000bb1d7:	41 5e	popq	%r14
+1000bb1d9:	41 5f	popq	%r15
+1000bb1db:	5d	popq	%rbp
+1000bb1dc:	c3	retq
+1000bb1dd:	0f 1f 00	nopl	(%rax)

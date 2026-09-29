@@ -1,0 +1,76 @@
+PaletteFinder::computeCost(Palette*)
+1000f82a0:	55	pushq	%rbp
+1000f82a1:	48 89 e5	movq	%rsp, %rbp
+1000f82a4:	41 57	pushq	%r15
+1000f82a6:	41 56	pushq	%r14
+1000f82a8:	41 54	pushq	%r12
+1000f82aa:	53	pushq	%rbx
+1000f82ab:	48 83 ec 10	subq	$0x10, %rsp
+1000f82af:	48 89 f3	movq	%rsi, %rbx
+1000f82b2:	49 89 fe	movq	%rdi, %r14
+1000f82b5:	48 8b 7f 60	movq	0x60(%rdi), %rdi
+1000f82b9:	41 8b 36	movl	(%r14), %esi
+1000f82bc:	e8 af 68 fd ff	callq	__ZN12BoundaryMask7update8Ei ## BoundaryMask::update8(int)
+1000f82c1:	41 8b 4e 7c	movl	0x7c(%r14), %ecx
+1000f82c5:	85 c9	testl	%ecx, %ecx
+1000f82c7:	7e 79	jle	0x1000f8342
+1000f82c9:	41 8b 46 78	movl	0x78(%r14), %eax
+1000f82cd:	0f 57 c0	xorps	%xmm0, %xmm0
+1000f82d0:	45 31 ff	xorl	%r15d, %r15d
+1000f82d3:	eb 17	jmp	0x1000f82ec
+1000f82d5:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000f82e0:	41 8b 4e 7c	movl	0x7c(%r14), %ecx
+1000f82e4:	41 ff c7	incl	%r15d
+1000f82e7:	41 39 cf	cmpl	%ecx, %r15d
+1000f82ea:	7d 48	jge	0x1000f8334
+1000f82ec:	85 c0	testl	%eax, %eax
+1000f82ee:	7e f4	jle	0x1000f82e4
+1000f82f0:	45 31 e4	xorl	%r12d, %r12d
+1000f82f3:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000f8300:	f3 0f 11 45 d8	movss	%xmm0, -0x28(%rbp)
+1000f8305:	4c 89 f7	movq	%r14, %rdi
+1000f8308:	44 89 e6	movl	%r12d, %esi
+1000f830b:	44 89 fa	movl	%r15d, %edx
+1000f830e:	e8 3d 07 00 00	callq	__ZN13PaletteFinder16computePixelCostEii ## PaletteFinder::computePixelCost(int, int)
+1000f8313:	f3 0f 10 4d d8	movss	-0x28(%rbp), %xmm1
+1000f8318:	f3 0f 58 c8	addss	%xmm0, %xmm1
+1000f831c:	f3 0f 11 4d d8	movss	%xmm1, -0x28(%rbp)
+1000f8321:	f3 0f 10 45 d8	movss	-0x28(%rbp), %xmm0
+1000f8326:	41 ff c4	incl	%r12d
+1000f8329:	41 8b 46 78	movl	0x78(%r14), %eax
+1000f832d:	41 39 c4	cmpl	%eax, %r12d
+1000f8330:	7c ce	jl	0x1000f8300
+1000f8332:	eb ac	jmp	0x1000f82e0
+1000f8334:	f3 0f 5a c0	cvtss2sd	%xmm0, %xmm0
+1000f8338:	f2 0f 58 05 80 82 06 00	addsd	0x68280(%rip), %xmm0
+1000f8340:	eb 08	jmp	0x1000f834a
+1000f8342:	f2 0f 10 05 76 82 06 00	movsd	0x68276(%rip), %xmm0
+1000f834a:	4d 8b 7e 60	movq	0x60(%r14), %r15
+1000f834e:	49 c7 47 08 00 00 00 00	movq	$0x0, 0x8(%r15)
+1000f8356:	49 8b 3f	movq	(%r15), %rdi
+1000f8359:	48 85 ff	testq	%rdi, %rdi
+1000f835c:	74 16	je	0x1000f8374
+1000f835e:	f2 0f 11 45 d8	movsd	%xmm0, -0x28(%rbp)
+1000f8363:	e8 de 3c 03 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000f8368:	f2 0f 10 45 d8	movsd	-0x28(%rbp), %xmm0
+1000f836d:	49 c7 07 00 00 00 00	movq	$0x0, (%r15)
+1000f8374:	e8 0b 3e 03 00	callq	0x10012c184 ## symbol stub for: _log10
+1000f8379:	f2 0f 5a c0	cvtsd2ss	%xmm0, %xmm0
+1000f837d:	f3 0f 11 43 3c	movss	%xmm0, 0x3c(%rbx)
+1000f8382:	49 8b 46 70	movq	0x70(%r14), %rax
+1000f8386:	8b 40 08	movl	0x8(%rax), %eax
+1000f8389:	83 c0 fe	addl	$-0x2, %eax
+1000f838c:	0f 57 c9	xorps	%xmm1, %xmm1
+1000f838f:	f3 0f 2a c8	cvtsi2ss	%eax, %xmm1
+1000f8393:	f3 41 0f 59 4e 04	mulss	0x4(%r14), %xmm1
+1000f8399:	f3 0f 11 4b 40	movss	%xmm1, 0x40(%rbx)
+1000f839e:	f3 0f 58 c8	addss	%xmm0, %xmm1
+1000f83a2:	f3 0f 11 4b 38	movss	%xmm1, 0x38(%rbx)
+1000f83a7:	48 83 c4 10	addq	$0x10, %rsp
+1000f83ab:	5b	popq	%rbx
+1000f83ac:	41 5c	popq	%r12
+1000f83ae:	41 5e	popq	%r14
+1000f83b0:	41 5f	popq	%r15
+1000f83b2:	5d	popq	%rbp
+1000f83b3:	c3	retq
+1000f83b4:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

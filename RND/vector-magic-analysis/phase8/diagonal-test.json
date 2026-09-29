@@ -1,0 +1,57 @@
+{
+  "source_image": "procedural approximation of chat image",
+  "target_executed": false,
+  "mac_slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "colors_rgb": {
+    "yellow": [
+      255,
+      193,
+      7
+    ],
+    "white": [
+      255,
+      255,
+      255
+    ]
+  },
+  "fixtures": [
+    {
+      "filename": "diagonal-yellow-white-32.png",
+      "sha256": "f7ed476111ad6d86a1cc06b98ef13fc18eff9671c60c5586b90164cf56519ef5",
+      "size": [
+        32,
+        32
+      ],
+      "yellow_pixels": 496,
+      "white_pixels": 528,
+      "horizontal_color_transitions": 31,
+      "vertical_color_transitions": 31,
+      "interface_length_grid_edges": 62,
+      "internal_interface_nodes": 61,
+      "local_candidates_on_interface": {
+        "1": 61,
+        "2": 61
+      },
+      "ambiguous_internal_nodes": []
+    },
+    {
+      "filename": "diagonal-yellow-white-353.png",
+      "sha256": "da844f17e393c2a8321af531e1decd85696378b3ea7d08cb63d97c671529a471",
+      "size": [
+        353,
+        353
+      ],
+      "yellow_pixels": 62128,
+      "white_pixels": 62481,
+      "horizontal_color_transitions": 352,
+      "vertical_color_transitions": 352,
+      "interface_length_grid_edges": 704,
+      "internal_interface_nodes": 703,
+      "local_candidates_on_interface": {
+        "1": 703,
+        "2": 703
+      },
+      "ambiguous_internal_nodes": []
+    }
+  ]
+}

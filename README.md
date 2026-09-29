@@ -8,6 +8,12 @@ Studio window memiliki UI lisensi dan workspace. `open_target_url` membuat targe
 
 Generator di Rust mengeluarkan SVG standalone dengan namespace, artboard rasio/microstock, path fill/stroke, transform, dan XML escaping. Bridge tidak berisi algoritma SVG atau lisensi.
 
+## Halaman Tracing
+
+Tab **Tracing** di sebelah Recorder mengubah PNG/JPG/WebP lokal menjadi SVG dengan path yang dapat diedit. Pilih gambar, atur jumlah warna dan detail, lalu tekan **Mulai tracing**. Pratinjau asli/vektor mendukung zoom; **Simpan SVG** menyimpan ke Downloads di Tauri atau mengunduh file di browser. Hasil tetap tersedia saat berpindah tab. Mengubah pengaturan menandai hasil lama tidak berlaku; proses bisa dibatalkan.
+
+Mesin mandiri di `src/tracing/engine.ts` berjalan dalam Web Worker: pengelompokan warna, pembersihan region kecil, penelusuran batas bersama, lalu penyederhanaan garis/fitting Bézier. Batas yang sama hanya difit sekali dan dipakai kedua bidang dengan arah berlawanan. Ini implementasi awal yang diinformasikan riset; belum merupakan reproduksi mesin Vector Magic atau keputusan merge/swap-nya. Detail implementasi dan pengujian ada di [catatan tracing](docs/TRACING.md).
+
 ## Prasyarat dan development
 
 Install Node.js 20+ dan Rust stable/Cargo, lalu:

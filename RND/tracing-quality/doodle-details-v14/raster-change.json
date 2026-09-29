@@ -1,0 +1,24 @@
+{
+  "fold": {
+    "bounds": [
+      74,
+      325,
+      36,
+      24
+    ],
+    "meanAbsoluteRGBAChange": 6.346354166666667,
+    "changedPixels": 84,
+    "totalPixels": 864
+  },
+  "arrow": {
+    "bounds": [
+      15,
+      308,
+      277,
+      110
+    ],
+    "meanAbsoluteRGBAChange": 0.19182802756809977,
+    "changedPixels": 87,
+    "totalPixels": 30470
+  }
+}

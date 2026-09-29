@@ -1,0 +1,8 @@
+{
+  "comparison": "unique class::method names, not full signatures or machine code",
+  "mac_count": 221,
+  "windows_count": 221,
+  "shared_count": 221,
+  "only_mac": [],
+  "only_windows": []
+}

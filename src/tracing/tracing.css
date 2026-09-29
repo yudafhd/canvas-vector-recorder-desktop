@@ -1,0 +1,75 @@
+.tracing-page { --trace-panel: #f7f9fc; --trace-border: #d1dbe5; --trace-muted: #64748b; display: flex; flex-direction: column; height: calc(100vh - 52px); max-width: 2048px; margin: auto; padding: 18px 24px 20px; color: #1e293b; }
+.trace-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 2px 0 20px; }
+.trace-eyebrow { font-size: 10px; letter-spacing: .16em; font-weight: 700; color: #087dcc; }
+.trace-header h1 { font-size: 24px; margin: 3px 0; letter-spacing: -.04em; }
+.trace-header p { margin: 0; color: var(--trace-muted); font-size: 12px; }
+.trace-header button { padding: 10px 18px; }
+.trace-layout { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 18px; min-height: 0; flex: 1; transition: grid-template-columns 0.25s cubic-bezier(0.16, 1, 0.3, 1), gap 0.25s ease; }
+.trace-layout.sidebar-collapsed { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; }
+.trace-layout.sidebar-collapsed .trace-sidebar { display: none !important; }
+.trace-sidebar { display: flex; flex-direction: column; overflow: hidden; background: var(--trace-panel); border: 1px solid var(--trace-border); border-radius: 10px; }
+.trace-sidebar > .trace-section { flex-shrink: 0; }
+.trace-sidebar > #traceSettings { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.trace-section { border: 0; border-bottom: 1px solid var(--trace-border); margin: 0; padding: 18px; min-width: 0; }
+.trace-sidebar-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.trace-sidebar-title-row h2 { font-size: 12px; font-weight: 700; margin: 0; }
+.trace-sidebar-close { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; background: transparent; border: 1px solid transparent; border-radius: 4px; color: var(--trace-muted); cursor: pointer; transition: all 0.15s ease; }
+.trace-sidebar-close:hover { background: rgba(0, 0, 0, 0.06); border-color: var(--trace-border); color: inherit; }
+.trace-section h2 { font-size: 12px; font-weight: 700; margin: 0 0 12px; }
+.trace-section label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin: 14px 0 7px; }
+.trace-section select { width: 100%; min-height: 34px; border: 1px solid var(--trace-border); background: transparent; border-radius: 5px; padding: 4px 7px; }
+.trace-section input[type=range] { width: 100%; accent-color: #087dcc; }
+.trace-section .trace-check { justify-content: flex-start; gap: 7px; }
+.trace-check input { accent-color: #087dcc; }
+.trace-help { font-size: 10px; line-height: 1.7; color: var(--trace-muted); overflow-wrap: anywhere; margin-bottom: 0; }
+.trace-upload { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 100%; min-height: 118px; border: 1px dashed #95afc4; background: transparent; border-radius: 7px; }
+.trace-upload-symbol { font-size: 26px; line-height: 1; color: #087dcc; }
+.trace-upload strong { font-size: 12px; }
+.trace-upload span:last-child { font-size: 9px; color: var(--trace-muted); }
+.trace-run-section { border: 0; }
+.trace-run-section button { width: 100%; margin-bottom: 8px; min-height: 36px; }
+.trace-workbench { min-width: 0; min-height: 0; display: flex; flex-direction: column; border: 1px solid var(--trace-border); border-radius: 10px; background: var(--trace-panel); overflow: hidden; }
+.trace-workbench.trace-dragging { outline: 3px solid #087dcc; outline-offset: -3px; }
+.trace-toolbar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--trace-border); font-size: 11px; }
+.trace-toolbar-toggle { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--trace-border); border-radius: 6px; padding: 4px 9px; font-size: 11px; font-weight: 500; color: var(--trace-muted); cursor: pointer; white-space: nowrap; transition: all 0.15s ease; line-height: 1; }
+.trace-toolbar-toggle:hover { background: rgba(8, 125, 204, 0.08); border-color: #087dcc; color: #087dcc; }
+.trace-toolbar-toggle.is-collapsed { background: rgba(8, 125, 204, 0.12); border-color: #087dcc; color: #087dcc; }
+.trace-sidebar-chevron { transition: transform 0.2s ease; }
+.trace-toolbar-toggle.is-collapsed .trace-sidebar-chevron { transform: rotate(180deg); transform-origin: center; }
+.trace-toolbar > span { margin-right: auto; color: var(--trace-muted); }
+.trace-zoom-group { display: flex; align-items: center; gap: 8px; }
+.trace-zoom-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border: 1px solid var(--trace-border); border-radius: 4px; background: transparent; color: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; line-height: 1; }
+.trace-zoom-btn:hover:not(:disabled) { background: rgba(8, 125, 204, 0.08); border-color: #087dcc; color: #087dcc; }
+.trace-zoom-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.trace-toolbar input { width: 90px; accent-color: #087dcc; }
+.trace-toolbar output { min-width: 36px; }
+.trace-comparison { flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: 180px; }
+.trace-pane { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.trace-pane + .trace-pane { border-left: 1px solid var(--trace-border); }
+.trace-pane header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--trace-border); }
+.trace-pane h2 { font-size: 11px; margin: 0; font-weight: 600; }
+.trace-pane header span { font-size: 9px; color: var(--trace-muted); letter-spacing: .12em; }
+.trace-stage { flex: 1; overflow: auto; min-height: 0; background: repeating-conic-gradient(#e8edf2 0% 25%, #f5f7fa 0% 50%) 50% / 20px 20px; scrollbar-gutter: stable; scrollbar-width: thin; position: relative; }
+.trace-stage.can-pan { cursor: grab; }
+.trace-is-panning .trace-stage { cursor: grabbing !important; user-select: none; }
+.trace-stage-inner { width: 100%; height: 100%; min-height: 180px; padding: 24px; display: grid; place-items: center; box-sizing: border-box; }
+.trace-stage img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 3px 10px #00000016); user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.trace-empty { text-align: center; color: var(--trace-muted); font-size: 12px; pointer-events: none; }
+.trace-empty strong { color: #52667d; font-size: 14px; font-weight: 600; }
+.trace-empty p { line-height: 1.8; font-size: 11px; }
+.trace-result-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--trace-border); min-height: 48px; }
+.trace-result-bar > span { font-size: 11px; color: var(--trace-muted); margin-left: auto; }
+.trace-palette { display: flex; flex-wrap: wrap; gap: 4px; }
+.trace-palette span { width: 18px; height: 18px; border: 1px solid #0002; border-radius: 4px; }
+.trace-progress { padding: 0 14px 10px; }
+.trace-progress progress { width: 100%; height: 5px; accent-color: #087dcc; }
+.trace-progress p { margin: 4px 0 0; font-size: 11px; color: var(--trace-muted); }
+.trace-progress .trace-error { color: #c23c3c; }
+:root[data-theme=dark] .tracing-page { --trace-panel: #292a2d; --trace-border: #42474e; --trace-muted: #a3afbd; color: #e8eaed; }
+:root[data-theme=dark] .trace-stage { background-image: repeating-conic-gradient(#25282d 0% 25%, #2f3339 0% 50%); }
+:root[data-theme=dark] .trace-empty strong { color: #bbc9d8; }
+:root[data-theme=dark] .trace-sidebar-close:hover { background: rgba(255, 255, 255, 0.08); }
+:root[data-theme=dark] .trace-toolbar-toggle:hover { background: rgba(8, 125, 204, 0.2); }
+:root[data-theme=dark] .trace-toolbar-toggle.is-collapsed { background: rgba(8, 125, 204, 0.25); border-color: #38bdf8; color: #38bdf8; }
+:root[data-theme=dark] .trace-zoom-btn:hover:not(:disabled) { background: rgba(8, 125, 204, 0.2); border-color: #38bdf8; color: #38bdf8; }
+@media (max-width: 1000px) { .tracing-page { padding: 12px; } .trace-layout { grid-template-columns: 215px minmax(0, 1fr); gap: 10px; } .trace-toolbar { gap: 7px; } .trace-toolbar input { width: 65px; } .trace-header p { font-size: 11px; } }

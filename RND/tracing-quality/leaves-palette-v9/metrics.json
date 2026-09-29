@@ -1,0 +1,98 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/tracing-quality/leaves-research-v4/source.bmp",
+  "inputSha256": "7071ce4559ac82884799ad753ed575748323449e2ae40fe6661a5ccc12ac61f2",
+  "width": 830,
+  "height": 584,
+  "renderer": "Independent software polygon rasterizer; cubics flattened to 0.04 px; 4x4 sample grid; no browser antialias",
+  "panels": [
+    "source",
+    "before",
+    "after"
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "5ff94653f5b1d834a2aa5769394581dbef4c8c9db5f89ec69309b71999f859c2",
+      "colors": [
+        "#fffefe",
+        "#3c1305",
+        "#e34e1d",
+        "#7d782a",
+        "#5e591f",
+        "#8d3013"
+      ],
+      "contours": 153,
+      "segments": 1875,
+      "bytes": 84764,
+      "milliseconds": 4709,
+      "diagnostics": {
+        "unitFragments": 20893,
+        "merges": 20008,
+        "swaps": 2987,
+        "puncturedCorners": 32,
+        "tangentRefits": 627,
+        "rasterSteps": 1137,
+        "rasterEnergyBefore": 445.9290227234581,
+        "rasterEnergyAfter": 420.42880698622747,
+        "smallAreaConstraints": 10,
+        "guardedFits": 235,
+        "fitDeviationBefore": 0.7977969140408135,
+        "fitDeviationAfter": 0.7646928312880373,
+        "mergedTransitionRegions": 16,
+        "reassignedTransitionPixels": 83
+      },
+      "meanAbsoluteRGBError": 2.5954509820102327,
+      "meanAbsoluteEdgeRGBError": 19.082234138322438,
+      "edgePixels": 25549
+    },
+    {
+      "name": "after",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "d5dcce677fba19eb0aafa4ff811727517742e6da9b3f98f19c1171446334f6de",
+      "colors": [
+        "#fffefe",
+        "#3c1305",
+        "#e34e1d",
+        "#7d782a",
+        "#5e591f",
+        "#8d3013"
+      ],
+      "contours": 153,
+      "segments": 1875,
+      "bytes": 84764,
+      "milliseconds": 6010,
+      "diagnostics": {
+        "unitFragments": 20893,
+        "merges": 20008,
+        "swaps": 2987,
+        "puncturedCorners": 32,
+        "tangentRefits": 627,
+        "rasterSteps": 1137,
+        "rasterEnergyBefore": 445.9290227234581,
+        "rasterEnergyAfter": 420.42880698622747,
+        "smallAreaConstraints": 10,
+        "guardedFits": 235,
+        "fitDeviationBefore": 0.7977969140408135,
+        "fitDeviationAfter": 0.7646928312880373,
+        "mergedTransitionRegions": 16,
+        "reassignedTransitionPixels": 83
+      },
+      "meanAbsoluteRGBError": 2.5954509820102327,
+      "meanAbsoluteEdgeRGBError": 19.082234138322438,
+      "edgePixels": 25549
+    }
+  ]
+}

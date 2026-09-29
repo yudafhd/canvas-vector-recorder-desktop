@@ -1,0 +1,65 @@
+BezierFitter::followContour(int, int, int, unsigned char)
+LC_FUNCTION_STARTS: [0x1000b9370, 0x1000b9430)
+Numeric interpretations are candidates.
+1000b9370:	55	pushq	%rbp
+1000b9371:	48 89 e5	movq	%rsp, %rbp
+1000b9374:	41 57	pushq	%r15
+1000b9376:	41 56	pushq	%r14
+1000b9378:	41 55	pushq	%r13
+1000b937a:	41 54	pushq	%r12
+1000b937c:	53	pushq	%rbx
+1000b937d:	48 83 ec 18	subq	$0x18, %rsp
+1000b9381:	44 89 45 c8	movl	%r8d, -0x38(%rbp)
+1000b9385:	41 89 cc	movl	%ecx, %r12d
+1000b9388:	41 89 d7	movl	%edx, %r15d
+1000b938b:	41 89 f6	movl	%esi, %r14d
+1000b938e:	49 89 fd	movq	%rdi, %r13
+1000b9391:	48 8b 7f 28	movq	0x28(%rdi), %rdi
+1000b9395:	e8 46 ff ff ff	callq	0x1000b92e0
+1000b939a:	8b 58 20	movl	0x20(%rax), %ebx
+1000b939d:	49 8b 7d 28	movq	0x28(%r13), %rdi
+1000b93a1:	44 89 75 cc	movl	%r14d, -0x34(%rbp)
+1000b93a5:	44 89 f6	movl	%r14d, %esi
+1000b93a8:	e8 33 ff ff ff	callq	0x1000b92e0
+1000b93ad:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b93b1:	44 89 f8	movl	%r15d, %eax
+1000b93b4:	99	cltd
+1000b93b5:	f7 fb	idivl	%ebx
+1000b93b7:	89 d6	movl	%edx, %esi
+1000b93b9:	e8 82 ff ff ff	callq	0x1000b9340
+1000b93be:	8b 00	movl	(%rax), %eax
+1000b93c0:	89 45 d4	movl	%eax, -0x2c(%rbp)
+1000b93c3:	44 89 65 d0	movl	%r12d, -0x30(%rbp)
+1000b93c7:	45 01 e7	addl	%r12d, %r15d
+1000b93ca:	41 89 dc	movl	%ebx, %r12d
+1000b93cd:	41 01 df	addl	%ebx, %r15d
+1000b93d0:	49 8b 7d 28	movq	0x28(%r13), %rdi
+1000b93d4:	8b 75 cc	movl	-0x34(%rbp), %esi
+1000b93d7:	e8 04 ff ff ff	callq	0x1000b92e0
+1000b93dc:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b93e0:	44 89 f8	movl	%r15d, %eax
+1000b93e3:	99	cltd
+1000b93e4:	41 f7 fc	idivl	%r12d
+1000b93e7:	89 d3	movl	%edx, %ebx
+1000b93e9:	89 d6	movl	%edx, %esi
+1000b93eb:	e8 50 ff ff ff	callq	0x1000b9340
+1000b93f0:	44 8b 30	movl	(%rax), %r14d
+1000b93f3:	49 8b 7d 30	movq	0x30(%r13), %rdi
+1000b93f7:	44 89 f6	movl	%r14d, %esi
+1000b93fa:	e8 11 ff ff ff	callq	0x1000b9310
+1000b93ff:	8b 4d c8	movl	-0x38(%rbp), %ecx
+1000b9402:	38 48 1c	cmpb	%cl, 0x1c(%rax)
+1000b9405:	75 0a	jne	0x1000b9411
+1000b9407:	44 03 7d d0	addl	-0x30(%rbp), %r15d
+1000b940b:	44 3b 75 d4	cmpl	-0x2c(%rbp), %r14d
+1000b940f:	75 bf	jne	0x1000b93d0
+1000b9411:	89 d8	movl	%ebx, %eax
+1000b9413:	48 83 c4 18	addq	$0x18, %rsp
+1000b9417:	5b	popq	%rbx
+1000b9418:	41 5c	popq	%r12
+1000b941a:	41 5d	popq	%r13
+1000b941c:	41 5e	popq	%r14
+1000b941e:	41 5f	popq	%r15
+1000b9420:	5d	popq	%rbp
+1000b9421:	c3	retq
+1000b9422:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

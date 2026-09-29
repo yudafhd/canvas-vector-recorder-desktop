@@ -1,0 +1,62 @@
+{
+  "target_executed": false,
+  "mac_slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "windows_engine_sha256": "4fe299be39a95230f713623d2f8494082bee402b87e61d49e4250bafff9188f4",
+  "mac_table_address": "0x100302ec0",
+  "windows_table_rva": "0x90020",
+  "tables_byte_identical": true,
+  "pattern_priority": "first matching record wins",
+  "match_axes": "x OR y",
+  "keep_mask": "1 preserves node; 0 marks node for removal",
+  "reference_matcher_checks": 15,
+  "patterns": [
+    {
+      "priority": 0,
+      "length": 5,
+      "match_bits_old_to_new": "00000",
+      "match_value": "0x0",
+      "keep_bits_old_to_new": "100001",
+      "keep_value": "0x21"
+    },
+    {
+      "priority": 1,
+      "length": 9,
+      "match_bits_old_to_new": "010101010",
+      "match_value": "0xaa",
+      "keep_bits_old_to_new": "1001001001",
+      "keep_value": "0x249"
+    },
+    {
+      "priority": 2,
+      "length": 9,
+      "match_bits_old_to_new": "010010010",
+      "match_value": "0x92",
+      "keep_bits_old_to_new": "1001001001",
+      "keep_value": "0x249"
+    },
+    {
+      "priority": 3,
+      "length": 13,
+      "match_bits_old_to_new": "1000100010001",
+      "match_value": "0x1111",
+      "keep_bits_old_to_new": "10000100100001",
+      "keep_value": "0x2121"
+    },
+    {
+      "priority": 4,
+      "length": 10,
+      "match_bits_old_to_new": "0010000100",
+      "match_value": "0x84",
+      "keep_bits_old_to_new": "10000100001",
+      "keep_value": "0x421"
+    },
+    {
+      "priority": 5,
+      "length": 10,
+      "match_bits_old_to_new": "0101001010",
+      "match_value": "0x14a",
+      "keep_bits_old_to_new": "10000100001",
+      "keep_value": "0x421"
+    }
+  ]
+}

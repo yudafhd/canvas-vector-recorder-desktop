@@ -1,0 +1,186 @@
+SubPixelSegmenter::execute()
+1001108e0:	55	pushq	%rbp
+1001108e1:	48 89 e5	movq	%rsp, %rbp
+1001108e4:	41 56	pushq	%r14
+1001108e6:	53	pushq	%rbx
+1001108e7:	48 89 fb	movq	%rdi, %rbx
+1001108ea:	45 31 f6	xorl	%r14d, %r14d
+1001108ed:	bf 04 00 00 00	movl	$0x4, %edi
+1001108f2:	be ff ff ff ff	movl	$0xffffffff, %esi
+1001108f7:	31 d2	xorl	%edx, %edx
+1001108f9:	e8 42 c2 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1001108fe:	48 8b 43 30	movq	0x30(%rbx), %rax
+100110902:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110906:	8b 48 08	movl	0x8(%rax), %ecx
+100110909:	89 4b 78	movl	%ecx, 0x78(%rbx)
+10011090c:	8b 40 0c	movl	0xc(%rax), %eax
+10011090f:	89 43 7c	movl	%eax, 0x7c(%rbx)
+100110912:	c6 43 20 00	movb	$0x0, 0x20(%rbx)
+100110916:	48 c7 83 80 00 00 00 00 00 00 00	movq	$0x0, 0x80(%rbx)
+100110921:	31 f6	xorl	%esi, %esi
+100110923:	ba 01 00 00 00	movl	$0x1, %edx
+100110928:	e8 03 96 ff ff	callq	__ZN20SubPixelSegmentation10initializeEib ## SubPixelSegmentation::initialize(int, bool)
+10011092d:	8b 0b	movl	(%rbx), %ecx
+10011092f:	bf 04 00 00 00	movl	$0x4, %edi
+100110934:	be 03 00 00 00	movl	$0x3, %esi
+100110939:	31 d2	xorl	%edx, %edx
+10011093b:	e8 80 c2 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110940:	48 89 df	movq	%rbx, %rdi
+100110943:	be 01 00 00 00	movl	$0x1, %esi
+100110948:	ba 01 00 00 00	movl	$0x1, %edx
+10011094d:	e8 7e 02 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+100110952:	85 c0	testl	%eax, %eax
+100110954:	74 38	je	0x10011098e
+100110956:	66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+100110960:	8b 0b	movl	(%rbx), %ecx
+100110962:	41 39 ce	cmpl	%ecx, %r14d
+100110965:	7d 27	jge	0x10011098e
+100110967:	bf 04 00 00 00	movl	$0x4, %edi
+10011096c:	be 03 00 00 00	movl	$0x3, %esi
+100110971:	44 89 f2	movl	%r14d, %edx
+100110974:	e8 47 c2 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110979:	41 8d 56 02	leal	0x2(%r14), %edx
+10011097d:	48 89 df	movq	%rbx, %rdi
+100110980:	89 d6	movl	%edx, %esi
+100110982:	e8 49 02 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+100110987:	41 ff c6	incl	%r14d
+10011098a:	85 c0	testl	%eax, %eax
+10011098c:	75 d2	jne	0x100110960
+10011098e:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110992:	0f b6 53 20	movzbl	0x20(%rbx), %edx
+100110996:	45 31 f6	xorl	%r14d, %r14d
+100110999:	be 04 00 00 00	movl	$0x4, %esi
+10011099e:	31 c9	xorl	%ecx, %ecx
+1001109a0:	e8 1b 98 ff ff	callq	__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)
+1001109a5:	8b 0b	movl	(%rbx), %ecx
+1001109a7:	bf 04 00 00 00	movl	$0x4, %edi
+1001109ac:	be 07 00 00 00	movl	$0x7, %esi
+1001109b1:	31 d2	xorl	%edx, %edx
+1001109b3:	e8 08 c2 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+1001109b8:	48 89 df	movq	%rbx, %rdi
+1001109bb:	be ff ff ff 7f	movl	$0x7fffffff, %esi
+1001109c0:	ba 01 00 00 00	movl	$0x1, %edx
+1001109c5:	e8 06 02 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+1001109ca:	85 c0	testl	%eax, %eax
+1001109cc:	74 33	je	0x100110a01
+1001109ce:	66 90	nop
+1001109d0:	8b 0b	movl	(%rbx), %ecx
+1001109d2:	41 39 ce	cmpl	%ecx, %r14d
+1001109d5:	7d 2a	jge	0x100110a01
+1001109d7:	bf 04 00 00 00	movl	$0x4, %edi
+1001109dc:	be 07 00 00 00	movl	$0x7, %esi
+1001109e1:	44 89 f2	movl	%r14d, %edx
+1001109e4:	e8 d7 c1 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+1001109e9:	41 8d 56 02	leal	0x2(%r14), %edx
+1001109ed:	48 89 df	movq	%rbx, %rdi
+1001109f0:	be ff ff ff 7f	movl	$0x7fffffff, %esi
+1001109f5:	e8 d6 01 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+1001109fa:	41 ff c6	incl	%r14d
+1001109fd:	85 c0	testl	%eax, %eax
+1001109ff:	75 cf	jne	0x1001109d0
+100110a01:	8b 0b	movl	(%rbx), %ecx
+100110a03:	45 31 f6	xorl	%r14d, %r14d
+100110a06:	bf 04 00 00 00	movl	$0x4, %edi
+100110a0b:	be 08 00 00 00	movl	$0x8, %esi
+100110a10:	31 d2	xorl	%edx, %edx
+100110a12:	e8 a9 c1 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110a17:	66 0f 1f 84 00 00 00 00 00	nopw	(%rax,%rax)
+100110a20:	48 89 df	movq	%rbx, %rdi
+100110a23:	be ff ff ff 7f	movl	$0x7fffffff, %esi
+100110a28:	ba ff ff ff 7f	movl	$0x7fffffff, %edx
+100110a2d:	e8 9e 01 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+100110a32:	85 c0	testl	%eax, %eax
+100110a34:	74 1e	je	0x100110a54
+100110a36:	8b 0b	movl	(%rbx), %ecx
+100110a38:	41 39 ce	cmpl	%ecx, %r14d
+100110a3b:	7d 17	jge	0x100110a54
+100110a3d:	bf 04 00 00 00	movl	$0x4, %edi
+100110a42:	be 08 00 00 00	movl	$0x8, %esi
+100110a47:	44 89 f2	movl	%r14d, %edx
+100110a4a:	e8 71 c1 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110a4f:	41 ff c6	incl	%r14d
+100110a52:	eb cc	jmp	0x100110a20
+100110a54:	83 7b 0c 00	cmpl	$0x0, 0xc(%rbx)
+100110a58:	74 7d	je	0x100110ad7
+100110a5a:	c6 43 20 01	movb	$0x1, 0x20(%rbx)
+100110a5e:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110a62:	45 31 f6	xorl	%r14d, %r14d
+100110a65:	be 09 00 00 00	movl	$0x9, %esi
+100110a6a:	ba 01 00 00 00	movl	$0x1, %edx
+100110a6f:	31 c9	xorl	%ecx, %ecx
+100110a71:	e8 4a 97 ff ff	callq	__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)
+100110a76:	8b 0b	movl	(%rbx), %ecx
+100110a78:	bf 04 00 00 00	movl	$0x4, %edi
+100110a7d:	be 0c 00 00 00	movl	$0xc, %esi
+100110a82:	31 d2	xorl	%edx, %edx
+100110a84:	e8 37 c1 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110a89:	0f 1f 80 00 00 00 00	nopl	(%rax)
+100110a90:	8b 13	movl	(%rbx), %edx
+100110a92:	48 89 df	movq	%rbx, %rdi
+100110a95:	be ff ff ff 7f	movl	$0x7fffffff, %esi
+100110a9a:	e8 31 01 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+100110a9f:	85 c0	testl	%eax, %eax
+100110aa1:	74 1e	je	0x100110ac1
+100110aa3:	8b 0b	movl	(%rbx), %ecx
+100110aa5:	41 39 ce	cmpl	%ecx, %r14d
+100110aa8:	7d 17	jge	0x100110ac1
+100110aaa:	bf 04 00 00 00	movl	$0x4, %edi
+100110aaf:	be 0c 00 00 00	movl	$0xc, %esi
+100110ab4:	44 89 f2	movl	%r14d, %edx
+100110ab7:	e8 04 c1 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110abc:	41 ff c6	incl	%r14d
+100110abf:	eb cf	jmp	0x100110a90
+100110ac1:	c6 43 20 00	movb	$0x0, 0x20(%rbx)
+100110ac5:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110ac9:	be 0d 00 00 00	movl	$0xd, %esi
+100110ace:	31 d2	xorl	%edx, %edx
+100110ad0:	31 c9	xorl	%ecx, %ecx
+100110ad2:	e8 e9 96 ff ff	callq	__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)
+100110ad7:	48 89 df	movq	%rbx, %rdi
+100110ada:	e8 71 04 00 00	callq	__ZN17SubPixelSegmenter20splitAndMergeBeachesEv ## SubPixelSegmenter::splitAndMergeBeaches()
+100110adf:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110ae3:	e8 98 71 ff ff	callq	__ZN17PixelSegmentation25performDiagonalExtrusionsEv ## PixelSegmentation::performDiagonalExtrusions()
+100110ae8:	45 31 f6	xorl	%r14d, %r14d
+100110aeb:	bf 04 00 00 00	movl	$0x4, %edi
+100110af0:	be 11 00 00 00	movl	$0x11, %esi
+100110af5:	31 d2	xorl	%edx, %edx
+100110af7:	e8 44 c0 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100110afc:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110b00:	0f b6 53 20	movzbl	0x20(%rbx), %edx
+100110b04:	be 12 00 00 00	movl	$0x12, %esi
+100110b09:	31 c9	xorl	%ecx, %ecx
+100110b0b:	e8 b0 96 ff ff	callq	__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)
+100110b10:	8b 0b	movl	(%rbx), %ecx
+100110b12:	bf 04 00 00 00	movl	$0x4, %edi
+100110b17:	be 15 00 00 00	movl	$0x15, %esi
+100110b1c:	31 d2	xorl	%edx, %edx
+100110b1e:	e8 9d c0 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110b23:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+100110b30:	48 89 df	movq	%rbx, %rdi
+100110b33:	be ff ff ff 7f	movl	$0x7fffffff, %esi
+100110b38:	ba 04 00 00 00	movl	$0x4, %edx
+100110b3d:	e8 8e 00 00 00	callq	__ZN17SubPixelSegmenter9mergeLoopEii ## SubPixelSegmenter::mergeLoop(int, int)
+100110b42:	85 c0	testl	%eax, %eax
+100110b44:	74 1e	je	0x100110b64
+100110b46:	8b 0b	movl	(%rbx), %ecx
+100110b48:	41 39 ce	cmpl	%ecx, %r14d
+100110b4b:	7d 17	jge	0x100110b64
+100110b4d:	bf 04 00 00 00	movl	$0x4, %edi
+100110b52:	be 15 00 00 00	movl	$0x15, %esi
+100110b57:	44 89 f2	movl	%r14d, %edx
+100110b5a:	e8 61 c0 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+100110b5f:	41 ff c6	incl	%r14d
+100110b62:	eb cc	jmp	0x100110b30
+100110b64:	48 8b 7b 60	movq	0x60(%rbx), %rdi
+100110b68:	0f b6 53 20	movzbl	0x20(%rbx), %edx
+100110b6c:	be 16 00 00 00	movl	$0x16, %esi
+100110b71:	31 c9	xorl	%ecx, %ecx
+100110b73:	e8 48 96 ff ff	callq	__ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb ## SubPixelSegmentation::rebuildSubPixelSegments(int, bool, bool)
+100110b78:	bf 04 00 00 00	movl	$0x4, %edi
+100110b7d:	be 19 00 00 00	movl	$0x19, %esi
+100110b82:	31 d2	xorl	%edx, %edx
+100110b84:	5b	popq	%rbx
+100110b85:	41 5e	popq	%r14
+100110b87:	5d	popq	%rbp
+100110b88:	e9 b3 bf fc ff	jmp	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100110b8d:	0f 1f 00	nopl	(%rax)

@@ -1,0 +1,176 @@
+[
+  {
+    "start": "0x1000f1b70",
+    "end_exclusive": "0x1000f1c60",
+    "name": "isProbablyPuncturedNode(sla::Vec<double, 21> const&, int)",
+    "file": "isProbablyPuncturedNode-1000f1b70.annotated.txt"
+  },
+  {
+    "start": "0x1000d2700",
+    "end_exclusive": "0x1000d2750",
+    "name": "VectorImage::clearNodeFlags()",
+    "file": "VectorImage-clearNodeFlags-1000d2700.annotated.txt"
+  },
+  {
+    "start": "0x1000d4df0",
+    "end_exclusive": "0x1000d4ea0",
+    "name": "VectorImage::resetNodePositionsAndFlags()",
+    "file": "VectorImage-resetNodePositionsAndFlags-1000d4df0.annotated.txt"
+  },
+  {
+    "start": "0x1000d4260",
+    "end_exclusive": "0x1000d4310",
+    "name": "VectorImage::setInitialNodePositionAndType(int, int, int)",
+    "file": "VectorImage-setInitialNodePositionAndType-1000d4260.annotated.txt"
+  },
+  {
+    "start": "0x1000b8840",
+    "end_exclusive": "0x1000b8950",
+    "name": "BezierFitter::initialize()",
+    "file": "BezierFitter-initialize-1000b8840.annotated.txt"
+  },
+  {
+    "start": "0x1000b9370",
+    "end_exclusive": "0x1000b9430",
+    "name": "BezierFitter::followContour(int, int, int, unsigned char)",
+    "file": "BezierFitter-followContour-1000b9370.annotated.txt"
+  },
+  {
+    "start": "0x1000b9430",
+    "end_exclusive": "0x1000b95d0",
+    "name": "BezierFitter::selectKeepers(int, int, int)",
+    "file": "BezierFitter-selectKeepers-1000b9430.annotated.txt"
+  },
+  {
+    "start": "0x1000b8ae0",
+    "end_exclusive": "0x1000b8c40",
+    "name": "BezierFitter::fitBezierCurves()",
+    "file": "BezierFitter-fitBezierCurves-1000b8ae0.annotated.txt"
+  },
+  {
+    "start": "0x1000b8950",
+    "end_exclusive": "0x1000b8ae0",
+    "name": "BezierFitter::segmentContours()",
+    "file": "BezierFitter-segmentContours-1000b8950.annotated.txt"
+  },
+  {
+    "start": "0x1000bbdc0",
+    "end_exclusive": "0x1000bbeb0",
+    "name": "BezierFitter::mergeAndSwapLoop(int, int, int)",
+    "file": "BezierFitter-mergeAndSwapLoop-1000bbdc0.annotated.txt"
+  },
+  {
+    "start": "0x1000bbee0",
+    "end_exclusive": "0x1000bbfc0",
+    "name": "BezierFitter::initializeFragments(int, int, int)",
+    "file": "BezierFitter-initializeFragments-1000bbee0.annotated.txt"
+  },
+  {
+    "start": "0x10011b480",
+    "end_exclusive": "0x10011b5e0",
+    "name": "VmController::segmentImage(VmVectorizationSettings const&)",
+    "file": "VmController-segmentImage-10011b480.annotated.txt"
+  },
+  {
+    "start": "0x10011b6c0",
+    "end_exclusive": "0x10011b7d0",
+    "name": "VmController::contourSmoothImage(VmVectorizationSettings const&)",
+    "file": "VmController-contourSmoothImage-10011b6c0.annotated.txt"
+  },
+  {
+    "start": "0x1000c1b30",
+    "end_exclusive": "0x1000c1b70",
+    "name": "BoundaryTracer::memoryUsed()",
+    "file": "BoundaryTracer-memoryUsed-1000c1b30.annotated.txt"
+  },
+  {
+    "start": "0x1000c15e0",
+    "end_exclusive": "0x1000c16c0",
+    "name": "BoundaryTracer::patternMatch(int, int, int, int*)",
+    "file": "BoundaryTracer-patternMatch-1000c15e0.annotated.txt"
+  },
+  {
+    "start": "0x1000c02b0",
+    "end_exclusive": "0x1000c0cd0",
+    "name": "BoundaryTracer::traceBoundary(int, int, int)",
+    "file": "BoundaryTracer-traceBoundary-1000c02b0.annotated.txt"
+  },
+  {
+    "start": "0x1000c0cd0",
+    "end_exclusive": "0x1000c1590",
+    "name": "BoundaryTracer::removeRedundantNodes(bool)",
+    "file": "BoundaryTracer-removeRedundantNodes-1000c0cd0.annotated.txt"
+  },
+  {
+    "start": "0x1000bfea0",
+    "end_exclusive": "0x1000c02b0",
+    "name": "BoundaryTracer::enumerateBoundaryNodes()",
+    "file": "BoundaryTracer-enumerateBoundaryNodes-1000bfea0.annotated.txt"
+  },
+  {
+    "start": "0x1000bf750",
+    "end_exclusive": "0x1000bfea0",
+    "name": "BoundaryTracer::execute()",
+    "file": "BoundaryTracer-execute-1000bf750.annotated.txt"
+  },
+  {
+    "start": "0x1000c1590",
+    "end_exclusive": "0x1000c15e0",
+    "name": "BoundaryTracer::finalize()",
+    "file": "BoundaryTracer-finalize-1000c1590.annotated.txt"
+  },
+  {
+    "start": "0x1000bf660",
+    "end_exclusive": "0x1000bf670",
+    "name": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "file": "BoundaryTracer-BoundaryTracer-1000bf660.annotated.txt"
+  },
+  {
+    "start": "0x1000bf200",
+    "end_exclusive": "0x1000bf630",
+    "name": "BoundaryTracer::BoundaryTracer(CoreEngine&)",
+    "file": "BoundaryTracer-BoundaryTracer-1000bf200.annotated.txt"
+  },
+  {
+    "start": "0x1000bf6e0",
+    "end_exclusive": "0x1000bf750",
+    "name": "BoundaryTracer::~BoundaryTracer()",
+    "file": "BoundaryTracer-~BoundaryTracer-1000bf6e0.annotated.txt"
+  },
+  {
+    "start": "0x1000bf670",
+    "end_exclusive": "0x1000bf6e0",
+    "name": "BoundaryTracer::~BoundaryTracer()",
+    "file": "BoundaryTracer-~BoundaryTracer-1000bf670.annotated.txt"
+  },
+  {
+    "start": "0x1000c4360",
+    "end_exclusive": "0x1000c4490",
+    "name": "ContourSmoother::initialize(bool)",
+    "file": "ContourSmoother-initialize-1000c4360.annotated.txt"
+  },
+  {
+    "start": "0x1000c3790",
+    "end_exclusive": "0x1000c4260",
+    "name": "ContourSmoother::punctureCorners()",
+    "file": "ContourSmoother-punctureCorners-1000c3790.annotated.txt"
+  },
+  {
+    "start": "0x1000c3040",
+    "end_exclusive": "0x1000c31f0",
+    "name": "ContourSmoother::executeCurrentPhase()",
+    "file": "ContourSmoother-executeCurrentPhase-1000c3040.annotated.txt"
+  },
+  {
+    "start": "0x1000c4580",
+    "end_exclusive": "0x1000c46d0",
+    "name": "ContourSmoother::execute(bool)",
+    "file": "ContourSmoother-execute-1000c4580.annotated.txt"
+  },
+  {
+    "start": "0x100110350",
+    "end_exclusive": "0x100110600",
+    "name": "Segmenter::execute(bool, bool, bool)",
+    "file": "Segmenter-execute-100110350.annotated.txt"
+  }
+]

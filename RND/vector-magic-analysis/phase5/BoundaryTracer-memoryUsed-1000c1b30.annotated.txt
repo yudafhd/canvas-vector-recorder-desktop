@@ -1,0 +1,20 @@
+BoundaryTracer::memoryUsed()
+LC_FUNCTION_STARTS: [0x1000c1b30, 0x1000c1b70)
+Numeric interpretations are candidates.
+1000c1b30:	55	pushq	%rbp
+1000c1b31:	48 89 e5	movq	%rsp, %rbp
+1000c1b34:	48 63 47 08	movslq	0x8(%rdi), %rax
+1000c1b38:	48 63 4f 0c	movslq	0xc(%rdi), %rcx
+1000c1b3c:	48 0f af c8	imulq	%rax, %rcx
+1000c1b40:	48 63 47 40	movslq	0x40(%rdi), %rax
+1000c1b44:	48 63 57 44	movslq	0x44(%rdi), %rdx
+1000c1b48:	48 0f af d0	imulq	%rax, %rdx
+1000c1b4c:	48 01 ca	addq	%rcx, %rdx
+1000c1b4f:	48 c1 e2 02	shlq	$0x2, %rdx
+1000c1b53:	48 63 87 b0 00 00 00	movslq	0xb0(%rdi), %rax
+1000c1b5a:	48 8d 04 40	leaq	(%rax,%rax,2), %rax
+1000c1b5e:	48 8d 04 82	leaq	(%rdx,%rax,4), %rax
+1000c1b62:	48 83 c0 30	addq	$0x30, %rax
+1000c1b66:	5d	popq	%rbp
+1000c1b67:	c3	retq
+1000c1b68:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)

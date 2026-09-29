@@ -1,0 +1,62 @@
+isProbablyPuncturedNode(sla::Vec<double, 21> const&, int)
+LC_FUNCTION_STARTS: [0x1000f1b70, 0x1000f1c60)
+Numeric interpretations are candidates.
+1000f1b70:	55	pushq	%rbp
+1000f1b71:	48 89 e5	movq	%rsp, %rbp
+1000f1b74:	f2 0f 10 47 30	movsd	0x30(%rdi), %xmm0
+1000f1b79:	f2 0f 10 0d 0f a7 1f 00	movsd	0x1fa70f(%rip), %xmm1 ; @0x1002ec290 candidate_f64x2=[0.611194, 0.097537]
+1000f1b81:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000f1b85:	76 55	jbe	0x1000f1bdc
+1000f1b87:	f2 0f 10 0d 39 a7 1f 00	movsd	0x1fa739(%rip), %xmm1 ; @0x1002ec2c8 candidate_f64x2=[0.282594, 0.322933]
+1000f1b8f:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000f1b93:	0f 87 b4 00 00 00	ja	0x1000f1c4d
+1000f1b99:	f2 0f 10 0f	movsd	(%rdi), %xmm1
+1000f1b9d:	f2 0f 10 15 2b a7 1f 00	movsd	0x1fa72b(%rip), %xmm2 ; @0x1002ec2d0 candidate_f64x2=[0.322933, 0.483023]
+1000f1ba5:	66 0f 2e d1	ucomisd	%xmm1, %xmm2
+1000f1ba9:	0f 86 9e 00 00 00	jbe	0x1000f1c4d
+1000f1baf:	f2 0f 10 15 21 a7 1f 00	movsd	0x1fa721(%rip), %xmm2 ; @0x1002ec2d8 candidate_f64x2=[0.483023, 0.0286571]
+1000f1bb7:	66 0f 2e d0	ucomisd	%xmm0, %xmm2
+1000f1bbb:	b0 01	movb	$0x1, %al
+1000f1bbd:	76 3b	jbe	0x1000f1bfa
+1000f1bbf:	f2 0f 10 05 19 a7 1f 00	movsd	0x1fa719(%rip), %xmm0 ; @0x1002ec2e0 candidate_f64x2=[0.0286571, 0.00209524]
+1000f1bc7:	66 0f 2e c1	ucomisd	%xmm1, %xmm0
+1000f1bcb:	77 2d	ja	0x1000f1bfa
+1000f1bcd:	f2 0f 10 05 13 a7 1f 00	movsd	0x1fa713(%rip), %xmm0 ; @0x1002ec2e8 candidate_f64x2=[0.00209524, 0.00402429]
+1000f1bd5:	66 0f 2e 47 10	ucomisd	0x10(%rdi), %xmm0
+1000f1bda:	eb 6c	jmp	0x1000f1c48
+1000f1bdc:	f2 0f 10 0d 5c eb 06 00	movsd	0x6eb5c(%rip), %xmm1 ; @0x100160740 candidate_f64x2=[0.5, 9.345990120086984e+252]
+1000f1be4:	66 0f 2e 4f 78	ucomisd	0x78(%rdi), %xmm1
+1000f1be9:	76 11	jbe	0x1000f1bfc
+1000f1beb:	f2 0f 10 0d cd a6 1f 00	movsd	0x1fa6cd(%rip), %xmm1 ; @0x1002ec2c0 candidate_f64x2=[1.72002, 0.282594]
+1000f1bf3:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000f1bf7:	0f 96 c0	setbe	%al
+1000f1bfa:	5d	popq	%rbp
+1000f1bfb:	c3	retq
+1000f1bfc:	f2 0f 10 0d 94 a6 1f 00	movsd	0x1fa694(%rip), %xmm1 ; @0x1002ec298 candidate_f64x2=[0.097537, 1.42496]
+1000f1c04:	66 0f 2e 8f 80 00 00 00	ucomisd	0x80(%rdi), %xmm1
+1000f1c0c:	76 3f	jbe	0x1000f1c4d
+1000f1c0e:	f2 0f 10 0d 8a a6 1f 00	movsd	0x1fa68a(%rip), %xmm1 ; @0x1002ec2a0 candidate_f64x2=[1.42496, 0.122841]
+1000f1c16:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000f1c1a:	b0 01	movb	$0x1, %al
+1000f1c1c:	76 dc	jbe	0x1000f1bfa
+1000f1c1e:	f2 0f 10 05 82 a6 1f 00	movsd	0x1fa682(%rip), %xmm0 ; @0x1002ec2a8 candidate_f64x2=[0.122841, 0.445642]
+1000f1c26:	66 0f 2e 47 10	ucomisd	0x10(%rdi), %xmm0
+1000f1c2b:	77 cd	ja	0x1000f1bfa
+1000f1c2d:	f2 0f 10 05 7b a6 1f 00	movsd	0x1fa67b(%rip), %xmm0 ; @0x1002ec2b0 candidate_f64x2=[0.445642, 0.0046405]
+1000f1c35:	66 0f 2e 07	ucomisd	(%rdi), %xmm0
+1000f1c39:	77 bf	ja	0x1000f1bfa
+1000f1c3b:	f2 0f 10 05 75 a6 1f 00	movsd	0x1fa675(%rip), %xmm0 ; @0x1002ec2b8 candidate_f64x2=[0.0046405, 1.72002]
+1000f1c43:	66 0f 2e 47 40	ucomisd	0x40(%rdi), %xmm0
+1000f1c48:	0f 97 c0	seta	%al
+1000f1c4b:	5d	popq	%rbp
+1000f1c4c:	c3	retq
+1000f1c4d:	31 c0	xorl	%eax, %eax
+1000f1c4f:	5d	popq	%rbp
+1000f1c50:	c3	retq
+1000f1c51:	00 00	addb	%al, (%rax)
+1000f1c53:	00 00	addb	%al, (%rax)
+1000f1c55:	00 00	addb	%al, (%rax)
+1000f1c57:	00 00	addb	%al, (%rax)
+1000f1c59:	00 00	addb	%al, (%rax)
+1000f1c5b:	00 00	addb	%al, (%rax)
+1000f1c5d:	00 00	addb	%al, (%rax)

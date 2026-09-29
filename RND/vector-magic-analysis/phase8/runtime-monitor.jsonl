@@ -1,0 +1,9 @@
+{"time_utc": "2026-09-28T07:36:52.402058+00:00", "event": "monitor_start", "output": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/vector-magic-analysis/phase8/diagonal-yellow-white-353-vm.svg", "max_seconds": 900}
+{"time_utc": "2026-09-28T07:36:52.408115+00:00", "event": "process_read_error", "message": "[Errno 1] Operation not permitted: 'ps'"}
+{"time_utc": "2026-09-28T07:36:52.408392+00:00", "event": "svg_output", "state": null}
+{"time_utc": "2026-09-28T07:38:27.215627+00:00", "event": "monitor_stop", "reason": "interrupted"}
+{"time_utc": "2026-09-28T07:38:43.230467+00:00", "event": "monitor_start", "output": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/vector-magic-analysis/phase8/diagonal-yellow-white-353-vm.svg", "max_seconds": 900}
+{"time_utc": "2026-09-28T07:38:43.379099+00:00", "event": "app_processes", "processes": ["78389 /Applications/Vector Magic/Vector Magic.app/Contents/MacOS/Vector Magic"]}
+{"time_utc": "2026-09-28T07:38:43.379463+00:00", "event": "svg_output", "state": null}
+{"time_utc": "2026-09-28T07:45:33.005949+00:00", "event": "svg_output", "state": {"size": 2613, "mtime_ns": 1790581518431750612, "sha256": "270d208fb92e7a2a0243001b43349d9e6383231903afbd0756227753369638d0"}}
+{"time_utc": "2026-09-28T07:49:51.645811+00:00", "event": "monitor_stop", "reason": "interrupted"}

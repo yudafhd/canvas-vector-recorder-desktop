@@ -1,0 +1,56 @@
+1000bc4b0:	55	pushq	%rbp
+1000bc4b1:	48 89 e5	movq	%rsp, %rbp
+1000bc4b4:	41 57	pushq	%r15
+1000bc4b6:	41 56	pushq	%r14
+1000bc4b8:	41 55	pushq	%r13
+1000bc4ba:	41 54	pushq	%r12
+1000bc4bc:	53	pushq	%rbx
+1000bc4bd:	48 83 ec 18	subq	$0x18, %rsp
+1000bc4c1:	89 cb	movl	%ecx, %ebx
+1000bc4c3:	41 89 d6	movl	%edx, %r14d
+1000bc4c6:	49 89 f5	movq	%rsi, %r13
+1000bc4c9:	44 8b bf 0c 01 00 00	movl	0x10c(%rdi), %r15d
+1000bc4d0:	44 03 3e	addl	(%rsi), %r15d
+1000bc4d3:	44 8b 66 04	movl	0x4(%rsi), %r12d
+1000bc4d7:	45 01 fc	addl	%r15d, %r12d
+1000bc4da:	80 7e 18 00	cmpb	$0x0, 0x18(%rsi)
+1000bc4de:	74 36	je	0x1000bc516
+1000bc4e0:	48 8d 77 78	leaq	0x78(%rdi), %rsi
+1000bc4e4:	8b 97 08 01 00 00	movl	0x108(%rdi), %edx
+1000bc4ea:	89 5d d4	movl	%ebx, -0x2c(%rbp)
+1000bc4ed:	48 89 fb	movq	%rdi, %rbx
+1000bc4f0:	44 89 f9	movl	%r15d, %ecx
+1000bc4f3:	45 89 e0	movl	%r12d, %r8d
+1000bc4f6:	45 31 c9	xorl	%r9d, %r9d
+1000bc4f9:	e8 d2 d0 ff ff	callq	__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)
+1000bc4fe:	48 89 df	movq	%rbx, %rdi
+1000bc501:	8b 5d d4	movl	-0x2c(%rbp), %ebx
+1000bc504:	66 0f 29 45 c0	movapd	%xmm0, -0x40(%rbp)
+1000bc509:	f2 41 0f 11 45 10	movsd	%xmm0, 0x10(%r13)
+1000bc50f:	41 c6 45 18 00	movb	$0x0, 0x18(%r13)
+1000bc514:	eb 0b	jmp	0x1000bc521
+1000bc516:	f2 41 0f 10 45 10	movsd	0x10(%r13), %xmm0
+1000bc51c:	66 0f 29 45 c0	movapd	%xmm0, -0x40(%rbp)
+1000bc521:	41 01 dc	addl	%ebx, %r12d
+1000bc524:	45 01 f7	addl	%r14d, %r15d
+1000bc527:	48 8d 77 78	leaq	0x78(%rdi), %rsi
+1000bc52b:	8b 97 08 01 00 00	movl	0x108(%rdi), %edx
+1000bc531:	44 89 f9	movl	%r15d, %ecx
+1000bc534:	45 89 e0	movl	%r12d, %r8d
+1000bc537:	45 31 c9	xorl	%r9d, %r9d
+1000bc53a:	e8 91 d0 ff ff	callq	__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)
+1000bc53f:	66 0f 28 4d c0	movapd	-0x40(%rbp), %xmm1
+1000bc544:	f2 0f 5c c8	subsd	%xmm0, %xmm1
+1000bc548:	44 39 f3	cmpl	%r14d, %ebx
+1000bc54b:	66 0f 28 c1	movapd	%xmm1, %xmm0
+1000bc54f:	7e 08	jle	0x1000bc559
+1000bc551:	66 0f 57 05 07 41 0a 00	xorpd	0xa4107(%rip), %xmm0
+1000bc559:	48 83 c4 18	addq	$0x18, %rsp
+1000bc55d:	5b	popq	%rbx
+1000bc55e:	41 5c	popq	%r12
+1000bc560:	41 5d	popq	%r13
+1000bc562:	41 5e	popq	%r14
+1000bc564:	41 5f	popq	%r15
+1000bc566:	5d	popq	%rbp
+1000bc567:	c3	retq
+1000bc568:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)

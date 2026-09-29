@@ -1,0 +1,10 @@
+{
+  "repeat_extraction_identical_files": 48,
+  "bounded_intervals_verified": 30,
+  "preset_count": 10,
+  "parameters_per_preset": 100,
+  "curve_slider_positions_verified": 12,
+  "report_links": "all resolve locally",
+  "target_binary_executed": false,
+  "validation_scope": "Extraction reproducibility, boundaries and table consistency; not runtime or output equivalence"
+}

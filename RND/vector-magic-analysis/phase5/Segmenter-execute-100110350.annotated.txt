@@ -1,0 +1,171 @@
+Segmenter::execute(bool, bool, bool)
+LC_FUNCTION_STARTS: [0x100110350, 0x100110600)
+Numeric interpretations are candidates.
+100110350:	55	pushq	%rbp
+100110351:	48 89 e5	movq	%rsp, %rbp
+100110354:	41 57	pushq	%r15
+100110356:	41 56	pushq	%r14
+100110358:	41 55	pushq	%r13
+10011035a:	41 54	pushq	%r12
+10011035c:	53	pushq	%rbx
+10011035d:	50	pushq	%rax
+10011035e:	89 4d d0	movl	%ecx, -0x30(%rbp)
+100110361:	41 89 d4	movl	%edx, %r12d
+100110364:	41 89 f6	movl	%esi, %r14d
+100110367:	48 89 fb	movq	%rdi, %rbx
+10011036a:	bf 02 00 00 00	movl	$0x2, %edi
+10011036f:	be ff ff ff ff	movl	$0xffffffff, %esi
+100110374:	31 d2	xorl	%edx, %edx
+100110376:	e8 c5 c7 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+10011037b:	4c 8d 6b 08	leaq	0x8(%rbx), %r13
+10011037f:	4c 89 ef	movq	%r13, %rdi
+100110382:	e8 99 45 ff ff	callq	__ZN14PixelSegmenter10initializeEv ## PixelSegmenter::initialize()
+100110387:	48 8b 83 98 01 00 00	movq	0x198(%rbx), %rax
+10011038e:	83 78 04 00	cmpl	$0x0, 0x4(%rax)
+100110392:	44 0f b6 38	movzbl	(%rax), %r15d
+100110396:	0f 84 8a 00 00 00	je	0x100110426
+10011039c:	44 89 65 d4	movl	%r12d, -0x2c(%rbp)
+1001103a0:	45 89 f4	movl	%r14d, %r12d
+1001103a3:	4c 89 ef	movq	%r13, %rdi
+1001103a6:	31 f6	xorl	%esi, %esi
+1001103a8:	e8 f3 3e ff ff	callq	__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)
+1001103ad:	4c 8d 73 78	leaq	0x78(%rbx), %r14
+1001103b1:	4c 89 f7	movq	%r14, %rdi
+1001103b4:	e8 27 05 00 00	callq	__ZN17SubPixelSegmenter7executeEv ## SubPixelSegmenter::execute()
+1001103b9:	48 8b 83 98 01 00 00	movq	0x198(%rbx), %rax
+1001103c0:	8b 48 0c	movl	0xc(%rax), %ecx
+1001103c3:	45 84 ff	testb	%r15b, %r15b
+1001103c6:	0f 84 f6 00 00 00	je	0x1001104c2
+1001103cc:	85 c9	testl	%ecx, %ecx
+1001103ce:	74 32	je	0x100110402
+1001103d0:	4c 89 f7	movq	%r14, %rdi
+1001103d3:	e8 a8 0f 00 00	callq	__ZN17SubPixelSegmenter19snapColorsToPaletteEv ## SubPixelSegmenter::snapColorsToPalette()
+1001103d8:	48 8b bb d8 00 00 00	movq	0xd8(%rbx), %rdi
+1001103df:	48 8b b3 b8 01 00 00	movq	0x1b8(%rbx), %rsi
+1001103e6:	e8 95 b1 ff ff	callq	__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)
+1001103eb:	4c 89 f7	movq	%r14, %rdi
+1001103ee:	e8 1d 4b 00 00	callq	__ZN17SubPixelSegmenter18flagShadowSegmentsEv ## SubPixelSegmenter::flagShadowSegments()
+1001103f3:	4c 89 f7	movq	%r14, %rdi
+1001103f6:	e8 b5 16 00 00	callq	__ZN17SubPixelSegmenter43splitAndMergeFlaggedSegmentsFromBlurryImageEv ## SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()
+1001103fb:	48 8b 83 98 01 00 00	movq	0x198(%rbx), %rax
+100110402:	80 78 08 00	cmpb	$0x0, 0x8(%rax)
+100110406:	0f 85 10 01 00 00	jne	0x10011051c
+10011040c:	4c 89 f7	movq	%r14, %rdi
+10011040f:	be 2e 00 00 00	movl	$0x2e, %esi
+100110414:	e8 07 12 00 00	callq	__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)
+100110419:	4c 89 f7	movq	%r14, %rdi
+10011041c:	e8 5f 0f 00 00	callq	__ZN17SubPixelSegmenter19snapColorsToPaletteEv ## SubPixelSegmenter::snapColorsToPalette()
+100110421:	e9 f6 00 00 00	jmp	0x10011051c
+100110426:	45 84 ff	testb	%r15b, %r15b
+100110429:	0f 84 11 01 00 00	je	0x100110540
+10011042f:	48 8b bb b0 01 00 00	movq	0x1b0(%rbx), %rdi
+100110436:	e8 e5 5f fe ff	callq	__ZN13PaletteFinder20executeSingleAssignKEv ## PaletteFinder::executeSingleAssignK()
+10011043b:	bf 02 00 00 00	movl	$0x2, %edi
+100110440:	31 f6	xorl	%esi, %esi
+100110442:	31 d2	xorl	%edx, %edx
+100110444:	e8 f7 c6 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100110449:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+100110450:	e8 0b 81 ff ff	callq	__ZN17PixelSegmentation8renumberEv ## PixelSegmentation::renumber()
+100110455:	bf 02 00 00 00	movl	$0x2, %edi
+10011045a:	be 01 00 00 00	movl	$0x1, %esi
+10011045f:	31 d2	xorl	%edx, %edx
+100110461:	e8 da c6 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100110466:	48 8b bb b0 01 00 00	movq	0x1b0(%rbx), %rdi
+10011046d:	e8 ae 5f fe ff	callq	__ZN13PaletteFinder20executeSingleAssignKEv ## PaletteFinder::executeSingleAssignK()
+100110472:	bf 02 00 00 00	movl	$0x2, %edi
+100110477:	be 02 00 00 00	movl	$0x2, %esi
+10011047c:	31 d2	xorl	%edx, %edx
+10011047e:	e8 bd c6 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+100110483:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+10011048a:	e8 f1 77 ff ff	callq	__ZN17PixelSegmentation25performDiagonalExtrusionsEv ## PixelSegmentation::performDiagonalExtrusions()
+10011048f:	bf 02 00 00 00	movl	$0x2, %edi
+100110494:	be 03 00 00 00	movl	$0x3, %esi
+100110499:	31 d2	xorl	%edx, %edx
+10011049b:	e8 a0 c6 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1001104a0:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+1001104a7:	e8 54 74 ff ff	callq	__ZN17PixelSegmentation27assignPaletteIndicesFromMapEv ## PixelSegmentation::assignPaletteIndicesFromMap()
+1001104ac:	bf 02 00 00 00	movl	$0x2, %edi
+1001104b1:	be 04 00 00 00	movl	$0x4, %esi
+1001104b6:	31 d2	xorl	%edx, %edx
+1001104b8:	e8 83 c6 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1001104bd:	e9 9c 00 00 00	jmp	0x10011055e
+1001104c2:	85 c9	testl	%ecx, %ecx
+1001104c4:	74 3d	je	0x100110503
+1001104c6:	83 78 10 00	cmpl	$0x0, 0x10(%rax)
+1001104ca:	74 20	je	0x1001104ec
+1001104cc:	4c 89 f7	movq	%r14, %rdi
+1001104cf:	be 1a 00 00 00	movl	$0x1a, %esi
+1001104d4:	e8 47 11 00 00	callq	__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)
+1001104d9:	48 8b bb d8 00 00 00	movq	0xd8(%rbx), %rdi
+1001104e0:	48 8b b3 b8 01 00 00	movq	0x1b8(%rbx), %rsi
+1001104e7:	e8 94 b0 ff ff	callq	__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)
+1001104ec:	4c 89 f7	movq	%r14, %rdi
+1001104ef:	e8 1c 4a 00 00	callq	__ZN17SubPixelSegmenter18flagShadowSegmentsEv ## SubPixelSegmenter::flagShadowSegments()
+1001104f4:	4c 89 f7	movq	%r14, %rdi
+1001104f7:	e8 b4 15 00 00	callq	__ZN17SubPixelSegmenter43splitAndMergeFlaggedSegmentsFromBlurryImageEv ## SubPixelSegmenter::splitAndMergeFlaggedSegmentsFromBlurryImage()
+1001104fc:	48 8b 83 98 01 00 00	movq	0x198(%rbx), %rax
+100110503:	80 78 08 00	cmpb	$0x0, 0x8(%rax)
+100110507:	75 13	jne	0x10011051c
+100110509:	83 78 10 00	cmpl	$0x0, 0x10(%rax)
+10011050d:	74 0d	je	0x10011051c
+10011050f:	4c 89 f7	movq	%r14, %rdi
+100110512:	be 2e 00 00 00	movl	$0x2e, %esi
+100110517:	e8 04 11 00 00	callq	__ZN17SubPixelSegmenter13clusterColorsEi ## SubPixelSegmenter::clusterColors(int)
+10011051c:	48 8b bb d8 00 00 00	movq	0xd8(%rbx), %rdi
+100110523:	48 8b b3 b8 01 00 00	movq	0x1b8(%rbx), %rsi
+10011052a:	e8 51 b0 ff ff	callq	__ZN20SubPixelSegmentation9flattenToER17PixelSegmentation ## SubPixelSegmentation::flattenTo(PixelSegmentation&)
+10011052f:	4c 89 f7	movq	%r14, %rdi
+100110532:	e8 79 10 00 00	callq	__ZN17SubPixelSegmenter8finalizeEv ## SubPixelSegmenter::finalize()
+100110537:	45 89 e6	movl	%r12d, %r14d
+10011053a:	44 8b 65 d4	movl	-0x2c(%rbp), %r12d
+10011053e:	eb 2a	jmp	0x10011056a
+100110540:	83 3b 00	cmpl	$0x0, (%rbx)
+100110543:	0f 84 95 00 00 00	je	0x1001105de
+100110549:	4c 89 ef	movq	%r13, %rdi
+10011054c:	be 01 00 00 00	movl	$0x1, %esi
+100110551:	e8 4a 3d ff ff	callq	__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)
+100110556:	4c 89 ef	movq	%r13, %rdi
+100110559:	e8 92 48 ff ff	callq	__ZN14PixelSegmenter31clusterColorsAndGeneratePaletteEv ## PixelSegmenter::clusterColorsAndGeneratePalette()
+10011055e:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+100110565:	e8 06 83 ff ff	callq	__ZN17PixelSegmentation16updateStatisticsEv ## PixelSegmentation::updateStatistics()
+10011056a:	bf 06 00 00 00	movl	$0x6, %edi
+10011056f:	be ff ff ff ff	movl	$0xffffffff, %esi
+100110574:	31 d2	xorl	%edx, %edx
+100110576:	e8 c5 c5 fc ff	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+10011057b:	4c 89 ef	movq	%r13, %rdi
+10011057e:	e8 6d 43 ff ff	callq	__ZN14PixelSegmenter19enforceMinNumPixelsEv ## PixelSegmenter::enforceMinNumPixels()
+100110583:	80 7d d0 00	cmpb	$0x0, -0x30(%rbp)
+100110587:	75 35	jne	0x1001105be
+100110589:	45 84 e4	testb	%r12b, %r12b
+10011058c:	75 41	jne	0x1001105cf
+10011058e:	45 84 f6	testb	%r14b, %r14b
+100110591:	75 0c	jne	0x10011059f
+100110593:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+10011059a:	e8 e1 6e ff ff	callq	__ZN17PixelSegmentation8finalizeEv ## PixelSegmentation::finalize()
+10011059f:	bf 06 00 00 00	movl	$0x6, %edi
+1001105a4:	be fe ff ff ff	movl	$0xfffffffe, %esi
+1001105a9:	31 d2	xorl	%edx, %edx
+1001105ab:	48 83 c4 08	addq	$0x8, %rsp
+1001105af:	5b	popq	%rbx
+1001105b0:	41 5c	popq	%r12
+1001105b2:	41 5d	popq	%r13
+1001105b4:	41 5e	popq	%r14
+1001105b6:	41 5f	popq	%r15
+1001105b8:	5d	popq	%rbp
+1001105b9:	e9 82 c5 fc ff	jmp	__ZN10CoreEngine15triggerProgressE10ModuleTypeii ## CoreEngine::triggerProgress(ModuleType, int, int)
+1001105be:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+1001105c5:	e8 c6 89 ff ff	callq	__ZN17PixelSegmentation18exportSegmentationEv ## PixelSegmentation::exportSegmentation()
+1001105ca:	45 84 e4	testb	%r12b, %r12b
+1001105cd:	74 bf	je	0x10011058e
+1001105cf:	48 89 df	movq	%rbx, %rdi
+1001105d2:	e8 09 fc ff ff	callq	__ZN9Segmenter12buildRegionsEv ## Segmenter::buildRegions()
+1001105d7:	45 84 f6	testb	%r14b, %r14b
+1001105da:	74 b7	je	0x100110593
+1001105dc:	eb c1	jmp	0x10011059f
+1001105de:	4c 89 ef	movq	%r13, %rdi
+1001105e1:	31 f6	xorl	%esi, %esi
+1001105e3:	e8 b8 3c ff ff	callq	__ZN14PixelSegmenter16overSegmentationEb ## PixelSegmenter::overSegmentation(bool)
+1001105e8:	48 8b bb b8 01 00 00	movq	0x1b8(%rbx), %rdi
+1001105ef:	e8 1c 87 ff ff	callq	__ZN17PixelSegmentation27generatePaletteFromSegmentsEv ## PixelSegmentation::generatePaletteFromSegments()
+1001105f4:	e9 71 ff ff ff	jmp	0x10011056a
+1001105f9:	0f 1f 80 00 00 00 00	nopl	(%rax)

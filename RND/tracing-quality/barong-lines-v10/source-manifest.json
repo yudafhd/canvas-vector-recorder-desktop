@@ -1,0 +1,13 @@
+{
+  "source": "/Users/yuda/Downloads/\u2014Pngtree\u2014traditional barong mask hand drawing_8789224.png",
+  "sha256": "2f2892e6d2ec5ab12f5e8db50f3efda55d2bfd454b3afbd969a9a09b8ae524b4",
+  "processSize": [
+    1024,
+    1024
+  ],
+  "originalSize": [
+    4000,
+    4000
+  ],
+  "decoder": "sips -Z 1024 -s format bmp; independent from browser canvas resize"
+}

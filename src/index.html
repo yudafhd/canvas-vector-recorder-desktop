@@ -155,6 +155,9 @@
       <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">
         <i data-lucide="monitor-play" aria-hidden="true"></i><span>Recorder</span>
       </button>
+      <button id="tracingMainTab" class="main-tab" type="button" aria-selected="false">
+        <i data-lucide="pencil" aria-hidden="true"></i><span>Tracing</span>
+      </button>
       <button id="newTargetMainTab" class="main-tab new-target-main-tab" type="button" title="Buka tab target baru"
         aria-label="Buka tab target baru"><i data-lucide="plus" aria-hidden="true"></i></button>
       <div id="targetMainTabs" class="target-main-tabs"></div>
@@ -417,6 +420,8 @@
         </section>
       </div>
     </section>
+
+    <section id="tracingView" class="tracing-page" aria-label="Tracing gambar" hidden></section>
 
     <section id="targetView" class="view target-main-view" hidden>
       <div class="target-main-panel">

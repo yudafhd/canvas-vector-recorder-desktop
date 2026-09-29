@@ -1,0 +1,68 @@
+BezierFitter::initializeFragments(int, int, int)
+LC_FUNCTION_STARTS: [0x1000bbee0, 0x1000bbfc0)
+Numeric interpretations are candidates.
+1000bbee0:	55	pushq	%rbp
+1000bbee1:	48 89 e5	movq	%rsp, %rbp
+1000bbee4:	41 57	pushq	%r15
+1000bbee6:	41 56	pushq	%r14
+1000bbee8:	41 55	pushq	%r13
+1000bbeea:	41 54	pushq	%r12
+1000bbeec:	53	pushq	%rbx
+1000bbeed:	50	pushq	%rax
+1000bbeee:	89 b7 08 01 00 00	movl	%esi, 0x108(%rdi)
+1000bbef4:	89 97 0c 01 00 00	movl	%edx, 0x10c(%rdi)
+1000bbefa:	89 ce	movl	%ecx, %esi
+1000bbefc:	29 d6	subl	%edx, %esi
+1000bbefe:	8d 46 01	leal	0x1(%rsi), %eax
+1000bbf01:	89 47 6c	movl	%eax, 0x6c(%rdi)
+1000bbf04:	0f 8c 8b 00 00 00	jl	0x1000bbf95
+1000bbf0a:	89 cb	movl	%ecx, %ebx
+1000bbf0c:	48 89 7d d0	movq	%rdi, -0x30(%rbp)
+1000bbf10:	4c 8d 77 58	leaq	0x58(%rdi), %r14
+1000bbf14:	29 d3	subl	%edx, %ebx
+1000bbf16:	ff c3	incl	%ebx
+1000bbf18:	45 31 ff	xorl	%r15d, %r15d
+1000bbf1b:	0f 1f 44 00 00	nopl	(%rax,%rax)
+1000bbf20:	4c 89 f7	movq	%r14, %rdi
+1000bbf23:	44 89 fe	movl	%r15d, %esi
+1000bbf26:	e8 85 ff ff ff	callq	0x1000bbeb0
+1000bbf2b:	c7 00 ff ff ff ff	movl	$0xffffffff, (%rax)
+1000bbf31:	0f 57 c0	xorps	%xmm0, %xmm0
+1000bbf34:	0f 11 40 04	movups	%xmm0, 0x4(%rax)
+1000bbf38:	c7 40 14 00 00 00 00	movl	$0x0, 0x14(%rax)
+1000bbf3f:	c6 40 18 01	movb	$0x1, 0x18(%rax)
+1000bbf43:	4c 89 f7	movq	%r14, %rdi
+1000bbf46:	44 89 fe	movl	%r15d, %esi
+1000bbf49:	e8 62 ff ff ff	callq	0x1000bbeb0
+1000bbf4e:	44 89 38	movl	%r15d, (%rax)
+1000bbf51:	4c 89 f7	movq	%r14, %rdi
+1000bbf54:	44 89 fe	movl	%r15d, %esi
+1000bbf57:	e8 54 ff ff ff	callq	0x1000bbeb0
+1000bbf5c:	c7 40 04 01 00 00 00	movl	$0x1, 0x4(%rax)
+1000bbf63:	45 8d 67 01	leal	0x1(%r15), %r12d
+1000bbf67:	4c 89 f7	movq	%r14, %rdi
+1000bbf6a:	44 89 e6	movl	%r12d, %esi
+1000bbf6d:	e8 3e ff ff ff	callq	0x1000bbeb0
+1000bbf72:	49 89 c5	movq	%rax, %r13
+1000bbf75:	4c 89 f7	movq	%r14, %rdi
+1000bbf78:	44 89 fe	movl	%r15d, %esi
+1000bbf7b:	e8 30 ff ff ff	callq	0x1000bbeb0
+1000bbf80:	4c 89 68 08	movq	%r13, 0x8(%rax)
+1000bbf84:	45 89 e7	movl	%r12d, %r15d
+1000bbf87:	41 39 dc	cmpl	%ebx, %r12d
+1000bbf8a:	75 94	jne	0x1000bbf20
+1000bbf8c:	48 8b 7d d0	movq	-0x30(%rbp), %rdi
+1000bbf90:	8b 77 6c	movl	0x6c(%rdi), %esi
+1000bbf93:	ff ce	decl	%esi
+1000bbf95:	48 83 c7 58	addq	$0x58, %rdi
+1000bbf99:	e8 12 ff ff ff	callq	0x1000bbeb0
+1000bbf9e:	48 c7 40 08 00 00 00 00	movq	$0x0, 0x8(%rax)
+1000bbfa6:	48 83 c4 08	addq	$0x8, %rsp
+1000bbfaa:	5b	popq	%rbx
+1000bbfab:	41 5c	popq	%r12
+1000bbfad:	41 5d	popq	%r13
+1000bbfaf:	41 5e	popq	%r14
+1000bbfb1:	41 5f	popq	%r15
+1000bbfb3:	5d	popq	%rbp
+1000bbfb4:	c3	retq
+1000bbfb5:	66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

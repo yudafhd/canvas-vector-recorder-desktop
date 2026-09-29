@@ -1,0 +1,19 @@
+VectorImage::getMovedVector(int)
+1000d45c0:	55	pushq	%rbp
+1000d45c1:	48 89 e5	movq	%rsp, %rbp
+1000d45c4:	53	pushq	%rbx
+1000d45c5:	50	pushq	%rax
+1000d45c6:	48 89 fb	movq	%rdi, %rbx
+1000d45c9:	48 8d 7e 10	leaq	0x10(%rsi), %rdi
+1000d45cd:	89 d6	movl	%edx, %esi
+1000d45cf:	e8 3c 4d fe ff	callq	0x1000b9310
+1000d45d4:	0f 5a 40 10	cvtps2pd	0x10(%rax), %xmm0
+1000d45d8:	66 0f 10 08	movupd	(%rax), %xmm1
+1000d45dc:	66 0f 5c c8	subpd	%xmm0, %xmm1
+1000d45e0:	66 0f 11 0b	movupd	%xmm1, (%rbx)
+1000d45e4:	48 89 d8	movq	%rbx, %rax
+1000d45e7:	48 83 c4 08	addq	$0x8, %rsp
+1000d45eb:	5b	popq	%rbx
+1000d45ec:	5d	popq	%rbp
+1000d45ed:	c3	retq
+1000d45ee:	66 90	nop

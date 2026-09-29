@@ -1,0 +1,52 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/tracing-quality/leaves-research-v4/source.bmp",
+  "inputSha256": "7071ce4559ac82884799ad753ed575748323449e2ae40fe6661a5ccc12ac61f2",
+  "width": 830,
+  "height": 584,
+  "options": {
+    "colors": 6,
+    "tolerance": 0.8,
+    "minArea": 4,
+    "smooth": true,
+    "removeWhite": false
+  },
+  "differentialCases": 384,
+  "fullResultIdentical": true,
+  "svgSha256": "04b361c8bd0462571ecff103e77146ede05fd2551d898baf38ca9c5e7ba81f3f",
+  "results": [
+    {
+      "path": "RND/tracing-quality/before-coverage-performance.ts",
+      "sha256": "471a6ea9702700a471029dc694609c4d25bbf1bd7933e46aeb5f05b9efdbcc05",
+      "milliseconds": [
+        5144.997499000001,
+        5613.167455999999,
+        5200.8470320000015,
+        5048.076286999996
+      ],
+      "medianMs": 5172.922265500001
+    },
+    {
+      "path": "src/tracing/engine.ts",
+      "sha256": "7883e5d64bfbaeb9404f74410a2a59b763013881ed0245b9962a75edd153043e",
+      "milliseconds": [
+        2788.640391000001,
+        2887.5413050000025,
+        2909.447232999999,
+        2784.5885870000056
+      ],
+      "medianMs": 2838.0908480000016
+    }
+  ],
+  "speedup": 1.8226767720086734,
+  "diagnostics": {
+    "unitFragments": 20999,
+    "merges": 20065,
+    "swaps": 2979,
+    "puncturedCorners": 32,
+    "tangentRefits": 656,
+    "rasterSteps": 1267,
+    "rasterEnergyBefore": 451.02381689906764,
+    "rasterEnergyAfter": 425.3992290542224,
+    "smallAreaConstraints": 10
+  }
+}

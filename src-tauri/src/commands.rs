@@ -278,6 +278,65 @@ pub fn save_svg_asset(
     Ok(path.to_string_lossy().to_string())
 }
 
+/// Save the local tracing page's generated path-only SVG using the existing export convention.
+#[tauri::command]
+pub fn save_tracing_svg(app: AppHandle, svg: String, filename: String) -> Result<String, AppError> {
+    if svg.len() > 20 * 1024 * 1024 {
+        return Err(AppError::PayloadTooLarge);
+    }
+    validate_tracing_svg(&svg)?;
+    let directory = export_directory(&app, None)?;
+    let path = unique_download_path(&directory, &safe_svg_filename(&filename));
+    std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(path.to_string_lossy().into_owned())
+}
+
+fn validate_tracing_svg(svg: &str) -> Result<(), AppError> {
+    let document = roxmltree::Document::parse(svg)
+        .map_err(|_| AppError::InvalidEvent("SVG tracing tidak valid".into()))?;
+    let root = document.root_element();
+    if root.tag_name().name() != "svg" || root.tag_name().namespace() != Some("http://www.w3.org/2000/svg") {
+        return Err(AppError::InvalidEvent("Dokumen harus berupa SVG".into()));
+    }
+    for node in root.descendants().filter(|node| node.is_element()) {
+        if node.tag_name().namespace() != Some("http://www.w3.org/2000/svg") {
+            return Err(AppError::InvalidEvent("Namespace SVG tidak diizinkan".into()));
+        }
+        let allowed: &[&str] = match node.tag_name().name() {
+            "svg" if node == root => &["width", "height", "viewBox"],
+            "path" => &["fill", "fill-rule", "d"],
+            _ => return Err(AppError::InvalidEvent("SVG tracing hanya boleh berisi path".into())),
+        };
+        for attribute in node.attributes() {
+            if attribute.namespace().is_some() || !allowed.contains(&attribute.name()) || attribute.value().contains("url(") {
+                return Err(AppError::InvalidEvent("Atribut SVG tracing tidak diizinkan".into()));
+            }
+            if attribute.name() == "fill" {
+                let color = attribute.value();
+                if color.len() != 7 || !color.starts_with('#') || !color[1..].bytes().all(|byte| byte.is_ascii_hexdigit()) {
+                    return Err(AppError::InvalidEvent("Warna SVG tracing tidak valid".into()));
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tracing_export_tests {
+    use super::validate_tracing_svg;
+
+    #[test]
+    fn accepts_generated_paths_and_rejects_active_or_external_content() {
+        let wrap = |content: &str| format!("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\">{content}</svg>");
+        assert!(validate_tracing_svg(&wrap("<path fill=\"#ffc107\" fill-rule=\"evenodd\" d=\"M0 0L32 0L0 32Z\"/>")).is_ok());
+        for invalid in ["<script>alert(1)</script>", "<image href=\"https://example.com/x\"/>", "<path onload=\"alert(1)\"/>", "<path fill=\"URL(https://example.com/x)\"/>", "<path xmlns=\"https://example.com\"/>"] {
+            assert!(validate_tracing_svg(&wrap(invalid)).is_err());
+        }
+        assert!(validate_tracing_svg("not xml").is_err());
+    }
+}
+
 #[tauri::command]
 pub fn save_eps(
     app: AppHandle,

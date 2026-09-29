@@ -1,0 +1,74 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/tracing-quality/leaves-research-v4/source.bmp",
+  "inputSha256": "7071ce4559ac82884799ad753ed575748323449e2ae40fe6661a5ccc12ac61f2",
+  "width": 830,
+  "height": 584,
+  "renderer": "Independent software polygon rasterizer; cubics flattened to 0.04 px; 4x4 sample grid; no browser antialias",
+  "panels": [
+    "source",
+    "before",
+    "after"
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "951a1d62e6ba4ca41e80bbf4dacb8ae591b28ad370ed8e49745bf3f50ac3a46b",
+      "colors": [
+        "#fffefe",
+        "#3c1305",
+        "#e34e1d",
+        "#7d782a",
+        "#5e591f",
+        "#8d3013"
+      ],
+      "contours": 171,
+      "segments": 1435,
+      "bytes": 56840,
+      "milliseconds": 678,
+      "diagnostics": null,
+      "meanAbsoluteRGBError": 2.7730297903944545,
+      "meanAbsoluteEdgeRGBError": 22.34155283311806,
+      "edgePixels": 25549
+    },
+    {
+      "name": "after",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "cf864fa74cd9a4364bbea2b3dd1e7dc7e7c450deecc341e308abd264d2f4dd23",
+      "colors": [
+        "#fffefe",
+        "#3c1305",
+        "#e34e1d",
+        "#7d782a",
+        "#5e591f",
+        "#8d3013"
+      ],
+      "contours": 171,
+      "segments": 1464,
+      "bytes": 66852,
+      "milliseconds": 1121,
+      "diagnostics": {
+        "unitFragments": 20999,
+        "merges": 20076,
+        "swaps": 3078,
+        "puncturedCorners": 12,
+        "tangentRefits": 660
+      },
+      "meanAbsoluteRGBError": 2.7697880563349284,
+      "meanAbsoluteEdgeRGBError": 22.247132960194136,
+      "edgePixels": 25549
+    }
+  ]
+}

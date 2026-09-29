@@ -1,0 +1,7 @@
+{
+  "colors": 6,
+  "tolerance": 0.8,
+  "minArea": 4,
+  "smooth": true,
+  "removeWhite": false
+}

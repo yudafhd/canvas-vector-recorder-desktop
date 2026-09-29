@@ -1,0 +1,2558 @@
+{
+  "loops": 60,
+  "segments": 1469,
+  "subpixelChordSegments": 19,
+  "joinsOver2Degrees": 255,
+  "joins": [
+    {
+      "loop": 16,
+      "segment": 19,
+      "point": [
+        536.0,
+        184.0
+      ],
+      "angleDegrees": 151.9701607739539,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 15,
+      "segment": 14,
+      "point": [
+        488.0,
+        184.0
+      ],
+      "angleDegrees": 151.8321264087729,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 15,
+      "segment": 12,
+      "point": [
+        443.0,
+        217.0
+      ],
+      "angleDegrees": 146.99765094205074,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 47,
+      "segment": 8,
+      "point": [
+        353.0,
+        418.0
+      ],
+      "angleDegrees": 144.6176160032607,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 0,
+      "segment": 152,
+      "point": [
+        622.0,
+        735.0
+      ],
+      "angleDegrees": 142.5867811207004,
+      "fill": "#010100"
+    },
+    {
+      "loop": 3,
+      "segment": 14,
+      "point": [
+        834.39,
+        194.36
+      ],
+      "angleDegrees": 141.22295796450052,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 4,
+      "segment": 26,
+      "point": [
+        189.61,
+        194.36
+      ],
+      "angleDegrees": 140.69915682814278,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 24,
+      "segment": 4,
+      "point": [
+        501.0,
+        283.0
+      ],
+      "angleDegrees": 139.956842137315,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 25,
+      "segment": 14,
+      "point": [
+        523.0,
+        283.0
+      ],
+      "angleDegrees": 139.87391974592347,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 21,
+      "segment": 5,
+      "point": [
+        630.867,
+        115.724
+      ],
+      "angleDegrees": 139.7941904752674,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 6,
+      "segment": 24,
+      "point": [
+        774.0,
+        305.0
+      ],
+      "angleDegrees": 139.77642819231392,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 19,
+      "segment": 21,
+      "point": [
+        662.0,
+        185.0
+      ],
+      "angleDegrees": 139.43564238858332,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 58,
+      "segment": 1,
+      "point": [
+        494.0,
+        803.0
+      ],
+      "angleDegrees": 135.0,
+      "fill": "#7c7c79"
+    },
+    {
+      "loop": 58,
+      "segment": 2,
+      "point": [
+        495.0,
+        802.0
+      ],
+      "angleDegrees": 135.0,
+      "fill": "#7c7c79"
+    },
+    {
+      "loop": 59,
+      "segment": 0,
+      "point": [
+        496.0,
+        803.0
+      ],
+      "angleDegrees": 135.0,
+      "fill": "#adadab"
+    },
+    {
+      "loop": 59,
+      "segment": 2,
+      "point": [
+        495.0,
+        802.0
+      ],
+      "angleDegrees": 135.0,
+      "fill": "#adadab"
+    },
+    {
+      "loop": 0,
+      "segment": 133,
+      "point": [
+        685.0,
+        609.0
+      ],
+      "angleDegrees": 134.6902968554741,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 204,
+      "point": [
+        339.0,
+        609.0
+      ],
+      "angleDegrees": 134.6808197031404,
+      "fill": "#010100"
+    },
+    {
+      "loop": 29,
+      "segment": 6,
+      "point": [
+        719.0,
+        335.0
+      ],
+      "angleDegrees": 134.06013324593505,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 38,
+      "point": [
+        625.0,
+        647.0
+      ],
+      "angleDegrees": 133.75634526850018,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 129,
+      "point": [
+        399.0,
+        647.0
+      ],
+      "angleDegrees": 133.6607875016734,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 8,
+      "segment": 4,
+      "point": [
+        741.659,
+        285.804
+      ],
+      "angleDegrees": 133.5641897910064,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 16,
+      "segment": 21,
+      "point": [
+        580.415,
+        217.558
+      ],
+      "angleDegrees": 133.41084668122323,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 7,
+      "segment": 36,
+      "point": [
+        282.339,
+        285.816
+      ],
+      "angleDegrees": 133.1156303068006,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 0,
+      "segment": 174,
+      "point": [
+        455.0,
+        817.0
+      ],
+      "angleDegrees": 132.97380491443113,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 164,
+      "point": [
+        569.0,
+        817.0
+      ],
+      "angleDegrees": 132.96907081578456,
+      "fill": "#010100"
+    },
+    {
+      "loop": 4,
+      "segment": 7,
+      "point": [
+        236.0,
+        130.0
+      ],
+      "angleDegrees": 132.8313708774499,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 15,
+      "segment": 33,
+      "point": [
+        466.0,
+        101.0
+      ],
+      "angleDegrees": 132.66300888437559,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 29,
+      "segment": 16,
+      "point": [
+        693.0,
+        311.0
+      ],
+      "angleDegrees": 130.92229867187365,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 28,
+      "segment": 7,
+      "point": [
+        331.0,
+        311.0
+      ],
+      "angleDegrees": 130.90516413729807,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 19,
+      "segment": 12,
+      "point": [
+        584.0,
+        343.0
+      ],
+      "angleDegrees": 130.76251266214723,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 18,
+      "segment": 10,
+      "point": [
+        440.0,
+        343.0
+      ],
+      "angleDegrees": 130.6176151893761,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 122,
+      "point": [
+        370.0,
+        599.0
+      ],
+      "angleDegrees": 130.27242537214786,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 98,
+      "point": [
+        387.0,
+        744.0
+      ],
+      "angleDegrees": 129.36032033915183,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 30,
+      "segment": 4,
+      "point": [
+        396.0,
+        576.0
+      ],
+      "angleDegrees": 129.35048482031956,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 31,
+      "segment": 7,
+      "point": [
+        628.0,
+        576.0
+      ],
+      "angleDegrees": 129.25145838550108,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 66,
+      "point": [
+        637.0,
+        744.0
+      ],
+      "angleDegrees": 129.23674008436103,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 56,
+      "segment": 8,
+      "point": [
+        517.0,
+        204.0
+      ],
+      "angleDegrees": 128.73522638031992,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 0,
+      "segment": 142,
+      "point": [
+        656.0,
+        638.0
+      ],
+      "angleDegrees": 127.6334563802775,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 195,
+      "point": [
+        368.0,
+        638.0
+      ],
+      "angleDegrees": 127.62571185614485,
+      "fill": "#010100"
+    },
+    {
+      "loop": 24,
+      "segment": 18,
+      "point": [
+        371.0,
+        265.0
+      ],
+      "angleDegrees": 127.61082794082142,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 25,
+      "segment": 1,
+      "point": [
+        653.0,
+        265.0
+      ],
+      "angleDegrees": 127.59117936581364,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 11,
+      "point": [
+        529.632,
+        802.192
+      ],
+      "angleDegrees": 126.77787469115391,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 160,
+      "point": [
+        578.0,
+        868.0
+      ],
+      "angleDegrees": 126.32673522909889,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 178,
+      "point": [
+        446.0,
+        868.0
+      ],
+      "angleDegrees": 126.32391043137191,
+      "fill": "#010100"
+    },
+    {
+      "loop": 14,
+      "segment": 39,
+      "point": [
+        350.0,
+        409.0
+      ],
+      "angleDegrees": 125.6526588552187,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 89,
+      "point": [
+        442.0,
+        852.0
+      ],
+      "angleDegrees": 125.65060133383861,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 74,
+      "point": [
+        582.0,
+        852.0
+      ],
+      "angleDegrees": 125.50883985086702,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 112,
+      "point": [
+        329.0,
+        611.0
+      ],
+      "angleDegrees": 125.12849342274316,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 53,
+      "point": [
+        695.0,
+        611.0
+      ],
+      "angleDegrees": 125.09725458571745,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 185,
+      "point": [
+        401.673,
+        735.749
+      ],
+      "angleDegrees": 122.988485996326,
+      "fill": "#010100"
+    },
+    {
+      "loop": 5,
+      "segment": 24,
+      "point": [
+        335.0,
+        450.0
+      ],
+      "angleDegrees": 121.89370927890974,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 6,
+      "segment": 9,
+      "point": [
+        689.0,
+        450.0
+      ],
+      "angleDegrees": 121.2767868249968,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 10,
+      "segment": 12,
+      "point": [
+        712.0,
+        528.0
+      ],
+      "angleDegrees": 120.97739652829912,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 33,
+      "segment": 8,
+      "point": [
+        639.0,
+        290.0
+      ],
+      "angleDegrees": 119.90169622443969,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 23,
+      "segment": 0,
+      "point": [
+        615.0,
+        261.0
+      ],
+      "angleDegrees": 119.86651664299599,
+      "fill": "#010100"
+    },
+    {
+      "loop": 1,
+      "segment": 136,
+      "point": [
+        432.0,
+        701.0
+      ],
+      "angleDegrees": 119.83029213568771,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 8,
+      "segment": 16,
+      "point": [
+        694.0,
+        253.0
+      ],
+      "angleDegrees": 119.80744890862508,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 30,
+      "point": [
+        592.0,
+        701.0
+      ],
+      "angleDegrees": 119.72160265786013,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 206,
+      "point": [
+        322.0,
+        626.0
+      ],
+      "angleDegrees": 119.20289750390542,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 131,
+      "point": [
+        702.0,
+        626.0
+      ],
+      "angleDegrees": 118.9048467033467,
+      "fill": "#010100"
+    },
+    {
+      "loop": 6,
+      "segment": 16,
+      "point": [
+        734.0,
+        398.0
+      ],
+      "angleDegrees": 117.3939142017366,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 27,
+      "segment": 15,
+      "point": [
+        676.366,
+        417.432
+      ],
+      "angleDegrees": 117.36194199531937,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 28,
+      "segment": 12,
+      "point": [
+        299.0,
+        254.0
+      ],
+      "angleDegrees": 117.21807156960514,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 5,
+      "segment": 17,
+      "point": [
+        290.0,
+        398.0
+      ],
+      "angleDegrees": 117.16741233950471,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 29,
+      "segment": 11,
+      "point": [
+        725.0,
+        254.0
+      ],
+      "angleDegrees": 116.50541060196338,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 22,
+      "segment": 5,
+      "point": [
+        384.0,
+        284.0
+      ],
+      "angleDegrees": 115.69350543702015,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 64,
+      "point": [
+        543.0,
+        168.0
+      ],
+      "angleDegrees": 115.15869473294477,
+      "fill": "#010100"
+    },
+    {
+      "loop": 17,
+      "segment": 11,
+      "point": [
+        570.0,
+        344.0
+      ],
+      "angleDegrees": 113.45310366890013,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 1,
+      "segment": 106,
+      "point": [
+        357.789,
+        672.321
+      ],
+      "angleDegrees": 112.872563197521,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 59,
+      "point": [
+        666.212,
+        672.319
+      ],
+      "angleDegrees": 112.85809427750013,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 8,
+      "segment": 27,
+      "point": [
+        685.0,
+        142.0
+      ],
+      "angleDegrees": 112.79284098363529,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 21,
+      "segment": 24,
+      "point": [
+        587.0,
+        179.0
+      ],
+      "angleDegrees": 112.39899705333143,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 32,
+      "segment": 15,
+      "point": [
+        415.0,
+        263.0
+      ],
+      "angleDegrees": 112.23229223501725,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 13,
+      "segment": 11,
+      "point": [
+        643.0,
+        390.0
+      ],
+      "angleDegrees": 111.99254043852994,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 13,
+      "segment": 31,
+      "point": [
+        381.0,
+        390.0
+      ],
+      "angleDegrees": 111.97554049886347,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 0,
+      "segment": 27,
+      "point": [
+        367.0,
+        176.0
+      ],
+      "angleDegrees": 111.09753107344184,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 76,
+      "point": [
+        657.0,
+        176.0
+      ],
+      "angleDegrees": 111.09397737862191,
+      "fill": "#010100"
+    },
+    {
+      "loop": 20,
+      "segment": 6,
+      "point": [
+        437.0,
+        179.0
+      ],
+      "angleDegrees": 110.6384399400086,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 22,
+      "segment": 12,
+      "point": [
+        409.192,
+        261.8
+      ],
+      "angleDegrees": 108.61198293879838,
+      "fill": "#010100"
+    },
+    {
+      "loop": 3,
+      "segment": 34,
+      "point": [
+        788.0,
+        130.0
+      ],
+      "angleDegrees": 108.49336344731198,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 55,
+      "segment": 5,
+      "point": [
+        467.0,
+        234.0
+      ],
+      "angleDegrees": 107.90376048010472,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 56,
+      "segment": 2,
+      "point": [
+        557.0,
+        234.0
+      ],
+      "angleDegrees": 107.88719548680844,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 1,
+      "segment": 45,
+      "point": [
+        654.607,
+        598.528
+      ],
+      "angleDegrees": 107.83120247750593,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 28,
+      "segment": 24,
+      "point": [
+        295.0,
+        222.0
+      ],
+      "angleDegrees": 105.25876961578534,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 10,
+      "segment": 21,
+      "point": [
+        618.0,
+        548.0
+      ],
+      "angleDegrees": 102.1263135054268,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 9,
+      "segment": 8,
+      "point": [
+        406.0,
+        548.0
+      ],
+      "angleDegrees": 102.01345651620414,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 0,
+      "segment": 32,
+      "point": [
+        409.0,
+        140.0
+      ],
+      "angleDegrees": 100.27726069979119,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 71,
+      "point": [
+        615.0,
+        140.0
+      ],
+      "angleDegrees": 100.25971283608926,
+      "fill": "#010100"
+    },
+    {
+      "loop": 43,
+      "segment": 11,
+      "point": [
+        388.0,
+        365.0
+      ],
+      "angleDegrees": 100.05949180376075,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 44,
+      "segment": 0,
+      "point": [
+        636.0,
+        365.0
+      ],
+      "angleDegrees": 99.84189504825268,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 0,
+      "segment": 151,
+      "point": [
+        644.0,
+        754.0
+      ],
+      "angleDegrees": 99.83120453961818,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 187,
+      "point": [
+        380.0,
+        754.0
+      ],
+      "angleDegrees": 99.54100149454953,
+      "fill": "#010100"
+    },
+    {
+      "loop": 26,
+      "segment": 14,
+      "point": [
+        332.0,
+        437.0
+      ],
+      "angleDegrees": 98.84940880014511,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 2,
+      "segment": 30,
+      "point": [
+        466.0,
+        486.0
+      ],
+      "angleDegrees": 98.42054945772422,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 2,
+      "segment": 18,
+      "point": [
+        558.0,
+        486.0
+      ],
+      "angleDegrees": 98.39862657049134,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 38,
+      "segment": 3,
+      "point": [
+        309.0,
+        384.0
+      ],
+      "angleDegrees": 98.32765360982529,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 39,
+      "segment": 5,
+      "point": [
+        715.0,
+        384.0
+      ],
+      "angleDegrees": 98.10301182796607,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 69,
+      "point": [
+        617.0,
+        715.0
+      ],
+      "angleDegrees": 97.93026447540285,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 95,
+      "point": [
+        407.0,
+        715.0
+      ],
+      "angleDegrees": 97.9274400075371,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 17,
+      "segment": 22,
+      "point": [
+        456.0,
+        344.0
+      ],
+      "angleDegrees": 97.85372923735164,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 18,
+      "segment": 0,
+      "point": [
+        361.908,
+        185.545
+      ],
+      "angleDegrees": 97.69545186300319,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 117,
+      "point": [
+        358.0,
+        544.0
+      ],
+      "angleDegrees": 96.43537156743751,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 153,
+      "point": [
+        492.0,
+        822.0
+      ],
+      "angleDegrees": 94.82979882543034,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 12,
+      "point": [
+        532.0,
+        822.0
+      ],
+      "angleDegrees": 94.78013298572931,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 4,
+      "segment": 19,
+      "point": [
+        269.0,
+        286.0
+      ],
+      "angleDegrees": 94.4300727956014,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 3,
+      "segment": 20,
+      "point": [
+        755.0,
+        286.0
+      ],
+      "angleDegrees": 94.3465294891088,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 20,
+      "segment": 19,
+      "point": [
+        402.0,
+        172.0
+      ],
+      "angleDegrees": 94.3039823906885,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 28,
+      "segment": 15,
+      "point": [
+        316.0,
+        308.0
+      ],
+      "angleDegrees": 93.93344583265062,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 51,
+      "point": [
+        691.0,
+        558.0
+      ],
+      "angleDegrees": 93.92660374265692,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 21,
+      "segment": 11,
+      "point": [
+        622.0,
+        172.0
+      ],
+      "angleDegrees": 93.75773504065921,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 44,
+      "segment": 7,
+      "point": [
+        557.0,
+        378.0
+      ],
+      "angleDegrees": 93.74260606252979,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 33,
+      "segment": 2,
+      "point": [
+        605.0,
+        281.0
+      ],
+      "angleDegrees": 93.73201516377488,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 43,
+      "segment": 4,
+      "point": [
+        467.0,
+        378.0
+      ],
+      "angleDegrees": 93.73090596103674,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 32,
+      "segment": 13,
+      "point": [
+        419.0,
+        281.0
+      ],
+      "angleDegrees": 93.7303385755959,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 1,
+      "segment": 1,
+      "point": [
+        496.0,
+        803.0
+      ],
+      "angleDegrees": 92.74410287186971,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 115,
+      "point": [
+        333.0,
+        558.0
+      ],
+      "angleDegrees": 92.69245993371113,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 49,
+      "segment": 5,
+      "point": [
+        424.0,
+        558.0
+      ],
+      "angleDegrees": 92.06290284574916,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 62,
+      "point": [
+        656.0,
+        630.0
+      ],
+      "angleDegrees": 91.76569051770647,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 50,
+      "segment": 3,
+      "point": [
+        600.0,
+        558.0
+      ],
+      "angleDegrees": 91.69154563061349,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 27,
+      "segment": 1,
+      "point": [
+        692.0,
+        437.0
+      ],
+      "angleDegrees": 91.6550729694415,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 50,
+      "segment": 6,
+      "point": [
+        563.0,
+        569.0
+      ],
+      "angleDegrees": 91.57779228872649,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 49,
+      "segment": 2,
+      "point": [
+        461.0,
+        569.0
+      ],
+      "angleDegrees": 91.48298724790249,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 0,
+      "segment": 75,
+      "point": [
+        658.0,
+        187.0
+      ],
+      "angleDegrees": 91.04270229903989,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 28,
+      "point": [
+        366.0,
+        187.0
+      ],
+      "angleDegrees": 91.039507169828,
+      "fill": "#010100"
+    },
+    {
+      "loop": 2,
+      "segment": 8,
+      "point": [
+        511.0,
+        623.0
+      ],
+      "angleDegrees": 90.98256624836716,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 2,
+      "segment": 9,
+      "point": [
+        513.0,
+        623.0
+      ],
+      "angleDegrees": 90.98220484290681,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 29,
+      "segment": 23,
+      "point": [
+        728.0,
+        222.0
+      ],
+      "angleDegrees": 90.58175533468805,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 42,
+      "segment": 0,
+      "point": [
+        513.0,
+        205.0
+      ],
+      "angleDegrees": 90.52153365359628,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 42,
+      "segment": 15,
+      "point": [
+        511.0,
+        205.0
+      ],
+      "angleDegrees": 90.48233431410011,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 40,
+      "segment": 1,
+      "point": [
+        680.0,
+        366.0
+      ],
+      "angleDegrees": 90.42466378539464,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 33,
+      "segment": 0,
+      "point": [
+        609.0,
+        263.0
+      ],
+      "angleDegrees": 90.17770011990463,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 58,
+      "segment": 0,
+      "point": [
+        495.0,
+        803.0
+      ],
+      "angleDegrees": 90.0,
+      "fill": "#7c7c79"
+    },
+    {
+      "loop": 59,
+      "segment": 1,
+      "point": [
+        495.0,
+        803.0
+      ],
+      "angleDegrees": 90.0,
+      "fill": "#adadab"
+    },
+    {
+      "loop": 43,
+      "segment": 9,
+      "point": [
+        381.0,
+        386.0
+      ],
+      "angleDegrees": 89.98227360567533,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 44,
+      "segment": 2,
+      "point": [
+        643.0,
+        386.0
+      ],
+      "angleDegrees": 89.97962327234814,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 41,
+      "segment": 9,
+      "point": [
+        344.0,
+        366.0
+      ],
+      "angleDegrees": 89.21846463546918,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 29,
+      "segment": 9,
+      "point": [
+        708.0,
+        308.0
+      ],
+      "angleDegrees": 88.9847837106353,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 26,
+      "segment": 15,
+      "point": [
+        347.0,
+        418.0
+      ],
+      "angleDegrees": 87.80014620441949,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 36,
+      "segment": 9,
+      "point": [
+        315.0,
+        355.0
+      ],
+      "angleDegrees": 86.95996683911417,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 37,
+      "segment": 3,
+      "point": [
+        709.0,
+        355.0
+      ],
+      "angleDegrees": 86.8108444486811,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 18,
+      "segment": 11,
+      "point": [
+        446.0,
+        364.0
+      ],
+      "angleDegrees": 86.50550167698542,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 2,
+      "segment": 13,
+      "point": [
+        519.0,
+        485.0
+      ],
+      "angleDegrees": 86.32023009999178,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 2,
+      "segment": 3,
+      "point": [
+        505.0,
+        485.0
+      ],
+      "angleDegrees": 86.3163452182166,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 19,
+      "segment": 11,
+      "point": [
+        578.0,
+        364.0
+      ],
+      "angleDegrees": 86.07461788931087,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 81,
+      "point": [
+        513.0,
+        917.0
+      ],
+      "angleDegrees": 85.81532118351029,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 40,
+      "segment": 2,
+      "point": [
+        686.0,
+        388.0
+      ],
+      "angleDegrees": 85.17468696852552,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 41,
+      "segment": 7,
+      "point": [
+        338.0,
+        389.0
+      ],
+      "angleDegrees": 84.86251464279218,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 33,
+      "segment": 5,
+      "point": [
+        618.0,
+        295.0
+      ],
+      "angleDegrees": 83.67196711941315,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 32,
+      "segment": 9,
+      "point": [
+        406.0,
+        295.0
+      ],
+      "angleDegrees": 83.52448989641073,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 1,
+      "segment": 146,
+      "point": [
+        476.756,
+        725.668
+      ],
+      "angleDegrees": 83.50349428309762,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 50,
+      "segment": 0,
+      "point": [
+        589.0,
+        537.0
+      ],
+      "angleDegrees": 83.4299160112541,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 6,
+      "point": [
+        514.0,
+        846.0
+      ],
+      "angleDegrees": 83.34120841670129,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 5,
+      "point": [
+        510.0,
+        846.0
+      ],
+      "angleDegrees": 83.34120841668987,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 49,
+      "segment": 8,
+      "point": [
+        435.0,
+        537.0
+      ],
+      "angleDegrees": 83.31125610752278,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 20,
+      "point": [
+        547.252,
+        725.677
+      ],
+      "angleDegrees": 83.30321755693286,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 154,
+      "point": [
+        494.0,
+        803.0
+      ],
+      "angleDegrees": 82.39592571258798,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 28,
+      "point": [
+        592.0,
+        679.0
+      ],
+      "angleDegrees": 82.08590953707021,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 138,
+      "point": [
+        432.0,
+        679.0
+      ],
+      "angleDegrees": 82.02570074941568,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 47,
+      "point": [
+        460.0,
+        100.0
+      ],
+      "angleDegrees": 81.11472924078016,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 57,
+      "point": [
+        564.0,
+        100.0
+      ],
+      "angleDegrees": 81.11472924078016,
+      "fill": "#010100"
+    },
+    {
+      "loop": 17,
+      "segment": 21,
+      "point": [
+        454.513,
+        343.395
+      ],
+      "angleDegrees": 81.09655736406017,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 0,
+      "segment": 52,
+      "point": [
+        511.0,
+        139.0
+      ],
+      "angleDegrees": 80.99336743642188,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 53,
+      "point": [
+        513.0,
+        139.0
+      ],
+      "angleDegrees": 80.99336743642188,
+      "fill": "#010100"
+    },
+    {
+      "loop": 34,
+      "segment": 7,
+      "point": [
+        690.0,
+        391.0
+      ],
+      "angleDegrees": 80.56200145121102,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 0,
+      "segment": 210,
+      "point": [
+        327.0,
+        559.0
+      ],
+      "angleDegrees": 79.05089350291955,
+      "fill": "#010100"
+    },
+    {
+      "loop": 1,
+      "segment": 85,
+      "point": [
+        455.0,
+        804.0
+      ],
+      "angleDegrees": 79.01055020949039,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 78,
+      "point": [
+        569.0,
+        804.0
+      ],
+      "angleDegrees": 79.00602794479497,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 54,
+      "segment": 2,
+      "point": [
+        539.0,
+        481.0
+      ],
+      "angleDegrees": 78.73549465986234,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 53,
+      "segment": 2,
+      "point": [
+        485.0,
+        481.0
+      ],
+      "angleDegrees": 78.6725650751584,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 128,
+      "point": [
+        697.0,
+        559.0
+      ],
+      "angleDegrees": 78.64014785963504,
+      "fill": "#010100"
+    },
+    {
+      "loop": 1,
+      "segment": 13,
+      "point": [
+        534.0,
+        822.0
+      ],
+      "angleDegrees": 77.0891018327421,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 152,
+      "point": [
+        490.0,
+        822.0
+      ],
+      "angleDegrees": 77.02743006656938,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 20,
+      "segment": 11,
+      "point": [
+        431.095,
+        129.393
+      ],
+      "angleDegrees": 76.9283710134493,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 52,
+      "segment": 3,
+      "point": [
+        543.0,
+        480.0
+      ],
+      "angleDegrees": 76.57900112592561,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 21,
+      "segment": 19,
+      "point": [
+        592.905,
+        129.394
+      ],
+      "angleDegrees": 76.43516926017575,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 104,
+      "point": [
+        368.0,
+        630.0
+      ],
+      "angleDegrees": 75.85951745815494,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 17,
+      "segment": 10,
+      "point": [
+        568.0,
+        344.0
+      ],
+      "angleDegrees": 75.74864682882891,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 35,
+      "segment": 12,
+      "point": [
+        310.0,
+        387.0
+      ],
+      "angleDegrees": 75.57006476118205,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 17,
+      "segment": 15,
+      "point": [
+        544.0,
+        362.0
+      ],
+      "angleDegrees": 74.80488359299393,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 15,
+      "segment": 20,
+      "point": [
+        365.59,
+        260.4
+      ],
+      "angleDegrees": 74.45521496178935,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 16,
+      "segment": 13,
+      "point": [
+        658.406,
+        260.427
+      ],
+      "angleDegrees": 73.86786951246151,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 26,
+      "segment": 0,
+      "point": [
+        349.0,
+        418.0
+      ],
+      "angleDegrees": 73.44229060804405,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 3,
+      "segment": 9,
+      "point": [
+        802.0,
+        274.0
+      ],
+      "angleDegrees": 71.56807976774544,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 4,
+      "segment": 30,
+      "point": [
+        222.0,
+        274.0
+      ],
+      "angleDegrees": 71.38426456180774,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 49,
+      "segment": 1,
+      "point": [
+        463.0,
+        547.0
+      ],
+      "angleDegrees": 70.88878695780865,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 1,
+      "segment": 96,
+      "point": [
+        405.0,
+        715.0
+      ],
+      "angleDegrees": 70.65908727497083,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 68,
+      "point": [
+        619.0,
+        715.0
+      ],
+      "angleDegrees": 70.57136764101402,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 0,
+      "segment": 223,
+      "point": [
+        187.0,
+        301.0
+      ],
+      "angleDegrees": 70.14759961262178,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 79,
+      "point": [
+        686.0,
+        220.0
+      ],
+      "angleDegrees": 69.53041432053094,
+      "fill": "#010100"
+    },
+    {
+      "loop": 50,
+      "segment": 7,
+      "point": [
+        561.0,
+        547.0
+      ],
+      "angleDegrees": 69.31469797601947,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 42,
+      "segment": 7,
+      "point": [
+        513.0,
+        271.0
+      ],
+      "angleDegrees": 68.91804940844554,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 42,
+      "segment": 8,
+      "point": [
+        511.0,
+        271.0
+      ],
+      "angleDegrees": 68.81649587505373,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 19,
+      "segment": 7,
+      "point": [
+        663.0,
+        345.0
+      ],
+      "angleDegrees": 68.00356010853741,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 18,
+      "segment": 15,
+      "point": [
+        361.0,
+        345.0
+      ],
+      "angleDegrees": 67.9355565400203,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 8,
+      "segment": 19,
+      "point": [
+        688.0,
+        225.0
+      ],
+      "angleDegrees": 67.617740499807,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 86,
+      "point": [
+        452.0,
+        804.0
+      ],
+      "angleDegrees": 67.48370005027189,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 1,
+      "segment": 77,
+      "point": [
+        572.0,
+        804.0
+      ],
+      "angleDegrees": 67.46757731778203,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 42,
+      "segment": 11,
+      "point": [
+        483.0,
+        254.0
+      ],
+      "angleDegrees": 66.52961875661818,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 42,
+      "segment": 3,
+      "point": [
+        541.0,
+        254.0
+      ],
+      "angleDegrees": 66.46793594965791,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 8,
+      "segment": 7,
+      "point": [
+        731.0,
+        216.0
+      ],
+      "angleDegrees": 65.8979982215242,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 7,
+      "segment": 33,
+      "point": [
+        293.0,
+        216.0
+      ],
+      "angleDegrees": 65.85640468991366,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 3,
+      "segment": 35,
+      "point": [
+        790.0,
+        130.0
+      ],
+      "angleDegrees": 65.38745787232313,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 56,
+      "segment": 4,
+      "point": [
+        547.0,
+        248.0
+      ],
+      "angleDegrees": 65.26900306353522,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 55,
+      "segment": 3,
+      "point": [
+        477.0,
+        248.0
+      ],
+      "angleDegrees": 65.16861487890382,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 28,
+      "segment": 11,
+      "point": [
+        301.0,
+        255.0
+      ],
+      "angleDegrees": 65.05262814779056,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 29,
+      "segment": 12,
+      "point": [
+        723.0,
+        255.0
+      ],
+      "angleDegrees": 65.05107301375965,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 8,
+      "segment": 26,
+      "point": [
+        683.0,
+        141.0
+      ],
+      "angleDegrees": 64.4575568849277,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 48,
+      "segment": 5,
+      "point": [
+        609.0,
+        470.0
+      ],
+      "angleDegrees": 64.42074862066265,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 9,
+      "segment": 11,
+      "point": [
+        368.0,
+        525.0
+      ],
+      "angleDegrees": 63.98009651266805,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 47,
+      "segment": 4,
+      "point": [
+        415.0,
+        470.0
+      ],
+      "angleDegrees": 63.26477936089104,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 10,
+      "segment": 18,
+      "point": [
+        656.0,
+        525.0
+      ],
+      "angleDegrees": 63.19095887596689,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 7,
+      "segment": 19,
+      "point": [
+        336.0,
+        225.0
+      ],
+      "angleDegrees": 62.97232446507717,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 0,
+      "segment": 48,
+      "point": [
+        461.0,
+        98.0
+      ],
+      "angleDegrees": 62.824818182634274,
+      "fill": "#010100"
+    },
+    {
+      "loop": 0,
+      "segment": 56,
+      "point": [
+        563.0,
+        98.0
+      ],
+      "angleDegrees": 62.822378330821174,
+      "fill": "#010100"
+    },
+    {
+      "loop": 9,
+      "segment": 5,
+      "point": [
+        410.0,
+        521.0
+      ],
+      "angleDegrees": 62.04484129511394,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 38,
+      "segment": 1,
+      "point": [
+        311.0,
+        358.0
+      ],
+      "angleDegrees": 61.73611302147839,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 0,
+      "segment": 10,
+      "point": [
+        253.0,
+        221.0
+      ],
+      "angleDegrees": 61.63215001282323,
+      "fill": "#010100"
+    },
+    {
+      "loop": 39,
+      "segment": 7,
+      "point": [
+        713.0,
+        358.0
+      ],
+      "angleDegrees": 61.57395143410588,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 18,
+      "segment": 19,
+      "point": [
+        339.0,
+        318.0
+      ],
+      "angleDegrees": 59.96774309732972,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 19,
+      "segment": 3,
+      "point": [
+        685.0,
+        318.0
+      ],
+      "angleDegrees": 59.89753741733492,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 10,
+      "segment": 11,
+      "point": [
+        713.0,
+        526.0
+      ],
+      "angleDegrees": 59.54501019109349,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 51,
+      "segment": 4,
+      "point": [
+        480.0,
+        481.0
+      ],
+      "angleDegrees": 59.28970622830904,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 53,
+      "segment": 1,
+      "point": [
+        507.0,
+        480.0
+      ],
+      "angleDegrees": 58.879015044460644,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 54,
+      "segment": 3,
+      "point": [
+        517.0,
+        480.0
+      ],
+      "angleDegrees": 58.75628537456395,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 40,
+      "segment": 4,
+      "point": [
+        648.0,
+        403.0
+      ],
+      "angleDegrees": 58.15180311393428,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 26,
+      "segment": 10,
+      "point": [
+        409.0,
+        515.0
+      ],
+      "angleDegrees": 58.04267587738533,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 29,
+      "segment": 0,
+      "point": [
+        730.0,
+        223.0
+      ],
+      "angleDegrees": 57.65878114522502,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 10,
+      "segment": 23,
+      "point": [
+        614.0,
+        521.0
+      ],
+      "angleDegrees": 57.38932233572665,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 48,
+      "segment": 1,
+      "point": [
+        671.0,
+        420.0
+      ],
+      "angleDegrees": 55.43244983739678,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 39,
+      "segment": 6,
+      "point": [
+        713.0,
+        360.0
+      ],
+      "angleDegrees": 53.126254503463805,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 38,
+      "segment": 2,
+      "point": [
+        311.0,
+        360.0
+      ],
+      "angleDegrees": 53.0889462198078,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 3,
+      "segment": 25,
+      "point": [
+        768.0,
+        230.0
+      ],
+      "angleDegrees": 52.69170116194132,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 33,
+      "segment": 1,
+      "point": [
+        609.0,
+        265.0
+      ],
+      "angleDegrees": 51.23255766883166,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 4,
+      "segment": 16,
+      "point": [
+        256.0,
+        230.0
+      ],
+      "angleDegrees": 51.11909611821677,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 14,
+      "segment": 12,
+      "point": [
+        672.0,
+        409.0
+      ],
+      "angleDegrees": 49.746854990684156,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 14,
+      "segment": 23,
+      "point": [
+        541.0,
+        448.0
+      ],
+      "angleDegrees": 49.2935499103643,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 14,
+      "segment": 28,
+      "point": [
+        483.0,
+        448.0
+      ],
+      "angleDegrees": 49.27869467780357,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 25,
+      "segment": 2,
+      "point": [
+        651.0,
+        264.0
+      ],
+      "angleDegrees": 46.02964794271731,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 24,
+      "segment": 17,
+      "point": [
+        373.0,
+        264.0
+      ],
+      "angleDegrees": 45.97971832242222,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 14,
+      "segment": 0,
+      "point": [
+        352.0,
+        409.0
+      ],
+      "angleDegrees": 45.31509735226802,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 103,
+      "point": [
+        370.0,
+        631.0
+      ],
+      "angleDegrees": 44.30287980663485,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 20,
+      "segment": 9,
+      "point": [
+        432.0,
+        131.0
+      ],
+      "angleDegrees": 43.36495497278647,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 21,
+      "segment": 21,
+      "point": [
+        592.0,
+        131.0
+      ],
+      "angleDegrees": 35.60364212785748,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 18,
+      "segment": 26,
+      "point": [
+        361.0,
+        187.0
+      ],
+      "angleDegrees": 27.084435282626238,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 1,
+      "segment": 83,
+      "point": [
+        479.381,
+        860.578
+      ],
+      "angleDegrees": 5.14046931809336,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 24,
+      "segment": 21,
+      "point": [
+        406.937,
+        220.923
+      ],
+      "angleDegrees": 3.0899529880491508,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 16,
+      "segment": 25,
+      "point": [
+        526.209,
+        207.801
+      ],
+      "angleDegrees": 2.990684329769774,
+      "fill": "#db0203"
+    },
+    {
+      "loop": 6,
+      "segment": 4,
+      "point": [
+        770.507,
+        434.475
+      ],
+      "angleDegrees": 2.74257303441381,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 9,
+      "segment": 3,
+      "point": [
+        381.383,
+        498.648
+      ],
+      "angleDegrees": 2.6404069287689733,
+      "fill": "#50a021"
+    },
+    {
+      "loop": 4,
+      "segment": 25,
+      "point": [
+        198.779,
+        219.241
+      ],
+      "angleDegrees": 2.520594620581016,
+      "fill": "#c79530"
+    },
+    {
+      "loop": 1,
+      "segment": 63,
+      "point": [
+        646.361,
+        648.371
+      ],
+      "angleDegrees": 2.3444560973458004,
+      "fill": "#ffffff"
+    },
+    {
+      "loop": 19,
+      "segment": 14,
+      "point": [
+        645.182,
+        333.19
+      ],
+      "angleDegrees": 2.1943533247499687,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 5,
+      "segment": 35,
+      "point": [
+        225.459,
+        278.425
+      ],
+      "angleDegrees": 2.1459884679814643,
+      "fill": "#f2be07"
+    },
+    {
+      "loop": 11,
+      "segment": 2,
+      "point": [
+        647.698,
+        322.677
+      ],
+      "angleDegrees": 2.131142234230831,
+      "fill": "#ffffff"
+    }
+  ]
+}

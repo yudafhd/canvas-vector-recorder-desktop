@@ -1,0 +1,92 @@
+ContourSmoother::executeCurrentPhase()
+LC_FUNCTION_STARTS: [0x1000c3040, 0x1000c31f0)
+Numeric interpretations are candidates.
+1000c3040:	55	pushq	%rbp
+1000c3041:	48 89 e5	movq	%rsp, %rbp
+1000c3044:	41 57	pushq	%r15
+1000c3046:	41 56	pushq	%r14
+1000c3048:	53	pushq	%rbx
+1000c3049:	50	pushq	%rax
+1000c304a:	48 89 fb	movq	%rdi, %rbx
+1000c304d:	8b bf f0 05 00 00	movl	0x5f0(%rdi), %edi
+1000c3053:	48 83 ff 03	cmpq	$0x3, %rdi
+1000c3057:	0f 83 51 01 00 00	jae	0x1000c31ae
+1000c305d:	83 7c bb 5c 00	cmpl	$0x0, 0x5c(%rbx,%rdi,4)
+1000c3062:	0f 84 18 01 00 00	je	0x1000c3180
+1000c3068:	48 8b 83 f8 05 00 00	movq	0x5f8(%rbx), %rax
+1000c306f:	80 78 08 00	cmpb	$0x0, 0x8(%rax)
+1000c3073:	0f 85 07 01 00 00	jne	0x1000c3180
+1000c3079:	83 7c bb 08 03	cmpl	$0x3, 0x8(%rbx,%rdi,4)
+1000c307e:	0f 83 2f 01 00 00	jae	0x1000c31b3
+1000c3084:	8b 44 bb 14	movl	0x14(%rbx,%rdi,4), %eax
+1000c3088:	85 c0	testl	%eax, %eax
+1000c308a:	74 2e	je	0x1000c30ba
+1000c308c:	83 f8 03	cmpl	$0x3, %eax
+1000c308f:	74 19	je	0x1000c30aa
+1000c3091:	83 f8 01	cmpl	$0x1, %eax
+1000c3094:	0f 85 36 01 00 00	jne	0x1000c31d0
+1000c309a:	48 8d 05 0f e4 05 00	leaq	__ZN15ContourSmoother21findSqrtPriorGradientEiiiRN3sla4Vec2IdEES3_(%rip), %rax ## ContourSmoother::findSqrtPriorGradient(int, int, int, sla::Vec2<double>&, sla::Vec2<double>&)
+1000c30a1:	48 8d 0d 68 e3 05 00	leaq	__ZN15ContourSmoother22findSqrtPriorPotentialEiii(%rip), %rcx ## ContourSmoother::findSqrtPriorPotential(int, int, int)
+1000c30a8:	eb 1e	jmp	0x1000c30c8
+1000c30aa:	48 8d 05 ef 04 00 00	leaq	__ZN15ContourSmoother24findAngularPriorGradientEiiiRN3sla4Vec2IdEES3_(%rip), %rax ## ContourSmoother::findAngularPriorGradient(int, int, int, sla::Vec2<double>&, sla::Vec2<double>&)
+1000c30b1:	48 8d 0d 78 03 00 00	leaq	__ZN15ContourSmoother25findAngularPriorPotentialEiii(%rip), %rcx ## ContourSmoother::findAngularPriorPotential(int, int, int)
+1000c30b8:	eb 0e	jmp	0x1000c30c8
+1000c30ba:	48 8d 05 7f 02 00 00	leaq	__ZN15ContourSmoother26findQuadraticPriorGradientEiiiRN3sla4Vec2IdEES3_(%rip), %rax ## ContourSmoother::findQuadraticPriorGradient(int, int, int, sla::Vec2<double>&, sla::Vec2<double>&)
+1000c30c1:	48 8d 0d 68 01 00 00	leaq	__ZN15ContourSmoother27findQuadraticPriorPotentialEiii(%rip), %rcx ## ContourSmoother::findQuadraticPriorPotential(int, int, int)
+1000c30c8:	48 89 8b 98 06 00 00	movq	%rcx, 0x698(%rbx)
+1000c30cf:	48 c7 83 a0 06 00 00 00 00 00 00	movq	$0x0, 0x6a0(%rbx)
+1000c30da:	48 89 83 a8 06 00 00	movq	%rax, 0x6a8(%rbx)
+1000c30e1:	48 c7 83 b0 06 00 00 00 00 00 00	movq	$0x0, 0x6b0(%rbx)
+1000c30ec:	4c 8d b3 b8 00 00 00	leaq	0xb8(%rbx), %r14
+1000c30f3:	4c 69 ff c8 00 00 00	imulq	$0xc8, %rdi, %r15
+1000c30fa:	4a 8d 34 3b	leaq	(%rbx,%r15), %rsi
+1000c30fe:	48 81 c6 28 02 00 00	addq	$0x228, %rsi
+1000c3105:	48 8d bb c0 00 00 00	leaq	0xc0(%rbx), %rdi
+1000c310c:	ba 8c 00 00 00	movl	$0x8c, %edx
+1000c3111:	e8 86 90 06 00	callq	0x10012c19c ## symbol stub for: _memcpy
+1000c3116:	48 8d bb 50 01 00 00	leaq	0x150(%rbx), %rdi
+1000c311d:	4a 8d 34 3b	leaq	(%rbx,%r15), %rsi
+1000c3121:	48 81 c6 b8 02 00 00	addq	$0x2b8, %rsi
+1000c3128:	e8 4d 8e 06 00	callq	0x10012bf7a ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEaSERKS5_
+1000c312d:	42 8b 84 3b d0 02 00 00	movl	0x2d0(%rbx,%r15), %eax
+1000c3135:	89 83 68 01 00 00	movl	%eax, 0x168(%rbx)
+1000c313b:	48 8d bb 70 01 00 00	leaq	0x170(%rbx), %rdi
+1000c3142:	4a 8d 34 3b	leaq	(%rbx,%r15), %rsi
+1000c3146:	48 81 c6 d8 02 00 00	addq	$0x2d8, %rsi
+1000c314d:	e8 28 8e 06 00	callq	0x10012bf7a ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEaSERKS5_
+1000c3152:	4c 89 f7	movq	%r14, %rdi
+1000c3155:	e8 96 1a 03 00	callq	__ZN9Optimizer4doCGEv ## Optimizer::doCG()
+1000c315a:	8b bb f0 05 00 00	movl	0x5f0(%rbx), %edi
+1000c3160:	48 83 ff 03	cmpq	$0x3, %rdi
+1000c3164:	73 60	jae	0x1000c31c6
+1000c3166:	83 7c bb 50 00	cmpl	$0x0, 0x50(%rbx,%rdi,4)
+1000c316b:	74 13	je	0x1000c3180
+1000c316d:	48 89 df	movq	%rbx, %rdi
+1000c3170:	e8 1b 06 00 00	callq	__ZN15ContourSmoother15punctureCornersEv ## ContourSmoother::punctureCorners()
+1000c3175:	8b bb f0 05 00 00	movl	0x5f0(%rbx), %edi
+1000c317b:	83 ff 03	cmpl	$0x3, %edi
+1000c317e:	73 4b	jae	0x1000c31cb
+1000c3180:	89 f8	movl	%edi, %eax
+1000c3182:	8b 94 83 80 06 00 00	movl	0x680(%rbx,%rax,4), %edx
+1000c3189:	89 93 90 06 00 00	movl	%edx, 0x690(%rbx)
+1000c318f:	8b 8b 8c 06 00 00	movl	0x68c(%rbx), %ecx
+1000c3195:	bf 08 00 00 00	movl	$0x8, %edi
+1000c319a:	be 02 00 00 00	movl	$0x2, %esi
+1000c319f:	48 83 c4 08	addq	$0x8, %rsp
+1000c31a3:	5b	popq	%rbx
+1000c31a4:	41 5e	popq	%r14
+1000c31a6:	41 5f	popq	%r15
+1000c31a8:	5d	popq	%rbp
+1000c31a9:	e9 a2 9a 01 00	jmp	__ZN10CoreEngine26triggerFinegrainedProgressE10ModuleTypeiii ## CoreEngine::triggerFinegrainedProgress(ModuleType, int, int, int)
+1000c31ae:	e8 7d e5 05 00	callq	0x100121730
+1000c31b3:	48 8d bb f0 05 00 00	leaq	0x5f0(%rbx), %rdi
+1000c31ba:	48 83 c3 08	addq	$0x8, %rbx
+1000c31be:	48 89 de	movq	%rbx, %rsi
+1000c31c1:	e8 8a e3 05 00	callq	0x100121550
+1000c31c6:	e8 75 e4 05 00	callq	0x100121640
+1000c31cb:	e8 f0 e3 05 00	callq	0x1001215c0
+1000c31d0:	48 8d bb f0 05 00 00	leaq	0x5f0(%rbx), %rdi
+1000c31d7:	48 83 c3 14	addq	$0x14, %rbx
+1000c31db:	48 89 de	movq	%rbx, %rsi
+1000c31de:	e8 dd e4 05 00	callq	0x1001216c0
+1000c31e3:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

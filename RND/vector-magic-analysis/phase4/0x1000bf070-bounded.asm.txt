@@ -1,0 +1,8 @@
+1000bf070:	55	pushq	%rbp
+1000bf071:	48 89 e5	movq	%rsp, %rbp
+1000bf074:	48 63 47 60	movslq	0x60(%rdi), %rax
+1000bf078:	48 c1 e0 05	shlq	$0x5, %rax
+1000bf07c:	48 83 c8 18	orq	$0x18, %rax
+1000bf080:	5d	popq	%rbp
+1000bf081:	c3	retq
+1000bf082:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

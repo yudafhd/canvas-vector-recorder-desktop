@@ -1,0 +1,242 @@
+PixelSegmenter::considerMergeAndSwap(int, int, int, int)
+100104990:	55	pushq	%rbp
+100104991:	48 89 e5	movq	%rsp, %rbp
+100104994:	41 57	pushq	%r15
+100104996:	41 56	pushq	%r14
+100104998:	41 55	pushq	%r13
+10010499a:	41 54	pushq	%r12
+10010499c:	53	pushq	%rbx
+10010499d:	48 83 ec 78	subq	$0x78, %rsp
+1001049a1:	44 89 c3	movl	%r8d, %ebx
+1001049a4:	41 89 ce	movl	%ecx, %r14d
+1001049a7:	89 55 d0	movl	%edx, -0x30(%rbp)
+1001049aa:	41 89 f5	movl	%esi, %r13d
+1001049ad:	49 89 ff	movq	%rdi, %r15
+1001049b0:	48 8b 7f 38	movq	0x38(%rdi), %rdi
+1001049b4:	48 8b 07	movq	(%rdi), %rax
+1001049b7:	89 ce	movl	%ecx, %esi
+1001049b9:	ff 10	callq	*(%rax)
+1001049bb:	48 89 45 c0	movq	%rax, -0x40(%rbp)
+1001049bf:	49 8b 7f 38	movq	0x38(%r15), %rdi
+1001049c3:	48 8b 07	movq	(%rdi), %rax
+1001049c6:	89 de	movl	%ebx, %esi
+1001049c8:	ff 10	callq	*(%rax)
+1001049ca:	49 89 c4	movq	%rax, %r12
+1001049cd:	4c 89 ff	movq	%r15, %rdi
+1001049d0:	44 89 f6	movl	%r14d, %esi
+1001049d3:	89 da	movl	%ebx, %edx
+1001049d5:	e8 a6 09 00 00	callq	__ZN14PixelSegmenter18computeMergeMetricEii ## PixelSegmenter::computeMergeMetric(int, int)
+1001049da:	f3 41 0f 10 4f 58	movss	0x58(%r15), %xmm1
+1001049e0:	0f 2e c8	ucomiss	%xmm0, %xmm1
+1001049e3:	77 29	ja	0x100104a0e
+1001049e5:	41 0f 2e 4f 0c	ucomiss	0xc(%r15), %xmm1
+1001049ea:	0f 85 b3 00 00 00	jne	0x100104aa3
+1001049f0:	0f 8a ad 00 00 00	jp	0x100104aa3
+1001049f6:	41 8b 47 10	movl	0x10(%r15), %eax
+1001049fa:	48 8b 4d c0	movq	-0x40(%rbp), %rcx
+1001049fe:	39 41 08	cmpl	%eax, 0x8(%rcx)
+100104a01:	7c 0b	jl	0x100104a0e
+100104a03:	41 39 44 24 08	cmpl	%eax, 0x8(%r12)
+100104a08:	0f 8d 95 00 00 00	jge	0x100104aa3
+100104a0e:	49 8b 7f 48	movq	0x48(%r15), %rdi
+100104a12:	44 89 f6	movl	%r14d, %esi
+100104a15:	89 da	movl	%ebx, %edx
+100104a17:	e8 14 71 fc ff	callq	__ZN8PixelMap8redirectEii ## PixelMap::redirect(int, int)
+100104a1c:	49 8b 7f 38	movq	0x38(%r15), %rdi
+100104a20:	48 8b 07	movq	(%rdi), %rax
+100104a23:	44 89 f6	movl	%r14d, %esi
+100104a26:	ff 10	callq	*(%rax)
+100104a28:	49 89 c6	movq	%rax, %r14
+100104a2b:	49 8b 7f 38	movq	0x38(%r15), %rdi
+100104a2f:	48 8b 07	movq	(%rdi), %rax
+100104a32:	89 de	movl	%ebx, %esi
+100104a34:	ff 10	callq	*(%rax)
+100104a36:	8b 48 08	movl	0x8(%rax), %ecx
+100104a39:	41 01 4e 08	addl	%ecx, 0x8(%r14)
+100104a3d:	f3 0f 10 40 0c	movss	0xc(%rax), %xmm0
+100104a42:	f3 41 0f 58 46 0c	addss	0xc(%r14), %xmm0
+100104a48:	f3 41 0f 11 46 0c	movss	%xmm0, 0xc(%r14)
+100104a4e:	f3 0f 10 40 10	movss	0x10(%rax), %xmm0
+100104a53:	f3 41 0f 58 46 10	addss	0x10(%r14), %xmm0
+100104a59:	f3 41 0f 11 46 10	movss	%xmm0, 0x10(%r14)
+100104a5f:	f3 0f 10 40 14	movss	0x14(%rax), %xmm0
+100104a64:	f3 41 0f 58 46 14	addss	0x14(%r14), %xmm0
+100104a6a:	f3 41 0f 11 46 14	movss	%xmm0, 0x14(%r14)
+100104a70:	f3 0f 10 40 18	movss	0x18(%rax), %xmm0
+100104a75:	f3 41 0f 58 46 18	addss	0x18(%r14), %xmm0
+100104a7b:	f3 41 0f 11 46 18	movss	%xmm0, 0x18(%r14)
+100104a81:	0f 57 c0	xorps	%xmm0, %xmm0
+100104a84:	0f 11 40 08	movups	%xmm0, 0x8(%rax)
+100104a88:	c7 40 18 00 00 00 00	movl	$0x0, 0x18(%rax)
+100104a8f:	b8 01 00 00 00	movl	$0x1, %eax
+100104a94:	48 83 c4 78	addq	$0x78, %rsp
+100104a98:	5b	popq	%rbx
+100104a99:	41 5c	popq	%r12
+100104a9b:	41 5d	popq	%r13
+100104a9d:	41 5e	popq	%r14
+100104a9f:	41 5f	popq	%r15
+100104aa1:	5d	popq	%rbp
+100104aa2:	c3	retq
+100104aa3:	49 8b 7f 30	movq	0x30(%r15), %rdi
+100104aa7:	44 89 ee	movl	%r13d, %esi
+100104aaa:	e8 31 2d ff ff	callq	0x1000f77e0
+100104aaf:	41 0f 10 44 24 08	movups	0x8(%r12), %xmm0
+100104ab5:	0f 29 45 a0	movaps	%xmm0, -0x60(%rbp)
+100104ab9:	49 8b 7f 30	movq	0x30(%r15), %rdi
+100104abd:	0f b7 08	movzwl	(%rax), %ecx
+100104ac0:	66 0f 6e c1	movd	%ecx, %xmm0
+100104ac4:	66 0f 7f 85 60 ff ff ff	movdqa	%xmm0, -0xa0(%rbp)
+100104acc:	0f b7 40 02	movzwl	0x2(%rax), %eax
+100104ad0:	66 0f 6e c0	movd	%eax, %xmm0
+100104ad4:	66 0f 7f 45 b0	movdqa	%xmm0, -0x50(%rbp)
+100104ad9:	f2 41 0f 10 44 24 0c	movsd	0xc(%r12), %xmm0
+100104ae0:	0f 29 45 90	movaps	%xmm0, -0x70(%rbp)
+100104ae4:	4c 89 a5 78 ff ff ff	movq	%r12, -0x88(%rbp)
+100104aeb:	f2 41 0f 10 44 24 14	movsd	0x14(%r12), %xmm0
+100104af2:	0f 29 45 80	movaps	%xmm0, -0x80(%rbp)
+100104af6:	44 89 6d d4	movl	%r13d, -0x2c(%rbp)
+100104afa:	44 89 ee	movl	%r13d, %esi
+100104afd:	e8 de 2c ff ff	callq	0x1000f77e0
+100104b02:	0f b7 08	movzwl	(%rax), %ecx
+100104b05:	66 0f 6e c1	movd	%ecx, %xmm0
+100104b09:	66 0f 6f 8d 60 ff ff ff	movdqa	-0xa0(%rbp), %xmm1
+100104b11:	66 0f 60 c8	punpcklbw	%xmm0, %xmm1
+100104b15:	66 0f 38 31 c1	pmovzxbd	%xmm1, %xmm0
+100104b1a:	0f 5b c0	cvtdq2ps	%xmm0, %xmm0
+100104b1d:	66 0f 72 d1 10	psrld	$0x10, %xmm1
+100104b22:	66 0f 38 31 c9	pmovzxbd	%xmm1, %xmm1
+100104b27:	0f 5b c9	cvtdq2ps	%xmm1, %xmm1
+100104b2a:	0f b7 40 02	movzwl	0x2(%rax), %eax
+100104b2e:	66 0f 6e d0	movd	%eax, %xmm2
+100104b32:	66 0f 6f 5d b0	movdqa	-0x50(%rbp), %xmm3
+100104b37:	66 0f 60 da	punpcklbw	%xmm2, %xmm3
+100104b3b:	66 0f 38 31 d3	pmovzxbd	%xmm3, %xmm2
+100104b40:	0f 5b d2	cvtdq2ps	%xmm2, %xmm2
+100104b43:	66 0f 72 d3 10	psrld	$0x10, %xmm3
+100104b48:	66 0f 38 31 db	pmovzxbd	%xmm3, %xmm3
+100104b4d:	0f 5b db	cvtdq2ps	%xmm3, %xmm3
+100104b50:	4c 8b 65 c0	movq	-0x40(%rbp), %r12
+100104b54:	66 0f 6f 65 a0	movdqa	-0x60(%rbp), %xmm4
+100104b59:	66 41 0f 3a 22 64 24 08 01	pinsrd	$0x1, 0x8(%r12), %xmm4
+100104b62:	0f 5b e4	cvtdq2ps	%xmm4, %xmm4
+100104b65:	0f 28 2d 34 73 1e 00	movaps	0x1e7334(%rip), %xmm5
+100104b6c:	0f 5e ec	divps	%xmm4, %xmm5
+100104b6f:	f2 41 0f 10 64 24 0c	movsd	0xc(%r12), %xmm4
+100104b76:	f2 41 0f 10 74 24 14	movsd	0x14(%r12), %xmm6
+100104b7d:	44 0f 28 4d 90	movaps	-0x70(%rbp), %xmm9
+100104b82:	41 0f 28 f9	movaps	%xmm9, %xmm7
+100104b86:	66 0f 3a 21 fc 1c	insertps	$0x1c, %xmm4, %xmm7
+100104b8c:	0f 59 fd	mulps	%xmm5, %xmm7
+100104b8f:	0f 5c c7	subps	%xmm7, %xmm0
+100104b92:	66 41 0f 3a 21 e1 4c	insertps	$0x4c, %xmm9, %xmm4
+100104b99:	0f 59 e5	mulps	%xmm5, %xmm4
+100104b9c:	0f 5c cc	subps	%xmm4, %xmm1
+100104b9f:	0f 28 7d 80	movaps	-0x80(%rbp), %xmm7
+100104ba3:	0f 28 e7	movaps	%xmm7, %xmm4
+100104ba6:	66 0f 3a 21 e6 1c	insertps	$0x1c, %xmm6, %xmm4
+100104bac:	0f 59 e5	mulps	%xmm5, %xmm4
+100104baf:	0f 5c d4	subps	%xmm4, %xmm2
+100104bb2:	66 0f 3a 21 f7 4c	insertps	$0x4c, %xmm7, %xmm6
+100104bb8:	0f 59 f5	mulps	%xmm5, %xmm6
+100104bbb:	0f 5c de	subps	%xmm6, %xmm3
+100104bbe:	0f 59 c0	mulps	%xmm0, %xmm0
+100104bc1:	0f 57 e4	xorps	%xmm4, %xmm4
+100104bc4:	0f 58 c4	addps	%xmm4, %xmm0
+100104bc7:	0f 59 c9	mulps	%xmm1, %xmm1
+100104bca:	0f 58 c8	addps	%xmm0, %xmm1
+100104bcd:	0f 59 d2	mulps	%xmm2, %xmm2
+100104bd0:	0f 58 d1	addps	%xmm1, %xmm2
+100104bd3:	0f 59 db	mulps	%xmm3, %xmm3
+100104bd6:	0f 58 da	addps	%xmm2, %xmm3
+100104bd9:	f3 0f 16 c3	movshdup	%xmm3, %xmm0
+100104bdd:	0f 2e c3	ucomiss	%xmm3, %xmm0
+100104be0:	76 1a	jbe	0x100104bfc
+100104be2:	4c 89 ff	movq	%r15, %rdi
+100104be5:	8b 75 d4	movl	-0x2c(%rbp), %esi
+100104be8:	44 89 f2	movl	%r14d, %edx
+100104beb:	89 d9	movl	%ebx, %ecx
+100104bed:	e8 2e 09 00 00	callq	__ZN14PixelSegmenter9swapPixelEiii ## PixelSegmenter::swapPixel(int, int, int)
+100104bf2:	b8 02 00 00 00	movl	$0x2, %eax
+100104bf7:	e9 98 fe ff ff	jmp	0x100104a94
+100104bfc:	49 8b 7f 30	movq	0x30(%r15), %rdi
+100104c00:	44 8b 6d d0	movl	-0x30(%rbp), %r13d
+100104c04:	44 89 ee	movl	%r13d, %esi
+100104c07:	e8 d4 2b ff ff	callq	0x1000f77e0
+100104c0c:	41 0f 10 44 24 08	movups	0x8(%r12), %xmm0
+100104c12:	0f 29 45 80	movaps	%xmm0, -0x80(%rbp)
+100104c16:	49 8b 7f 30	movq	0x30(%r15), %rdi
+100104c1a:	0f b7 08	movzwl	(%rax), %ecx
+100104c1d:	66 0f 6e c1	movd	%ecx, %xmm0
+100104c21:	66 0f 7f 45 b0	movdqa	%xmm0, -0x50(%rbp)
+100104c26:	0f b7 40 02	movzwl	0x2(%rax), %eax
+100104c2a:	66 0f 6e c0	movd	%eax, %xmm0
+100104c2e:	66 0f 7f 45 a0	movdqa	%xmm0, -0x60(%rbp)
+100104c33:	f2 41 0f 10 44 24 0c	movsd	0xc(%r12), %xmm0
+100104c3a:	0f 29 45 90	movaps	%xmm0, -0x70(%rbp)
+100104c3e:	f2 41 0f 10 44 24 14	movsd	0x14(%r12), %xmm0
+100104c45:	0f 29 45 c0	movaps	%xmm0, -0x40(%rbp)
+100104c49:	44 89 ee	movl	%r13d, %esi
+100104c4c:	e8 8f 2b ff ff	callq	0x1000f77e0
+100104c51:	0f b7 08	movzwl	(%rax), %ecx
+100104c54:	66 0f 6e c1	movd	%ecx, %xmm0
+100104c58:	66 0f 6f 4d b0	movdqa	-0x50(%rbp), %xmm1
+100104c5d:	66 0f 60 c8	punpcklbw	%xmm0, %xmm1
+100104c61:	66 0f 38 31 c1	pmovzxbd	%xmm1, %xmm0
+100104c66:	0f 5b c0	cvtdq2ps	%xmm0, %xmm0
+100104c69:	66 0f 72 d1 10	psrld	$0x10, %xmm1
+100104c6e:	66 0f 38 31 c9	pmovzxbd	%xmm1, %xmm1
+100104c73:	0f 5b c9	cvtdq2ps	%xmm1, %xmm1
+100104c76:	0f b7 40 02	movzwl	0x2(%rax), %eax
+100104c7a:	66 0f 6e d0	movd	%eax, %xmm2
+100104c7e:	66 0f 6f 5d a0	movdqa	-0x60(%rbp), %xmm3
+100104c83:	66 0f 60 da	punpcklbw	%xmm2, %xmm3
+100104c87:	66 0f 38 31 d3	pmovzxbd	%xmm3, %xmm2
+100104c8c:	0f 5b d2	cvtdq2ps	%xmm2, %xmm2
+100104c8f:	66 0f 72 d3 10	psrld	$0x10, %xmm3
+100104c94:	66 0f 38 31 db	pmovzxbd	%xmm3, %xmm3
+100104c99:	0f 5b db	cvtdq2ps	%xmm3, %xmm3
+100104c9c:	48 8b 85 78 ff ff ff	movq	-0x88(%rbp), %rax
+100104ca3:	66 0f 6f 65 80	movdqa	-0x80(%rbp), %xmm4
+100104ca8:	66 0f 3a 22 60 08 01	pinsrd	$0x1, 0x8(%rax), %xmm4
+100104caf:	0f 5b e4	cvtdq2ps	%xmm4, %xmm4
+100104cb2:	0f 28 3d e7 71 1e 00	movaps	0x1e71e7(%rip), %xmm7
+100104cb9:	0f 5e fc	divps	%xmm4, %xmm7
+100104cbc:	f2 0f 10 60 0c	movsd	0xc(%rax), %xmm4
+100104cc1:	f2 0f 10 68 14	movsd	0x14(%rax), %xmm5
+100104cc6:	44 0f 28 45 90	movaps	-0x70(%rbp), %xmm8
+100104ccb:	41 0f 28 f0	movaps	%xmm8, %xmm6
+100104ccf:	66 0f 3a 21 f4 1c	insertps	$0x1c, %xmm4, %xmm6
+100104cd5:	0f 59 f7	mulps	%xmm7, %xmm6
+100104cd8:	0f 5c c6	subps	%xmm6, %xmm0
+100104cdb:	66 41 0f 3a 21 e0 4c	insertps	$0x4c, %xmm8, %xmm4
+100104ce2:	0f 59 e7	mulps	%xmm7, %xmm4
+100104ce5:	0f 5c cc	subps	%xmm4, %xmm1
+100104ce8:	0f 28 75 c0	movaps	-0x40(%rbp), %xmm6
+100104cec:	0f 28 e6	movaps	%xmm6, %xmm4
+100104cef:	66 0f 3a 21 e5 1c	insertps	$0x1c, %xmm5, %xmm4
+100104cf5:	0f 59 e7	mulps	%xmm7, %xmm4
+100104cf8:	0f 5c d4	subps	%xmm4, %xmm2
+100104cfb:	66 0f 3a 21 ee 4c	insertps	$0x4c, %xmm6, %xmm5
+100104d01:	0f 59 ef	mulps	%xmm7, %xmm5
+100104d04:	0f 5c dd	subps	%xmm5, %xmm3
+100104d07:	0f 59 c0	mulps	%xmm0, %xmm0
+100104d0a:	0f 57 e4	xorps	%xmm4, %xmm4
+100104d0d:	0f 58 c4	addps	%xmm4, %xmm0
+100104d10:	0f 59 c9	mulps	%xmm1, %xmm1
+100104d13:	0f 58 c8	addps	%xmm0, %xmm1
+100104d16:	0f 59 d2	mulps	%xmm2, %xmm2
+100104d19:	0f 58 d1	addps	%xmm1, %xmm2
+100104d1c:	0f 59 db	mulps	%xmm3, %xmm3
+100104d1f:	0f 58 da	addps	%xmm2, %xmm3
+100104d22:	f3 0f 16 c3	movshdup	%xmm3, %xmm0
+100104d26:	31 c0	xorl	%eax, %eax
+100104d28:	0f 2e c3	ucomiss	%xmm3, %xmm0
+100104d2b:	0f 86 63 fd ff ff	jbe	0x100104a94
+100104d31:	4c 89 ff	movq	%r15, %rdi
+100104d34:	44 89 ee	movl	%r13d, %esi
+100104d37:	89 da	movl	%ebx, %edx
+100104d39:	44 89 f1	movl	%r14d, %ecx
+100104d3c:	e8 df 07 00 00	callq	__ZN14PixelSegmenter9swapPixelEiii ## PixelSegmenter::swapPixel(int, int, int)
+100104d41:	b8 03 00 00 00	movl	$0x3, %eax
+100104d46:	e9 49 fd ff ff	jmp	0x100104a94
+100104d4b:	0f 1f 44 00 00	nopl	(%rax,%rax)

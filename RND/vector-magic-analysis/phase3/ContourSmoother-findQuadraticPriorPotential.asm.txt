@@ -1,0 +1,69 @@
+ContourSmoother::findQuadraticPriorPotential(int, int, int)
+1000c3230:	55	pushq	%rbp
+1000c3231:	48 89 e5	movq	%rsp, %rbp
+1000c3234:	41 57	pushq	%r15
+1000c3236:	41 56	pushq	%r14
+1000c3238:	41 54	pushq	%r12
+1000c323a:	53	pushq	%rbx
+1000c323b:	48 83 ec 50	subq	$0x50, %rsp
+1000c323f:	41 89 d7	movl	%edx, %r15d
+1000c3242:	41 89 f6	movl	%esi, %r14d
+1000c3245:	48 89 fb	movq	%rdi, %rbx
+1000c3248:	48 8b bf 08 06 00 00	movq	0x608(%rdi), %rdi
+1000c324f:	89 ce	movl	%ecx, %esi
+1000c3251:	e8 ba 60 ff ff	callq	0x1000b9310
+1000c3256:	49 89 c4	movq	%rax, %r12
+1000c3259:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c3260:	44 89 fe	movl	%r15d, %esi
+1000c3263:	e8 a8 60 ff ff	callq	0x1000b9310
+1000c3268:	41 0f 10 04 24	movups	(%r12), %xmm0
+1000c326d:	0f 29 45 90	movaps	%xmm0, -0x70(%rbp)
+1000c3271:	41 0f 10 44 24 08	movups	0x8(%r12), %xmm0
+1000c3277:	0f 29 45 b0	movaps	%xmm0, -0x50(%rbp)
+1000c327b:	0f 10 00	movups	(%rax), %xmm0
+1000c327e:	0f 29 45 a0	movaps	%xmm0, -0x60(%rbp)
+1000c3282:	0f 10 40 08	movups	0x8(%rax), %xmm0
+1000c3286:	0f 29 45 c0	movaps	%xmm0, -0x40(%rbp)
+1000c328a:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c3291:	f3 0f 10 83 7c 06 00 00	movss	0x67c(%rbx), %xmm0
+1000c3299:	0f 29 45 d0	movaps	%xmm0, -0x30(%rbp)
+1000c329d:	44 89 fe	movl	%r15d, %esi
+1000c32a0:	e8 6b 60 ff ff	callq	0x1000b9310
+1000c32a5:	49 89 c7	movq	%rax, %r15
+1000c32a8:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c32af:	44 89 f6	movl	%r14d, %esi
+1000c32b2:	e8 59 60 ff ff	callq	0x1000b9310
+1000c32b7:	66 0f 6f 45 d0	movdqa	-0x30(%rbp), %xmm0
+1000c32bc:	66 0f 3a 22 83 78 06 00 00 01	pinsrd	$0x1, 0x678(%rbx), %xmm0
+1000c32c6:	f3 0f e6 c8	cvtdq2pd	%xmm0, %xmm1
+1000c32ca:	66 0f 28 45 b0	movapd	-0x50(%rbp), %xmm0
+1000c32cf:	66 41 0f 16 47 08	movhpd	0x8(%r15), %xmm0
+1000c32d5:	66 0f 28 65 c0	movapd	-0x40(%rbp), %xmm4
+1000c32da:	66 0f 16 60 08	movhpd	0x8(%rax), %xmm4
+1000c32df:	66 0f 28 55 90	movapd	-0x70(%rbp), %xmm2
+1000c32e4:	66 41 0f 16 17	movhpd	(%r15), %xmm2
+1000c32e9:	66 0f 28 5d a0	movapd	-0x60(%rbp), %xmm3
+1000c32ee:	66 0f 16 18	movhpd	(%rax), %xmm3
+1000c32f2:	66 0f 5c c4	subpd	%xmm4, %xmm0
+1000c32f6:	66 0f 5c d3	subpd	%xmm3, %xmm2
+1000c32fa:	66 0f 5e d1	divpd	%xmm1, %xmm2
+1000c32fe:	66 0f 5e c1	divpd	%xmm1, %xmm0
+1000c3302:	66 0f 28 ca	movapd	%xmm2, %xmm1
+1000c3306:	66 0f 15 ca	unpckhpd	%xmm2, %xmm1
+1000c330a:	f2 0f 5c d1	subsd	%xmm1, %xmm2
+1000c330e:	66 0f 28 c8	movapd	%xmm0, %xmm1
+1000c3312:	66 0f 15 c8	unpckhpd	%xmm0, %xmm1
+1000c3316:	f2 0f 5c c1	subsd	%xmm1, %xmm0
+1000c331a:	f2 0f 59 d2	mulsd	%xmm2, %xmm2
+1000c331e:	66 0f 57 c9	xorpd	%xmm1, %xmm1
+1000c3322:	f2 0f 58 ca	addsd	%xmm2, %xmm1
+1000c3326:	f2 0f 59 c0	mulsd	%xmm0, %xmm0
+1000c332a:	f2 0f 58 c1	addsd	%xmm1, %xmm0
+1000c332e:	48 83 c4 50	addq	$0x50, %rsp
+1000c3332:	5b	popq	%rbx
+1000c3333:	41 5c	popq	%r12
+1000c3335:	41 5e	popq	%r14
+1000c3337:	41 5f	popq	%r15
+1000c3339:	5d	popq	%rbp
+1000c333a:	c3	retq
+1000c333b:	0f 1f 44 00 00	nopl	(%rax,%rax)

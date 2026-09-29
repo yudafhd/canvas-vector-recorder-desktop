@@ -1,0 +1,30 @@
+VectorImage::clearNodeFlags()
+LC_FUNCTION_STARTS: [0x1000d2700, 0x1000d2750)
+Numeric interpretations are candidates.
+1000d2700:	55	pushq	%rbp
+1000d2701:	48 89 e5	movq	%rsp, %rbp
+1000d2704:	41 57	pushq	%r15
+1000d2706:	41 56	pushq	%r14
+1000d2708:	53	pushq	%rbx
+1000d2709:	50	pushq	%rax
+1000d270a:	44 8b 7f 18	movl	0x18(%rdi), %r15d
+1000d270e:	45 85 ff	testl	%r15d, %r15d
+1000d2711:	7e 24	jle	0x1000d2737
+1000d2713:	48 89 fb	movq	%rdi, %rbx
+1000d2716:	48 83 c3 10	addq	$0x10, %rbx
+1000d271a:	45 31 f6	xorl	%r14d, %r14d
+1000d271d:	0f 1f 00	nopl	(%rax)
+1000d2720:	48 89 df	movq	%rbx, %rdi
+1000d2723:	44 89 f6	movl	%r14d, %esi
+1000d2726:	e8 e5 6b fe ff	callq	0x1000b9310
+1000d272b:	80 60 1d f0	andb	$-0x10, 0x1d(%rax)
+1000d272f:	41 ff c6	incl	%r14d
+1000d2732:	45 39 f7	cmpl	%r14d, %r15d
+1000d2735:	75 e9	jne	0x1000d2720
+1000d2737:	48 83 c4 08	addq	$0x8, %rsp
+1000d273b:	5b	popq	%rbx
+1000d273c:	41 5e	popq	%r14
+1000d273e:	41 5f	popq	%r15
+1000d2740:	5d	popq	%rbp
+1000d2741:	c3	retq
+1000d2742:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

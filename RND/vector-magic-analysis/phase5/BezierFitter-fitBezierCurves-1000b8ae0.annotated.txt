@@ -1,0 +1,102 @@
+BezierFitter::fitBezierCurves()
+LC_FUNCTION_STARTS: [0x1000b8ae0, 0x1000b8c40)
+Numeric interpretations are candidates.
+1000b8ae0:	55	pushq	%rbp
+1000b8ae1:	48 89 e5	movq	%rsp, %rbp
+1000b8ae4:	41 57	pushq	%r15
+1000b8ae6:	41 56	pushq	%r14
+1000b8ae8:	41 55	pushq	%r13
+1000b8aea:	41 54	pushq	%r12
+1000b8aec:	53	pushq	%rbx
+1000b8aed:	48 83 ec 18	subq	$0x18, %rsp
+1000b8af1:	c7 47 48 00 00 00 00	movl	$0x0, 0x48(%rdi)
+1000b8af8:	48 8b 47 28	movq	0x28(%rdi), %rax
+1000b8afc:	8b 40 08	movl	0x8(%rax), %eax
+1000b8aff:	89 45 d0	movl	%eax, -0x30(%rbp)
+1000b8b02:	85 c0	testl	%eax, %eax
+1000b8b04:	0f 8e 1b 01 00 00	jle	0x1000b8c25
+1000b8b0a:	48 89 fb	movq	%rdi, %rbx
+1000b8b0d:	45 31 f6	xorl	%r14d, %r14d
+1000b8b10:	eb 1b	jmp	0x1000b8b2d
+1000b8b12:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000b8b20:	41 ff c6	incl	%r14d
+1000b8b23:	44 3b 75 d0	cmpl	-0x30(%rbp), %r14d
+1000b8b27:	0f 84 f8 00 00 00	je	0x1000b8c25
+1000b8b2d:	48 8b 7b 28	movq	0x28(%rbx), %rdi
+1000b8b31:	44 89 f6	movl	%r14d, %esi
+1000b8b34:	e8 a7 07 00 00	callq	0x1000b92e0
+1000b8b39:	8b 40 20	movl	0x20(%rax), %eax
+1000b8b3c:	89 45 d4	movl	%eax, -0x2c(%rbp)
+1000b8b3f:	85 c0	testl	%eax, %eax
+1000b8b41:	7e dd	jle	0x1000b8b20
+1000b8b43:	45 31 ff	xorl	%r15d, %r15d
+1000b8b46:	eb 11	jmp	0x1000b8b59
+1000b8b48:	0f 1f 84 00 00 00 00 00	nopl	(%rax,%rax)
+1000b8b50:	41 ff c7	incl	%r15d
+1000b8b53:	44 39 7d d4	cmpl	%r15d, -0x2c(%rbp)
+1000b8b57:	74 c7	je	0x1000b8b20
+1000b8b59:	48 8b 7b 28	movq	0x28(%rbx), %rdi
+1000b8b5d:	44 89 f6	movl	%r14d, %esi
+1000b8b60:	e8 7b 07 00 00	callq	0x1000b92e0
+1000b8b65:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b8b69:	44 89 fe	movl	%r15d, %esi
+1000b8b6c:	e8 cf 07 00 00	callq	0x1000b9340
+1000b8b71:	44 8b 20	movl	(%rax), %r12d
+1000b8b74:	48 8b 7b 30	movq	0x30(%rbx), %rdi
+1000b8b78:	44 89 e6	movl	%r12d, %esi
+1000b8b7b:	e8 90 07 00 00	callq	0x1000b9310
+1000b8b80:	80 78 1c 01	cmpb	$0x1, 0x1c(%rax)
+1000b8b84:	75 ca	jne	0x1000b8b50
+1000b8b86:	48 89 df	movq	%rbx, %rdi
+1000b8b89:	44 89 f6	movl	%r14d, %esi
+1000b8b8c:	44 89 fa	movl	%r15d, %edx
+1000b8b8f:	b9 ff ff ff ff	movl	$0xffffffff, %ecx
+1000b8b94:	41 b8 01 00 00 00	movl	$0x1, %r8d
+1000b8b9a:	e8 d1 07 00 00	callq	__ZN12BezierFitter13followContourEiiih ## BezierFitter::followContour(int, int, int, unsigned char)
+1000b8b9f:	41 89 c5	movl	%eax, %r13d
+1000b8ba2:	4c 89 6d c8	movq	%r13, -0x38(%rbp)
+1000b8ba6:	48 89 df	movq	%rbx, %rdi
+1000b8ba9:	44 89 f6	movl	%r14d, %esi
+1000b8bac:	44 89 fa	movl	%r15d, %edx
+1000b8baf:	b9 01 00 00 00	movl	$0x1, %ecx
+1000b8bb4:	41 b8 01 00 00 00	movl	$0x1, %r8d
+1000b8bba:	e8 b1 07 00 00	callq	__ZN12BezierFitter13followContourEiiih ## BezierFitter::followContour(int, int, int, unsigned char)
+1000b8bbf:	89 c1	movl	%eax, %ecx
+1000b8bc1:	41 8d 45 01	leal	0x1(%r13), %eax
+1000b8bc5:	45 89 f5	movl	%r14d, %r13d
+1000b8bc8:	45 31 f6	xorl	%r14d, %r14d
+1000b8bcb:	39 c1	cmpl	%eax, %ecx
+1000b8bcd:	0f 4f c1	cmovgl	%ecx, %eax
+1000b8bd0:	41 0f 9c c6	setl	%r14b
+1000b8bd4:	29 c8	subl	%ecx, %eax
+1000b8bd6:	44 29 f0	subl	%r14d, %eax
+1000b8bd9:	31 d2	xorl	%edx, %edx
+1000b8bdb:	8b 75 d4	movl	-0x2c(%rbp), %esi
+1000b8bde:	f7 f6	divl	%esi
+1000b8be0:	41 01 c6	addl	%eax, %r14d
+1000b8be3:	44 0f af f6	imull	%esi, %r14d
+1000b8be7:	41 01 ce	addl	%ecx, %r14d
+1000b8bea:	48 8b 7b 30	movq	0x30(%rbx), %rdi
+1000b8bee:	44 89 e6	movl	%r12d, %esi
+1000b8bf1:	e8 1a 07 00 00	callq	0x1000b9310
+1000b8bf6:	8b 70 18	movl	0x18(%rax), %esi
+1000b8bf9:	48 8b 7b 38	movq	0x38(%rbx), %rdi
+1000b8bfd:	e8 0e 13 00 00	callq	0x1000b9f10
+1000b8c02:	48 89 df	movq	%rbx, %rdi
+1000b8c05:	48 89 c6	movq	%rax, %rsi
+1000b8c08:	44 89 ea	movl	%r13d, %edx
+1000b8c0b:	48 8b 4d c8	movq	-0x38(%rbp), %rcx
+1000b8c0f:	45 89 f0	movl	%r14d, %r8d
+1000b8c12:	45 89 ee	movl	%r13d, %r14d
+1000b8c15:	41 b9 01 00 00 00	movl	$0x1, %r9d
+1000b8c1b:	e8 b0 09 00 00	callq	__ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib ## BezierFitter::fitBezierCurve(sla::BezierCurve<double, 2, 3>&, int, int, int, bool)
+1000b8c20:	e9 2b ff ff ff	jmp	0x1000b8b50
+1000b8c25:	48 83 c4 18	addq	$0x18, %rsp
+1000b8c29:	5b	popq	%rbx
+1000b8c2a:	41 5c	popq	%r12
+1000b8c2c:	41 5d	popq	%r13
+1000b8c2e:	41 5e	popq	%r14
+1000b8c30:	41 5f	popq	%r15
+1000b8c32:	5d	popq	%rbp
+1000b8c33:	c3	retq
+1000b8c34:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

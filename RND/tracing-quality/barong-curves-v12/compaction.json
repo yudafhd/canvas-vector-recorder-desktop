@@ -1,0 +1,6 @@
+{
+  "before": 1535,
+  "after": 1469,
+  "removed": 66,
+  "note": "Experimental processing of exported UI paths, not a fresh Tauri trace; production uses shared chains before export."
+}

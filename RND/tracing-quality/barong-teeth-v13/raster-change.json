@@ -1,0 +1,13 @@
+{
+  "teeth": {
+    "bounds": [
+      448,
+      444,
+      128,
+      43
+    ],
+    "meanAbsoluteRGBAChange": 0.3606922238372093,
+    "changedPixels": 41,
+    "totalPixels": 5504
+  }
+}

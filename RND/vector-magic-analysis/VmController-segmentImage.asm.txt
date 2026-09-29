@@ -1,0 +1,84 @@
+VmController::segmentImage(VmVectorizationSettings const&)
+10011b480:	55	pushq	%rbp
+10011b481:	48 89 e5	movq	%rsp, %rbp
+10011b484:	41 57	pushq	%r15
+10011b486:	41 56	pushq	%r14
+10011b488:	41 54	pushq	%r12
+10011b48a:	53	pushq	%rbx
+10011b48b:	48 83 ec 10	subq	$0x10, %rsp
+10011b48f:	48 89 f3	movq	%rsi, %rbx
+10011b492:	49 89 fe	movq	%rdi, %r14
+10011b495:	c7 87 70 01 00 00 00 00 00 00	movl	$0x0, 0x170(%rdi)
+10011b49f:	48 81 c7 d8 01 00 00	addq	$0x1d8, %rdi
+10011b4a6:	48 8d 35 fb 20 02 00	leaq	0x220fb(%rip), %rsi ## literal pool for: ""
+10011b4ad:	e8 aa 0a 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b4b2:	41 c6 86 74 01 00 00 00	movb	$0x0, 0x174(%r14)
+10011b4ba:	49 8b be 78 01 00 00	movq	0x178(%r14), %rdi
+10011b4c1:	be 03 00 00 00	movl	$0x3, %esi
+10011b4c6:	ba 01 00 00 00	movl	$0x1, %edx
+10011b4cb:	e8 b0 12 fc ff	callq	__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)
+10011b4d0:	4c 89 f7	movq	%r14, %rdi
+10011b4d3:	48 89 de	movq	%rbx, %rsi
+10011b4d6:	ba 02 00 00 00	movl	$0x2, %edx
+10011b4db:	e8 60 e8 ff ff	callq	__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)
+10011b4e0:	4d 8d be 08 01 00 00	leaq	0x108(%r14), %r15
+10011b4e7:	4c 89 f7	movq	%r14, %rdi
+10011b4ea:	48 89 de	movq	%rbx, %rsi
+10011b4ed:	4c 89 fa	movq	%r15, %rdx
+10011b4f0:	e8 eb 00 00 00	callq	__ZN12VmController14needsToSegmentERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToSegment(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)
+10011b4f5:	84 c0	testb	%al, %al
+10011b4f7:	0f 84 87 00 00 00	je	0x10011b584
+10011b4fd:	8b 83 8c 00 00 00	movl	0x8c(%rbx), %eax
+10011b503:	ff c8	decl	%eax
+10011b505:	31 f6	xorl	%esi, %esi
+10011b507:	83 f8 02	cmpl	$0x2, %eax
+10011b50a:	40 0f 92 c6	setb	%sil
+10011b50e:	0f 10 83 90 00 00 00	movups	0x90(%rbx), %xmm0
+10011b515:	0f 29 45 d0	movaps	%xmm0, -0x30(%rbp)
+10011b519:	48 8d 55 d0	leaq	-0x30(%rbp), %rdx
+10011b51d:	4c 89 f7	movq	%r14, %rdi
+10011b520:	e8 bb f0 ff ff	callq	__ZN12VmController15ensureFlattenedEb7VmColor ## VmController::ensureFlattened(bool, VmColor)
+10011b525:	bf c8 04 00 00	movl	$0x4c8, %edi
+10011b52a:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b531:	e8 ea ae fe ff	callq	__ZN12Preprocessor9setPixelsEv ## Preprocessor::setPixels()
+10011b536:	bf 18 0d 00 00	movl	$0xd18, %edi
+10011b53b:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b542:	31 f6	xorl	%esi, %esi
+10011b544:	ba 01 00 00 00	movl	$0x1, %edx
+10011b549:	31 c9	xorl	%ecx, %ecx
+10011b54b:	e8 00 4e ff ff	callq	__ZN9Segmenter7executeEbbb ## Segmenter::execute(bool, bool, bool)
+10011b550:	49 8d be 20 01 00 00	leaq	0x120(%r14), %rdi
+10011b557:	4c 8d 25 4a 20 02 00	leaq	0x2204a(%rip), %r12 ## literal pool for: ""
+10011b55e:	4c 89 e6	movq	%r12, %rsi
+10011b561:	e8 f6 09 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b566:	49 8d be 38 01 00 00	leaq	0x138(%r14), %rdi
+10011b56d:	4c 89 e6	movq	%r12, %rsi
+10011b570:	e8 e7 09 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b575:	49 8d be 50 01 00 00	leaq	0x150(%r14), %rdi
+10011b57c:	4c 89 e6	movq	%r12, %rsi
+10011b57f:	e8 d8 09 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b584:	41 c7 86 70 01 00 00 64 00 00 00	movl	$0x64, 0x170(%r14)
+10011b58f:	41 80 be 74 01 00 00 01	cmpb	$0x1, 0x174(%r14)
+10011b597:	75 16	jne	0x10011b5af
+10011b599:	48 8d 35 08 20 02 00	leaq	0x22008(%rip), %rsi ## literal pool for: ""
+10011b5a0:	4c 89 ff	movq	%r15, %rdi
+10011b5a3:	e8 b4 09 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b5a8:	b8 02 00 00 00	movl	$0x2, %eax
+10011b5ad:	eb 11	jmp	0x10011b5c0
+10011b5af:	49 83 c6 20	addq	$0x20, %r14
+10011b5b3:	4c 89 f7	movq	%r14, %rdi
+10011b5b6:	48 89 de	movq	%rbx, %rsi
+10011b5b9:	e8 f2 d3 ff ff	callq	__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)
+10011b5be:	31 c0	xorl	%eax, %eax
+10011b5c0:	48 83 c4 10	addq	$0x10, %rsp
+10011b5c4:	5b	popq	%rbx
+10011b5c5:	41 5c	popq	%r12
+10011b5c7:	41 5e	popq	%r14
+10011b5c9:	41 5f	popq	%r15
+10011b5cb:	5d	popq	%rbp
+10011b5cc:	c3	retq
+10011b5cd:	48 89 c7	movq	%rax, %rdi
+10011b5d0:	89 d6	movl	%edx, %esi
+10011b5d2:	e8 99 e6 00 00	callq	0x100129c70
+10011b5d7:	e9 74 ff ff ff	jmp	0x10011b550
+10011b5dc:	0f 1f 40 00	nopl	(%rax)

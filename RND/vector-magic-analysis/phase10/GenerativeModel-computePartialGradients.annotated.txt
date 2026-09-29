@@ -1,0 +1,32 @@
+GenerativeModel::computePartialGradients(double*, double*, double*, int, double*, double*)
+LC_FUNCTION_STARTS: [0x1000ef480, 0x1000ef500)
+Numeric annotations are candidates.
+1000ef480:	55	pushq	%rbp
+1000ef481:	48 89 e5	movq	%rsp, %rbp
+1000ef484:	48 8b 45 10	movq	0x10(%rbp), %rax
+1000ef488:	31 ff	xorl	%edi, %edi
+1000ef48a:	45 85 c0	testl	%r8d, %r8d
+1000ef48d:	40 0f 94 c7	sete	%dil
+1000ef491:	c1 e7 03	shll	$0x3, %edi
+1000ef494:	f2 0f 10 04 3e	movsd	(%rsi,%rdi), %xmm0
+1000ef499:	f2 0f 10 0c 39	movsd	(%rcx,%rdi), %xmm1
+1000ef49e:	f2 0f 5c c1	subsd	%xmm1, %xmm0
+1000ef4a2:	f2 0f 10 14 3a	movsd	(%rdx,%rdi), %xmm2
+1000ef4a7:	f2 0f 5c d1	subsd	%xmm1, %xmm2
+1000ef4ab:	f2 0f 5e c2	divsd	%xmm2, %xmm0
+1000ef4af:	49 63 f0	movslq	%r8d, %rsi
+1000ef4b2:	f2 0f 10 0c f2	movsd	(%rdx,%rsi,8), %xmm1
+1000ef4b7:	f2 0f 5c 0c f1	subsd	(%rcx,%rsi,8), %xmm1
+1000ef4bc:	f2 41 0f 11 04 f1	movsd	%xmm0, (%r9,%rsi,8)
+1000ef4c2:	66 0f 57 0d 96 11 07 00	xorpd	0x71196(%rip), %xmm1 ; @0x100160660 candidate_f64x2=(-0.0, -0.0)
+1000ef4ca:	f2 0f 5e ca	divsd	%xmm2, %xmm1
+1000ef4ce:	f2 0f 10 15 ea 10 07 00	movsd	0x710ea(%rip), %xmm2 ; @0x1001605c0 candidate_f64x2=(1.0, 2.0)
+1000ef4d6:	f2 0f 5c d0	subsd	%xmm0, %xmm2
+1000ef4da:	f2 0f 59 c1	mulsd	%xmm1, %xmm0
+1000ef4de:	f2 41 0f 11 04 39	movsd	%xmm0, (%r9,%rdi)
+1000ef4e4:	f2 0f 11 14 f0	movsd	%xmm2, (%rax,%rsi,8)
+1000ef4e9:	f2 0f 59 d1	mulsd	%xmm1, %xmm2
+1000ef4ed:	f2 0f 11 14 38	movsd	%xmm2, (%rax,%rdi)
+1000ef4f2:	5d	popq	%rbp
+1000ef4f3:	c3	retq
+1000ef4f4:	66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

@@ -1,0 +1,11 @@
+{
+  "slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "functions": 29,
+  "boundary_skips": [
+    {
+      "address": "0x1000f1c5f",
+      "reason": "objdump instruction overlaps next LC_FUNCTION_STARTS boundary; padding decode omitted"
+    }
+  ],
+  "target_executed": false
+}

@@ -1,0 +1,93 @@
+ContourSmoother::findAngularPriorPotential(int, int, int)
+1000c3430:	55	pushq	%rbp
+1000c3431:	48 89 e5	movq	%rsp, %rbp
+1000c3434:	41 57	pushq	%r15
+1000c3436:	41 56	pushq	%r14
+1000c3438:	41 55	pushq	%r13
+1000c343a:	41 54	pushq	%r12
+1000c343c:	53	pushq	%rbx
+1000c343d:	48 83 ec 28	subq	$0x28, %rsp
+1000c3441:	41 89 cf	movl	%ecx, %r15d
+1000c3444:	41 89 d6	movl	%edx, %r14d
+1000c3447:	41 89 f4	movl	%esi, %r12d
+1000c344a:	48 89 fb	movq	%rdi, %rbx
+1000c344d:	48 8b bf 08 06 00 00	movq	0x608(%rdi), %rdi
+1000c3454:	89 d6	movl	%edx, %esi
+1000c3456:	e8 b5 5e ff ff	callq	0x1000b9310
+1000c345b:	49 89 c5	movq	%rax, %r13
+1000c345e:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c3465:	44 89 e6	movl	%r12d, %esi
+1000c3468:	e8 a3 5e ff ff	callq	0x1000b9310
+1000c346d:	41 0f 10 45 00	movups	(%r13), %xmm0
+1000c3472:	0f 29 45 b0	movaps	%xmm0, -0x50(%rbp)
+1000c3476:	0f 10 00	movups	(%rax), %xmm0
+1000c3479:	0f 29 45 c0	movaps	%xmm0, -0x40(%rbp)
+1000c347d:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c3484:	44 89 fe	movl	%r15d, %esi
+1000c3487:	e8 84 5e ff ff	callq	0x1000b9310
+1000c348c:	49 89 c7	movq	%rax, %r15
+1000c348f:	48 8b bb 08 06 00 00	movq	0x608(%rbx), %rdi
+1000c3496:	44 89 f6	movl	%r14d, %esi
+1000c3499:	e8 72 5e ff ff	callq	0x1000b9310
+1000c349e:	8b bb f0 05 00 00	movl	0x5f0(%rbx), %edi
+1000c34a4:	48 83 ff 03	cmpq	$0x3, %rdi
+1000c34a8:	0f 83 e4 00 00 00	jae	0x1000c3592
+1000c34ae:	66 41 0f 10 07	movupd	(%r15), %xmm0
+1000c34b3:	66 0f 10 10	movupd	(%rax), %xmm2
+1000c34b7:	66 0f 28 7d b0	movapd	-0x50(%rbp), %xmm7
+1000c34bc:	66 0f 28 cf	movapd	%xmm7, %xmm1
+1000c34c0:	66 0f 15 c8	unpckhpd	%xmm0, %xmm1
+1000c34c4:	66 0f 28 65 c0	movapd	-0x40(%rbp), %xmm4
+1000c34c9:	66 0f 28 dc	movapd	%xmm4, %xmm3
+1000c34cd:	66 0f 15 da	unpckhpd	%xmm2, %xmm3
+1000c34d1:	66 0f 5c cb	subpd	%xmm3, %xmm1
+1000c34d5:	66 0f 14 f8	unpcklpd	%xmm0, %xmm7
+1000c34d9:	66 0f 14 e2	unpcklpd	%xmm2, %xmm4
+1000c34dd:	66 0f 5c fc	subpd	%xmm4, %xmm7
+1000c34e1:	66 0f 28 c7	movapd	%xmm7, %xmm0
+1000c34e5:	66 0f 59 c7	mulpd	%xmm7, %xmm0
+1000c34e9:	66 0f 57 d2	xorpd	%xmm2, %xmm2
+1000c34ed:	66 0f 58 d0	addpd	%xmm0, %xmm2
+1000c34f1:	66 0f 28 c1	movapd	%xmm1, %xmm0
+1000c34f5:	66 0f 59 c1	mulpd	%xmm1, %xmm0
+1000c34f9:	66 0f 58 c2	addpd	%xmm2, %xmm0
+1000c34fd:	f3 0f e6 93 78 06 00 00	cvtdq2pd	0x678(%rbx), %xmm2
+1000c3505:	66 0f 51 c0	sqrtpd	%xmm0, %xmm0
+1000c3509:	66 0f 28 d8	movapd	%xmm0, %xmm3
+1000c350d:	66 0f 28 e1	movapd	%xmm1, %xmm4
+1000c3511:	f2 0f 5e c8	divsd	%xmm0, %xmm1
+1000c3515:	66 0f 28 ef	movapd	%xmm7, %xmm5
+1000c3519:	f2 0f 5e f8	divsd	%xmm0, %xmm7
+1000c351d:	66 0f 28 f0	movapd	%xmm0, %xmm6
+1000c3521:	66 0f 5e f2	divpd	%xmm2, %xmm6
+1000c3525:	66 0f 28 c6	movapd	%xmm6, %xmm0
+1000c3529:	66 0f 15 c6	unpckhpd	%xmm6, %xmm0
+1000c352d:	f2 0f 5c c6	subsd	%xmm6, %xmm0
+1000c3531:	f2 0f 59 c0	mulsd	%xmm0, %xmm0
+1000c3535:	66 0f 15 db	unpckhpd	%xmm3, %xmm3
+1000c3539:	66 0f 15 e4	unpckhpd	%xmm4, %xmm4
+1000c353d:	f2 0f 5e e3	divsd	%xmm3, %xmm4
+1000c3541:	f2 0f 59 cc	mulsd	%xmm4, %xmm1
+1000c3545:	66 0f 15 ed	unpckhpd	%xmm5, %xmm5
+1000c3549:	f2 0f 5e eb	divsd	%xmm3, %xmm5
+1000c354d:	f2 0f 59 fd	mulsd	%xmm5, %xmm7
+1000c3551:	66 0f 57 d2	xorpd	%xmm2, %xmm2
+1000c3555:	f2 0f 58 d7	addsd	%xmm7, %xmm2
+1000c3559:	f2 0f 58 d1	addsd	%xmm1, %xmm2
+1000c355d:	f2 0f 58 d2	addsd	%xmm2, %xmm2
+1000c3561:	f2 0f 10 0d 5f d0 09 00	movsd	0x9d05f(%rip), %xmm1
+1000c3569:	f2 0f 5c ca	subsd	%xmm2, %xmm1
+1000c356d:	f2 0f 58 0d ab 88 22 00	addsd	0x2288ab(%rip), %xmm1
+1000c3575:	f2 0f 51 c9	sqrtsd	%xmm1, %xmm1
+1000c3579:	f2 0f 59 44 fb 38	mulsd	0x38(%rbx,%rdi,8), %xmm0
+1000c357f:	f2 0f 58 c1	addsd	%xmm1, %xmm0
+1000c3583:	48 83 c4 28	addq	$0x28, %rsp
+1000c3587:	5b	popq	%rbx
+1000c3588:	41 5c	popq	%r12
+1000c358a:	41 5d	popq	%r13
+1000c358c:	41 5e	popq	%r14
+1000c358e:	41 5f	popq	%r15
+1000c3590:	5d	popq	%rbp
+1000c3591:	c3	retq
+1000c3592:	e8 19 e3 05 00	callq	0x1001218b0
+1000c3597:	66 0f 1f 84 00 00 00 00 00	nopw	(%rax,%rax)

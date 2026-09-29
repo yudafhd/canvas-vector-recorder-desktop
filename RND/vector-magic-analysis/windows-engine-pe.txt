@@ -1,0 +1,1391 @@
+
+/private/tmp/vm-analysis-windows/unpacked/flspRShS48._AE72tYVNfmG6ehA9u0:	file format coff-x86-64
+Characteristics 0x222e
+	executable
+	line numbers stripped
+	symbols stripped
+	large address aware
+	debugging information removed
+	DLL
+
+Time/Date               Sat Jun 27 02:11:40 2026
+Magic                   020b	(PE32+)
+MajorLinkerVersion      2
+MinorLinkerVersion      39
+SizeOfCode              000000000008e200
+SizeOfInitializedData   00000000000c3c00
+SizeOfUninitializedData 0000000000001200
+AddressOfEntryPoint     0000000000001320
+BaseOfCode              0000000000001000
+ImageBase               000000036c950000
+SectionAlignment        00001000
+FileAlignment           00000200
+MajorOSystemVersion     4
+MinorOSystemVersion     0
+MajorImageVersion       0
+MinorImageVersion       0
+MajorSubsystemVersion   5
+MinorSubsystemVersion   2
+Win32Version            00000000
+SizeOfImage             000cc000
+SizeOfHeaders           00000400
+CheckSum                000d30fd
+Subsystem               00000002	(Windows GUI)
+DllCharacteristics      00000160
+					HIGH_ENTROPY_VA
+					DYNAMIC_BASE
+					NX_COMPAT
+SizeOfStackReserve      0000000000200000
+SizeOfStackCommit       0000000000001000
+SizeOfHeapReserve       0000000000100000
+SizeOfHeapCommit        0000000000001000
+LoaderFlags             00000000
+NumberOfRvaAndSizes     00000010
+
+The Data Directory
+Entry 0 00000000000b8000 0000ddd2 Export Directory [.edata (or where ever we found it)]
+Entry 1 00000000000c6000 00002fa4 Import Directory [parts of .idata]
+Entry 2 0000000000000000 00000000 Resource Directory [.rsrc]
+Entry 3 00000000000ab000 000032e8 Exception Directory [.pdata]
+Entry 4 00000000000c4000 000025a0 Security Directory
+Entry 5 00000000000cb000 00000360 Base Relocation Directory [.reloc]
+Entry 6 0000000000000000 00000000 Debug Directory
+Entry 7 0000000000000000 00000000 Description Directory
+Entry 8 0000000000000000 00000000 Special Directory
+Entry 9 00000000000a88e0 00000028 Thread Storage Directory [.tls]
+Entry a 0000000000000000 00000000 Load Configuration Directory
+Entry b 0000000000000000 00000000 Bound Import Directory
+Entry c 00000000000c6740 000006a0 Import Address Table Directory
+Entry d 0000000000000000 00000000 Delay Import Directory
+Entry e 0000000000000000 00000000 CLR Runtime Header
+Entry f 0000000000000000 00000000 Reserved
+TLS directory:
+  StartAddressOfRawData: 0x0000036ca1a000
+  EndAddressOfRawData: 0x0000036ca1a008
+  AddressOfIndex: 0x0000036ca065ac
+  AddressOfCallBacks: 0x0000036ca19030
+  SizeOfZeroFill: 0
+  Characteristics: 0
+  Alignment: 0
+
+
+The Import Tables:
+  lookup 000c60a0 time 00000000 fwd 00000000 name 000c8c1c addr 000c6740
+
+    DLL Name: ann.dll
+    Hint/Ord  Name
+          78  _ZN10ANNkd_tree10annkSearchEPdiPiS0_d
+          88  _ZN10ANNkd_treeC1EPPdiii12ANNsplitRule
+          95  _ZN10ANNkd_treeD1Ev
+
+  lookup 000c60c0 time 00000000 fwd 00000000 name 000c8c30 addr 000c6760
+
+    DLL Name: blas.dll
+    Hint/Ord  Name
+           7  dgemm_
+           8  dgemv_
+          10  dgesv_
+
+  lookup 000c60e0 time 00000000 fwd 00000000 name 000c8c94 addr 000c6780
+
+    DLL Name: formats.dll
+    Hint/Ord  Name
+          12  _ZN6DL_Dxf10writeBlockER10DL_WriterARK12DL_BlockData
+          14  _ZN6DL_Dxf10writeLayerER10DL_WriterARK12DL_LayerDataRK13DL_Attributes
+          18  _ZN6DL_Dxf10writeStyleER10DL_WriterA
+          19  _ZN6DL_Dxf10writeVPortER10DL_WriterA
+          28  _ZN6DL_Dxf11writeHeaderER10DL_WriterA
+          31  _ZN6DL_Dxf11writeSplineER10DL_WriterARK13DL_SplineDataRK13DL_Attributes
+          37  _ZN6DL_Dxf12writeObjectsER10DL_WriterA
+          44  _ZN6DL_Dxf13writeDimStyleER10DL_WriterAddddd
+          45  _ZN6DL_Dxf13writeEndBlockER10DL_WriterARKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+          47  _ZN6DL_Dxf13writeLineTypeER10DL_WriterARK15DL_LineTypeData
+          65  _ZN6DL_Dxf15writeObjectsEndER10DL_WriterA
+          68  _ZN6DL_Dxf16writeBlockRecordER10DL_WriterA
+          72  _ZN6DL_Dxf17writeControlPointER10DL_WriterARK19DL_ControlPointData
+          79  _ZN6DL_Dxf3outEPKwN8DL_Codes7versionE
+          96  _ZN6DL_Dxf8writeUcsER10DL_WriterA
+         105  _ZN6DL_Dxf9writeKnotER10DL_WriterARK11DL_KnotData
+         106  _ZN6DL_Dxf9writeLineER10DL_WriterARK11DL_LineDataRK13DL_Attributes
+         108  _ZN6DL_Dxf9writeViewER10DL_WriterA
+         109  _ZN6DL_DxfC1Ev
+         111  _ZN6DL_DxfD1Ev
+         114  _ZNK10DL_WriterA5closeEv
+         127  _ZTV10DL_WriterA
+
+  lookup 000c6198 time 00000000 fwd 00000000 name 000c8ca4 addr 000c6838
+
+    DLL Name: libgcc_s_seh-1.dll
+    Hint/Ord  Name
+          15  _Unwind_Resume
+
+  lookup 000c61a8 time 00000000 fwd 00000000 name 000c8cec addr 000c6848
+
+    DLL Name: KERNEL32.dll
+    Hint/Ord  Name
+         281  DeleteCriticalSection
+         317  EnterCriticalSection
+         628  GetLastError
+         890  InitializeCriticalSection
+         917  IsDBCSLeadByteEx
+         982  LeaveCriticalSection
+        1034  MultiByteToWideChar
+        1130  QueryPerformanceFrequency
+        1407  Sleep
+        1442  TlsGetValue
+        1489  VirtualProtect
+        1491  VirtualQuery
+        1544  WideCharToMultiByte
+
+  lookup 000c6218 time 00000000 fwd 00000000 name 000c8d94 addr 000c68b8
+
+    DLL Name: msvcrt.dll
+    Hint/Ord  Name
+          64  ___lc_codepage_func
+          67  ___mb_cur_max_func
+          84  __iob_func
+          99  __setusermatherr
+         124  _amsg_exit
+         178  _ctime64
+         207  _errno
+         281  _ftime64
+         337  _initterm
+         448  _lock
+         726  _stat64
+         808  _time64
+         835  _unlock
+         896  _wassert
+        1054  abort
+        1071  calloc
+        1084  exit
+        1106  fputc
+        1111  free
+        1124  fwrite
+        1165  localeconv
+        1168  log10
+        1172  malloc
+        1179  memcmp
+        1180  memcpy
+        1181  memmove
+        1182  memset
+        1199  qsort
+        1202  rand
+        1203  realloc
+        1204  remove
+        1221  srand
+        1228  strcmp
+        1233  strerror
+        1235  strlen
+        1238  strncmp
+        1273  vfprintf
+        1299  wcslen
+
+  lookup 000c6350 time 00000000 fwd 00000000 name 000c8f94 addr 000c69f0
+
+    DLL Name: libstdc++-6.dll
+    Hint/Ord  Name
+         750  _ZNKSt12__basic_fileIcE7is_openEv
+         941  _ZNKSt5ctypeIcE13_M_widen_initEv
+        1092  _ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE5rfindEcy
+        1153  _ZNKSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE5rfindEwy
+        1174  _ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+        1817  _ZNSdD2Ev
+        1821  _ZNSi10_M_extractIdEERSiRT_
+        1823  _ZNSi10_M_extractIfEERSiRT_
+        1824  _ZNSi10_M_extractIjEERSiRT_
+        1850  _ZNSi7getlineEPcxc
+        1851  _ZNSi7putbackEc
+        1872  _ZNSirsERi
+        1880  _ZNSo3putEc
+        1882  _ZNSo5flushEv
+        1885  _ZNSo5tellpEv
+        1886  _ZNSo5writeEPKcx
+        1893  _ZNSo9_M_insertIbEERSoT_
+        1894  _ZNSo9_M_insertIdEERSoT_
+        1897  _ZNSo9_M_insertImEERSoT_
+        1922  _ZNSolsEi
+        2483  _ZNSt12__basic_fileIcED1Ev
+        2777  _ZNSt13basic_filebufIcSt11char_traitsIcEE4openEPKcSt13_Ios_Openmode
+        2783  _ZNSt13basic_filebufIcSt11char_traitsIcEE5closeEv
+        2796  _ZNSt13basic_filebufIcSt11char_traitsIcEEC1Ev
+        2800  _ZNSt13basic_filebufIcSt11char_traitsIcEED1Ev
+        2811  _ZNSt13basic_filebufIwSt11char_traitsIwEE4openEPKcSt13_Ios_Openmode
+        2817  _ZNSt13basic_filebufIwSt11char_traitsIwEE5closeEv
+        2830  _ZNSt13basic_filebufIwSt11char_traitsIwEEC1Ev
+        2834  _ZNSt13basic_filebufIwSt11char_traitsIwEED1Ev
+        2944  _ZNSt13basic_ostreamIwSt11char_traitsIwEE3putEw
+        2946  _ZNSt13basic_ostreamIwSt11char_traitsIwEE5flushEv
+        2958  _ZNSt13basic_ostreamIwSt11char_traitsIwEE9_M_insertIdEERS2_T_
+        2986  _ZNSt13basic_ostreamIwSt11char_traitsIwEElsEi
+        3025  _ZNSt14basic_ifstreamIcSt11char_traitsIcEEC1EPKcSt13_Ios_Openmode
+        3037  _ZNSt14basic_ifstreamIcSt11char_traitsIcEED1Ev
+        3082  _ZNSt14basic_ofstreamIcSt11char_traitsIcEEC1EPKcSt13_Ios_Openmode
+        3094  _ZNSt14basic_ofstreamIcSt11char_traitsIcEED1Ev
+        3117  _ZNSt14basic_ofstreamIwSt11char_traitsIwEED1Ev
+        4362  _ZNSt6localeC1Ev
+        4369  _ZNSt6localeD1Ev
+        4434  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv
+        4435  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEyyPKcy
+        4442  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructEyc
+        4531  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEy
+        4534  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_appendEPKcy
+        4535  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+        4536  _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERyy
+        4588  _ZNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE10_M_disposeEv
+        4589  _ZNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE10_M_replaceEyyPKwy
+        4596  _ZNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE12_M_constructEyw
+        4689  _ZNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE9_M_assignERKS4_
+        4690  _ZNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEE9_M_createERyy
+        4765  _ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE7_M_syncEPcyy
+        4927  _ZNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEED1Ev
+        4965  _ZNSt7__cxx1119basic_istringstreamIcSt11char_traitsIcESaIcEED1Ev
+        5003  _ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+        5189  _ZNSt8__detail15_List_node_base11_M_transferEPS0_S1_
+        5190  _ZNSt8__detail15_List_node_base4swapERS0_S1_
+        5191  _ZNSt8__detail15_List_node_base7_M_hookEPS0_
+        5192  _ZNSt8__detail15_List_node_base9_M_unhookEv
+        5260  _ZNSt8ios_baseC2Ev
+        5263  _ZNSt8ios_baseD2Ev
+        5352  _ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+        5356  _ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+        5374  _ZNSt9basic_iosIwSt11char_traitsIwEE4initEPSt15basic_streambufIwS1_E
+        5378  _ZNSt9basic_iosIwSt11char_traitsIwEE5clearESt12_Ios_Iostate
+        5393  _ZNSt9exceptionD2Ev
+        5518  _ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_x
+        5520  _ZSt16__throw_bad_castv
+        5526  _ZSt17__istream_extractRSiPcx
+        5527  _ZSt17__throw_bad_allocv
+        5533  _ZSt18_Rb_tree_decrementPKSt18_Rb_tree_node_base
+        5534  _ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+        5535  _ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base
+        5536  _ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base
+        5541  _ZSt19__throw_logic_errorPKc
+        5551  _ZSt20__throw_length_errorPKc
+        5573  _ZSt24__throw_out_of_range_fmtPKcz
+        5576  _ZSt28_Rb_tree_rebalance_for_erasePSt18_Rb_tree_node_baseRS_
+        5577  _ZSt28__throw_bad_array_new_lengthv
+        5578  _ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+        5582  _ZSt4cerr
+        5584  _ZSt4cout
+        5585  _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+        5586  _ZSt4endlIwSt11char_traitsIwEERSt13basic_ostreamIT_T0_ES6_
+        5704  _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+        5724  _ZStlsIwSt11char_traitsIwEERSt13basic_ostreamIT_T0_ES6_PKc
+        5752  _ZStrsIcSt11char_traitsIcEERSt13basic_istreamIT_T0_ES6_RS3_
+        5759  _ZStrsIcSt11char_traitsIcESaIcEERSt13basic_istreamIT_T0_ES7_RNSt7__cxx1112basic_stringIS4_S5_T1_EE
+        6466  _ZTTNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEEE
+        6468  _ZTTNSt7__cxx1119basic_istringstreamIcSt11char_traitsIcESaIcEEE
+        6470  _ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+        6481  _ZTTSt14basic_ifstreamIcSt11char_traitsIcEE
+        6484  _ZTTSt14basic_ofstreamIcSt11char_traitsIcEE
+        6485  _ZTTSt14basic_ofstreamIwSt11char_traitsIwEE
+        6496  _ZTVN10__cxxabiv117__class_type_infoE
+        6501  _ZTVN10__cxxabiv120__si_class_type_infoE
+        6534  _ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+        6546  _ZTVNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEEE
+        6548  _ZTVNSt7__cxx1119basic_istringstreamIcSt11char_traitsIcESaIcEEE
+        6550  _ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+        6593  _ZTVSt13basic_filebufIcSt11char_traitsIcEE
+        6594  _ZTVSt13basic_filebufIwSt11char_traitsIwEE
+        6600  _ZTVSt14basic_ifstreamIcSt11char_traitsIcEE
+        6603  _ZTVSt14basic_ofstreamIcSt11char_traitsIcEE
+        6604  _ZTVSt14basic_ofstreamIwSt11char_traitsIwEE
+        6611  _ZTVSt15basic_streambufIcSt11char_traitsIcEE
+        6612  _ZTVSt15basic_streambufIwSt11char_traitsIwEE
+        6698  _ZTVSt9basic_iosIcSt11char_traitsIcEE
+        6699  _ZTVSt9basic_iosIwSt11char_traitsIwEE
+        6791  _ZdaPv
+        6795  _ZdaPvy
+        6797  _ZdlPv
+        6801  _ZdlPvy
+        6803  _Znay
+        6807  _Znwy
+        6814  __cxa_allocate_exception
+        6817  __cxa_begin_catch
+        6823  __cxa_end_catch
+        6830  __cxa_guard_acquire
+        6831  __cxa_guard_release
+        6834  __cxa_rethrow
+        6835  __cxa_throw
+        6837  __cxa_throw_bad_array_new_length
+        6853  __gxx_personality_seh0
+
+Export Table:
+ DLL name: engine_project.dll
+ Ordinal base: 1
+ Ordinal      RVA  Name
+       1  0x91580  EP_CLASSIFY
+       2  0x91598  EP_LOGO_HIG
+       3  0x915b0  EP_LOGO_HIG_AA
+       4  0x91588  EP_LOGO_LOW
+       5  0x915a0  EP_LOGO_LOW_AA
+       6  0x91590  EP_LOGO_MED
+       7  0x915a8  EP_LOGO_MED_AA
+       8  0x915c8  EP_PHOTO_HIG
+       9  0x915b8  EP_PHOTO_LOW
+      10  0x915c0  EP_PHOTO_MED
+      11  0x906c0  PROGRESS_BZF
+      12  0x909a0  PROGRESS_BZF_MOD10
+      13  0x908e0  PROGRESS_CFY
+      14  0x913a0  PROGRESS_CFY_MOD12
+      15  0x91460  PROGRESS_CFY_MOD2
+      16  0x91400  PROGRESS_CFY_MOD3
+      17  0x913e0  PROGRESS_CFY_MOD6
+      18  0x90720  PROGRESS_CSM_AA0
+      19  0x90a00  PROGRESS_CSM_AA0_MOD8
+      20  0x90780  PROGRESS_CSM_AA1
+      21  0x90a60  PROGRESS_CSM_AA1_MOD8
+      22  0x90660  PROGRESS_EXP
+      23  0x90960  PROGRESS_EXP_MOD11
+      24  0x907e0  PROGRESS_SEG_AA0_FIXP0
+      25  0x90b60  PROGRESS_SEG_AA0_FIXP0_MOD2
+      26  0x90ae0  PROGRESS_SEG_AA0_FIXP0_MOD3
+      27  0x90ac0  PROGRESS_SEG_AA0_FIXP0_MOD6
+      28  0x908a0  PROGRESS_SEG_AA0_FIXP1
+      29  0x91320  PROGRESS_SEG_AA0_FIXP1_MOD2
+      30  0x91300  PROGRESS_SEG_AA0_FIXP1_MOD6
+      31  0x90860  PROGRESS_SEG_AA1_FIXP0
+      32  0x912e0  PROGRESS_SEG_AA1_FIXP0_MOD2
+      33  0x91280  PROGRESS_SEG_AA1_FIXP0_MOD3
+      34  0x90f60  PROGRESS_SEG_AA1_FIXP0_MOD4
+      35  0x90f40  PROGRESS_SEG_AA1_FIXP0_MOD6
+      36  0x90820  PROGRESS_SEG_AA1_FIXP1
+      37  0x90f20  PROGRESS_SEG_AA1_FIXP1_MOD2
+      38  0x90ec0  PROGRESS_SEG_AA1_FIXP1_MOD3
+      39  0x90ba0  PROGRESS_SEG_AA1_FIXP1_MOD4
+      40  0x90b80  PROGRESS_SEG_AA1_FIXP1_MOD6
+      41  0x91ce0  STATUS_MAP_BASE
+      42  0x91b00  STATUS_MAP_BEZIER_FITTER
+      43  0x919a0  STATUS_MAP_CLASSIFICATION
+      44  0x915e0  STATUS_MAP_CONTOUR_SMOOTHER
+      45  0x91d60  STATUS_MAP_EXPORTER
+      46  0x91c00  STATUS_MAP_PALETTE_FINDING
+      47  0x91840  STATUS_MAP_SEGMENTATION
+      48  0x14870  _Z10fileExistsPKc
+      49  0xb6020  _Z10image_tagsB5cxx11
+      50  0x22670  _Z11setCallbackPFviE
+      51  0x64ee0  _Z15StringToWStringRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      52  0x64f40  _Z15WStringToStringRKNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEE
+      53  0x22690  _Z15triggerCallbacki
+      54  0x226d0  _Z16debugPrintHeaderNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      55   0xd2c0  _Z17classifyImageTypeRKN3sla3VecIfLi20EEENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      56  0x22680  _Z18setFailureCallbackPFviE
+      57  0x79d90  _Z19chewWhiteSpaceUntilRSic
+      58   0xda40  _Z19classifyPaletteModeRKN3sla3VecIdLi62EEERKNS0_INSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEELi2EEE
+      59  0x228f0  _Z19debugPrintAllTimersv
+      60  0x22900  _Z20exportPrintAllTimersNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES4_
+      61  0x14890  _Z21getFilenameComponentsNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_S5_S5_
+      62  0x14aa0  _Z21getFilenameComponentsNSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEERS4_S5_S5_
+      63  0xb62c0  _Z21palette_mode_type_mapB5cxx11
+      64  0x18160  _Z21populateBigSegmentIdsRSt3setISt4pairIiiESt4lessIS1_ESaIS1_EERN3sla6Array1IiEE
+      65  0xb6280  _Z22palette_num_colors_mapB5cxx11
+      66  0x226b0  _Z22triggerFailureCallbacki
+      67  0x35a90  _Z23isProbablyPuncturedNodeRKN3sla3VecIdLi21EEEi
+      68  0x359e0  _Z26isProbablyNotFalsePositiveRKN3sla3VecIdLi42EEEi
+      69  0x35b80  _Z26isProbablyShadowingSegmentRKN3sla3VecIdLi42EEEi
+      70  0xb63c0  _Z29image_classification_type_mapB5cxx11
+      71  0xb6380  _Z32image_classification_quality_mapB5cxx11
+      72  0xb6340  _Z36image_classification_type_string_mapB5cxx11
+      73  0xb6300  _Z39image_classification_quality_string_mapB5cxx11
+      74  0x654e0  _Z5fToVmN3sla6Color4IfEE
+      75  0x65500  _Z5vmToF7VmColor
+      76  0x65520  _Z6vmToUc7VmColor
+      77  0x6d960  _Z7loadMapP17StatusMessageTypeiRSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiSt4lessIS7_ESaISt4pairIKS7_iEEE
+      78   0x8350  _Z8makeBitsPii
+      79  0x64fa0  _Z8myPrngVmv
+      80  0x24240  _ZN10CoreEngine10initializeENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      81  0xb6214  _ZN10CoreEngine10last_phaseE
+      82  0xb6218  _ZN10CoreEngine11last_moduleE
+      83  0xb6208  _ZN10CoreEngine12current_taskE
+      84  0x22910  _ZN10CoreEngine13classifyImageEv
+      85  0x275f0  _ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei
+      86  0x273d0  _ZN10CoreEngine14loadParametersENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      87  0x274e0  _ZN10CoreEngine14saveParametersENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      88  0x27640  _ZN10CoreEngine15computeProgressE10ModuleTypeii
+      89  0x24370  _ZN10CoreEngine15getSegmentationEv
+      90  0x27c20  _ZN10CoreEngine15triggerProgressE10ModuleTypeii
+      91  0x27cc0  _ZN10CoreEngine15triggerProgressE10ModuleTypeiii
+      92  0x242e0  _ZN10CoreEngine16setImageFilenameENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      93  0xb6220  _ZN10CoreEngine18p_progressCallbackE
+      94  0x25150  _ZN10CoreEngine18registerParametersEv
+      95  0x27630  _ZN10CoreEngine19setProgressCallbackEP17IProgressCallback
+      96  0x27d20  _ZN10CoreEngine20loadEngineParametersENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+      97  0xb620c  _ZN10CoreEngine21num_export_iterationsE
+      98  0x27cf0  _ZN10CoreEngine26triggerFinegrainedProgressE10ModuleTypeiii
+      99  0x24390  _ZN10CoreEngine27registerOptimizerParametersER17OptimizerSettingsNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     100  0x23e80  _ZN10CoreEngine5cleanEv
+     101  0xb6210  _ZN10CoreEngine9last_statE
+     102  0x285e0  _ZN10CoreEngineC1Ev
+     103  0x285e0  _ZN10CoreEngineC2Ev
+     104  0x23e60  _ZN10CoreEngineD0Ev
+     105  0x23880  _ZN10CoreEngineD1Ev
+     106  0x23880  _ZN10CoreEngineD2Ev
+     107  0x79eb0  _ZN10DL_WriterAD0Ev
+     108  0x79f80  _ZN10SuperPixel10clearStatsEv
+     109  0x16320  _ZN10SuperPixel10memoryUsedEv
+     110  0x162c0  _ZN10SuperPixel15cutOutFromOwnerEv
+     111  0x16200  _ZN10SuperPixel4swapERS_
+     112  0x1f4b0  _ZN11SignalImage10initializeEv
+     113  0x1f490  _ZN11SignalImage20getAntiAliasingLevelEii
+     114  0x16450  _ZN11SignalImage5resetEv
+     115  0x16400  _ZN11SignalImageC1ER10CoreEngine
+     116  0x16400  _ZN11SignalImageC2ER10CoreEngine
+     117  0x57520  _ZN11SuperPixels10initializeEb
+     118  0x540a0  _ZN11SuperPixels16buildSuperPixelsEv
+     119  0x50200  _ZN11SuperPixels18computeSegmentCostEii
+     120  0x53830  _ZN11SuperPixels18segmentCountingAddER10SuperPixel
+     121  0x50270  _ZN11SuperPixels19assignPaletteColorsEv
+     122  0x4ffa0  _ZN11SuperPixels19computeAffinityCostEii
+     123  0x4f5d0  _ZN11SuperPixels19computeBoundaryCostEbbii
+     124  0x534e0  _ZN11SuperPixels20floodFillSuperPixelsEi
+     125  0x518c0  _ZN11SuperPixels20segmentCountingCountEv
+     126  0x50740  _ZN11SuperPixels20segmentCountingSetupEi
+     127  0x53d40  _ZN11SuperPixels23computeDeltaNumSegmentsEii
+     128  0x4fda0  _ZN11SuperPixels24computePixelAffinityCostEii
+     129  0x50700  _ZN11SuperPixels25computeAffinityMultiplierEi
+     130  0x507d0  _ZN11SuperPixels25segmentCountingTagTargetsER10SuperPixel
+     131  0x53a20  _ZN11SuperPixels31countSuperPixelNeighborSegmentsER10SuperPixeli
+     132  0x4fca0  _ZN11SuperPixelsC1ER10CoreEngine
+     133  0x4fca0  _ZN11SuperPixelsC2ER10CoreEngine
+     134  0x57470  _ZN11SuperPixelsD1Ev
+     135  0x57470  _ZN11SuperPixelsD2Ev
+     136  0x1c7d0  _ZN11VectorImage10findNodeAtEN3sla4Vec2IdEERNS0_6Array1IPNS1_IiEEEE
+     137  0x17ac0  _ZN11VectorImage10freeKdTreeEv
+     138  0x1ad80  _ZN11VectorImage10updateAreaEi
+     139  0x1a090  _ZN11VectorImage11buildKdTreeEv
+     140  0x1a060  _ZN11VectorImage12getNodeIndexEN3sla4Vec2IiEE
+     141  0x17b10  _ZN11VectorImage12setNodesSizeEi
+     142  0x1ae50  _ZN11VectorImage14clampEdgeNodesEv
+     143  0x17290  _ZN11VectorImage14clearNodeFlagsEv
+     144  0x1b000  _ZN11VectorImage14getMovedVectorEi
+     145  0x1a940  _ZN11VectorImage14getStateOffsetERK14CurveReferenceib
+     146  0x1ac80  _ZN11VectorImage14isInsideRegionEidd
+     147  0x17d00  _ZN11VectorImage14isIntersectionERN3sla4Vec2IdEES3_S3_S3_
+     148  0x17c70  _ZN11VectorImage16clampMarginNodesEv
+     149  0x17110  _ZN11VectorImage16findIntersectionERN3sla4Vec2IdEES3_S3_S3_S3_
+     150  0x1a460  _ZN11VectorImage16getBezierPointDaEiii
+     151  0x224e0  _ZN11VectorImage16outputErrorStatsERSo
+     152  0x1cb40  _ZN11VectorImage17exportVectorImageEv
+     153  0x1ab20  _ZN11VectorImage17getEndTangentDaFaEii
+     154  0x1d5a0  _ZN11VectorImage17importVectorImageEv
+     155  0x1c2c0  _ZN11VectorImage18buildIricNeighborsEv
+     156  0x21ba0  _ZN11VectorImage18countIntersectionsEv
+     157  0x1c240  _ZN11VectorImage18flagInversionNodesEv
+     158  0x1b040  _ZN11VectorImage19computeInsideNormalEii
+     159  0x17240  _ZN11VectorImage19decrementNodeCountsEv
+     160  0x1a9f0  _ZN11VectorImage19getStartTangentDaFaEii
+     161  0x17310  _ZN11VectorImage20isPointOnLineSegmentERKN3sla4Vec2IdEES4_S4_S4_
+     162  0x1bb00  _ZN11VectorImage20updateBaseSignOffsetEii
+     163  0x1b7d0  _ZN11VectorImage21computeBaseSignOffsetEii
+     164  0x1b2b0  _ZN11VectorImage21initializeMarginNodesEii
+     165  0x172e0  _ZN11VectorImage21setNodeInversionStateER4Nodeh
+     166  0x17c40  _ZN11VectorImage24initializeEdgeNodeCountsEii
+     167  0x1a9c0  _ZN11VectorImage25isBezierWithFreeVariablesER14CurveReference
+     168  0x1b620  _ZN11VectorImage26resetNodePositionsAndFlagsEv
+     169  0x1bb30  _ZN11VectorImage27flagInversionNodesForRegionEi
+     170  0x1b560  _ZN11VectorImage29setInitialNodePositionAndTypeEiii
+     171  0x17470  _ZN11VectorImage32findIntersectionCrossProductSignERN3sla4Vec2IdEES3_S3_S3_
+     172  0x17900  _ZN11VectorImage35findRayIntersectionCrossProductSignERN3sla4Vec2IdEES3_S3_S3_
+     173  0x17720  _ZN11VectorImage44findIntersectionCrossProductSignOnUnitCircleEN3sla4Vec2IdEES2_S2_S2_S2_
+     174  0x16f70  _ZN11VectorImage5clearEv
+     175  0x1ac50  _ZN11VectorImage7getNodeEii
+     176  0x1afb0  _ZN11VectorImage9getNodeIJEiPiS0_
+     177  0x16ce0  _ZN11VectorImageC1ER13Configuration
+     178  0x16ce0  _ZN11VectorImageC2ER13Configuration
+     179  0x16d70  _ZN11VectorImageD1Ev
+     180  0x16d70  _ZN11VectorImageD2Ev
+     181  0x14f80  _ZN11VisitedMask5startEv
+     182   0x1860  _ZN12BezierFitter10initializeEv
+     183   0x3d70  _ZN12BezierFitter10memoryUsedEv
+     184   0x54d0  _ZN12BezierFitter13findPotentialEv
+     185   0x3170  _ZN12BezierFitter13followContourEiiih
+     186   0x7930  _ZN12BezierFitter13selectKeepersEiii
+     187   0x65c0  _ZN12BezierFitter14fitBezierCurveERN3sla11BezierCurveIdLi2ELi3EEEiiib
+     188   0x7260  _ZN12BezierFitter15computeSelfCostEP8Fragment
+     189   0x6de0  _ZN12BezierFitter15fitBezierCurvesEv
+     190   0x7e90  _ZN12BezierFitter15segmentContoursEv
+     191   0x72c0  _ZN12BezierFitter16computeDislikeOfEP8Fragmentii
+     192   0x3df0  _ZN12BezierFitter16getStateVariableEii
+     193   0x7790  _ZN12BezierFitter16mergeAndSwapLoopEiii
+     194   0x4080  _ZN12BezierFitter16setStateVariableEiid
+     195   0x73a0  _ZN12BezierFitter17computeSwapMetricEP8Fragmenti
+     196   0x3620  _ZN12BezierFitter18computeDataAndTimeERN3sla11BezierCurveIdLi2ELi3EEEiiiRNS0_6Array1IdEERNS4_INS0_3VecIdLi2EEEEEb
+     197   0x7420  _ZN12BezierFitter18computeMergeMetricEP8Fragment
+     198   0x3430  _ZN12BezierFitter19initializeFragmentsEiii
+     199   0x7530  _ZN12BezierFitter20considerMergeAndSwapEP8Fragment
+     200   0x5e70  _ZN12BezierFitter21findNumericalGradientEdRN3sla6Array1IdEE
+     201   0x61b0  _ZN12BezierFitter22findHessianAndGradientERN3sla11BezierCurveIdLi2ELi3EEEiiibR24BezierOptimizationRecord
+     202   0x43e0  _ZN12BezierFitter22reportComparisonResultEdRN3sla6Array1IdEES3_NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEd
+     203   0x19b0  _ZN12BezierFitter25buildCurveReferenceArraysEv
+     204   0x82b0  _ZN12BezierFitter7executeEv
+     205   0x17c0  _ZN12BezierFitterC1ER10CoreEngine
+     206   0x17c0  _ZN12BezierFitterC2ER10CoreEngine
+     207   0x1840  _ZN12BezierFitterD1Ev
+     208   0x1840  _ZN12BezierFitterD2Ev
+     209  0x1e2a0  _ZN12BoundaryMask7update8Ei
+     210  0x7a0a0  _ZN12PixelSegment10clearStatsEv
+     211  0x7a0c0  _ZN12PixelSegment9addPixelFERKN3sla6Color4IfEE
+     212  0x4cbd0  _ZN12Preprocessor10memoryUsedEv
+     213  0x4d020  _ZN12Preprocessor12rescaleImageEi
+     214  0x4cb40  _ZN12Preprocessor13isTransparentEv
+     215  0x4bd00  _ZN12Preprocessor14computeNewSizeEiiiRiS0_S0_
+     216  0x4cb20  _ZN12Preprocessor14ensureFilteredEv
+     217  0x4cc30  _ZN12Preprocessor14loadFromMemoryEPKhii
+     218  0x4bcf0  _ZN12Preprocessor14resetVariablesEv
+     219  0x4c120  _ZN12Preprocessor16setBlurredPixelsERN3sla6Array2INS0_6Color4IhEEEE
+     220  0x4bdf0  _ZN12Preprocessor17downsampleAliasedERN3sla6Array2INS0_6Color4IhEEEE
+     221  0x4d830  _ZN12Preprocessor20setDownsampledPixelsEv
+     222  0x4c6d0  _ZN12Preprocessor21updateNeighborOffsetsEv
+     223  0x4ca70  _ZN12Preprocessor8setSizesEii
+     224  0x4cbf0  _ZN12Preprocessor9setPixelsEv
+     225  0x4bc50  _ZN12PreprocessorC1ER10CoreEngine
+     226  0x4bc50  _ZN12PreprocessorC2ER10CoreEngine
+     227  0x4bcc0  _ZN12PreprocessorD1Ev
+     228  0x4bcc0  _ZN12PreprocessorD2Ev
+     229  0x67f60  _ZN12VmController10cancelTaskEv
+     230  0x66200  _ZN12VmController10imageWidthEv
+     231  0x66210  _ZN12VmController11imageHeightEv
+     232  0x66340  _ZN12VmController12capImageSizeEyy
+     233  0x6d330  _ZN12VmController12fetchPaletteEi
+     234  0x65bf0  _ZN12VmController12finalizeTaskERNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERK23VmVectorizationSettings
+     235  0x6d4b0  _ZN12VmController12findPalettesERK23VmVectorizationSettingsii
+     236  0x661f0  _ZN12VmController12imagePointerEv
+     237  0x662f0  _ZN12VmController12maxImageSizeEyy
+     238  0x6b670  _ZN12VmController12segmentImageERK23VmVectorizationSettings
+     239  0x662a0  _ZN12VmController12testFunctionEv
+     240  0x6b870  _ZN12VmController13classifyImageERK23VmVectorizationSettings
+     241  0x67170  _ZN12VmController13getCurveColorEiiPiS0_S0_S0_
+     242  0x67080  _ZN12VmController13getShapeColorEiPiS0_S0_S0_
+     243  0x6a8d0  _ZN12VmController14bezierFitImageERK23VmVectorizationSettings
+     244  0x67f70  _ZN12VmController14clearAllTokensEv
+     245  0x662b0  _ZN12VmController14computeNewSizeEiiiRiS0_S0_
+     246  0x65c90  _ZN12VmController14getUnusedColorEv
+     247  0x65b90  _ZN12VmController14initializeTaskE21StatusMessageTaskType
+     248  0x693e0  _ZN12VmController14needsToSegmentERK23VmVectorizationSettingsPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     249  0x6b070  _ZN12VmController15ensureFlattenedEb7VmColor
+     250  0x65c50  _ZN12VmController15getDefaultColorEv
+     251  0x66220  _ZN12VmController15getPaletteColorEiiR7VmColorRf
+     252  0x6a7d0  _ZN12VmController16needsToBezierFitERK23VmVectorizationSettingsPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     253  0x6a880  _ZN12VmController16needsToVectorizeERK23VmVectorizationSettings
+     254  0x67340  _ZN12VmController16populateSettingsERK23VmVectorizationSettingsi
+     255  0x64720  _ZN12VmController16progressCallbackEd
+     256  0x698b0  _ZN12VmController16pushSegmentationERK23VmVectorizationSettings
+     257  0x66780  _ZN12VmController16transparencyModeEv
+     258  0x663a0  _ZN12VmController16writeVectorFileWENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEER16ExporterSettings
+     259  0x661d0  _ZN12VmController17paletteImageWidthEv
+     260  0x6cd40  _ZN12VmController17resetVmControllerEv
+     261  0x66920  _ZN12VmController17shapeIndexAtPointEdd
+     262  0x6a310  _ZN12VmController18contourSmoothImageERK23VmVectorizationSettings
+     263  0x661e0  _ZN12VmController18paletteImageHeightEv
+     264  0x66b30  _ZN12VmController18startNegativeChildEii
+     265  0x66850  _ZN12VmController19loadImageFromMemoryEPKcPKhii
+     266  0x68cb0  _ZN12VmController19needsToFindPalettesERK23VmVectorizationSettingsiiPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEb
+     267  0x66a60  _ZN12VmController19numNegativeChildrenEi
+     268  0x67ba0  _ZN12VmController19paletteImagePointerERK23VmVectorizationSettings
+     269  0x662d0  _ZN12VmController19shrinkImageAsNeededEv
+     270  0x66f50  _ZN12VmController20getNextNegativeCurveEPdPb
+     271  0x6a260  _ZN12VmController20needsToContourSmoothERK23VmVectorizationSettingsPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     272  0x6b630  _ZN12VmController20setDownsampledPixelsEb7VmColor
+     273  0x69800  _ZN12VmController23needsToPushSegmentationERK23VmVectorizationSettingsPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     274  0x65d50  _ZN12VmController24segmentationImagePointerEv
+     275  0x6bc40  _ZN12VmController5debugEv
+     276  0x66c20  _ZN12VmController8getCurveEiiPdPbPib
+     277  0x66990  _ZN12VmController9numCurvesEi
+     278  0x66980  _ZN12VmController9numCurvesEv
+     279  0x66960  _ZN12VmController9numShapesEv
+     280  0x6b5f0  _ZN12VmController9setPixelsEb7VmColor
+     281  0x6cff0  _ZN12VmControllerC1Ev
+     282  0x6cff0  _ZN12VmControllerC2Ev
+     283  0x64ec0  _ZN12VmControllerD0Ev
+     284  0x64c40  _ZN12VmControllerD1Ev
+     285  0x64c40  _ZN12VmControllerD2Ev
+     286  0x15280  _ZN13Configuration12dumpSettingsEv
+     287  0x15080  _ZN13Configuration18addPathAndFilenameENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     288  0x21740  _ZN13Configuration20setBaseDirectoryFromENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     289  0x14fc0  _ZN13Configuration7addPathENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     290  0x7a0f0  _ZN13ConfigurationC1Ev
+     291  0x7b0c0  _ZN13ConfigurationD1Ev
+     292  0x396d0  _ZN13PaletteFinder10getPaletteEiP7Palette
+     293  0x3b330  _ZN13PaletteFinder10memoryUsedEv
+     294  0x39790  _ZN13PaletteFinder10setPaletteEiR7Palette
+     295  0x39c90  _ZN13PaletteFinder11computeCostEP7Palette
+     296  0x3ea20  _ZN13PaletteFinder11doHistogramEv
+     297  0x3ec80  _ZN13PaletteFinder11findPaletteEi
+     298  0x39db0  _ZN13PaletteFinder11initializeKEi
+     299  0x3ee40  _ZN13PaletteFinder12findPalettesEPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     300  0x39d70  _ZN13PaletteFinder14randomizeColorERN3sla6Color4IfEE
+     301  0x3f130  _ZN13PaletteFinder15checkInitializeEv
+     302  0x39850  _ZN13PaletteFinder16computePixelCostEii
+     303  0x3aa30  _ZN13PaletteFinder17computeMeanColorsEv
+     304  0x3a470  _ZN13PaletteFinder20executeSingleAssignKEv
+     305  0x3c0e0  _ZN13PaletteFinder20findOptimalNumColorsB5cxx11Ev
+     306  0x396a0  _ZN13PaletteFinder20initializeDimensionsEv
+     307  0x3a490  _ZN13PaletteFinder25computeWeightedMeanColorsEv
+     308  0x3b860  _ZN13PaletteFinder31writePaletteWithScoreStringListENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     309  0x396c0  _ZN13PaletteFinder5clearEv
+     310  0x39fa0  _ZN13PaletteFinder7assignKEb
+     311  0x3afe0  _ZN13PaletteFinder8doKMeansEbi
+     312  0x3be30  _ZN13PaletteFinderC1ER10CoreEngine
+     313  0x3be30  _ZN13PaletteFinderC2ER10CoreEngine
+     314  0x39460  _ZN13PaletteFinderD1Ev
+     315  0x39460  _ZN13PaletteFinderD2Ev
+     316  0x6fd30  _ZN13WeightsFinder10printStatsEv
+     317  0x6f790  _ZN13WeightsFinder13computePixelFEiiiiPdbi
+     318  0x6e8b0  _ZN13WeightsFinder15updateNeighborsEiiiib
+     319  0x6fc60  _ZN13WeightsFinder20getHeaviestSegmentIdEv
+     320  0x6e7a0  _ZN13WeightsFinder24paletteOrIdOfWithReplaceEiiii
+     321  0x6e340  _ZN13WeightsFinder24setUsePaletteIndexSourceEPN3sla6Array1I6RegionEE
+     322  0x6e370  _ZN13WeightsFinder31updateNeighborsFromSegmentListsEiiiibi
+     323  0x6e320  _ZN13WeightsFinder34setUsePaletteIndicesAndColorSourceEbP20SubPixelSegmentation
+     324  0x70140  _ZN13WeightsFinder5clearEv
+     325  0x6e9c0  _ZN13WeightsFinder7setupQPEv
+     326  0x6ed90  _ZN13WeightsFinder7solveQPEv
+     327  0x6e6c0  _ZN13WeightsFinder9getColorFEi
+     328  0x703a0  _ZN13WeightsFinderC1ER10CoreEngine
+     329  0x703a0  _ZN13WeightsFinderC2ER10CoreEngine
+     330  0x6e2e0  _ZN13WeightsFinderD1Ev
+     331  0x6e2e0  _ZN13WeightsFinderD2Ev
+     332   0x84b0  _ZN14BoundaryTracer10memoryUsedEv
+     333   0x8430  _ZN14BoundaryTracer12patternMatchEiiiPi
+     334   0x8bc0  _ZN14BoundaryTracer13traceBoundaryEiii
+     335   0xb080  _ZN14BoundaryTracer20removeRedundantNodesEb
+     336   0xa740  _ZN14BoundaryTracer22enumerateBoundaryNodesEv
+     337   0xc6f0  _ZN14BoundaryTracer7executeEv
+     338   0x83e0  _ZN14BoundaryTracer8finalizeEv
+     339   0x84e0  _ZN14BoundaryTracerC1ER10CoreEngine
+     340   0x84e0  _ZN14BoundaryTracerC2ER10CoreEngine
+     341   0x8380  _ZN14BoundaryTracerD1Ev
+     342   0x8380  _ZN14BoundaryTracerD2Ev
+     343  0x3b540  _ZN14ColorHistogram10setNumBinsEi
+     344  0x3b810  _ZN14ColorHistogram11totalWeightEv
+     345  0x3e0e0  _ZN14ColorHistogram12zeroOutColorERKN3sla6Color4IhEEb
+     346  0x3b680  _ZN14ColorHistogram8addColorERKN3sla6Color4IhEEd
+     347  0x3e280  _ZN14ColorHistogram9findPeaksERN3sla6Array1INS0_6Color4IhEEEERNS1_IdEEi
+     348  0x16a80  _ZN14ContourElement5clearEv
+     349  0x16a70  _ZN14ContourElementC1Ev
+     350  0x16a70  _ZN14ContourElementC2Ev
+     351  0x48560  _ZN14ParameterFiler10addCommentENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     352  0x48390  _ZN14ParameterFiler12addBlankLineEv
+     353  0x7b230  _ZN14ParameterFiler12addParameterEPfNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     354  0x48170  _ZN14ParameterFiler12addParameterEPvi21ParameterTypeCodeTypeNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     355  0x48b00  _ZN14ParameterFiler5printEv
+     356  0x491e0  _ZN14ParameterFiler7readAPFENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     357  0x48750  _ZN14ParameterFiler7writeToERSo
+     358  0x48b10  _ZN14ParameterFiler8readFromERSi
+     359  0x48ea0  _ZN14ParameterFiler8writeAPFENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     360  0x49470  _ZN14ParameterFiler9reReadAPFEv
+     361  0x4a2b0  _ZN14PixelSegmenter10initializeEv
+     362  0x4b090  _ZN14PixelSegmenter10memoryUsedEv
+     363  0x4a320  _ZN14PixelSegmenter10stepLambdaEv
+     364  0x49bc0  _ZN14PixelSegmenter12affinityLoopEv
+     365  0x4a760  _ZN14PixelSegmenter13mergeSegmentsEii
+     366  0x4a210  _ZN14PixelSegmenter15preSegmentationEv
+     367  0x4ab80  _ZN14PixelSegmenter16mergeAndSwapLoopE22MergeConnectednessType
+     368  0x4af20  _ZN14PixelSegmenter16overSegmentationEb
+     369  0x4a360  _ZN14PixelSegmenter18computeMergeMetricEii
+     370  0x49730  _ZN14PixelSegmenter19computeAffinityCostEiiib
+     371  0x4b060  _ZN14PixelSegmenter19enforceMinNumPixelsEv
+     372  0x4a7e0  _ZN14PixelSegmenter20considerMergeAndSwapEiiii
+     373  0x4a340  _ZN14PixelSegmenter27considerRenumberingSegmentsEi
+     374  0x4b0a0  _ZN14PixelSegmenter31clusterColorsAndGeneratePaletteEv
+     375  0x4a550  _ZN14PixelSegmenter9swapPixelEiii
+     376  0x496a0  _ZN14PixelSegmenterC1ER10CoreEngine
+     377  0x496a0  _ZN14PixelSegmenterC2ER10CoreEngine
+     378  0x49720  _ZN14PixelSegmenterD1Ev
+     379  0x49720  _ZN14PixelSegmenterD2Ev
+     380  0x7b310  _ZN14StateContainer12afterCGResetEb
+     381  0x7b320  _ZN14StateContainer12findGradientEv
+     382  0x7b330  _ZN14StateContainer14endOfIterationEv
+     383  0x7b340  _ZN14StateContainer16startOfIterationEv
+     384  0x7b350  _ZN14StateContainer19getGradientPointersEv
+     385  0x7b360  _ZN14StateContainer9afterMoveEv
+     386  0x10b50  _ZN15ContourSmoother10initializeEb
+     387  0x12010  _ZN15ContourSmoother10memoryUsedEv
+     388   0xde90  _ZN15ContourSmoother12afterCGResetEb
+     389  0x100a0  _ZN15ContourSmoother12dumpSettingsEv
+     390  0x12030  _ZN15ContourSmoother12findGradientEv
+     391   0xf090  _ZN15ContourSmoother13findPotentialEv
+     392   0xe010  _ZN15ContourSmoother14endOfIterationEv
+     393  0x10c50  _ZN15ContourSmoother15punctureCornersEv
+     394   0xee90  _ZN15ContourSmoother16getStatePointersEv
+     395  0x11af0  _ZN15ContourSmoother19executeCurrentPhaseEv
+     396   0xece0  _ZN15ContourSmoother19getGradientPointersEv
+     397   0xded0  _ZN15ContourSmoother21findSqrtPriorGradientEiiiRN3sla4Vec2IdEES3_
+     398   0xdf70  _ZN15ContourSmoother22findSqrtPriorPotentialEiii
+     399  0x10240  _ZN15ContourSmoother22initializeNodePositionEi
+     400  0x10940  _ZN15ContourSmoother23initializeNodePositionsEv
+     401   0xe890  _ZN15ContourSmoother24findAngularPriorGradientEiiiRN3sla4Vec2IdEES3_
+     402  0x10160  _ZN15ContourSmoother24initializeLineSearchDataEv
+     403   0xe580  _ZN15ContourSmoother25findAngularPriorPotentialEiii
+     404   0xe380  _ZN15ContourSmoother26findQuadraticPriorGradientEiiiRN3sla4Vec2IdEES3_
+     405   0xef30  _ZN15ContourSmoother26getSearchDirectionPointersEv
+     406  0x10c20  _ZN15ContourSmoother26isProbablyPuncturedNodeOldERKN3sla3VecIdLi21EEEi
+     407   0xe180  _ZN15ContourSmoother27findQuadraticPriorPotentialEiii
+     408  0x100e0  _ZN15ContourSmoother31initializeConjugateGradientDataEv
+     409   0xde50  _ZN15ContourSmoother4sizeEv
+     410  0x11ec0  _ZN15ContourSmoother7executeEb
+     411  0x101e0  _ZN15ContourSmoother7restoreEv
+     412   0xde60  _ZN15ContourSmoother9afterMoveEv
+     413   0xfab0  _ZN15ContourSmootherC1ER10CoreEngine
+     414   0xfab0  _ZN15ContourSmootherC2ER10CoreEngine
+     415   0xffe0  _ZN15ContourSmootherD1Ev
+     416   0xffe0  _ZN15ContourSmootherD2Ev
+     417  0x30f00  _ZN15GenerativeModel10closePixelEii
+     418  0x2e140  _ZN15GenerativeModel10dump_crumbERSoP10BreadCrumb
+     419  0x2f550  _ZN15GenerativeModel10memoryUsedEv
+     420  0x2e980  _ZN15GenerativeModel12dump_islandsEv
+     421  0x314e0  _ZN15GenerativeModel12dump_to_diskENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     422  0x34d80  _ZN15GenerativeModel12findGradientERN3sla6Array1INS0_4Vec2IdEEEE
+     423  0x34f30  _ZN15GenerativeModel13findPotentialEv
+     424  0x2fd30  _ZN15GenerativeModel14dropBreadCrumbEiiiiidd
+     425  0x2e8a0  _ZN15GenerativeModel14regionToIslandEi
+     426  0x2e600  _ZN15GenerativeModel14startNewRegionEP10BreadCrumb
+     427  0x2f2b0  _ZN15GenerativeModel15clearErrorStatsEv
+     428  0x2ee70  _ZN15GenerativeModel15debugClosePixelEPcP10BreadCrumbii
+     429  0x2ff90  _ZN15GenerativeModel15dropBreadCrumbsEiii
+     430  0x327f0  _ZN15GenerativeModel15findPixelRegionEii
+     431  0x32510  _ZN15GenerativeModel15regionIdAtPointEddiib
+     432  0x30de0  _ZN15GenerativeModel16checkCloseRegionEP10BreadCrumbS1_ii
+     433  0x30a30  _ZN15GenerativeModel16insertCornerNodeEP10BreadCrumbS1_iii
+     434  0x2f2c0  _ZN15GenerativeModel16outputErrorStatsERSo
+     435  0x32860  _ZN15GenerativeModel17computePixelColorEii
+     436  0x2e0b0  _ZN15GenerativeModel17dump_crumb_headerERSo
+     437  0x33cd0  _ZN15GenerativeModel17findPixelGradientERN3sla6Array1INS0_4Vec2IdEEEEii
+     438  0x30ae0  _ZN15GenerativeModel17insertCornerNodesEP10BreadCrumbS1_ii
+     439  0x30c80  _ZN15GenerativeModel22checkInsertCornerNodesEP10BreadCrumbii
+     440  0x2e690  _ZN15GenerativeModel23cleanOutTwoCrumbRegionsEii
+     441  0x2ed20  _ZN15GenerativeModel23computePartialGradientsEPfPdS1_iS1_S1_
+     442  0x2e640  _ZN15GenerativeModel26cleanOutSingleCrumbRegionsEP10BreadCrumbPS1_
+     443  0x32830  _ZN15GenerativeModel27flagRegionForInversionCheckEi
+     444  0x2edb0  _ZN15GenerativeModel32checkFlaggedRegionsForInversionsEv
+     445  0x2f720  _ZN15GenerativeModel5setupEv
+     446  0x2de50  _ZN15GenerativeModel6ffMarkERKii
+     447  0x359a0  _ZN15GenerativeModel6renderERN3sla6Array1INS0_4Vec2IdEEEE
+     448  0x2dbd0  _ZN15GenerativeModel7ffCheckERKii
+     449  0x323f0  _ZN15GenerativeModelC1ER10CoreEngine
+     450  0x323f0  _ZN15GenerativeModelC2ER10CoreEngine
+     451  0x2dfb0  _ZN15GenerativeModelD1Ev
+     452  0x2dfb0  _ZN15GenerativeModelD2Ev
+     453  0x7b370  _ZN15SubPixelSegment10clearStatsEv
+     454  0x161c0  _ZN15SubPixelSegment10memoryUsedEv
+     455  0x1e860  _ZN15SubPixelSegment16interiorPushBackERKN3sla6Color4IhEE
+     456  0x15e80  _ZN15SubPixelSegment20interiorMedianPixelFEv
+     457  0x7b460  _ZN15SubPixelSegment9addPixelFERKN3sla6Color4IfEE
+     458  0x705a0  _ZN16BipartiteMatcher12computeMatchEv
+     459  0x70520  _ZN16BipartiteMatcher7addEdgeEiid
+     460  0x70b30  _ZN16BipartiteMatcher7permuteEi
+     461  0x70d40  _ZN16BipartiteMatcher8validateEv
+     462  0x70440  _ZN16BipartiteMatcherC1Ev
+     463  0x70440  _ZN16BipartiteMatcherC2Ev
+     464  0x704a0  _ZN16BipartiteMatcherD1Ev
+     465  0x704a0  _ZN16BipartiteMatcherD2Ev
+     466  0x64ff0  _ZN16ExporterSettings10printStateEv
+     467  0x65450  _ZN16ExporterSettings14isShapeVisibleEi
+     468  0x654d0  _ZN16ExporterSettings15isRedoAvailableEv
+     469  0x654c0  _ZN16ExporterSettings15isUndoAvailableEv
+     470  0x653f0  _ZN16ExporterSettings18redoMakeBackgroundEv
+     471  0x6cc70  _ZN16ExporterSettings18setNumVectorShapesEi
+     472  0x65380  _ZN16ExporterSettings18undoMakeBackgroundEv
+     473  0x65270  _ZN16ExporterSettings23toggleShapeIsBackgroundEibb
+     474  0x6cba0  _ZN16ExporterSettings28resetMakeBackgroundShapeListEv
+     475  0x6c8c0  _ZN16ExporterSettings3setERKS_
+     476  0x6cad0  _ZN16ExporterSettingsC1ERKS_
+     477  0x6cad0  _ZN16ExporterSettingsC2ERKS_
+     478  0x7b4a0  _ZN16ExporterSettingsD1Ev
+     479  0x6cb80  _ZN16ExporterSettingsaSERKS_
+     480  0x65700  _ZN16ToolActionRecord3setE13InputModeTypeii7VmColor
+     481  0x656a0  _ZN16ToolActionRecord3setE13InputModeTypeiidddd7VmColor
+     482  0x65750  _ZN16ToolActionRecord3setERKS_
+     483  0x65570  _ZN16ToolActionRecordC1E13InputModeTypeii7VmColor
+     484  0x655d0  _ZN16ToolActionRecordC1E13InputModeTypeiidddd7VmColor
+     485  0x65640  _ZN16ToolActionRecordC1ERKS_
+     486  0x65570  _ZN16ToolActionRecordC2E13InputModeTypeii7VmColor
+     487  0x655d0  _ZN16ToolActionRecordC2E13InputModeTypeiidddd7VmColor
+     488  0x65640  _ZN16ToolActionRecordC2ERKS_
+     489  0x657a0  _ZN16ToolActionRecordaSERKS_
+     490  0x35e20  _ZN17OptimizerSettings12dumpSettingsEv
+     491  0x35d20  _ZN17OptimizerSettings20setDefaultParametersEv
+     492  0x4e3d0  _ZN17PixelSegmentation10initializeEv
+     493  0x50d60  _ZN17PixelSegmentation11updateMaxIdEi
+     494  0x521a0  _ZN17PixelSegmentation12applySegModsENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     495  0x51c80  _ZN17PixelSegmentation16divideAndConquerEii
+     496  0x53050  _ZN17PixelSegmentation16updateStatisticsEv
+     497  0x55f00  _ZN17PixelSegmentation18exportSegmentationEv
+     498  0x56000  _ZN17PixelSegmentation18importSegmentationEb
+     499  0x4e710  _ZN17PixelSegmentation20computeColorDistanceEiiii
+     500  0x4e560  _ZN17PixelSegmentation21isUsingPaletteIndicesEv
+     501  0x55c90  _ZN17PixelSegmentation22writeSegmentationImageENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     502  0x512b0  _ZN17PixelSegmentation24computeDiagonalCurvatureEiiiiii
+     503  0x51450  _ZN17PixelSegmentation25performDiagonalExtrusionsEv
+     504  0x4e6d0  _ZN17PixelSegmentation27assignPaletteIndicesFromMapEv
+     505  0x4e910  _ZN17PixelSegmentation27generatePaletteFromSegmentsEv
+     506  0x51a20  _ZN17PixelSegmentation4dumpENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     507  0x518f0  _ZN17PixelSegmentation4dumpERSo
+     508  0x50d30  _ZN17PixelSegmentation7compactEv
+     509  0x4e4e0  _ZN17PixelSegmentation8finalizeEv
+     510  0x52a80  _ZN17PixelSegmentation8renumberEv
+     511  0x4e530  _ZN17PixelSegmentation9segmentOfEi
+     512  0x4e320  _ZN17PixelSegmentationC1ER10CoreEngine
+     513  0x4e320  _ZN17PixelSegmentationC2ER10CoreEngine
+     514  0x4e380  _ZN17PixelSegmentationD1Ev
+     515  0x4e380  _ZN17PixelSegmentationD2Ev
+     516  0x5bd80  _ZN17SubPixelSegmenter10initializeEv
+     517  0x5c500  _ZN17SubPixelSegmenter10memoryUsedEv
+     518  0x5c520  _ZN17SubPixelSegmenter13clusterColorsEi
+     519  0x5c490  _ZN17SubPixelSegmenter13considerMergeEii
+     520  0x5c4e0  _ZN17SubPixelSegmenter17computeColorAngleEiiiiii
+     521  0x5ca30  _ZN17SubPixelSegmenter17exportFeatureFileENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPN3sla6Array1IiEE
+     522  0x5be50  _ZN17SubPixelSegmenter18computeMergeMetricEii
+     523  0x62380  _ZN17SubPixelSegmenter18flagShadowSegmentsEv
+     524  0x5bd70  _ZN17SubPixelSegmenter19snapColorsToPaletteEv
+     525  0x5d630  _ZN17SubPixelSegmenter20splitAndMergeBeachesEv
+     526  0x5ba20  _ZN17SubPixelSegmenter23snapColorsToPaletteLoopEi
+     527  0x5fdd0  _ZN17SubPixelSegmenter23updateAllFeatureVectorsEv
+     528  0x5e1f0  _ZN17SubPixelSegmenter43splitAndMergeFlaggedSegmentsFromBlurryImageEv
+     529  0x5c4f0  _ZN17SubPixelSegmenter4testEv
+     530  0x5df40  _ZN17SubPixelSegmenter7executeEv
+     531  0x5bdb0  _ZN17SubPixelSegmenter8finalizeEv
+     532  0x5bee0  _ZN17SubPixelSegmenter9mergeLoopEii
+     533  0x5b900  _ZN17SubPixelSegmenterC1ER10CoreEngine
+     534  0x5b900  _ZN17SubPixelSegmenterC2ER10CoreEngine
+     535  0x5b9c0  _ZN17SubPixelSegmenterD1Ev
+     536  0x5b9c0  _ZN17SubPixelSegmenterD2Ev
+     537  0x16370  _ZN17SuperPixelSegment5spawnER10SuperPixeli
+     538  0x17e40  _ZN18CoOccurrenceMatrix12updateMaximaEv
+     539  0x1d140  _ZN18CoOccurrenceMatrix16exportAffinitiesENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     540  0x185e0  _ZN18CoOccurrenceMatrix6valRefEii
+     541  0x14d00  _ZN18CoOccurrenceMatrix7setSizeEii
+     542  0x7b530  _ZN18CoOccurrenceMatrixD1Ev
+     543  0x31290  _ZN19BreadCrumbContainer10memoryUsedEv
+     544  0x2fb30  _ZN19BreadCrumbContainer12getNextCrumbEv
+     545  0x2fb20  _ZN19BreadCrumbContainer13resetCountersEv
+     546  0x31280  _ZN19BreadCrumbContainer17getNumBreadCrumbsEv
+     547  0x2f5d0  _ZN19BreadCrumbContainer21setBasketSizeAndResetEi
+     548  0x31170  _ZN19BreadCrumbContainer8getCrumbEi
+     549  0x32380  _ZN19BreadCrumbContainerC1Ev
+     550  0x32380  _ZN19BreadCrumbContainerC2Ev
+     551  0x7b630  _ZN19CancelTaskExceptionD0Ev
+     552  0x7b660  _ZN19CancelTaskExceptionD1Ev
+     553  0x7b670  _ZN19CompatiblePdfWriter10startGroupERN3sla6Color4IhEE
+     554  0x7b690  _ZN19CompatiblePdfWriter10writeCurveEPN3sla4Vec2IdEE18StartPointFlagTypeb
+     555  0x7b920  _ZN19CompatiblePdfWriter11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     556  0x7bda0  _ZN19CompatiblePdfWriter11startObjectEi
+     557  0x7bee0  _ZN19CompatiblePdfWriter11startRegionERN3sla6Color4IhEEb
+     558  0x7c1b0  _ZN19CompatiblePdfWriter13includeRegionERN3sla6Color4IhEE
+     559  0x7c1c0  _ZN19CompatiblePdfWriter14finalizeRegionERN3sla6Color4IhEEb
+     560  0x7c290  _ZN19CompatiblePdfWriter8endGroupERN3sla6Color4IhEE
+     561  0x7c350  _ZN19CompatiblePdfWriter8finalizeEv
+     562  0x7cc80  _ZN19CompatiblePdfWriter9writeLineEN3sla4Vec2IdEES2_18StartPointFlagType
+     563  0x7cef0  _ZN19CompatiblePdfWriterD1Ev
+     564  0x40820  _ZN19ImageClassification10setDefaultEv
+     565  0x47810  _ZN19ImageClassification24setPaletteModeFromStringENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     566  0x435d0  _ZN19ImageClassification32setImageTypeAndQualityFromStringENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     567  0x407e0  _ZN19ImageClassification3setERKS_
+     568  0x40720  _ZN19ImageClassificationC1ERKS_
+     569  0x40670  _ZN19ImageClassificationC1Ev
+     570  0x40720  _ZN19ImageClassificationC2ERKS_
+     571  0x40670  _ZN19ImageClassificationC2Ev
+     572  0x407a0  _ZN19ImageClassificationaSERKS_
+     573  0x417f0  _ZN19ParameterClassifier10memoryUsedEv
+     574  0x40880  _ZN19ParameterClassifier12isStrongEdgeEiibfRN3sla3VecINS0_6Color4IfEELi6EEERNS1_IfLi5EEE
+     575  0x47d10  _ZN19ParameterClassifier13classifyImageEv
+     576  0x41810  _ZN19ParameterClassifier14correlateBasesEv
+     577  0x42150  _ZN19ParameterClassifier14extractStripesEv
+     578  0x43c50  _ZN19ParameterClassifier18classifyParametersEv
+     579  0x42ba0  _ZN19ParameterClassifier19writeClassificationEv
+     580  0x41260  _ZN19ParameterClassifier21correlateFeatureBasesERN3sla3VecIdLi3EEE
+     581  0x417a0  _ZN19ParameterClassifier22computeTestCorrelationERN3sla3VecIdLi12EEERNS1_IdLi1EEE
+     582  0x41020  _ZN19ParameterClassifier25computeEdgeProfileFeatureERN3sla3VecIfLi5EEE
+     583  0x411d0  _ZN19ParameterClassifier25computeFeatureCorrelationERN3sla3VecIdLi12EEERNS1_IdLi3EEE
+     584  0x40d70  _ZN19ParameterClassifier8dumpEdgeEN3sla3VecIfLi5EEE
+     585  0x46350  _ZN19ParameterClassifierC1ER10CoreEngine
+     586  0x46350  _ZN19ParameterClassifierC2ER10CoreEngine
+     587  0x7d060  _ZN19ParameterClassifierD1Ev
+     588  0x59e30  _ZN19SegmentationTrainer13findPotentialEv
+     589  0x58e40  _ZN19SegmentationTrainer14buildNeighborsER8PixelMapRN3sla6Array1ISt3setIiSt4lessIiESaIiEEEEPNS3_IiEE
+     590  0x58780  _ZN19SegmentationTrainer16getCandColorFRefEii
+     591  0x58520  _ZN19SegmentationTrainer17getTruthColorFRefEii
+     592  0x58cd0  _ZN19SegmentationTrainer22computeMatchingPenaltyERN3sla6Array1IiEES3_
+     593  0x589c0  _ZN19SegmentationTrainer23computeNeighborsPenaltyEv
+     594  0x59540  _ZN19SegmentationTrainer24computeProtrusionPenaltyER8PixelMapS1_RN3sla6Array1IiEES5_
+     595  0x58310  _ZN19SegmentationTrainer9loadTruthEv
+     596  0x5a700  _ZN19SegmentationTrainerC1ER10CoreEngine
+     597  0x5a700  _ZN19SegmentationTrainerC2ER10CoreEngine
+     598  0x57fe0  _ZN19SegmentationTrainerD1Ev
+     599  0x57fe0  _ZN19SegmentationTrainerD2Ev
+     600  0x63c50  _ZN19SuperPixelSegmenter10memoryUsedEv
+     601  0x63f00  _ZN19SuperPixelSegmenter17computeSwapMetricEP10SuperPixelS1_
+     602  0x62b50  _ZN19SuperPixelSegmenter18computeMergeMetricEP17SuperPixelSegmentS1_
+     603  0x644c0  _ZN19SuperPixelSegmenter18computeSpawnMetricEP10SuperPixeli
+     604  0x633a0  _ZN19SuperPixelSegmenter26debugComputeTotalDeltaCostEb
+     605  0x63e60  _ZN19SuperPixelSegmenter4swapER10SuperPixelS1_
+     606  0x62aa0  _ZN19SuperPixelSegmenter5mergeEP17SuperPixelSegmentS1_
+     607  0x63c70  _ZN19SuperPixelSegmenter5spawnER10SuperPixeli
+     608  0x64450  _ZN19SuperPixelSegmenter7executeEv
+     609  0x640a0  _ZN19SuperPixelSegmenter8swapLoopEv
+     610  0x62c50  _ZN19SuperPixelSegmenter9mergeLoopEv
+     611  0x644e0  _ZN19SuperPixelSegmenter9spawnLoopEv
+     612  0x62990  _ZN19SuperPixelSegmenterC1ER10CoreEngine
+     613  0x62990  _ZN19SuperPixelSegmenterC2ER10CoreEngine
+     614  0x62a30  _ZN19SuperPixelSegmenterD1Ev
+     615  0x62a30  _ZN19SuperPixelSegmenterD2Ev
+     616  0x4fc60  _ZN20SubPixelSegmentation10dumpColorsEv
+     617  0x56e90  _ZN20SubPixelSegmentation10initializeEib
+     618  0x57100  _ZN20SubPixelSegmentation13mergeSegmentsEii
+     619  0x4ef90  _ZN20SubPixelSegmentation16computePixelCostEiiiii
+     620  0x4ee70  _ZN20SubPixelSegmentation18computeSegmentCostEii
+     621  0x4f1a0  _ZN20SubPixelSegmentation19computeBoundaryCostEbbii
+     622  0x4ec40  _ZN20SubPixelSegmentation19computeInteriorCostEii
+     623  0x4ebf0  _ZN20SubPixelSegmentation19resetPaletteIndicesEv
+     624  0x4fa50  _ZN20SubPixelSegmentation19updateAllPixelCostsEv
+     625  0x4f490  _ZN20SubPixelSegmentation23computeBoundaryCostUpToEdii
+     626  0x56630  _ZN20SubPixelSegmentation23rebuildSubPixelSegmentsEibb
+     627  0x4eec0  _ZN20SubPixelSegmentation24computeSegmentCostColorFEiRN3sla6Color4IfEEd
+     628  0x51070  _ZN20SubPixelSegmentation32computePixelAntiAliasingSwapCostEiPfPi
+     629  0x50f40  _ZN20SubPixelSegmentation43computePixelAntiAliasingSwapCostInDirectionEiiRN3sla6Color4IfEEPfPi
+     630  0x50ec0  _ZN20SubPixelSegmentation8finalizeEv
+     631  0x531e0  _ZN20SubPixelSegmentation9flattenToER17PixelSegmentation
+     632  0x4ea80  _ZN20SubPixelSegmentationC1ER10CoreEngine
+     633  0x4ea80  _ZN20SubPixelSegmentationC2ER10CoreEngine
+     634  0x50e50  _ZN20SubPixelSegmentationD1Ev
+     635  0x50e50  _ZN20SubPixelSegmentationD2Ev
+     636  0x31470  _ZN21GmPixelColorContainer10memoryUsedEv
+     637  0x313e0  _ZN21GmPixelColorContainer5clearEi
+     638  0x31460  _ZN21GmPixelColorContainer5clearEii
+     639  0x31480  _ZN21GmPixelColorContainer7setSizeEN3sla4Vec2IiEE
+     640  0x31360  _ZN21GmPixelColorContainerclEi
+     641  0x312e0  _ZN21GmPixelColorContainerclEii
+     642  0x57920  _ZN22SuperPixelSegmentation10initializeEb
+     643  0x53ae0  _ZN22SuperPixelSegmentation23computeDeltaNumSegmentsEP17SuperPixelSegmenti
+     644  0x50c10  _ZN22SuperPixelSegmentation28computeSuperPixelSegmentCostEP17SuperPixelSegmentS1_
+     645  0x50b50  _ZN22SuperPixelSegmentation36computeSuperPixelSegmentAffinityCostEP17SuperPixelSegmentS1_
+     646  0x50a60  _ZN22SuperPixelSegmentation36computeSuperPixelSegmentBoundaryCostEbbP17SuperPixelSegmentS1_
+     647  0x509f0  _ZN22SuperPixelSegmentation36computeSuperPixelSegmentInteriorCostEP17SuperPixelSegmentS1_
+     648  0x508d0  _ZN22SuperPixelSegmentationC1ER10CoreEngine
+     649  0x508d0  _ZN22SuperPixelSegmentationC2ER10CoreEngine
+     650  0x65870  _ZN23VmVectorizationSettings12resetPaletteEv
+     651  0x65890  _ZN23VmVectorizationSettings3setERKS_
+     652  0x65b00  _ZN23VmVectorizationSettings5resetEv
+     653  0x65ae0  _ZN23VmVectorizationSettingsaSERKS_
+     654  0x7d190  _ZN3sla11BezierCurveIdLi2ELi2EE15setCoefficientsERKNS_3MatIdLi2ELi3EEE
+     655  0x7d2a0  _ZN3sla11BezierCurveIdLi2ELi2EE16fitDataFixedEndsENS_6Array1IdEERKNS2_INS_3VecIdLi2EEEEEi
+     656  0x7dca0  _ZN3sla11BezierCurveIdLi2ELi2EE22findHessianAndGradientENS_6Array1IdEERKNS2_INS_3VecIdLi2EEEEEiRS5_RNS_4SMatIdLi2EEE
+     657  0x7e590  _ZN3sla11BezierCurveIdLi2ELi3EE15setCoefficientsERKNS_3MatIdLi2ELi4EEE
+     658  0x7e6a0  _ZN3sla11BezierCurveIdLi2ELi3EE16fitDataFixedEndsENS_6Array1IdEERKNS2_INS_3VecIdLi2EEEEEi
+     659  0x7f210  _ZN3sla11BezierCurveIdLi2ELi3EE22findHessianAndGradientENS_6Array1IdEERKNS2_INS_3VecIdLi2EEEEEiRNS4_IdLi4EEERNS_4SMatIdLi4EEE
+     660  0x7fc20  _ZN3sla16compareAscendingISt4pairIdiEEEiPKvS4_
+     661  0x7fc60  _ZN3sla17compareDescendingISt4pairIdiEEEiPKvS4_
+     662  0x7fca0  _ZN3sla3VecIiLi4EEclEi
+     663  0x7fd30  _ZN3sla3VecIiLi50EEclEi
+     664  0x7fdc0  _ZN3sla5ArrayI10SuperPixelLi1EE5resetEv
+     665  0x7ff90  _ZN3sla5ArrayI14CurveReferenceLi1EEclEi
+     666  0x80040  _ZN3sla5ArrayI15SubPixelSegmentLi1EE5resetEv
+     667  0x80190  _ZN3sla5ArrayI24BezierOptimizationRecordLi1EEclEi
+     668  0x80250  _ZN3sla5ArrayI4NodeLi1EE5resetEv
+     669  0x802e0  _ZN3sla5ArrayI4NodeLi1EE7setSizeENS_3VecIiLi1EEE
+     670  0x80400  _ZN3sla5ArrayI4NodeLi1EEclEi
+     671  0x804c0  _ZN3sla5ArrayI6RegionLi1EE5resetEv
+     672  0x805d0  _ZN3sla5ArrayI6RegionLi1EEclEi
+     673  0x80690  _ZN3sla5ArrayI7PaletteLi1EE5resetEv
+     674  0x80760  _ZN3sla5ArrayI7PaletteLi1EEclEi
+     675  0x80820  _ZN3sla5ArrayINS_11BezierCurveIdLi2ELi3EEELi1EEclEi
+     676  0x808d0  _ZN3sla5ArrayINS_3VecIdLi2EEELi1EE5resetEv
+     677  0x80900  _ZN3sla5ArrayINS_3VecIdLi42EEELi1EEclEi
+     678  0x809c0  _ZN3sla5ArrayINS_4SMatIfLi4EEELi1EE5resetEv
+     679  0x809f0  _ZN3sla5ArrayINS_4Vec2IdEELi1EEclEi
+     680  0x80aa0  _ZN3sla5ArrayINS_4Vec2IiEELi1EEclEi
+     681  0x80b50  _ZN3sla5ArrayINS_6Array1I10BreadCrumbEELi1EE5resetEv
+     682  0x80bd0  _ZN3sla5ArrayINS_6Array1IiEELi1EE5resetEv
+     683  0x80c50  _ZN3sla5ArrayINS_6Color4IfEELi1EE5resetEv
+     684  0x80c80  _ZN3sla5ArrayINS_6Color4IhEELi1EE5resetEv
+     685  0x80cb0  _ZN3sla5ArrayINS_6Color4IhEELi2EE3setERKS3_
+     686  0x80d90  _ZN3sla5ArrayINS_6Color4IhEELi2EE5resetEv
+     687  0x80dc0  _ZN3sla5ArrayINSt7__cxx114listIiSaIiEEELi1EE5resetEv
+     688  0x80e50  _ZN3sla5ArrayINSt7__cxx114listIiSaIiEEELi1EEclEi
+     689  0x80f10  _ZN3sla5ArrayIPNS_4Vec2IiEELi1EEclEi
+     690  0x80fc0  _ZN3sla5ArrayISt3mapIifSt4lessIiESaISt4pairIKifEEELi1EEclEi
+     691  0x81080  _ZN3sla5ArrayISt3setIiSt4lessIiESaIiEELi1EE5resetEv
+     692  0x81120  _ZN3sla5ArrayISt4pairIdiELi1EE5resetEv
+     693  0x81150  _ZN3sla5ArrayISt4pairIdiELi1EEclEi
+     694  0x81200  _ZN3sla5ArrayISt6vectorINSt7__cxx114listISt4pairIiiESaIS5_EEESaIS7_EELi1EE5resetEv
+     695  0x812e0  _ZN3sla5ArrayISt6vectorINSt7__cxx114listISt4pairIiiESaIS5_EEESaIS7_EELi1EEclEi
+     696  0x813a0  _ZN3sla5ArrayISt6vectorIhSaIhEELi2EE5resetEv
+     697  0x81430  _ZN3sla5ArrayIcLi2EE5resetEv
+     698  0x81460  _ZN3sla5ArrayIdLi1EE5resetEv
+     699  0x81490  _ZN3sla5ArrayIdLi1EEclEi
+     700  0x81540  _ZN3sla5ArrayIdLi2EE5resetEv
+     701  0x81570  _ZN3sla5ArrayIdLi4EE3setERKS1_
+     702  0x81670  _ZN3sla5ArrayIdLi4EE5resetEv
+     703  0x816b0  _ZN3sla5ArrayIfLi1EE5resetEv
+     704  0x816e0  _ZN3sla5ArrayIfLi1EEclEi
+     705  0x81790  _ZN3sla5ArrayIfLi2EE5resetEv
+     706  0x817c0  _ZN3sla5ArrayIhLi2EE5resetEv
+     707  0x817f0  _ZN3sla5ArrayIiLi1EE5resetEv
+     708  0x81820  _ZN3sla5ArrayIiLi1EE7setSizeENS_3VecIiLi1EEE
+     709  0x81880  _ZN3sla5ArrayIiLi1EEclEi
+     710  0x81930  _ZN3sla5ArrayIiLi2EE5resetEv
+     711  0x81960  _ZN3sla5ArrayIiLi2EEclEi
+     712  0x81a20  _ZN3sla5ArrayIlLi2EE5resetEv
+     713  0x81a50  _ZN3sla6Array1I12PixelSegmentE6resizeEib
+     714  0x81cb0  _ZN3sla6Array1I14ContourElementE6resizeEib
+     715  0x81ef0  _ZN3sla6Array1I4NodeE6resizeEib
+     716  0x821b0  _ZN3sla6Array2INS_6Color4IhEEE7setSizeEii
+     717  0x82230  _ZN3sla6Array2INS_6Color4IhEEEC1Eii
+     718  0x822b0  _ZN3sla6Array2IdEC2Eii
+     719  0x82330  _ZN3sla6Array2IhEC1Eii
+     720  0x823a0  _ZN3slalsI12PixelSegmentLi1EEERSoS2_RKNS_5ArrayIT_XT0_EEE
+     721  0x82980  _ZN3slalsIiLi1EEERSoS1_RKNS_5ArrayIT_XT0_EEE
+     722  0x82b20  _ZN3slalsIiLi2EEERSoS1_RKNS_5ArrayIT_XT0_EEE
+     723  0x82e10  _ZN3slarsIiLi1EEERSiS1_RNS_5ArrayIT_XT0_EEE
+     724  0x82f10  _ZN6Writer11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     725  0x82f60  _ZN6WriterD2Ev
+     726  0x15e60  _ZN7Palette10memoryUsedEv
+     727  0x15540  _ZN7Palette12setNumColorsEi
+     728  0x15820  _ZN7Palette14findColorInMapERKN3sla6Color4IhEE
+     729  0x157c0  _ZN7Palette14findColorInMapEj
+     730  0x15830  _ZN7Palette16tryAddColorToMapERKN3sla6Color4IhEE
+     731  0x15600  _ZN7Palette20setNewPaletteFromMapEv
+     732  0x15a10  _ZN7Palette26buildMapFromCurrentPaletteEv
+     733  0x1db60  _ZN7Palette4readENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     734  0x18790  _ZN7Palette5writeENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     735  0x15ae0  _ZN7Palette7writeToERSob
+     736  0x155a0  _ZN7Palette8clearMapEv
+     737  0x15c30  _ZN7Palette8readFromERSib
+     738  0x15290  _ZN7PaletteC1Ev
+     739  0x15290  _ZN7PaletteC2Ev
+     740  0x83010  _ZN7PaletteD1Ev
+     741  0x152e0  _ZN7PaletteaSERKS_
+     742  0x83080  _ZN8AiWriter10startGroupERN3sla6Color4IhEE
+     743  0x830c0  _ZN8AiWriter10writeCurveEPN3sla4Vec2IdEE18StartPointFlagTypeb
+     744  0x83390  _ZN8AiWriter11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     745  0x83a80  _ZN8AiWriter11startRegionERN3sla6Color4IhEEb
+     746  0x83cd0  _ZN8AiWriter13includeRegionERN3sla6Color4IhEE
+     747  0x83ce0  _ZN8AiWriter14finalizeRegionERN3sla6Color4IhEEb
+     748  0x83d70  _ZN8AiWriter8endGroupERN3sla6Color4IhEE
+     749  0x83db0  _ZN8AiWriter8finalizeEv
+     750  0x83ee0  _ZN8AiWriter9writeLineEN3sla4Vec2IdEES2_18StartPointFlagType
+     751  0x84190  _ZN8AiWriterD1Ev
+     752  0x29490  _ZN8Exporter10memoryUsedEv
+     753  0x29450  _ZN8Exporter13setupExporterER16ExporterSettings
+     754  0x29480  _ZN8Exporter16useCompoundPathsEv
+     755  0x29510  _ZN8Exporter16writeLineOrCurveER6WriteriR14CurveReference18StartPointFlagTypeb
+     756  0x2bad0  _ZN8Exporter16writeVectorFileWENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEES5_
+     757  0x292c0  _ZN8Exporter19computeImAndPtSizesEi
+     758  0x297c0  _ZN8Exporter19groupRegionsByColorEv
+     759  0x2c0d0  _ZN8Exporter22generateCompoundCurvesEv
+     760  0x29ed0  _ZN8Exporter6writeWER6Writer
+     761  0x2d250  _ZN8Exporter7executeENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEEb
+     762  0x2b130  _ZN8Exporter7writeAIENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEE
+     763  0x2add0  _ZN8Exporter8writeDXFENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEE
+     764  0x2a410  _ZN8Exporter8writeEPSENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEEb
+     765  0x2b600  _ZN8Exporter8writePDFENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEE
+     766  0x2a900  _ZN8Exporter8writeSVGENSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEE
+     767  0x29080  _ZN8ExporterC1ER10CoreEngine
+     768  0x29080  _ZN8ExporterC2ER10CoreEngine
+     769  0x29150  _ZN8ExporterD1Ev
+     770  0x29150  _ZN8ExporterD2Ev
+     771   0x3da0  _ZN8Fragment3eatEPS_
+     772   0x3dc0  _ZN8Fragment4takeEPS_b
+     773   0x3d80  _ZN8Fragment5clearEv
+     774  0x19930  _ZN8PixelMap10isInteriorEiib
+     775  0x198a0  _ZN8PixelMap11isBoundary4Eii
+     776  0x19220  _ZN8PixelMap11isBoundary8Eii
+     777  0x19080  _ZN8PixelMap11isNeighbor4Eii
+     778  0x19170  _ZN8PixelMap14isRawNeighbor4Eii
+     779  0x168f0  _ZN8PixelMap14resetRedirectsEv
+     780  0x18fc0  _ZN8PixelMap15idOfWithReplaceEiii
+     781  0x19450  _ZN8PixelMap15idOfWithReplaceEiiii
+     782  0x19570  _ZN8PixelMap15radialFloodFillEiiPNSt7__cxx114listIiSaIiEEEPNS1_ISt4pairIiiESaIS6_EEE
+     783  0x19aa0  _ZN8PixelMap17floodFillKeepListEiiiPNSt7__cxx114listIiSaIiEEES4_
+     784  0x192a0  _ZN8PixelMap19wouldChangeTopologyEiiii
+     785  0x216c0  _ZN8PixelMap21debugRenumberAndCountEv
+     786  0x190f0  _ZN8PixelMap21flushRedirectsIfDirtyEv
+     787  0x19320  _ZN8PixelMap23swapWouldChangeTopologyEiiii
+     788  0x19060  _ZN8PixelMap4idOfEi
+     789  0x191d0  _ZN8PixelMap4idOfEii
+     790  0x1dea0  _ZN8PixelMap4readENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     791  0x189b0  _ZN8PixelMap5writeENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+     792  0x1e1f0  _ZN8PixelMap7compactEv
+     793  0x16870  _ZN8PixelMap7setSizeEii
+     794  0x17e10  _ZN8PixelMap8redirectEii
+     795  0x16940  _ZN8PixelMap8setMaxIdEi
+     796  0x20f10  _ZN8PixelMap9floodFillEiii
+     797  0x84300  _ZN8PixelMapC1ERKS_
+     798  0x16710  _ZN8PixelMapaSERKS_
+     799  0x1f430  _ZN8QuadTree15preSegmentBlockEiii
+     800  0x1eff0  _ZN8QuadTree30computeVarianceAndSetIfTooHighEiiiRiRN3sla6Color4IdEES4_S0_Rdb
+     801  0x194b0  _ZN8QuadTree5setIdEiiiRi
+     802  0x169d0  _ZN8QuadTree8varianceERN3sla6Color4IdEES3_i
+     803  0x84430  _ZN9DxfWriter10startGroupERN3sla6Color4IhEE
+     804  0x84440  _ZN9DxfWriter10writeCurveEPN3sla4Vec2IdEE18StartPointFlagTypeb
+     805  0x84af0  _ZN9DxfWriter11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     806  0x84b40  _ZN9DxfWriter11startRegionERN3sla6Color4IhEEb
+     807  0x85030  _ZN9DxfWriter13includeRegionERN3sla6Color4IhEE
+     808  0x85040  _ZN9DxfWriter14finalizeRegionERN3sla6Color4IhEEb
+     809  0x85050  _ZN9DxfWriter14writeDxfHeaderEv
+     810  0x86aa0  _ZN9DxfWriter8endGroupERN3sla6Color4IhEE
+     811  0x86ab0  _ZN9DxfWriter8finalizeEv
+     812  0x86c40  _ZN9DxfWriter9layerNameB5cxx11Ei
+     813  0x87020  _ZN9DxfWriter9writeLineEN3sla4Vec2IdEES2_18StartPointFlagType
+     814  0x87270  _ZN9DxfWriterD1Ev
+     815  0x16620  _ZN9EdgeImage13getEdgeWeightEi
+     816  0x18ec0  _ZN9EdgeImage13getEdgeWeightEii
+     817  0x16550  _ZN9EdgeImage16getEdgeIntensityEi
+     818  0x18de0  _ZN9EdgeImage16getEdgeIntensityEii
+     819  0x1e8c0  _ZN9EdgeImage6updateEv
+     820  0x164d0  _ZN9EdgeImage7setSizeEii
+     821  0x164a0  _ZN9EdgeImageC1ERN3sla6Array2INS0_6Color4IhEEEE
+     822  0x164a0  _ZN9EdgeImageC2ERN3sla6Array2INS0_6Color4IhEEEE
+     823  0x873a0  _ZN9EpsWriter10startGroupERN3sla6Color4IhEE
+     824  0x873c0  _ZN9EpsWriter10writeCurveEPN3sla4Vec2IdEE18StartPointFlagTypeb
+     825  0x87600  _ZN9EpsWriter11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     826  0x87720  _ZN9EpsWriter11startRegionERN3sla6Color4IhEEb
+     827  0x877c0  _ZN9EpsWriter11writeHeaderEv
+     828  0x87a40  _ZN9EpsWriter13includeRegionERN3sla6Color4IhEE
+     829  0x87a50  _ZN9EpsWriter14finalizeRegionERN3sla6Color4IhEEb
+     830  0x87cc0  _ZN9EpsWriter8endGroupERN3sla6Color4IhEE
+     831  0x87f80  _ZN9EpsWriter8finalizeEv
+     832  0x88030  _ZN9EpsWriter9writeLineEN3sla4Vec2IdEES2_18StartPointFlagType
+     833  0x88260  _ZN9EpsWriterD1Ev
+     834  0x1fef0  _ZN9FlowField13updateWeightsEii
+     835  0x1fd80  _ZN9FlowField17filterVectorFieldEii
+     836  0x200f0  _ZN9FlowField17updateVectorFieldEii
+     837  0x20d60  _ZN9FlowField5buildEv
+     838  0x1fe90  _ZN9FlowField6filterEv
+     839  0x1fd30  _ZN9FlowField7getCostEiii
+     840  0x1fc70  _ZN9FlowField7getCostEiiii
+     841  0x169f0  _ZN9FlowFieldC1ERN3sla6Array2INS0_6Color4IhEEEE
+     842  0x169f0  _ZN9FlowFieldC2ERN3sla6Array2INS0_6Color4IhEEEE
+     843  0x37450  _ZN9Optimizer10memoryUsedEv
+     844  0x366e0  _ZN9Optimizer10storeStateEv
+     845  0x36760  _ZN9Optimizer11recallStateEi
+     846  0x36720  _ZN9Optimizer11recallStateEv
+     847  0x36f10  _ZN9Optimizer12doLineSearchEv
+     848  0x365e0  _ZN9Optimizer12findGradientEv
+     849  0x37310  _ZN9Optimizer12forceCGResetEb
+     850  0x36780  _ZN9Optimizer12resetBestYetEv
+     851  0x363f0  _ZN9Optimizer13findPotentialEv
+     852  0x373a0  _ZN9Optimizer13initializeRunEb
+     853  0x367b0  _ZN9Optimizer13knockOutCheckEdd
+     854  0x37f10  _ZN9Optimizer16compareGradientsEv
+     855  0x362b0  _ZN9Optimizer16printStateVectorEv
+     856  0x36d30  _ZN9Optimizer17doBlindLineSearchEv
+     857  0x36420  _ZN9Optimizer18doFiniteDifferenceEd
+     858  0x36d20  _ZN9Optimizer18doSecantLineSearchEv
+     859  0x36d10  _ZN9Optimizer20doThoroughLineSearchEv
+     860  0x36030  _ZN9Optimizer20setDefaultParametersEv
+     861  0x36800  _ZN9Optimizer21doBacktrackLineSearchEv
+     862  0x368a0  _ZN9Optimizer21doQuadraticLineSearchEv
+     863  0x37430  _ZN9Optimizer21iterationStatusReportEiddd
+     864  0x37090  _ZN9Optimizer22doBacktrackLineSearch2Ev
+     865  0x37440  _ZN9Optimizer24optimizationStatusReportENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEidd
+     866  0x37e40  _ZN9Optimizer4doCGEv
+     867  0x36620  _ZN9Optimizer4moveEd
+     868  0x36040  _ZN9Optimizer5setupER14StateContainer
+     869  0x35f00  _ZN9Optimizer9deleteAllEv
+     870  0x374c0  _ZN9Optimizer9doBasicCGEv
+     871  0x35e30  _ZN9OptimizerC1Ev
+     872  0x35e30  _ZN9OptimizerC2Ev
+     873  0x35fc0  _ZN9OptimizerD1Ev
+     874  0x35fc0  _ZN9OptimizerD2Ev
+     875  0x5a9d0  _ZN9Segmenter12buildRegionsEv
+     876  0x5ae70  _ZN9Segmenter7executeEbbb
+     877  0x5ae40  _ZN9Segmenter7restoreEv
+     878  0x5a8c0  _ZN9SegmenterC1ER10CoreEngine
+     879  0x5a8c0  _ZN9SegmenterC2ER10CoreEngine
+     880  0x5a9a0  _ZN9SegmenterD1Ev
+     881  0x5a9a0  _ZN9SegmenterD2Ev
+     882  0x883d0  _ZN9SvgWriter10startGroupERN3sla6Color4IhEE
+     883  0x88540  _ZN9SvgWriter10writeCurveEPN3sla4Vec2IdEE18StartPointFlagTypeb
+     884  0x88770  _ZN9SvgWriter11setupWriterERN3sla4Vec2IiEES3_R16ExporterSettings
+     885  0x88a70  _ZN9SvgWriter11startRegionERN3sla6Color4IhEEb
+     886  0x88d00  _ZN9SvgWriter13includeRegionERN3sla6Color4IhEE
+     887  0x88d10  _ZN9SvgWriter14finalizeRegionERN3sla6Color4IhEEb
+     888  0x88d50  _ZN9SvgWriter8endGroupERN3sla6Color4IhEE
+     889  0x88df0  _ZN9SvgWriter8finalizeEv
+     890  0x88f50  _ZN9SvgWriter9writeLineEN3sla4Vec2IdEES2_18StartPointFlagType
+     891  0x890a0  _ZN9SvgWriterD1Ev
+     892  0x4e110  _ZNK11SuperPixels10memoryUsedEv
+     893  0x89210  _ZNK11SuperPixels15getPixelSegmentEi
+     894  0x892b0  _ZNK11SuperPixels18getSubPixelSegmentEi
+     895  0x17df0  _ZNK11VectorImage10memoryUsedEv
+     896  0x89350  _ZNK12PixelSegment17getInteriorColorFEv
+     897  0x89380  _ZNK15SubPixelSegment17getInteriorColorFEv
+     898  0x683f0  _ZNK16ToolActionRecord5tokenB5cxx11Ev
+     899  0x68820  _ZNK16ToolActionRecordeqERKS_
+     900  0x4e680  _ZNK17PixelSegmentation10getColorUcEi
+     901  0x4d960  _ZNK17PixelSegmentation10memoryUsedEv
+     902  0x893a0  _ZNK17PixelSegmentation15getPixelSegmentEi
+     903  0x4e580  _ZNK17PixelSegmentation9getColorFEi
+     904  0x89440  _ZNK19CancelTaskException4whatEv
+     905  0x4e0b0  _ZNK20SubPixelSegmentation10memoryUsedEv
+     906  0x4eb20  _ZNK20SubPixelSegmentation12getColorFRefEi
+     907  0x89450  _ZNK20SubPixelSegmentation15getPixelSegmentEi
+     908  0x894f0  _ZNK20SubPixelSegmentation18getSubPixelSegmentEi
+     909  0x50cc0  _ZNK22SuperPixelSegmentation10memoryUsedEv
+     910  0x688f0  _ZNK23VmVectorizationSettings15tokenForPaletteB5cxx11Ev
+     911  0x68e10  _ZNK23VmVectorizationSettings20tokenForSegmentationB5cxx11Ev
+     912  0x6a480  _ZNK23VmVectorizationSettings21tokenForBezierFittingB5cxx11Ev
+     913  0x69e80  _ZNK23VmVectorizationSettings24tokenForContourSmoothingB5cxx11Ev
+     914  0x69490  _ZNK23VmVectorizationSettings27tokenForPushingSegmentationB5cxx11Ev
+     915  0x6aa10  _ZNK23VmVectorizationSettings8toStringB5cxx11Ev
+     916  0x657f0  _ZNK24AdvVectorizationSettingseqERKS_
+     917  0x89590  _ZNK3sla11BezierCurveIdLi2ELi2EE15getCoefficientsEv
+     918  0x896a0  _ZNK3sla11BezierCurveIdLi2ELi3EE15getCoefficientsEv
+     919  0x897a0  _ZNK3sla3VecIfLi2EE12matlab_printENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSoi
+     920  0x89840  _ZNK3sla3VecIfLi2EE5printERSoi
+     921  0x89ad0  _ZNK3sla3VecIiLi2EEclEi
+     922  0x89b60  _ZNK3sla5ArrayIiLi2EE8coordsOfEi
+     923  0x89c20  _ZNK3sla6Array2I21GenerativeModelPixelPE7indexOfEii
+     924  0x89d80  _ZNK3sla6Array2INS_3VecIhLi8EEEE7indexOfEii
+     925  0x89e60  _ZNK3sla6Array2INS_6Color4IfEEE7indexOfEii
+     926  0x89fc0  _ZNK3sla6Array2INS_6Color4IhEEE7indexOfEii
+     927  0x8a0a0  _ZNK3sla6Array2ISt4pairINS_4Vec2IfEES3_EE7indexOfEii
+     928  0x8a180  _ZNK3sla6Array2IcE7indexOfEii
+     929  0x8a260  _ZNK3sla6Array2IfE7indexOfEii
+     930  0x8a340  _ZNK3sla6Array2IhE7indexOfEii
+     931  0x8a420  _ZNK3sla6Array2IiE7indexOfEii
+     932  0x8a580  _ZNK3sla6Array4IdE7indexOfEiiii
+     933  0x68060  _ZNK7VmColor5tokenB5cxx11Ev
+     934  0x16920  _ZNK8PixelMap10memoryUsedEv
+     935  0x8a710  _ZNK9DL_Writer5tableEPKcii
+     936  0x16a20  _ZNK9FlowField10memoryUsedEv
+     937  0x8a790  _ZNKSt5ctypeIcE8do_widenEc
+     938  0x8a7a0  _ZNSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE17VmPaletteModeTypeSt4lessIS5_ESaISt4pairIKS5_S6_EEEixEOS5_
+     939  0x8aa80  _ZNSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE19VmHighMediumLowTypeSt4lessIS5_ESaISt4pairIKS5_S6_EEEixEOS5_
+     940  0x8ad60  _ZNSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE19VmImageCategoryTypeSt4lessIS5_ESaISt4pairIKS5_S6_EEEixEOS5_
+     941  0x8b040  _ZNSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_St4lessIS5_ESaISt4pairIKS5_S5_EEEixEOS5_
+     942  0x8b320  _ZNSt3mapINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiSt4lessIS5_ESaISt4pairIKS5_iEEEixEOS5_
+     943  0x8b600  _ZNSt5dequeIiSaIiEE16_M_push_back_auxIJRKiEEEvDpOT_
+     944  0x8b880  _ZNSt6vectorI7VmColorSaIS0_EE17_M_realloc_insertIJS0_EEEvN9__gnu_cxx17__normal_iteratorIPS0_S2_EEDpOT_
+     945  0x8ba70  _ZNSt6vectorINSt7__cxx114listISt4pairIiiESaIS3_EEESaIS5_EE17_M_realloc_insertIJRKS5_EEEvN9__gnu_cxx17__normal_iteratorIPS5_S7_EEDpOT_
+     946  0x8bd70  _ZNSt6vectorIS_I7VmColorSaIS0_EESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEDpOT_
+     947  0x8bf90  _ZNSt6vectorIS_ISt4pairIiiESaIS1_EESaIS3_EE17_M_realloc_insertIJRKS3_EEEvN9__gnu_cxx17__normal_iteratorIPS3_S5_EEDpOT_
+     948  0x8c270  _ZNSt6vectorIS_IiSaIiEESaIS1_EE17_M_realloc_insertIJRKS1_EEEvN9__gnu_cxx17__normal_iteratorIPS1_S3_EEDpOT_
+     949  0x8c570  _ZNSt6vectorISt4pairIi20ExportRegionFlagTypeESaIS2_EE17_M_default_appendEy
+     950  0x8c6d0  _ZNSt6vectorISt4pairIiiESaIS1_EE17_M_realloc_insertIJS1_EEEvN9__gnu_cxx17__normal_iteratorIPS1_S3_EEDpOT_
+     951  0x8c860  _ZNSt6vectorISt4pairIiiESaIS1_EED1Ev
+     952  0x8c890  _ZNSt6vectorIbSaIbEE14_M_fill_insertESt13_Bit_iteratoryb
+     953  0x8cf10  _ZNSt6vectorIfSaIfEE17_M_realloc_insertIJfEEEvN9__gnu_cxx17__normal_iteratorIPfS1_EEDpOT_
+     954  0x8d090  _ZNSt6vectorIhSaIhEE17_M_realloc_insertIJRKhEEEvN9__gnu_cxx17__normal_iteratorIPhS1_EEDpOT_
+     955  0x8d1d0  _ZNSt6vectorIiSaIiEE17_M_realloc_insertIJRKiEEEvN9__gnu_cxx17__normal_iteratorIPiS1_EEDpOT_
+     956  0x8d350  _ZNSt6vectorIiSaIiEED1Ev
+     957  0x8d380  _ZNSt7__cxx1110_List_baseISt4pairIiiESaIS2_EE8_M_clearEv
+     958  0x8d3c0  _ZNSt7__cxx1110_List_baseIdSaIdEE8_M_clearEv
+     959  0x8d400  _ZNSt7__cxx1110_List_baseIiSaIiEE8_M_clearEv
+     960  0x8d440  _ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+     961  0x8d490  _ZNSt7__cxx114listIdSaIdEE4sortEv
+     962  0x8d660  _ZNSt7__cxx114listIiSaIiEE4sortEv
+     963  0x8d820  _ZNSt7__cxx114listIiSaIiEE6uniqueEv
+     964  0x8d8d0  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_17VmPaletteModeTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE24_M_get_insert_unique_posERS7_
+     965  0x8da60  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_17VmPaletteModeTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS9_ERS7_
+     966  0x8dcf0  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_19VmHighMediumLowTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE24_M_get_insert_unique_posERS7_
+     967  0x8de80  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_19VmHighMediumLowTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS9_ERS7_
+     968  0x8e110  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_19VmImageCategoryTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE24_M_get_insert_unique_posERS7_
+     969  0x8e2a0  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_19VmImageCategoryTypeESt10_Select1stIS9_ESt4lessIS5_ESaIS9_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS9_ERS7_
+     970  0x8e530  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_S5_ESt10_Select1stIS8_ESt4lessIS5_ESaIS8_EE24_M_get_insert_unique_posERS7_
+     971  0x8e680  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_S5_ESt10_Select1stIS8_ESt4lessIS5_ESaIS8_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS8_ERS7_
+     972  0x8e910  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_iESt10_Select1stIS8_ESt4lessIS5_ESaIS8_EE24_M_get_insert_unique_posERS7_
+     973  0x8eaa0  _ZNSt8_Rb_treeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4pairIKS5_iESt10_Select1stIS8_ESt4lessIS5_ESaIS8_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS8_ERS7_
+     974  0x8ed30  _ZNSt8_Rb_treeIiiSt9_IdentityIiESt4lessIiESaIiEE16_M_insert_uniqueIRKiEESt4pairISt17_Rb_tree_iteratorIiEbEOT_
+     975  0xa9360  _ZTI10CoreEngine
+     976  0xa9370  _ZTI10SuperPixel
+     977  0xa9390  _ZTI11SuperPixels
+     978  0xa93b0  _ZTI12IFloodFillerIiE
+     979  0xa93c0  _ZTI12PixelSegment
+     980  0xa93d0  _ZTI12VmController
+     981  0xa93f0  _ZTI14StateContainer
+     982  0xa9400  _ZTI15ContourSmoother
+     983  0xa9420  _ZTI15GenerativeModel
+     984  0xa9440  _ZTI15SubPixelSegment
+     985  0xa9460  _ZTI17IProgressCallback
+     986  0xa9470  _ZTI17PixelSegmentation
+     987  0xa9480  _ZTI19CancelTaskException
+     988  0xa94a0  _ZTI19CompatiblePdfWriter
+     989  0xa94c0  _ZTI20SubPixelSegmentation
+     990  0xa94e0  _ZTI6Writer
+     991  0xa94f0  _ZTI8AiWriter
+     992  0xa9510  _ZTI9DxfWriter
+     993  0xa9530  _ZTI9EpsWriter
+     994  0xa9550  _ZTI9SvgWriter
+     995  0xa9570  _ZTISt9exception
+     996  0xa9580  _ZTS10CoreEngine
+     997  0xa9590  _ZTS10SuperPixel
+     998  0xa95a0  _ZTS11SuperPixels
+     999  0xa95b0  _ZTS12IFloodFillerIiE
+    1000  0xa95d0  _ZTS12PixelSegment
+    1001  0xa95e0  _ZTS12VmController
+    1002  0xa95f0  _ZTS14StateContainer
+    1003  0xa9610  _ZTS15ContourSmoother
+    1004  0xa9630  _ZTS15GenerativeModel
+    1005  0xa9650  _ZTS15SubPixelSegment
+    1006  0xa9670  _ZTS17IProgressCallback
+    1007  0xa9690  _ZTS17PixelSegmentation
+    1008  0xa96b0  _ZTS19CancelTaskException
+    1009  0xa96d0  _ZTS19CompatiblePdfWriter
+    1010  0xa96f0  _ZTS20SubPixelSegmentation
+    1011  0xa9710  _ZTS6Writer
+    1012  0xa9720  _ZTS8AiWriter
+    1013  0xa9730  _ZTS9DxfWriter
+    1014  0xa9740  _ZTS9EpsWriter
+    1015  0xa9750  _ZTS9SvgWriter
+    1016  0xa9760  _ZTSSt9exception
+    1017  0xa9770  _ZTV10CoreEngine
+    1018  0xa97a0  _ZTV10SuperPixel
+    1019  0xa97d0  _ZTV11SuperPixels
+    1020  0xa9810  _ZTV12PixelSegment
+    1021  0xa9840  _ZTV12VmController
+    1022  0xa9870  _ZTV15ContourSmoother
+    1023  0xa98d0  _ZTV15GenerativeModel
+    1024  0xa98f0  _ZTV15SubPixelSegment
+    1025  0xa9920  _ZTV17PixelSegmentation
+    1026  0xa9940  _ZTV19CancelTaskException
+    1027  0xa9970  _ZTV19CompatiblePdfWriter
+    1028  0xa99d0  _ZTV20SubPixelSegmentation
+    1029  0xa9a10  _ZTV6Writer
+    1030  0xa9a70  _ZTV8AiWriter
+    1031  0xa9ad0  _ZTV9DxfWriter
+    1032  0xa9b30  _ZTV9EpsWriter
+    1033  0xa9b90  _ZTV9SvgWriter
+    1034  0x16a90  _ZlsRSoRK14ContourElement
+    1035  0x16a50  _ZlsRSoRK14CurveReference
+    1036  0x16b40  _ZlsRSoRK4Node
+    1037  0x18210  _ZlsRSoRK6Region
+    1038  0x16b00  _ZrsRSiR14ContourElement
+    1039  0x16a60  _ZrsRSiR14CurveReference
+    1040  0x16c50  _ZrsRSiR4Node
+    1041  0x1a5c0  _ZrsRSiR6Region
+    1042  0x71bb0  cblas_dgemm
+    1043  0x71b00  cblas_dgemv
+    1044  0xb61e0  debug_flag
+    1045  0xb61dc  debug_indent_level
+    1046  0xb61d8  debug_nested
+    1047  0xb61f0  debug_timers
+    1048  0xb6240  engine_timer
+    1049  0xb6520  ep_files
+    1050  0x90020  expanded_patterns
+    1051  0x90620  int_filetypes
+    1052  0x91480  length_penalty_weights_max
+    1053  0x914c0  length_penalty_weights_max_aa
+    1054  0x914a0  length_penalty_weights_min
+    1055  0x914e0  length_penalty_weights_min_aa
+    1056  0xb60c0  neighbors24_i
+    1057  0xb6060  neighbors24_j
+    1058  0xb6190  neighbors4_i
+    1059  0xb6180  neighbors4_j
+    1060  0xb61a0  neighbors4_k
+    1061  0xb6140  neighbors8_i
+    1062  0xb6120  neighbors8_j
+    1063  0xb6160  neighbors8_k
+    1064  0xb61c8  p_callback
+    1065  0xb61d0  p_debug_token
+    1066  0xb6200  p_engine
+    1067  0xb61c0  p_failure_callback
+    1068  0x91500  prior_strengths_max
+    1069  0x91540  prior_strengths_max_aa
+    1070  0x91520  prior_strengths_min
+    1071  0x91560  prior_strengths_min_aa
+    1072  0xb6480  progress_i
+    1073  0xb64a0  progress_measurer
+    1074  0xb64e0  progress_throttle
+    1075  0x90640  str_filetypes

@@ -1,0 +1,54 @@
+{
+  "slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "target_executed": false,
+  "functions": [
+    {
+      "name": "ContourSmoother::findAngularPriorPotential(int, int, int)",
+      "start": "0x1000c3430",
+      "end_exclusive": "0x1000c35a0",
+      "file": "ContourSmoother-findAngularPriorPotential.annotated.txt"
+    },
+    {
+      "name": "ContourSmoother::findAngularPriorGradient(int, int, int, sla::Vec2<double>&, sla::Vec2<double>&)",
+      "start": "0x1000c35a0",
+      "end_exclusive": "0x1000c3790",
+      "file": "ContourSmoother-findAngularPriorGradient.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::closePixel(int, int)",
+      "start": "0x1000ee260",
+      "end_exclusive": "0x1000ee480",
+      "file": "GenerativeModel-closePixel.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::computePixelColor(int, int)",
+      "start": "0x1000ee8c0",
+      "end_exclusive": "0x1000ef3d0",
+      "file": "GenerativeModel-computePixelColor.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::computePartialGradients(double*, double*, double*, int, double*, double*)",
+      "start": "0x1000ef480",
+      "end_exclusive": "0x1000ef500",
+      "file": "GenerativeModel-computePartialGradients.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::findPixelGradient(sla::Array1<sla::Vec2<double>>&, int, int)",
+      "start": "0x1000ef500",
+      "end_exclusive": "0x1000efd40",
+      "file": "GenerativeModel-findPixelGradient.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::findPotential()",
+      "start": "0x1000f0170",
+      "end_exclusive": "0x1000f0640",
+      "file": "GenerativeModel-findPotential.annotated.txt"
+    },
+    {
+      "name": "GenerativeModel::findGradient(sla::Array1<sla::Vec2<double>>&)",
+      "start": "0x1000f0650",
+      "end_exclusive": "0x1000f06f0",
+      "file": "GenerativeModel-findGradient.annotated.txt"
+    }
+  ]
+}

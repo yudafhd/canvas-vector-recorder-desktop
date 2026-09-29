@@ -1,0 +1,63 @@
+VmController::contourSmoothImage(VmVectorizationSettings const&)
+10011b6c0:	55	pushq	%rbp
+10011b6c1:	48 89 e5	movq	%rsp, %rbp
+10011b6c4:	41 57	pushq	%r15
+10011b6c6:	41 56	pushq	%r14
+10011b6c8:	53	pushq	%rbx
+10011b6c9:	50	pushq	%rax
+10011b6ca:	48 89 f3	movq	%rsi, %rbx
+10011b6cd:	49 89 fe	movq	%rdi, %r14
+10011b6d0:	c7 87 70 01 00 00 00 00 00 00	movl	$0x0, 0x170(%rdi)
+10011b6da:	48 81 c7 d8 01 00 00	addq	$0x1d8, %rdi
+10011b6e1:	48 8d 35 c0 1e 02 00	leaq	0x21ec0(%rip), %rsi ## literal pool for: ""
+10011b6e8:	e8 6f 08 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b6ed:	41 c6 86 74 01 00 00 00	movb	$0x0, 0x174(%r14)
+10011b6f5:	49 8b be 78 01 00 00	movq	0x178(%r14), %rdi
+10011b6fc:	be 05 00 00 00	movl	$0x5, %esi
+10011b701:	ba 01 00 00 00	movl	$0x1, %edx
+10011b706:	e8 75 10 fc ff	callq	__ZN10CoreEngine14initializeTaskE21StatusMessageTaskTypei ## CoreEngine::initializeTask(StatusMessageTaskType, int)
+10011b70b:	4c 89 f7	movq	%r14, %rdi
+10011b70e:	48 89 de	movq	%rbx, %rsi
+10011b711:	ba 03 00 00 00	movl	$0x3, %edx
+10011b716:	e8 25 e6 ff ff	callq	__ZN12VmController16populateSettingsERK23VmVectorizationSettingsi ## VmController::populateSettings(VmVectorizationSettings const&, int)
+10011b71b:	4d 8d be 38 01 00 00	leaq	0x138(%r14), %r15
+10011b722:	4c 89 f7	movq	%r14, %rdi
+10011b725:	48 89 de	movq	%rbx, %rsi
+10011b728:	4c 89 fa	movq	%r15, %rdx
+10011b72b:	e8 a0 00 00 00	callq	__ZN12VmController20needsToContourSmoothERK23VmVectorizationSettingsPNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE ## VmController::needsToContourSmooth(VmVectorizationSettings const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>*)
+10011b730:	84 c0	testb	%al, %al
+10011b732:	74 3a	je	0x10011b76e
+10011b734:	bf a8 1c 00 00	movl	$0x1ca8, %edi
+10011b739:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b740:	e8 0b 40 fa ff	callq	__ZN14BoundaryTracer7executeEv ## BoundaryTracer::execute()
+10011b745:	bf 68 1d 00 00	movl	$0x1d68, %edi
+10011b74a:	49 03 be 78 01 00 00	addq	0x178(%r14), %rdi
+10011b751:	be 01 00 00 00	movl	$0x1, %esi
+10011b756:	e8 25 8e fa ff	callq	__ZN15ContourSmoother7executeEb ## ContourSmoother::execute(bool)
+10011b75b:	49 8d be 50 01 00 00	leaq	0x150(%r14), %rdi
+10011b762:	48 8d 35 3f 1e 02 00	leaq	0x21e3f(%rip), %rsi ## literal pool for: ""
+10011b769:	e8 ee 07 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b76e:	41 c7 86 70 01 00 00 64 00 00 00	movl	$0x64, 0x170(%r14)
+10011b779:	41 80 be 74 01 00 00 01	cmpb	$0x1, 0x174(%r14)
+10011b781:	75 16	jne	0x10011b799
+10011b783:	48 8d 35 1e 1e 02 00	leaq	0x21e1e(%rip), %rsi ## literal pool for: ""
+10011b78a:	4c 89 ff	movq	%r15, %rdi
+10011b78d:	e8 ca 07 01 00	callq	0x10012bf5c ## symbol stub for: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc
+10011b792:	b8 02 00 00 00	movl	$0x2, %eax
+10011b797:	eb 11	jmp	0x10011b7aa
+10011b799:	49 83 c6 20	addq	$0x20, %r14
+10011b79d:	4c 89 f7	movq	%r14, %rdi
+10011b7a0:	48 89 de	movq	%rbx, %rsi
+10011b7a3:	e8 08 d2 ff ff	callq	__ZN23VmVectorizationSettings3setERKS_ ## VmVectorizationSettings::set(VmVectorizationSettings const&)
+10011b7a8:	31 c0	xorl	%eax, %eax
+10011b7aa:	48 83 c4 08	addq	$0x8, %rsp
+10011b7ae:	5b	popq	%rbx
+10011b7af:	41 5e	popq	%r14
+10011b7b1:	41 5f	popq	%r15
+10011b7b3:	5d	popq	%rbp
+10011b7b4:	c3	retq
+10011b7b5:	48 89 c7	movq	%rax, %rdi
+10011b7b8:	89 d6	movl	%edx, %esi
+10011b7ba:	e8 01 e5 00 00	callq	0x100129cc0
+10011b7bf:	eb 9a	jmp	0x10011b75b
+10011b7c1:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

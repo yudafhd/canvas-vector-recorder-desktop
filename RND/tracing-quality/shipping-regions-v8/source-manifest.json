@@ -1,0 +1,14 @@
+{
+  "source": "RND/aset_jpg/shipping-doodle.png",
+  "sha256": "7c1b1d6c705a1d098843619980f61351c32b845bebe4c9a80711a7917d3018e4",
+  "originalDimensions": [
+    2088,
+    514
+  ],
+  "processedDimensions": [
+    1024,
+    252
+  ],
+  "decodeCommand": "sips -Z 1024 -s format bmp RND/aset_jpg/shipping-doodle.png --out RND/tracing-quality/shipping-regions-v8/source.bmp",
+  "note": "sips resampling, not pixel-identical to browser canvas decoder"
+}

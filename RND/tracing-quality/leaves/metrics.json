@@ -1,0 +1,122 @@
+{
+  "input": "/Users/yuda/Documents/Projects/canvas-vector-recorder-desktop/RND/aset_jpg/Screenshot 2026-09-28 at 20.23.02.png",
+  "inputSha256": "a3c06767b8a76477c7c4abb33fd2b887fa0084895eda4ae1b67aa0a0f650dbfe",
+  "originalSize": [
+    830,
+    584
+  ],
+  "processSize": [
+    830,
+    584
+  ],
+  "results": [
+    {
+      "name": "before",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "9350688e182186bf6e46808738f42156c9926ccd0114e58cf1d8e246bdbbdd9c",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 11162,
+        "fullyTransparentInteriorPixels": 0
+      },
+      "colors": [
+        "#fffefe",
+        "#e34e1d",
+        "#7d782a",
+        "#3c1205",
+        "#8e3013",
+        "#5e591f"
+      ],
+      "contours": 1102,
+      "segments": 12408,
+      "bytes": 122649,
+      "milliseconds": 264
+    },
+    {
+      "name": "balanced",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.8,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "ff1aa6a81e79832ddde889ba3c44c6c00827fbdac03387c20a971831cadf0e66",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 13777,
+        "fullyTransparentInteriorPixels": 0
+      },
+      "colors": [
+        "#fffefe",
+        "#e34e1d",
+        "#7d782a",
+        "#3c1205",
+        "#8e3013",
+        "#5e591f"
+      ],
+      "contours": 1102,
+      "segments": 6412,
+      "bytes": 156763,
+      "milliseconds": 327
+    },
+    {
+      "name": "detail",
+      "options": {
+        "colors": 6,
+        "tolerance": 0.35,
+        "minArea": 0,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "ff1aa6a81e79832ddde889ba3c44c6c00827fbdac03387c20a971831cadf0e66",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 12448,
+        "fullyTransparentInteriorPixels": 0
+      },
+      "colors": [
+        "#fffefe",
+        "#e34e1d",
+        "#7d782a",
+        "#3c1205",
+        "#8e3013",
+        "#5e591f"
+      ],
+      "contours": 4317,
+      "segments": 24110,
+      "bytes": 543080,
+      "milliseconds": 426
+    },
+    {
+      "name": "simple",
+      "options": {
+        "colors": 6,
+        "tolerance": 1.6,
+        "minArea": 4,
+        "smooth": true,
+        "removeWhite": false
+      },
+      "engineSha256": "ff1aa6a81e79832ddde889ba3c44c6c00827fbdac03387c20a971831cadf0e66",
+      "coverage": {
+        "interiorPixelsBelowAlpha250": 13717,
+        "fullyTransparentInteriorPixels": 0
+      },
+      "colors": [
+        "#fffefe",
+        "#e34e1d",
+        "#7d782a",
+        "#3c1205",
+        "#8e3013",
+        "#5e591f"
+      ],
+      "contours": 1102,
+      "segments": 6284,
+      "bytes": 150817,
+      "milliseconds": 223
+    }
+  ]
+}

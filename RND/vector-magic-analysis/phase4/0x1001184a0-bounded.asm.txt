@@ -1,0 +1,249 @@
+1001184a0:	55	pushq	%rbp
+1001184a1:	48 89 e5	movq	%rsp, %rbp
+1001184a4:	41 57	pushq	%r15
+1001184a6:	41 56	pushq	%r14
+1001184a8:	53	pushq	%rbx
+1001184a9:	48 81 ec 28 01 00 00	subq	$0x128, %rsp
+1001184b0:	49 89 f6	movq	%rsi, %r14
+1001184b3:	48 89 fb	movq	%rdi, %rbx
+1001184b6:	4c 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %r15
+1001184bd:	4c 89 ff	movq	%r15, %rdi
+1001184c0:	e8 7b 41 f4 ff	callq	0x10005c640
+1001184c5:	41 8b b6 8c 00 00 00	movl	0x8c(%r14), %esi
+1001184cc:	4c 89 ff	movq	%r15, %rdi
+1001184cf:	e8 18 3b 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+1001184d4:	48 8d 35 79 53 02 00	leaq	0x25379(%rip), %rsi ## literal pool for: " "
+1001184db:	ba 01 00 00 00	movl	$0x1, %edx
+1001184e0:	48 89 c7	movq	%rax, %rdi
+1001184e3:	e8 48 4d f2 ff	callq	0x10003d230
+1001184e8:	49 8d b6 90 00 00 00	leaq	0x90(%r14), %rsi
+1001184ef:	48 8d 7d d0	leaq	-0x30(%rbp), %rdi
+1001184f3:	e8 b8 f1 ff ff	callq	__ZNK7VmColor5tokenEv ## VmColor::token() const
+1001184f8:	0f b6 55 d0	movzbl	-0x30(%rbp), %edx
+1001184fc:	f6 c2 01	testb	$0x1, %dl
+1001184ff:	74 0a	je	0x10011850b
+100118501:	48 8b 75 e0	movq	-0x20(%rbp), %rsi
+100118505:	48 8b 55 d8	movq	-0x28(%rbp), %rdx
+100118509:	eb 06	jmp	0x100118511
+10011850b:	d1 ea	shrl	%edx
+10011850d:	48 8d 75 d1	leaq	-0x2f(%rbp), %rsi
+100118511:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118518:	e8 13 4d f2 ff	callq	0x10003d230
+10011851d:	48 8d 35 30 53 02 00	leaq	0x25330(%rip), %rsi ## literal pool for: " "
+100118524:	ba 01 00 00 00	movl	$0x1, %edx
+100118529:	48 89 c7	movq	%rax, %rdi
+10011852c:	e8 ff 4c f2 ff	callq	0x10003d230
+100118531:	f6 45 d0 01	testb	$0x1, -0x30(%rbp)
+100118535:	74 09	je	0x100118540
+100118537:	48 8b 7d e0	movq	-0x20(%rbp), %rdi
+10011853b:	e8 0c 3b 01 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+100118540:	41 8b b6 a0 00 00 00	movl	0xa0(%r14), %esi
+100118547:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+10011854e:	e8 99 3a 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+100118553:	48 8d 35 fa 52 02 00	leaq	0x252fa(%rip), %rsi ## literal pool for: " "
+10011855a:	ba 01 00 00 00	movl	$0x1, %edx
+10011855f:	48 89 c7	movq	%rax, %rdi
+100118562:	e8 c9 4c f2 ff	callq	0x10003d230
+100118567:	48 8d 05 8f 87 02 00	leaq	0x2878f(%rip), %rax ## literal pool for: "adv"
+10011856e:	48 8d 35 c1 7d 04 00	leaq	0x47dc1(%rip), %rsi ## literal pool for: "bas"
+100118575:	41 80 7e 34 00	cmpb	$0x0, 0x34(%r14)
+10011857a:	48 0f 45 f0	cmovneq	%rax, %rsi
+10011857e:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118585:	ba 03 00 00 00	movl	$0x3, %edx
+10011858a:	e8 a1 4c f2 ff	callq	0x10003d230
+10011858f:	48 8d 35 be 52 02 00	leaq	0x252be(%rip), %rsi ## literal pool for: " "
+100118596:	ba 01 00 00 00	movl	$0x1, %edx
+10011859b:	48 89 c7	movq	%rax, %rdi
+10011859e:	e8 8d 4c f2 ff	callq	0x10003d230
+1001185a3:	31 d2	xorl	%edx, %edx
+1001185a5:	41 83 be 84 00 00 00 01	cmpl	$0x1, 0x84(%r14)
+1001185ad:	0f 94 c2	sete	%dl
+1001185b0:	48 8d 05 83 7d 04 00	leaq	0x47d83(%rip), %rax ## literal pool for: "fixp"
+1001185b7:	48 8d 35 81 7d 04 00	leaq	0x47d81(%rip), %rsi ## literal pool for: "flexp"
+1001185be:	48 0f 44 f0	cmoveq	%rax, %rsi
+1001185c2:	48 83 f2 05	xorq	$0x5, %rdx
+1001185c6:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+1001185cd:	e8 5e 4c f2 ff	callq	0x10003d230
+1001185d2:	48 8d 35 7b 52 02 00	leaq	0x2527b(%rip), %rsi ## literal pool for: " "
+1001185d9:	ba 01 00 00 00	movl	$0x1, %edx
+1001185de:	48 89 c7	movq	%rax, %rdi
+1001185e1:	e8 4a 4c f2 ff	callq	0x10003d230
+1001185e6:	48 8d 35 58 7d 04 00	leaq	0x47d58(%rip), %rsi ## literal pool for: "#c:"
+1001185ed:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+1001185f4:	ba 03 00 00 00	movl	$0x3, %edx
+1001185f9:	e8 32 4c f2 ff	callq	0x10003d230
+1001185fe:	41 8b b6 80 00 00 00	movl	0x80(%r14), %esi
+100118605:	48 89 c7	movq	%rax, %rdi
+100118608:	e8 df 39 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+10011860d:	48 8d 35 40 52 02 00	leaq	0x25240(%rip), %rsi ## literal pool for: " "
+100118614:	ba 01 00 00 00	movl	$0x1, %edx
+100118619:	48 89 c7	movq	%rax, %rdi
+10011861c:	e8 0f 4c f2 ff	callq	0x10003d230
+100118621:	48 8d 35 21 7d 04 00	leaq	0x47d21(%rip), %rsi ## literal pool for: "#advc:"
+100118628:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+10011862f:	ba 06 00 00 00	movl	$0x6, %edx
+100118634:	e8 f7 4b f2 ff	callq	0x10003d230
+100118639:	41 8b 76 08	movl	0x8(%r14), %esi
+10011863d:	48 89 c7	movq	%rax, %rdi
+100118640:	e8 a7 39 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+100118645:	48 8d 35 08 52 02 00	leaq	0x25208(%rip), %rsi ## literal pool for: " "
+10011864c:	ba 01 00 00 00	movl	$0x1, %edx
+100118651:	48 89 c7	movq	%rax, %rdi
+100118654:	e8 d7 4b f2 ff	callq	0x10003d230
+100118659:	48 8d 35 f0 7c 04 00	leaq	0x47cf0(%rip), %rsi ## literal pool for: "sens:"
+100118660:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118667:	ba 05 00 00 00	movl	$0x5, %edx
+10011866c:	e8 bf 4b f2 ff	callq	0x10003d230
+100118671:	41 8b 76 0c	movl	0xc(%r14), %esi
+100118675:	48 89 c7	movq	%rax, %rdi
+100118678:	e8 6f 39 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+10011867d:	48 8d 35 d0 51 02 00	leaq	0x251d0(%rip), %rsi ## literal pool for: " "
+100118684:	ba 01 00 00 00	movl	$0x1, %edx
+100118689:	48 89 c7	movq	%rax, %rdi
+10011868c:	e8 9f 4b f2 ff	callq	0x10003d230
+100118691:	48 8d 35 be 7c 04 00	leaq	0x47cbe(%rip), %rsi ## literal pool for: "aa-pal:"
+100118698:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+10011869f:	ba 07 00 00 00	movl	$0x7, %edx
+1001186a4:	e8 87 4b f2 ff	callq	0x10003d230
+1001186a9:	41 0f b6 76 10	movzbl	0x10(%r14), %esi
+1001186ae:	48 89 c7	movq	%rax, %rdi
+1001186b1:	e8 24 39 01 00	callq	0x10012bfda ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEb
+1001186b6:	48 8d 35 97 51 02 00	leaq	0x25197(%rip), %rsi ## literal pool for: " "
+1001186bd:	ba 01 00 00 00	movl	$0x1, %edx
+1001186c2:	48 89 c7	movq	%rax, %rdi
+1001186c5:	e8 66 4b f2 ff	callq	0x10003d230
+1001186ca:	48 8d 35 8d 7c 04 00	leaq	0x47c8d(%rip), %rsi ## literal pool for: "cmplx:"
+1001186d1:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+1001186d8:	ba 06 00 00 00	movl	$0x6, %edx
+1001186dd:	e8 4e 4b f2 ff	callq	0x10003d230
+1001186e2:	41 8b 76 14	movl	0x14(%r14), %esi
+1001186e6:	48 89 c7	movq	%rax, %rdi
+1001186e9:	e8 fe 38 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+1001186ee:	48 8d 35 5f 51 02 00	leaq	0x2515f(%rip), %rsi ## literal pool for: " "
+1001186f5:	ba 01 00 00 00	movl	$0x1, %edx
+1001186fa:	48 89 c7	movq	%rax, %rdi
+1001186fd:	e8 2e 4b f2 ff	callq	0x10003d230
+100118702:	48 8d 35 5c 7c 04 00	leaq	0x47c5c(%rip), %rsi ## literal pool for: "min#:"
+100118709:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118710:	ba 05 00 00 00	movl	$0x5, %edx
+100118715:	e8 16 4b f2 ff	callq	0x10003d230
+10011871a:	41 8b 76 18	movl	0x18(%r14), %esi
+10011871e:	48 89 c7	movq	%rax, %rdi
+100118721:	e8 c6 38 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+100118726:	48 8d 35 27 51 02 00	leaq	0x25127(%rip), %rsi ## literal pool for: " "
+10011872d:	ba 01 00 00 00	movl	$0x1, %edx
+100118732:	48 89 c7	movq	%rax, %rdi
+100118735:	e8 f6 4a f2 ff	callq	0x10003d230
+10011873a:	48 8d 35 2a 7c 04 00	leaq	0x47c2a(%rip), %rsi ## literal pool for: "aa-seg:"
+100118741:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118748:	ba 07 00 00 00	movl	$0x7, %edx
+10011874d:	e8 de 4a f2 ff	callq	0x10003d230
+100118752:	41 8b 76 1c	movl	0x1c(%r14), %esi
+100118756:	48 89 c7	movq	%rax, %rdi
+100118759:	e8 8e 38 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+10011875e:	48 8d 35 ef 50 02 00	leaq	0x250ef(%rip), %rsi ## literal pool for: " "
+100118765:	ba 01 00 00 00	movl	$0x1, %edx
+10011876a:	48 89 c7	movq	%rax, %rdi
+10011876d:	e8 be 4a f2 ff	callq	0x10003d230
+100118772:	48 8d 35 fa 7b 04 00	leaq	0x47bfa(%rip), %rsi ## literal pool for: "clust:"
+100118779:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118780:	ba 06 00 00 00	movl	$0x6, %edx
+100118785:	e8 a6 4a f2 ff	callq	0x10003d230
+10011878a:	41 0f b6 76 20	movzbl	0x20(%r14), %esi
+10011878f:	48 89 c7	movq	%rax, %rdi
+100118792:	e8 43 38 01 00	callq	0x10012bfda ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEb
+100118797:	48 8d 35 b6 50 02 00	leaq	0x250b6(%rip), %rsi ## literal pool for: " "
+10011879e:	ba 01 00 00 00	movl	$0x1, %edx
+1001187a3:	48 89 c7	movq	%rax, %rdi
+1001187a6:	e8 85 4a f2 ff	callq	0x10003d230
+1001187ab:	48 8d 35 c8 7b 04 00	leaq	0x47bc8(%rip), %rsi ## literal pool for: "smooth:"
+1001187b2:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+1001187b9:	ba 07 00 00 00	movl	$0x7, %edx
+1001187be:	e8 6d 4a f2 ff	callq	0x10003d230
+1001187c3:	41 8b 76 24	movl	0x24(%r14), %esi
+1001187c7:	48 89 c7	movq	%rax, %rdi
+1001187ca:	e8 1d 38 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+1001187cf:	48 8d 35 7e 50 02 00	leaq	0x2507e(%rip), %rsi ## literal pool for: " "
+1001187d6:	ba 01 00 00 00	movl	$0x1, %edx
+1001187db:	48 89 c7	movq	%rax, %rdi
+1001187de:	e8 4d 4a f2 ff	callq	0x10003d230
+1001187e3:	48 8d 35 98 7b 04 00	leaq	0x47b98(%rip), %rsi ## literal pool for: "det-c:"
+1001187ea:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+1001187f1:	ba 06 00 00 00	movl	$0x6, %edx
+1001187f6:	e8 35 4a f2 ff	callq	0x10003d230
+1001187fb:	41 8b 76 28	movl	0x28(%r14), %esi
+1001187ff:	48 89 c7	movq	%rax, %rdi
+100118802:	e8 e5 37 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+100118807:	48 8d 35 46 50 02 00	leaq	0x25046(%rip), %rsi ## literal pool for: " "
+10011880e:	ba 01 00 00 00	movl	$0x1, %edx
+100118813:	48 89 c7	movq	%rax, %rdi
+100118816:	e8 15 4a f2 ff	callq	0x10003d230
+10011881b:	48 8d 35 67 7b 04 00	leaq	0x47b67(%rip), %rsi ## literal pool for: "curve:"
+100118822:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118829:	ba 06 00 00 00	movl	$0x6, %edx
+10011882e:	e8 fd 49 f2 ff	callq	0x10003d230
+100118833:	41 8b 76 2c	movl	0x2c(%r14), %esi
+100118837:	48 89 c7	movq	%rax, %rdi
+10011883a:	e8 ad 37 01 00	callq	0x10012bfec ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEi
+10011883f:	48 8d 35 0e 50 02 00	leaq	0x2500e(%rip), %rsi ## literal pool for: " "
+100118846:	ba 01 00 00 00	movl	$0x1, %edx
+10011884b:	48 89 c7	movq	%rax, %rdi
+10011884e:	e8 dd 49 f2 ff	callq	0x10003d230
+100118853:	48 8d 35 36 7b 04 00	leaq	0x47b36(%rip), %rsi ## literal pool for: "aa-cont:"
+10011885a:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118861:	ba 08 00 00 00	movl	$0x8, %edx
+100118866:	e8 c5 49 f2 ff	callq	0x10003d230
+10011886b:	41 0f b6 76 30	movzbl	0x30(%r14), %esi
+100118870:	48 89 c7	movq	%rax, %rdi
+100118873:	e8 62 37 01 00	callq	0x10012bfda ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEb
+100118878:	48 8d 35 d5 4f 02 00	leaq	0x24fd5(%rip), %rsi ## literal pool for: " "
+10011887f:	ba 01 00 00 00	movl	$0x1, %edx
+100118884:	48 89 c7	movq	%rax, %rdi
+100118887:	e8 a4 49 f2 ff	callq	0x10003d230
+10011888c:	48 8d b5 d0 fe ff ff	leaq	-0x130(%rbp), %rsi
+100118893:	48 89 df	movq	%rbx, %rdi
+100118896:	e8 c5 53 f4 ff	callq	0x10005dc60
+10011889b:	48 8d 05 3e 8d 1d 00	leaq	0x1d8d3e(%rip), %rax
+1001188a2:	48 8d 48 18	leaq	0x18(%rax), %rcx
+1001188a6:	48 89 8d c8 fe ff ff	movq	%rcx, -0x138(%rbp)
+1001188ad:	4c 8d b5 38 ff ff ff	leaq	-0xc8(%rbp), %r14
+1001188b4:	48 83 c0 40	addq	$0x40, %rax
+1001188b8:	48 89 85 38 ff ff ff	movq	%rax, -0xc8(%rbp)
+1001188bf:	48 8d 05 f2 8d 1d 00	leaq	0x1d8df2(%rip), %rax
+1001188c6:	48 83 c0 10	addq	$0x10, %rax
+1001188ca:	48 89 85 d0 fe ff ff	movq	%rax, -0x130(%rbp)
+1001188d1:	f6 85 10 ff ff ff 01	testb	$0x1, -0xf0(%rbp)
+1001188d8:	74 0c	je	0x1001188e6
+1001188da:	48 8b bd 20 ff ff ff	movq	-0xe0(%rbp), %rdi
+1001188e1:	e8 66 37 01 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+1001188e6:	48 8b 05 f3 87 1d 00	movq	0x1d87f3(%rip), %rax ## literal pool symbol address: __ZTVNSt3__115basic_streambufIcNS_11char_traitsIcEEEE
+1001188ed:	48 83 c0 10	addq	$0x10, %rax
+1001188f1:	48 89 85 d0 fe ff ff	movq	%rax, -0x130(%rbp)
+1001188f8:	48 8d bd d8 fe ff ff	leaq	-0x128(%rbp), %rdi
+1001188ff:	e8 06 37 01 00	callq	0x10012c00a ## symbol stub for: __ZNSt3__16localeD1Ev
+100118904:	48 8d 35 25 8d 1d 00	leaq	0x1d8d25(%rip), %rsi
+10011890b:	48 83 c6 08	addq	$0x8, %rsi
+10011890f:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118916:	e8 b9 36 01 00	callq	0x10012bfd4 ## symbol stub for: __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEED2Ev
+10011891b:	4c 89 f7	movq	%r14, %rdi
+10011891e:	e8 ff 36 01 00	callq	0x10012c022 ## symbol stub for: __ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
+100118923:	48 89 d8	movq	%rbx, %rax
+100118926:	48 81 c4 28 01 00 00	addq	$0x128, %rsp
+10011892d:	5b	popq	%rbx
+10011892e:	41 5e	popq	%r14
+100118930:	41 5f	popq	%r15
+100118932:	5d	popq	%rbp
+100118933:	c3	retq
+100118934:	eb 14	jmp	0x10011894a
+100118936:	48 89 c3	movq	%rax, %rbx
+100118939:	f6 45 d0 01	testb	$0x1, -0x30(%rbp)
+10011893d:	74 0e	je	0x10011894d
+10011893f:	48 8b 7d e0	movq	-0x20(%rbp), %rdi
+100118943:	e8 04 37 01 00	callq	0x10012c04c ## symbol stub for: __ZdlPv
+100118948:	eb 03	jmp	0x10011894d
+10011894a:	48 89 c3	movq	%rax, %rbx
+10011894d:	48 8d bd c8 fe ff ff	leaq	-0x138(%rbp), %rdi
+100118954:	e8 77 3e f4 ff	callq	0x10005c7d0
+100118959:	48 89 df	movq	%rbx, %rdi
+10011895c:	e8 89 23 01 00	callq	0x10012acea ## symbol stub for: __Unwind_Resume
+100118961:	66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

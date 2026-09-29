@@ -1,0 +1,118 @@
+BezierFitter::segmentContours()
+LC_FUNCTION_STARTS: [0x1000b8950, 0x1000b8ae0)
+Numeric interpretations are candidates.
+1000b8950:	55	pushq	%rbp
+1000b8951:	48 89 e5	movq	%rsp, %rbp
+1000b8954:	41 57	pushq	%r15
+1000b8956:	41 56	pushq	%r14
+1000b8958:	41 55	pushq	%r13
+1000b895a:	41 54	pushq	%r12
+1000b895c:	53	pushq	%rbx
+1000b895d:	50	pushq	%rax
+1000b895e:	48 89 fb	movq	%rdi, %rbx
+1000b8961:	c7 47 68 00 00 00 00	movl	$0x0, 0x68(%rdi)
+1000b8968:	48 8b 47 28	movq	0x28(%rdi), %rax
+1000b896c:	8b 40 08	movl	0x8(%rax), %eax
+1000b896f:	89 45 d4	movl	%eax, -0x2c(%rbp)
+1000b8972:	85 c0	testl	%eax, %eax
+1000b8974:	0f 8e ea 00 00 00	jle	0x1000b8a64
+1000b897a:	45 31 ff	xorl	%r15d, %r15d
+1000b897d:	eb 0e	jmp	0x1000b898d
+1000b897f:	90	nop
+1000b8980:	41 ff c7	incl	%r15d
+1000b8983:	44 3b 7d d4	cmpl	-0x2c(%rbp), %r15d
+1000b8987:	0f 84 d7 00 00 00	je	0x1000b8a64
+1000b898d:	41 f6 c7 03	testb	$0x3, %r15b
+1000b8991:	75 15	jne	0x1000b89a8
+1000b8993:	bf 0a 00 00 00	movl	$0xa, %edi
+1000b8998:	be 01 00 00 00	movl	$0x1, %esi
+1000b899d:	44 89 fa	movl	%r15d, %edx
+1000b89a0:	8b 4d d4	movl	-0x2c(%rbp), %ecx
+1000b89a3:	e8 18 42 02 00	callq	__ZN10CoreEngine15triggerProgressE10ModuleTypeiii ## CoreEngine::triggerProgress(ModuleType, int, int, int)
+1000b89a8:	48 8b 7b 28	movq	0x28(%rbx), %rdi
+1000b89ac:	44 89 fe	movl	%r15d, %esi
+1000b89af:	e8 2c 09 00 00	callq	0x1000b92e0
+1000b89b4:	44 8b 70 20	movl	0x20(%rax), %r14d
+1000b89b8:	45 85 f6	testl	%r14d, %r14d
+1000b89bb:	7e c3	jle	0x1000b8980
+1000b89bd:	45 31 e4	xorl	%r12d, %r12d
+1000b89c0:	eb 16	jmp	0x1000b89d8
+1000b89c2:	66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)
+1000b89d0:	41 ff c4	incl	%r12d
+1000b89d3:	45 39 e6	cmpl	%r12d, %r14d
+1000b89d6:	74 a8	je	0x1000b8980
+1000b89d8:	48 8b 7b 28	movq	0x28(%rbx), %rdi
+1000b89dc:	44 89 fe	movl	%r15d, %esi
+1000b89df:	e8 fc 08 00 00	callq	0x1000b92e0
+1000b89e4:	48 8d 78 18	leaq	0x18(%rax), %rdi
+1000b89e8:	44 89 e6	movl	%r12d, %esi
+1000b89eb:	e8 50 09 00 00	callq	0x1000b9340
+1000b89f0:	8b 30	movl	(%rax), %esi
+1000b89f2:	48 8b 7b 30	movq	0x30(%rbx), %rdi
+1000b89f6:	e8 15 09 00 00	callq	0x1000b9310
+1000b89fb:	80 78 1c 00	cmpb	$0x0, 0x1c(%rax)
+1000b89ff:	75 cf	jne	0x1000b89d0
+1000b8a01:	48 89 df	movq	%rbx, %rdi
+1000b8a04:	44 89 fe	movl	%r15d, %esi
+1000b8a07:	44 89 e2	movl	%r12d, %edx
+1000b8a0a:	b9 ff ff ff ff	movl	$0xffffffff, %ecx
+1000b8a0f:	45 31 c0	xorl	%r8d, %r8d
+1000b8a12:	e8 59 09 00 00	callq	__ZN12BezierFitter13followContourEiiih ## BezierFitter::followContour(int, int, int, unsigned char)
+1000b8a17:	41 89 c5	movl	%eax, %r13d
+1000b8a1a:	48 89 df	movq	%rbx, %rdi
+1000b8a1d:	44 89 fe	movl	%r15d, %esi
+1000b8a20:	44 89 e2	movl	%r12d, %edx
+1000b8a23:	b9 01 00 00 00	movl	$0x1, %ecx
+1000b8a28:	45 31 c0	xorl	%r8d, %r8d
+1000b8a2b:	e8 40 09 00 00	callq	__ZN12BezierFitter13followContourEiiih ## BezierFitter::followContour(int, int, int, unsigned char)
+1000b8a30:	89 c6	movl	%eax, %esi
+1000b8a32:	41 8d 45 01	leal	0x1(%r13), %eax
+1000b8a36:	31 c9	xorl	%ecx, %ecx
+1000b8a38:	39 c6	cmpl	%eax, %esi
+1000b8a3a:	0f 4f c6	cmovgl	%esi, %eax
+1000b8a3d:	0f 9c c1	setl	%cl
+1000b8a40:	29 f0	subl	%esi, %eax
+1000b8a42:	29 c8	subl	%ecx, %eax
+1000b8a44:	31 d2	xorl	%edx, %edx
+1000b8a46:	41 f7 f6	divl	%r14d
+1000b8a49:	01 c1	addl	%eax, %ecx
+1000b8a4b:	41 0f af ce	imull	%r14d, %ecx
+1000b8a4f:	01 f1	addl	%esi, %ecx
+1000b8a51:	48 89 df	movq	%rbx, %rdi
+1000b8a54:	44 89 fe	movl	%r15d, %esi
+1000b8a57:	44 89 ea	movl	%r13d, %edx
+1000b8a5a:	e8 d1 09 00 00	callq	__ZN12BezierFitter13selectKeepersEiii ## BezierFitter::selectKeepers(int, int, int)
+1000b8a5f:	e9 6c ff ff ff	jmp	0x1000b89d0
+1000b8a64:	4c 8b 73 38	movq	0x38(%rbx), %r14
+1000b8a68:	41 c7 46 08 00 00 00 00	movl	$0x0, 0x8(%r14)
+1000b8a70:	49 8b 3e	movq	(%r14), %rdi
+1000b8a73:	48 85 ff	testq	%rdi, %rdi
+1000b8a76:	74 0c	je	0x1000b8a84
+1000b8a78:	e8 c9 35 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000b8a7d:	49 c7 06 00 00 00 00	movq	$0x0, (%r14)
+1000b8a84:	4c 8b 73 38	movq	0x38(%rbx), %r14
+1000b8a88:	8b 5b 68	movl	0x68(%rbx), %ebx
+1000b8a8b:	41 3b 5e 08	cmpl	0x8(%r14), %ebx
+1000b8a8f:	74 33	je	0x1000b8ac4
+1000b8a91:	49 8b 3e	movq	(%r14), %rdi
+1000b8a94:	48 85 ff	testq	%rdi, %rdi
+1000b8a97:	74 14	je	0x1000b8aad
+1000b8a99:	41 c7 46 08 00 00 00 00	movl	$0x0, 0x8(%r14)
+1000b8aa1:	e8 a0 35 07 00	callq	0x10012c046 ## symbol stub for: __ZdaPv
+1000b8aa6:	49 c7 06 00 00 00 00	movq	$0x0, (%r14)
+1000b8aad:	41 89 5e 08	movl	%ebx, 0x8(%r14)
+1000b8ab1:	85 db	testl	%ebx, %ebx
+1000b8ab3:	7e 0f	jle	0x1000b8ac4
+1000b8ab5:	48 c1 e3 06	shlq	$0x6, %rbx
+1000b8ab9:	48 89 df	movq	%rbx, %rdi
+1000b8abc:	e8 af 35 07 00	callq	0x10012c070 ## symbol stub for: __Znam
+1000b8ac1:	49 89 06	movq	%rax, (%r14)
+1000b8ac4:	48 83 c4 08	addq	$0x8, %rsp
+1000b8ac8:	5b	popq	%rbx
+1000b8ac9:	41 5c	popq	%r12
+1000b8acb:	41 5d	popq	%r13
+1000b8acd:	41 5e	popq	%r14
+1000b8acf:	41 5f	popq	%r15
+1000b8ad1:	5d	popq	%rbp
+1000b8ad2:	c3	retq
+1000b8ad3:	66 66 66 66 2e 0f 1f 84 00 00 00 00 00	nopw	%cs:(%rax,%rax)

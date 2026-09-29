@@ -1,0 +1,10 @@
+{
+  "binary_sha256": "84ca4e88b15ec4e0bdecc7c2c1277a3d913dde38defacbdcb67d60fa3d07bc81",
+  "slice_sha256": "95fc8df30ef8569736580e022ae28c910083b1a5f2a037db356dbb5224099fb8",
+  "architecture": "x86_64",
+  "function_starts": 3757,
+  "bounded_functions": 30,
+  "presets": 10,
+  "instructions": 308973,
+  "reference_audit_scope": "Direct rel32 CALL/JMP only; excludes indirect calls and data pointers"
+}

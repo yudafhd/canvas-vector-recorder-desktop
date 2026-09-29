@@ -1,0 +1,72 @@
+BezierFitter::mergeAndSwapLoop(int, int, int)
+LC_FUNCTION_STARTS: [0x1000bbdc0, 0x1000bbeb0)
+Numeric interpretations are candidates.
+1000bbdc0:	55	pushq	%rbp
+1000bbdc1:	48 89 e5	movq	%rsp, %rbp
+1000bbdc4:	41 57	pushq	%r15
+1000bbdc6:	41 56	pushq	%r14
+1000bbdc8:	41 54	pushq	%r12
+1000bbdca:	53	pushq	%rbx
+1000bbdcb:	48 83 ec 10	subq	$0x10, %rsp
+1000bbdcf:	48 89 fb	movq	%rdi, %rbx
+1000bbdd2:	e8 09 01 00 00	callq	__ZN12BezierFitter19initializeFragmentsEiii ## BezierFitter::initializeFragments(int, int, int)
+1000bbdd7:	f2 0f 10 0b	movsd	(%rbx), %xmm1
+1000bbddb:	f2 0f 10 43 08	movsd	0x8(%rbx), %xmm0
+1000bbde0:	f2 0f 11 4b 70	movsd	%xmm1, 0x70(%rbx)
+1000bbde5:	f2 0f 5e c1	divsd	%xmm1, %xmm0
+1000bbde9:	e8 90 03 07 00	callq	0x10012c17e ## symbol stub for: _log
+1000bbdee:	44 8b 73 18	movl	0x18(%rbx), %r14d
+1000bbdf2:	0f 57 c9	xorps	%xmm1, %xmm1
+1000bbdf5:	f2 41 0f 2a ce	cvtsi2sd	%r14d, %xmm1
+1000bbdfa:	f2 0f 59 4b 10	mulsd	0x10(%rbx), %xmm1
+1000bbdff:	f2 0f 5e c1	divsd	%xmm1, %xmm0
+1000bbe03:	f2 0f 5a c0	cvtsd2ss	%xmm0, %xmm0
+1000bbe07:	e8 18 03 07 00	callq	0x10012c124 ## symbol stub for: _expf
+1000bbe0c:	45 85 f6	testl	%r14d, %r14d
+1000bbe0f:	0f 8e 88 00 00 00	jle	0x1000bbe9d
+1000bbe15:	f3 0f 5a c0	cvtss2sd	%xmm0, %xmm0
+1000bbe19:	f2 0f 11 45 d8	movsd	%xmm0, -0x28(%rbp)
+1000bbe1e:	4c 8d 73 58	leaq	0x58(%rbx), %r14
+1000bbe22:	45 31 e4	xorl	%r12d, %r12d
+1000bbe25:	eb 1b	jmp	0x1000bbe42
+1000bbe27:	66 0f 1f 84 00 00 00 00 00	nopw	(%rax,%rax)
+1000bbe30:	f2 0f 10 43 08	movsd	0x8(%rbx), %xmm0
+1000bbe35:	f2 0f 11 43 70	movsd	%xmm0, 0x70(%rbx)
+1000bbe3a:	41 ff c4	incl	%r12d
+1000bbe3d:	41 39 c4	cmpl	%eax, %r12d
+1000bbe40:	7d 5b	jge	0x1000bbe9d
+1000bbe42:	4c 89 f7	movq	%r14, %rdi
+1000bbe45:	31 f6	xorl	%esi, %esi
+1000bbe47:	e8 64 00 00 00	callq	0x1000bbeb0
+1000bbe4c:	49 89 c7	movq	%rax, %r15
+1000bbe4f:	90	nop
+1000bbe50:	49 8b 47 08	movq	0x8(%r15), %rax
+1000bbe54:	48 85 c0	testq	%rax, %rax
+1000bbe57:	74 1b	je	0x1000bbe74
+1000bbe59:	48 83 78 08 00	cmpq	$0x0, 0x8(%rax)
+1000bbe5e:	74 14	je	0x1000bbe74
+1000bbe60:	48 89 df	movq	%rbx, %rdi
+1000bbe63:	4c 89 fe	movq	%r15, %rsi
+1000bbe66:	e8 55 01 00 00	callq	__ZN12BezierFitter20considerMergeAndSwapEP8Fragment ## BezierFitter::considerMergeAndSwap(Fragment*)
+1000bbe6b:	4d 8b 7f 08	movq	0x8(%r15), %r15
+1000bbe6f:	4d 85 ff	testq	%r15, %r15
+1000bbe72:	75 dc	jne	0x1000bbe50
+1000bbe74:	0f 57 c0	xorps	%xmm0, %xmm0
+1000bbe77:	f2 41 0f 2a c4	cvtsi2sd	%r12d, %xmm0
+1000bbe7c:	8b 43 18	movl	0x18(%rbx), %eax
+1000bbe7f:	0f 57 c9	xorps	%xmm1, %xmm1
+1000bbe82:	f2 0f 2a c8	cvtsi2sd	%eax, %xmm1
+1000bbe86:	f2 0f 59 4b 10	mulsd	0x10(%rbx), %xmm1
+1000bbe8b:	66 0f 2e c8	ucomisd	%xmm0, %xmm1
+1000bbe8f:	76 9f	jbe	0x1000bbe30
+1000bbe91:	f2 0f 10 43 70	movsd	0x70(%rbx), %xmm0
+1000bbe96:	f2 0f 59 45 d8	mulsd	-0x28(%rbp), %xmm0
+1000bbe9b:	eb 98	jmp	0x1000bbe35
+1000bbe9d:	48 83 c4 10	addq	$0x10, %rsp
+1000bbea1:	5b	popq	%rbx
+1000bbea2:	41 5c	popq	%r12
+1000bbea4:	41 5e	popq	%r14
+1000bbea6:	41 5f	popq	%r15
+1000bbea8:	5d	popq	%rbp
+1000bbea9:	c3	retq
+1000bbeaa:	66 0f 1f 44 00 00	nopw	(%rax,%rax)

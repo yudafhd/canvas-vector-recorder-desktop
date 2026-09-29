@@ -31,6 +31,7 @@ import {
 } from 'lucide';
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import { initDiscover } from './discover';
+import { initTracing } from './tracing/page';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgAsset, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -87,6 +88,9 @@ const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
 const recorderMainTab = $<HTMLButtonElement>('recorderMainTab');
+const tracingMainTab = $<HTMLButtonElement>('tracingMainTab');
+const tracingView = $('tracingView');
+let tracingInitialized = false;
 const targetMainTabs = $('targetMainTabs');
 const targetTabsCount = $('targetTabsCount');
 const targetView = $('targetView');
@@ -114,7 +118,7 @@ let targetOpen = false;
 const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
-type MainTab = 'recorder' | 'target';
+type MainTab = 'recorder' | 'target' | 'tracing';
 const MAX_TARGET_TABS = 5;
 let activeMainTab: MainTab = 'recorder';
 let activeTargetId: string | null = null;
@@ -680,11 +684,16 @@ function renderTargetTabs(state: TargetTabsState): void {
 function setMainTab(tab: MainTab): void {
   activeMainTab = tab;
   const showTarget = tab === 'target' && targetOpen && Boolean(activeTargetId);
-  workspaceView.hidden = showTarget;
+  const showTracing = tab === 'tracing';
+  if (showTracing && !tracingInitialized) { initTracing(tracingView); tracingInitialized = true; }
+  workspaceView.hidden = showTarget || showTracing;
+  tracingView.hidden = !showTracing;
   targetView.hidden = !showTarget;
   targetView.classList.toggle('mac-target-view', isMac && showTarget);
-  recorderMainTab.classList.toggle('active', !showTarget);
-  recorderMainTab.setAttribute('aria-selected', String(!showTarget));
+  recorderMainTab.classList.toggle('active', !showTarget && !showTracing);
+  recorderMainTab.setAttribute('aria-selected', String(!showTarget && !showTracing));
+  tracingMainTab.classList.toggle('active', showTracing);
+  tracingMainTab.setAttribute('aria-selected', String(showTracing));
   targetTabs.forEach(target => {
     const button = targetMainTabs.querySelector<HTMLButtonElement>(`button[data-target-id="${target.id}"]`);
     if (button) {
@@ -1681,14 +1690,8 @@ function renderLicense(s: LicenseStatus): void {
     discoverControl?.setEnabled(true);
     landingView.hidden = true;
     activationView.hidden = true;
-    if (isWindows || isMac) {
-      mainTabs.hidden = false;
-      setMainTab(activeMainTab);
-    } else {
-      mainTabs.hidden = true;
-      targetView.hidden = true;
-      workspaceView.hidden = false;
-    }
+    mainTabs.hidden = false;
+    setMainTab(activeMainTab);
     setAutomaticUpdateChecks(true);
   } else {
     discoverControl?.setEnabled(false);
@@ -1696,6 +1699,7 @@ function renderLicense(s: LicenseStatus): void {
     landingView.hidden = false;
     landingStatus.textContent = s.message || 'Lisensi belum aktif. Silakan aktivasi untuk melanjutkan.';
     workspaceView.hidden = true;
+    tracingView.hidden = true;
     mainTabs.hidden = true;
     targetView.hidden = true;
     activationView.hidden = false;
@@ -1713,6 +1717,7 @@ async function loadLicense(): Promise<void> {
     landingStatus.textContent = `Gagal memeriksa lisensi: ${errorMessage(error)}`;
     activationView.hidden = false;
     workspaceView.hidden = true;
+    tracingView.hidden = true;
     mainTabs.hidden = true;
     targetView.hidden = true;
     status(activationStatus, `Gagal membaca status lisensi: ${errorMessage(error)}`, 'error');
@@ -2049,7 +2054,7 @@ async function openTarget(): Promise<void> {
 async function closeTarget(): Promise<void> {
   await invoke('close_target_window');
   targetOpen = false;
-  mainTabs.hidden = !(isWindows || isMac);
+  mainTabs.hidden = false;
   renderTargetTabs({ active_id: null, tabs: [] });
   setMainTab('recorder');
   updateOpenTargetButton();
@@ -2066,8 +2071,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
-  mainTabs.hidden = !(isWindows || isMac);
-  if (isWindows || isMac) setMainTab('recorder');
+  mainTabs.hidden = true;
   const activationForm = $<HTMLFormElement>('activationForm');
   const activationSubmit = activationForm.querySelector<HTMLButtonElement>('button[type="submit"]');
   activationForm.addEventListener('submit', async event => {
@@ -2084,6 +2088,7 @@ document.addEventListener('DOMContentLoaded', () => {
     finally { activationForm.removeAttribute('aria-busy'); if (activationSubmit) { activationSubmit.disabled = false; activationSubmit.classList.remove('is-loading'); activationSubmit.textContent = 'Aktivasi sekarang'; } }
   });
   recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
+  tracingMainTab.addEventListener('click', () => setMainTab('tracing'));
   $('remindMeButton').addEventListener('click', () => openMotivationModal());
   $('closeMotivationModal').addEventListener('click', () => closeMotivationModal());
   $('dismissMotivationModal').addEventListener('click', () => closeMotivationModal());
