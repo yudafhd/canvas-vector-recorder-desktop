@@ -27,16 +27,34 @@ export async function exportSource(item: BatchItem, s: GlobalExportSettings): Pr
 }
 
 export function initGlobalExportSettings(root: HTMLElement): () => GlobalExportSettings {
-  root.innerHTML = `<details class="trace-global-export"><summary>Pengaturan ekspor global</summary>
-    <div class="trace-export-fields">
-      <label>Rasio artboard<select id="traceExportRatio"><option value="source">Source</option>${['1:1','4:5','4:3','3:2','2:3','16:9','custom'].map(r => `<option value="${r}">${r === 'custom' ? 'Custom' : r}</option>`).join('')}</select></label>
-      <label id="traceExportCustom" hidden>Rasio custom<input id="traceExportCustomRatio" value="1:1" placeholder="Lebar:tinggi"></label>
-      <label>Min MP<input id="traceExportMin" type="number" min="15" max="64" step="0.1" value="15"></label>
-      <label>Max MP<input id="traceExportMax" type="number" min="15" max="65" step="0.1" value="65"></label>
-      <label>Skala artwork (%)<input id="traceExportScale" type="number" min="50" max="300" step="10" value="100"></label>
-      <label>Latar putih<select id="traceExportBackground"><option value="keep">Pertahankan latar putih</option><option value="remove">Hapus latar putih</option></select></label>
-    </div>
-    <p id="traceExportError" role="status" class="trace-help"></p></details>`;
+  root.innerHTML = `<div id="traceExportSheetOverlay" class="trace-sheet-overlay" hidden>
+    <aside class="trace-sheet" role="dialog" aria-modal="true" aria-labelledby="traceExportSheetTitle">
+      <header class="trace-sheet-header">
+        <div class="trace-sheet-title-wrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="14" cy="21" r="2"/><circle cx="8" cy="14" r="2"/><circle cx="17" cy="7" r="2"/></svg>
+          <h2 id="traceExportSheetTitle">Pengaturan ekspor global</h2>
+        </div>
+        <button type="button" id="traceExportSheetClose" class="trace-sheet-close" title="Tutup" aria-label="Tutup panel pengaturan ekspor">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="trace-sheet-content">
+        <p class="trace-sheet-desc">Pengaturan ini diterapkan pada ekspor vektor SVG dan EPS.</p>
+        <div class="trace-export-fields">
+          <label>Rasio artboard<select id="traceExportRatio"><option value="source">Source</option>${['1:1','4:5','4:3','3:2','2:3','16:9','custom'].map(r => `<option value="${r}">${r === 'custom' ? 'Custom' : r}</option>`).join('')}</select></label>
+          <label id="traceExportCustom" hidden>Rasio custom<input id="traceExportCustomRatio" value="1:1" placeholder="Lebar:tinggi"></label>
+          <label>Min MP<input id="traceExportMin" type="number" min="15" max="64" step="0.1" value="15"></label>
+          <label>Max MP<input id="traceExportMax" type="number" min="15" max="65" step="0.1" value="65"></label>
+          <label>Skala artwork (%)<input id="traceExportScale" type="number" min="50" max="300" step="10" value="100"></label>
+          <label>Latar putih<select id="traceExportBackground"><option value="keep">Pertahankan latar putih</option><option value="remove">Hapus latar putih</option></select></label>
+        </div>
+        <p id="traceExportError" role="status" class="trace-help"></p>
+      </div>
+      <footer class="trace-sheet-footer">
+        <button type="button" id="traceExportSheetDone" class="primary trace-sheet-done-btn">Selesai</button>
+      </footer>
+    </aside>
+  </div>`;
   const get = (id: string) => root.querySelector<HTMLInputElement | HTMLSelectElement>(`#${id}`)!;
   try {
     const saved = JSON.parse(localStorage.getItem('cvr-offline-export-settings') ?? 'null');
@@ -51,5 +69,34 @@ export function initGlobalExportSettings(root: HTMLElement): () => GlobalExportS
     try { const s = read(); root.querySelector('#traceExportError')!.textContent = ''; try { localStorage.setItem('cvr-offline-export-settings', JSON.stringify(s)); } catch {} }
     catch (e) { root.querySelector('#traceExportError')!.textContent = (e as Error).message; }
   };
-  root.addEventListener('input', update); update(); return read;
+  root.addEventListener('input', update);
+  update();
+
+  const overlay = root.querySelector<HTMLElement>('#traceExportSheetOverlay')!;
+  const openSheet = () => {
+    overlay.hidden = false;
+    get('traceExportRatio')?.focus();
+  };
+  const closeSheet = () => {
+    overlay.hidden = true;
+    document.querySelector<HTMLButtonElement>('#traceGlobalExportBtn')?.focus();
+  };
+
+  root.querySelector('#traceExportSheetClose')?.addEventListener('click', closeSheet);
+  root.querySelector('#traceExportSheetDone')?.addEventListener('click', closeSheet);
+  overlay.addEventListener('click', event => {
+    if (event.target === overlay) closeSheet();
+  });
+  window.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !overlay.hidden) closeSheet();
+  });
+  document.addEventListener('click', event => {
+    const btn = (event.target as HTMLElement | null)?.closest('#traceGlobalExportBtn');
+    if (btn) {
+      event.preventDefault();
+      openSheet();
+    }
+  });
+
+  return read;
 }

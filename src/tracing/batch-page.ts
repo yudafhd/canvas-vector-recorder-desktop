@@ -55,6 +55,7 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
         </button>
       </div>
     </div>
+    <button type="button" id="traceGlobalExportBtn" class="trace-button-tonal" title="Pengaturan ekspor global" aria-label="Pengaturan ekspor global">${icon('<line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="14" cy="21" r="2"/><circle cx="8" cy="14" r="2"/><circle cx="17" cy="7" r="2"/>')}<span>Pengaturan ekspor</span></button>
     <button type="button" id="traceBatchClear" class="trace-button-quiet">${icon('<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/>')}<span>Semua</span></button>
   </div>
   <div class="trace-library-controls">

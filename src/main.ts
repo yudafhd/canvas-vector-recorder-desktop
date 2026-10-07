@@ -683,6 +683,7 @@ function renderTargetTabs(state: TargetTabsState): void {
 function updateMainNavigation(): void {
   const online = activeMainTab === 'recorder' || activeMainTab === 'target';
   recorderMainTab.hidden = !online;
+  tracingMainTab.hidden = online;
   $('newTargetMainTab').hidden = !online;
   targetMainTabs.hidden = !online || !targetTabs.length;
   targetTabsCount.hidden = !online || !targetTabs.length;
@@ -701,6 +702,7 @@ function setMainTab(tab: MainTab): void {
   tracingView.hidden = !showTracing;
   targetView.hidden = !showTarget;
   targetView.classList.toggle('mac-target-view', isMac && showTarget);
+  targetView.classList.toggle('windows-target-view', isWindows && showTarget);
   recorderMainTab.classList.toggle('active', !showHome && !showTarget && !showTracing);
   recorderMainTab.setAttribute('aria-selected', String(!showHome && !showTarget && !showTracing));
   tracingMainTab.classList.toggle('active', showTracing);
@@ -2108,6 +2110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
+  if (isWindows) targetView.classList.add('windows-target-view');
   mainTabs.hidden = true;
   const activationForm = $<HTMLFormElement>('activationForm');
   const activationSubmit = activationForm.querySelector<HTMLButtonElement>('button[type="submit"]');
