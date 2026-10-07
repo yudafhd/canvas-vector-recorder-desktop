@@ -214,20 +214,19 @@
           <div class="panel-divider"></div>
 
           <section class="surfaces-section">
-            <div class="surface-heading">
-              <h2 class="section-label">DETECTED <span id="detectedCount" class="section-count">0</span></h2>
+            <div class="asset-tabs-row">
+              <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
+                <button id="canvasAssetTab" class="active" type="button" role="tab" aria-selected="true">Canvas <span
+                    id="canvasCount">0</span></button>
+                <button id="svgAssetTab" type="button" role="tab" aria-selected="false">SVG <span
+                    id="svgCount">0</span></button>
+              </div>
               <div class="surface-actions">
                 <button id="refreshSurfacesButton" type="button" title="Refresh daftar asset"
                   aria-label="Refresh daftar asset"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
                 <button id="clearSurfacesButton" type="button" title="Hapus daftar asset"
                   aria-label="Hapus daftar asset"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div>
-            <div class="asset-tabs" role="tablist" aria-label="Jenis asset">
-              <button id="canvasAssetTab" class="active" type="button" role="tab" aria-selected="true">Canvas <span
-                  id="canvasCount">0</span></button>
-              <button id="svgAssetTab" type="button" role="tab" aria-selected="false">SVG <span
-                  id="svgCount">0</span></button>
             </div>
             <div id="canvasList" class="canvas-list" role="tabpanel">
               <p class="muted">Belum ada Canvas.</p>
@@ -335,6 +334,10 @@
           <header class="preview-header">
             <h2 id="previewTitle">Preview</h2>
             <div class="preview-tools" aria-label="Kontrol preview">
+              <label class="check-label preview-tool-wireframe" title="Tampilkan wireframe / outline vektor">
+                <input id="wireframePreview" type="checkbox">
+                <span>Wireframe</span>
+              </label>
               <button id="resetPreview" class="preview-reset-button" type="button" title="Reset zoom dan posisi canvas">
                 <i data-lucide="rotate-cw" aria-hidden="true"></i><span>Reset</span>
               </button>
@@ -463,20 +466,9 @@
     </div>
   </div>
   <div id="motivationModal" class="motivation-modal" role="dialog" aria-modal="true"
-    aria-labelledby="motivationModalTag" hidden>
+    aria-labelledby="motivationQuoteBox" hidden>
     <div class="motivation-card">
       <div class="motivation-glow" aria-hidden="true"></div>
-      <header class="motivation-header">
-        <span id="motivationModalTag" class="motivation-tag">
-          <!-- <i data-lucide="sparkles" aria-hidden="true"></i> -->
-          <span>Reminder</span>
-        </span>
-        <button id="closeMotivationModal" class="motivation-close-btn" type="button" title="Tutup modal"
-          aria-label="Tutup modal">
-          <i data-lucide="x" aria-hidden="true"></i>
-        </button>
-      </header>
-
       <div class="motivation-body">
         <div class="motivation-quote-icon" aria-hidden="true">“</div>
         <blockquote id="motivationQuoteBox" class="motivation-quote-box">
