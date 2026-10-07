@@ -123,6 +123,7 @@ let detectedAssets: CanvasDetection[] = [];
 let detectedSvgAssets: SvgAsset[] = [];
 const removedColorsByAsset = new Map<string, Set<string>>();
 let objectEraserActive = false;
+let wireframeModeActive = false;
 const markedElements = new Set<string>();
 const erasedElementsByAsset = new Map<string, Set<string>>();
 let pointerDownPos: { x: number; y: number } | null = null;
@@ -1072,6 +1073,18 @@ function toggleObjectEraserMode(enabled: boolean): void {
   }
 }
 
+function toggleWireframeMode(enabled: boolean): void {
+  wireframeModeActive = enabled;
+  const checkbox = document.getElementById('wireframePreview') as HTMLInputElement | null;
+  if (checkbox && checkbox.checked !== enabled) {
+    checkbox.checked = enabled;
+  }
+  const stage = $('previewStage');
+  if (stage) {
+    stage.classList.toggle('wireframe-mode', enabled);
+  }
+}
+
 function handleObjectEraserClick(clientX: number, clientY: number): void {
   const elementUnder = document.elementFromPoint(clientX, clientY);
   const target = elementUnder?.closest('[data-eraser-id]');
@@ -1662,7 +1675,10 @@ function updateAssetTabs(): void {
   svgList.hidden = canvasActive;
   $('canvasCount').textContent = String(detectedAssets.filter(item => item.shapes > 0 || item.gap_fillers > 0).length);
   $('svgCount').textContent = String(detectedSvgAssets.length);
-  $('detectedCount').textContent = String(detectedAssets.filter(item => item.shapes > 0 || item.gap_fillers > 0).length + detectedSvgAssets.length);
+  const detectedCount = document.getElementById('detectedCount');
+  if (detectedCount) {
+    detectedCount.textContent = String(detectedAssets.filter(item => item.shapes > 0 || item.gap_fillers > 0).length + detectedSvgAssets.length);
+  }
 }
 
 function scheduleThumbnailRefresh(items: CanvasDetection[]): void {
@@ -1957,6 +1973,7 @@ function renderSvgToPreviewStage(svgText: string): void {
   svgEl.setAttribute('height', '100%');
   wrap.appendChild(svgEl);
   stage.replaceChildren(wrap);
+  stage.classList.toggle('wireframe-mode', wireframeModeActive);
   updatePreviewZoomControl();
 }
 
@@ -1979,7 +1996,7 @@ async function renderPreview(request: number): Promise<void> {
     lastSvg = { ...result, filename };
     renderSvgToPreviewStage(result.svg);
     updateObjectEraserUI();
-    $('previewTitle').textContent = 'Source SVG'; updateFilenameDisplay();
+    $('previewTitle').textContent = 'Vector Preview'; updateFilenameDisplay();
     $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
     $('exportSvg').removeAttribute('disabled');
     status(workspaceStatus, 'vektor ditemukan.', 'success');
@@ -2085,7 +2102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
   $('remindMeButton').addEventListener('click', () => openMotivationModal());
-  $('closeMotivationModal').addEventListener('click', () => closeMotivationModal());
+  document.getElementById('closeMotivationModal')?.addEventListener('click', () => closeMotivationModal());
   $('dismissMotivationModal').addEventListener('click', () => closeMotivationModal());
   $('newMotivationQuote').addEventListener('click', () => triggerNewMotivationQuoteWithLoading());
   $('motivationModal').addEventListener('click', event => {
@@ -2233,6 +2250,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setPreviewZoomValue(previewZoom - event.deltaY * 0.001);
   }, { passive: false });
   $('resetPreview').addEventListener('click', resetPreviewView);
+  $('wireframePreview')?.addEventListener('change', event => {
+    toggleWireframeMode(Boolean((event.currentTarget as HTMLInputElement).checked));
+  });
   $('enableObjectEraser').addEventListener('change', event => {
     toggleObjectEraserMode((event.currentTarget as HTMLInputElement).checked);
   });
