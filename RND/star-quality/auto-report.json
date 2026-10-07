@@ -1,0 +1,50 @@
+{
+  "milliseconds": 3103,
+  "recommendation": {
+    "options": {
+      "colors": 2,
+      "tolerance": 0.2,
+      "minArea": 12,
+      "smooth": true,
+      "removeWhite": true,
+      "whiteMode": "background"
+    },
+    "resolution": 1024,
+    "photographic": false,
+    "fineDetail": true,
+    "sparseInk": true
+  },
+  "selection": {
+    "options": {
+      "colors": 2,
+      "tolerance": 0.2,
+      "minArea": 12,
+      "smooth": true,
+      "removeWhite": true,
+      "whiteMode": "background"
+    },
+    "attempted": 2,
+    "succeeded": 2,
+    "index": 0,
+    "score": 0.007879735037334776,
+    "baselineScore": 0.007879735037334776
+  },
+  "options": {
+    "colors": 2,
+    "tolerance": 0.2,
+    "minArea": 12,
+    "smooth": true,
+    "removeWhite": true,
+    "whiteMode": "background"
+  },
+  "resolution": 1024,
+  "attempts": 1,
+  "fallback": "none",
+  "error": 0.00042296407511846625,
+  "edgeError": 0.005278503280350479,
+  "paths": 85,
+  "contours": 85,
+  "segments": 1787,
+  "width": 1024,
+  "height": 765
+}

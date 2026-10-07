@@ -616,6 +616,23 @@ pub fn build_canvas_eps(
     (eps, (width, height, ratio))
 }
 
+/// Resolve the local path clip used by tracing underpaint, in the current CTM.
+fn svg_clip_postscript(document: &roxmltree::Document<'_>, path: roxmltree::Node<'_, '_>) -> Result<Option<String>, crate::AppError> {
+    let Some(reference) = path.attribute("clip-path") else { return Ok(None); };
+    let id = reference.strip_prefix("url(#").and_then(|v| v.strip_suffix(')'))
+        .ok_or_else(|| crate::AppError::InvalidEvent("Clip tracing tidak valid".into()))?;
+    let clip = document.descendants().find(|node| node.has_tag_name("clipPath") && node.attribute("id") == Some(id))
+        .ok_or_else(|| crate::AppError::InvalidEvent("Clip tracing tidak tersedia".into()))?;
+    let mut code = String::from("newpath\n");
+    for clip_path in clip.children().filter(|node| node.has_tag_name("path")) {
+        let path_ps = clip_path.attribute("d").and_then(path_to_postscript)
+            .ok_or_else(|| crate::AppError::InvalidEvent("Path clip tracing tidak valid".into()))?;
+        code.push_str(&path_ps);
+    }
+    code.push_str("clip\nnewpath\n");
+    Ok(Some(code))
+}
+
 pub fn build_svg_asset_eps(
     asset: &SvgAsset,
     settings: &MicrostockSettings,
@@ -689,6 +706,7 @@ pub fn build_svg_asset_eps(
                     let fill = get_attr("fill").unwrap_or_else(|| "#000000".into());
                     let stroke = get_attr("stroke");
                     let fill_rule = get_attr("fill-rule").unwrap_or_else(|| "nonzero".into());
+                    let Ok(clip_ps) = svg_clip_postscript(&document, path) else { continue; };
 
                     eps.push_str("gsave\n");
                     if let Some(transform) = get_attr("transform") {
@@ -712,6 +730,7 @@ pub fn build_svg_asset_eps(
                         }
                     }
 
+                    if let Some(clip_ps) = clip_ps { eps.push_str(&clip_ps); }
                     if let Some((r, g, b)) = parse_color_rgb(&fill) {
                         eps.push_str(&format!("{} {} {} setrgbcolor\n", f(r), f(g), f(b)));
                         eps.push_str("newpath\n");
@@ -755,10 +774,219 @@ pub fn build_svg_asset_eps(
     (eps, (width, height, ratio))
 }
 
+pub fn create_rgb_tiff(width: u32, height: u32, rgb: &[u8]) -> Vec<u8> {
+    let mut tiff = Vec::with_capacity(180 + rgb.len());
+    tiff.extend_from_slice(&[0x49, 0x49, 0x2A, 0x00]); // "II", 42
+    tiff.extend_from_slice(&8u32.to_le_bytes()); // IFD offset = 8
+
+    tiff.extend_from_slice(&12u16.to_le_bytes()); // 12 tags
+
+    let bits_offset = 158u32;
+    let xres_offset = 164u32;
+    let yres_offset = 172u32;
+    let data_offset = 180u32;
+
+    let mut write_entry = |tag: u16, field_type: u16, count: u32, val: u32| {
+        tiff.extend_from_slice(&tag.to_le_bytes());
+        tiff.extend_from_slice(&field_type.to_le_bytes());
+        tiff.extend_from_slice(&count.to_le_bytes());
+        tiff.extend_from_slice(&val.to_le_bytes());
+    };
+
+    write_entry(256, 4, 1, width);
+    write_entry(257, 4, 1, height);
+    write_entry(258, 3, 3, bits_offset);
+    write_entry(259, 3, 1, 1);
+    write_entry(262, 3, 1, 2);
+    write_entry(273, 4, 1, data_offset);
+    write_entry(277, 3, 1, 3);
+    write_entry(278, 4, 1, height);
+    write_entry(279, 4, 1, (width * height * 3) as u32);
+    write_entry(282, 5, 1, xres_offset);
+    write_entry(283, 5, 1, yres_offset);
+    write_entry(296, 3, 1, 2);
+
+    tiff.extend_from_slice(&0u32.to_le_bytes()); // Next IFD
+
+    // Extra tag data
+    tiff.extend_from_slice(&8u16.to_le_bytes());
+    tiff.extend_from_slice(&8u16.to_le_bytes());
+    tiff.extend_from_slice(&8u16.to_le_bytes());
+    tiff.extend_from_slice(&72u32.to_le_bytes());
+    tiff.extend_from_slice(&1u32.to_le_bytes());
+    tiff.extend_from_slice(&72u32.to_le_bytes());
+    tiff.extend_from_slice(&1u32.to_le_bytes());
+
+    // Raster RGB
+    tiff.extend_from_slice(rgb);
+    tiff
+}
+
+pub fn create_dos_eps(ps_content: &[u8], tiff_bytes: &[u8]) -> Vec<u8> {
+    let mut out = Vec::with_capacity(30 + ps_content.len() + tiff_bytes.len());
+    out.extend_from_slice(&[0xC5, 0xD0, 0xD3, 0xC6]);
+    out.extend_from_slice(&(30u32).to_le_bytes());
+    out.extend_from_slice(&(ps_content.len() as u32).to_le_bytes());
+    out.extend_from_slice(&0u32.to_le_bytes());
+    out.extend_from_slice(&0u32.to_le_bytes());
+    let tif_start = 30 + ps_content.len() as u32;
+    out.extend_from_slice(&tif_start.to_le_bytes());
+    out.extend_from_slice(&(tiff_bytes.len() as u32).to_le_bytes());
+    out.extend_from_slice(&[0xFF, 0xFF]);
+    out.extend_from_slice(ps_content);
+    out.extend_from_slice(tiff_bytes);
+    out
+}
+
+pub fn build_tracing_eps(svg: &str, title: &str) -> Result<Vec<u8>, crate::AppError> {
+    let document = roxmltree::Document::parse(svg)
+        .map_err(|_| crate::AppError::InvalidEvent("SVG tracing tidak valid".into()))?;
+    let root = document.root_element();
+    if root.tag_name().name() != "svg" {
+        return Err(crate::AppError::InvalidEvent("Dokumen harus berupa SVG".into()));
+    }
+    let mut width: f64 = root
+        .attribute("width")
+        .and_then(|w| w.parse().ok())
+        .unwrap_or(1024.0);
+    let mut height: f64 = root
+        .attribute("height")
+        .and_then(|h| h.parse().ok())
+        .unwrap_or(1024.0);
+    let mut view_box = [0.0, 0.0, width, height];
+    if let Some(vb) = root.attribute("viewBox") {
+        let parts: Vec<f64> = vb
+            .split_whitespace()
+            .filter_map(|s| s.parse::<f64>().ok())
+            .collect();
+        if parts.len() == 4 && parts[2] > 0.0 && parts[3] > 0.0 {
+            view_box.copy_from_slice(&parts);
+            if root.attribute("width").is_none() || root.attribute("height").is_none() {
+                width = parts[2]; height = parts[3];
+            }
+        }
+    }
+
+    let (preview_w, preview_h) = if width >= height {
+        let h = ((64.0 * height / width).round() as u32).max(1);
+        (64u32, h)
+    } else {
+        let w = ((64.0 * width / height).round() as u32).max(1);
+        (w, 64u32)
+    };
+
+    let mut eps = String::with_capacity(svg.len() * 2);
+    eps.push_str("%!PS-Adobe-3.0 EPSF-3.0\n");
+    eps.push_str(&format!("%%Creator: Canvas Vector Recorder Desktop\n"));
+    eps.push_str(&format!("%%Title: {}\n", title));
+    eps.push_str("%%Pages: 1\n");
+    eps.push_str(&format!(
+        "%%BoundingBox: 0 0 {} {}\n",
+        width.round() as i64,
+        height.round() as i64
+    ));
+    eps.push_str(&format!(
+        "%%HiResBoundingBox: 0.0000 0.0000 {:.4} {:.4}\n",
+        width, height
+    ));
+    eps.push_str("%%LanguageLevel: 3\n");
+    eps.push_str("%%EndComments\n");
+
+    // XMP Metadata Packet
+    eps.push_str("%XMPbegin: XMP\n");
+    eps.push_str("currentfile 0 (%XMPend:) /SubFileDecode filter flushfile\n");
+    eps.push_str("<?xpacket begin=\"\u{feff}\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n");
+    eps.push_str("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c111\">\n");
+    eps.push_str("   <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n");
+    eps.push_str("      <rdf:Description rdf:about=\"\"\n");
+    eps.push_str("            xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\"\n");
+    eps.push_str("            xmlns:xmpGImg=\"http://ns.adobe.com/xap/1.0/g/img/\">\n");
+    eps.push_str("         <xmp:CreatorTool>Canvas Vector Recorder</xmp:CreatorTool>\n");
+    eps.push_str("         <xmp:Thumbnails>\n");
+    eps.push_str("            <rdf:Alt>\n");
+    eps.push_str("               <rdf:li rdf:parseType=\"Resource\">\n");
+    eps.push_str("                  <xmpGImg:format>JPEG</xmpGImg:format>\n");
+    eps.push_str(&format!("                  <xmpGImg:width>{}</xmpGImg:width>\n", preview_w));
+    eps.push_str(&format!("                  <xmpGImg:height>{}</xmpGImg:height>\n", preview_h));
+    eps.push_str("               </rdf:li>\n");
+    eps.push_str("            </rdf:Alt>\n");
+    eps.push_str("         </xmp:Thumbnails>\n");
+    eps.push_str("      </rdf:Description>\n");
+    eps.push_str("   </rdf:RDF>\n");
+    eps.push_str("</x:xmpmeta>\n");
+    eps.push_str("<?xpacket end=\"w\"?>\n");
+    eps.push_str("%XMPend:\n\n");
+
+    eps.push_str("%%Page: 1 1\n");
+    eps.push_str("save\n");
+
+    eps.push_str(&format!("0 {} translate\n", f(height)));
+    eps.push_str("1 -1 scale\n\n");
+
+    eps.push_str("% Artwork\n");
+    eps.push_str("gsave\n");
+
+    let scale = (width / view_box[2]).min(height / view_box[3]);
+    eps.push_str(&format!("{} {} translate\n{} {} scale\n{} {} translate\n", f((width - view_box[2] * scale) / 2.0), f((height - view_box[3] * scale) / 2.0), f(scale), f(scale), f(-view_box[0]), f(-view_box[1])));
+    for path in document.descendants().filter(|node| {
+        node.has_tag_name("path")
+            && !node.ancestors().any(|parent| {
+                matches!(
+                    parent.tag_name().name(),
+                    "defs" | "clipPath" | "mask" | "pattern" | "symbol" | "marker"
+                )
+            })
+    }) {
+        let get_attr = |name: &str| path.attribute(name).map(str::to_string);
+        if let Some(d) = get_attr("d") {
+            if let Some(path_ps) = path_to_postscript(&d) {
+                let fill = get_attr("fill").unwrap_or_else(|| "#000000".into());
+                let fill_rule = get_attr("fill-rule").unwrap_or_else(|| "nonzero".into());
+
+                if let Some((r, g, b)) = parse_color_rgb(&fill) {
+                    eps.push_str("gsave\n");
+                    if let Some(clip_ps) = svg_clip_postscript(&document, path)? { eps.push_str(&clip_ps); }
+                    eps.push_str(&format!("{} {} {} setrgbcolor\n", f(r), f(g), f(b)));
+                    eps.push_str("newpath\n");
+                    eps.push_str(&path_ps);
+                    if fill_rule == "evenodd" {
+                        eps.push_str("eofill\n");
+                    } else {
+                        eps.push_str("fill\n");
+                    }
+                    eps.push_str("grestore\n");
+                }
+            }
+        }
+    }
+
+    eps.push_str("grestore\n");
+    eps.push_str("restore\n");
+    eps.push_str("showpage\n");
+    eps.push_str("%%EOF\n");
+
+    let tiff_rgb = vec![255u8; (preview_w * preview_h * 3) as usize];
+    let tiff = create_rgb_tiff(preview_w, preview_h, &tiff_rgb);
+
+    let dos_eps = create_dos_eps(eps.as_bytes(), &tiff);
+    Ok(dos_eps)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::recorder::canvas::Shape;
+
+    #[test]
+    fn tracing_eps_clips_underpaint_and_skips_definition_paths() {
+        let svg = r##"<svg width="8" height="8" viewBox="0 0 8 8"><defs><clipPath id="seam"><path clip-rule="nonzero" d="M1 1L7 1L7 7L1 7Z"/></clipPath></defs><path fill="#ff0000" fill-rule="evenodd" clip-path="url(#seam)" d="M0 0L8 0L8 8L0 8Z"/></svg>"##;
+        let bytes = build_tracing_eps(svg, "seam").expect("clipped tracing should export");
+        let eps = String::from_utf8_lossy(&bytes);
+        assert!(eps.contains("clip\nnewpath\n"));
+        assert!(eps.contains("1 1 moveto\n"));
+        assert_eq!(eps.matches("setrgbcolor").count(), 1);
+        assert_eq!(eps.matches("eofill\n").count(), 1);
+    }
 
     #[test]
     fn color_parser_handles_hex_rgb_and_names() {

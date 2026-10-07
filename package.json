@@ -10,11 +10,12 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "test": "npm run compile && npm run test:frontend && npm run test:rust",
-    "test:frontend": "node --test tests/bridge.test.mjs tests/tracing.test.mjs",
+    "test:frontend": "node --test tests/stock-export.test.mjs tests/bridge.test.mjs tests/tracing.test.mjs tests/auto-tracing.test.mjs tests/scene-stroke.test.mjs tests/batch-tracing.test.mjs tests/tracing-workspace.test.mjs tests/mode-navigation.test.mjs tests/thumbnail.test.mjs tests/engine-update.test.mjs",
     "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "compile": "tsc --noEmit",
     "license:keygen": "node tools/license-keygen.mjs",
-    "license:create": "node tools/license-create.mjs"
+    "license:create": "node tools/license-create.mjs",
+    "test:mini-engine": "node tests/mini-engine-parity.mjs && node tests/mini-engine-review.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.7.0",
@@ -25,6 +26,8 @@
   "devDependencies": {
     "@tauri-apps/cli": "^2.7.0",
     "@types/node": "^22.15.0",
+    "fake-indexeddb": "^6.2.5",
+    "happy-dom": "^20.14.5",
     "typescript": "^5.8.3",
     "vite": "^7.0.0"
   }

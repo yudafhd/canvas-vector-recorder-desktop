@@ -119,8 +119,6 @@
           <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
           <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
         </div>
-        <p id="landingQuote" class="landing-quote" aria-live="polite">Langkah kecil hari ini membentuk hasil besar esok
-          hari.</p>
       </div>
     </section>
 
@@ -151,12 +149,14 @@
       </div>
     </section>
 
+    <section id="modeSelectionView" class="mode-selection" aria-label="Pilih mode tracing" hidden></section>
     <nav id="mainTabs" class="main-tabs" aria-label="Halaman utama" hidden>
+      <button id="homeMainTab" class="main-tab" type="button">Menu</button>
       <button id="recorderMainTab" class="main-tab active" type="button" aria-selected="true">
-        <i data-lucide="monitor-play" aria-hidden="true"></i><span>Recorder</span>
+        <i data-lucide="monitor-play" aria-hidden="true"></i><span>Tracing online</span>
       </button>
       <button id="tracingMainTab" class="main-tab" type="button" aria-selected="false">
-        <i data-lucide="pencil" aria-hidden="true"></i><span>Tracing</span>
+        <i data-lucide="pencil" aria-hidden="true"></i><span>Tracing offline</span>
       </button>
       <button id="newTargetMainTab" class="main-tab new-target-main-tab" type="button" title="Buka tab target baru"
         aria-label="Buka tab target baru"><i data-lucide="plus" aria-hidden="true"></i></button>
@@ -183,7 +183,7 @@
           <button id="discoverButton" class="topbar-discover" type="button" title="Buka Discover"
             aria-label="Buka Discover"><i data-lucide="bell" aria-hidden="true"></i><span id="discoverBadge"
               class="discover-badge" hidden></span></button>
-          <button id="remindMeButton" class="remind-me-button" type="button" title="Inspirasi" aria-label="Inspirasi"><i
+          <button id="remindMeButton" class="remind-me-button" type="button" title="Inspirasi" aria-label="Inspirasi" hidden><i
               data-lucide="lightbulb" aria-hidden="true"></i></button>
           <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" title="Aktifkan dark mode"
             aria-label="Aktifkan dark mode"><i data-lucide="moon" aria-hidden="true"></i><span

@@ -1,11 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import ts from 'typescript';
+import { moduleUrl } from './helpers/tracing-module.mjs';
 
-const source = await readFile(new URL('../src/tracing/engine.ts', import.meta.url), 'utf8');
-const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
-const { regularizeShallowDents, compactSmoothCurves, straightSpans, refinePaletteInteriors, cleanTransitionRegions, curveDeviation, coverageObjective, polygonPixelArea, angularPrior, traceRaster, fitFixedEnds, cornerFeatures, probablyPunctured, chooseFragmentOperation, complexityThresholds, mergeThresholdSchedule, chooseBoundaryCandidate } = await import('data:text/javascript;base64,' + Buffer.from(js).toString('base64'));
+const { consolidateRasterTips, perceptualColor, fitEllipse, regularizeShallowDents, compactSmoothCurves, straightSpans, refinePaletteInteriors, cleanTransitionRegions, curveDeviation, coverageObjective, polygonPixelArea, angularPrior, traceRaster, fitFixedEnds, cornerFeatures, probablyPunctured, chooseFragmentOperation, complexityThresholds, mergeThresholdSchedule, chooseBoundaryCandidate } = await import(await moduleUrl('engine'));
 const defaults = { colors: 3, tolerance: 0.1, minArea: 0, smooth: false, removeWhite: false };
 const palette = [[240, 40, 40, 255], [255, 255, 255, 255], [20, 60, 220, 255], [0, 0, 0, 0]];
 function raster(w, h, label) {
@@ -44,6 +42,110 @@ function at(paths, x, y) {
   return color;
 }
 const hex = color => '#' + color.slice(0, 3).map(v => v.toString(16).padStart(2, '0')).join('');
+
+test('source-image sparkle reconstructs four cusps without locking the raster cap endpoints', () => {
+  // Actual black/white contour of the user's 2400x1792 JPEG, processed at
+  // 1024x765 with six colors, balanced detail and minArea=4.
+  const raw = [[132,84],[133,84],[133,85],[133,86],[134,86],[134,87],[134,88],[135,88],[135,89],[136,89],[137,89],[137,90],[138,90],[139,90],[139,91],[140,91],[140,92],[139,92],[138,92],[138,93],[137,93],[136,93],[136,94],[135,94],[135,95],[134,95],[134,96],[134,97],[133,97],[133,98],[132,98],[132,97],[131,97],[131,96],[131,95],[130,95],[130,94],[129,94],[129,93],[128,93],[127,93],[127,92],[126,92],[126,91],[126,90],[127,90],[128,90],[128,89],[129,89],[130,89],[130,88],[131,88],[131,87],[131,86],[131,85],[132,85],[132,84]];
+  const corners = new Set([29,32,42,44]), targets = consolidateRasterTips(raw, corners);
+  assert.equal(targets.size, 4);
+  assert.equal(corners.size, 4);
+  assert.deepEqual([...targets.values()], [[132.5,84],[140,91.5],[132.5,98],[126,91]]);
+  const rotated = raw.map(([x,y]) => [-y + 200, x - 100]);
+  const rotatedTargets = consolidateRasterTips(rotated, new Set([29,32,42,44]));
+  assert.deepEqual([...rotatedTargets.values()], [...targets.values()].map(([x,y]) => [-y + 200, x - 100]));
+});
+
+test('cusp reconstruction preserves flat stroke caps, small squares and open chains', () => {
+  const rectangle = [];
+  for(let x=0;x<2;x++) rectangle.push([x,0]);
+  for(let y=0;y<20;y++) rectangle.push([2,y]);
+  for(let x=2;x>0;x--) rectangle.push([x,20]);
+  for(let y=20;y>0;y--) rectangle.push([0,y]);
+  rectangle.push(rectangle[0]);
+  const corners = new Set([0,2,22,24]);
+  assert.equal(consolidateRasterTips(rectangle, corners).size, 0);
+  assert.deepEqual([...corners], [0,2,22,24]);
+  assert.equal(consolidateRasterTips(rectangle.slice(0,-1), new Set([0,2])).size, 0);
+  assert.equal(consolidateRasterTips([[0,0],[2,0],[2,2],[0,2],[0,0]], new Set([0,1,2,3])).size, 0);
+});
+
+test('original JPEG sparkle crop preserves the sharp extrema through SVG export', async () => {
+  const pixels = new Uint8ClampedArray(await readFile(new URL('./fixtures/sparkle-source-28x28.rgba', import.meta.url)));
+  for (const tolerance of [.35,.8,1.6]) {
+    const result = traceRaster(pixels,28,28,{...defaults,colors:2,minArea:4,smooth:true,tolerance});
+    const path = readPaths(result.svg).find(p => p.fill === '#000000' && p.loops.some(loop => loop.some(([x,y]) => x < 20 && y < 20)));
+    assert.ok(path);
+    const points = path.loops.flat();
+    for (const tip of [[13.5,6],[13.5,22],[6,14.5]]) assert.ok(points.some(p => Math.hypot(p[0]-tip[0],p[1]-tip[1]) < .01), `tip lost at tolerance ${tolerance}`);
+    assert.equal(at(readPaths(result.svg),13.5,14.5),'#000000');
+    assert.doesNotMatch(result.svg,/NaN|Infinity/);
+  }
+});
+
+test('mini-vectorizer Oklab conversion matches reference primary colors', () => {
+  // Standard Oklab primary values (rounded to six decimals), before the
+  // native engine's 255 scale. These are independent of palette clustering.
+  const expected = [[.627955, .224863, .125846], [.866440, -.233888, .179498], [.452014, -.032457, -.311528]];
+  for (let i = 0; i < 3; i++) {
+    const rgb = [0, 0, 0]; rgb[i] = 255;
+    perceptualColor(rgb).forEach((v, c) => assert.ok(Math.abs(v / 255 - expected[i][c]) < 1e-6));
+  }
+});
+
+test('background white removal preserves enclosed white artwork and legacy all mode', () => {
+  const image = raster(24, 24, (x, y) => x >= 4 && x < 20 && y >= 4 && y < 20 && !(x >= 9 && x < 15 && y >= 9 && y < 15) ? 0 : 1);
+  const background = readPaths(traceRaster(image, 24, 24, { ...defaults, whiteMode: 'background' }).svg);
+  assert.equal(at(background, .5, .5), null);
+  assert.equal(at(background, 6.5, 6.5), '#f02828');
+  assert.equal(at(background, 12.5, 12.5), '#ffffff');
+  const all = readPaths(traceRaster(image, 24, 24, { ...defaults, removeWhite: true }).svg);
+  assert.equal(at(all, 12.5, 12.5), null);
+  const keep = readPaths(traceRaster(image, 24, 24, { ...defaults, removeWhite: true, whiteMode: 'none' }).svg);
+  assert.equal(at(keep, .5, .5), '#ffffff');
+  assert.throws(() => traceRaster(image, 24, 24, { ...defaults, whiteMode: 'invalid' }), /Mode hapus putih/);
+});
+
+test('detail protection retains a coherent two-pixel accent but removes an isolated speck', () => {
+  const image = raster(32, 24, (x, y) => (x === 9 || x === 10) && y === 10 || x === 22 && y === 10 ? 2 : 1);
+  const result = traceRaster(image, 32, 24, { ...defaults, minArea: 24 });
+  const paths = readPaths(result.svg);
+  assert.equal(at(paths, 9.5, 10.5), '#143cdc');
+  assert.equal(at(paths, 10.5, 10.5), '#143cdc');
+  assert.equal(at(paths, 22.5, 10.5), '#ffffff');
+  assert.equal(result.diagnostics.protectedDetailPixels, 2);
+  assert.ok(result.colors.length <= defaults.colors);
+});
+
+test('conic fitting recovers rotated ellipses and rejects a rectangular loop', () => {
+  const theta = .47, points = Array.from({ length: 96 }, (_, i) => {
+    const t = i * Math.PI * 2 / 96, x = 21 * Math.cos(t), y = 9 * Math.sin(t);
+    return [40 + x * Math.cos(theta) - y * Math.sin(theta), 30 + x * Math.sin(theta) + y * Math.cos(theta)];
+  });
+  points.push(points[0]);
+  const e = fitEllipse(points); assert.ok(e);
+  assert.ok(Math.abs(e[0] - 40) < 1e-8 && Math.abs(e[1] - 30) < 1e-8);
+  assert.ok(Math.abs(Math.min(e[2], e[3]) - 9) < 1e-8 && Math.abs(Math.max(e[2], e[3]) - 21) < 1e-8);
+  const rectangle = [];
+  for (let i = 0; i < 20; i++) rectangle.push([i, 0]);
+  for (let i = 0; i < 20; i++) rectangle.push([20, i]);
+  for (let i = 0; i < 20; i++) rectangle.push([20 - i, 20]);
+  for (let i = 0; i < 20; i++) rectangle.push([0, 20 - i]);
+  rectangle.push(rectangle[0]); assert.equal(fitEllipse(rectangle), undefined);
+});
+
+test('final cubic coverage is evaluated and bounded on an antialiased curved boundary', () => {
+  const size = 80, data = new Uint8ClampedArray(size * size * 4);
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+    const a = Math.max(0, Math.min(1, 27.5 - Math.hypot(x + .5 - 40, y + .5 - 40)));
+    data.set([Math.round(255 - 215 * a), Math.round(255 - 145 * a), Math.round(255 - 200 * a), 255], (y * size + x) * 4);
+  }
+  const result = traceRaster(data, size, size, { ...defaults, colors: 8, minArea: 4, tolerance: .8, smooth: true });
+  assert.ok(result.diagnostics.finalRasterBefore > 0);
+  assert.ok(result.diagnostics.finalRasterAfter <= result.diagnostics.finalRasterBefore * 1.02 + 1e-5);
+  assert.doesNotMatch(result.svg, /NaN|Infinity|<image/);
+  assert.ok(result.segments < 50);
+});
 
 test('tracer preserves topology at diagonal contacts, holes, disconnected regions and transparency', () => {
   let random = 12345;
@@ -390,8 +492,9 @@ test('straight spans recognize long jittered edges while retaining bends, corner
   const spans=straightSpans(points,.8);
   assert.equal(spans.length,1);assert.equal(spans[0].start,0);assert.equal(spans[0].end,100);
   assert.ok(spans[0].error<=.35);
-  assert.equal(straightSpans(points,.8,new Set([50])).length,0);
-  assert.equal(straightSpans(points.slice(0,20),.8).length,0);
+  const split=straightSpans(points,.8,new Set([50]));
+  assert.deepEqual(split.map(span=>[span.start,span.end]),[[0,50],[50,100]]);
+  assert.equal(straightSpans(points.slice(0,20),.8).length,1);
   assert.equal(straightSpans(Array.from({length:101},(_,i)=>[80*Math.cos(i*Math.PI/100),80*Math.sin(i*Math.PI/100)]),.8).length,0);
   assert.equal(straightSpans([[0,0],[55,0],[40,0],[100,0]],.8).length,0);
 });

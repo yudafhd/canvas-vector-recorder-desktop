@@ -584,9 +584,9 @@ a { color: #0067b8; }
   color-scheme: dark;
 }
 :root[data-theme="dark"] body { color: #e8eaed; background: #202124; }
-:root[data-theme="dark"] button:not(.primary) { color: #e8eaed; background: #303134; border-color: #5f6368; }
-:root[data-theme="dark"] button:not(.primary):hover { background: #3c4043; border-color: #8ab4f8; }
-:root[data-theme="dark"] button:not(.primary):active { background: #45494d; }
+:root[data-theme="dark"] button:not(.primary):where(:not(.tracing-page button, .mode-selection button, .main-tabs > button)) { color: #e8eaed; background: #303134; border-color: #5f6368; }
+:root[data-theme="dark"] button:not(.primary):where(:not(.tracing-page button, .mode-selection button, .main-tabs > button)):hover { background: #3c4043; border-color: #8ab4f8; }
+:root[data-theme="dark"] button:not(.primary):where(:not(.tracing-page button, .mode-selection button, .main-tabs > button)):active { background: #45494d; }
 :root[data-theme="dark"] .main-tabs { background: #202124; }
 :root[data-theme="dark"] .main-tab { background: #303134; border-color: #5f6368; }
 :root[data-theme="dark"] .main-tab.active { color: #fff; background: #087dcc; border-color: #0067b8; }

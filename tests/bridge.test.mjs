@@ -151,14 +151,11 @@ test('activation screen hides workspace navigation and provides submit feedback'
   assert.match(main, /activationSubmit\.textContent = 'Mengaktifkan…'/);
 });
 
-test('startup shows an eight-second landing screen with a local Jakarta font', () => {
+test('startup checks licensing without an artificial delay and uses a local Jakarta font', () => {
   assert.match(index, /id="landingView" class="view landing-shell"/);
   assert.match(index, /class="landing-mark" src="\.\/assets\/brand\/recorder-brand\.png"/);
-  assert.match(index, /id="landingQuote" class="landing-quote"/);
-  assert.match(main, /const LANDING_DURATION_MS = 8_000/);
-  assert.match(main, /const LANDING_QUOTES = \[/);
-  assert.match(main, /function showRandomLandingQuote/);
-  assert.match(main, /LAST_LANDING_QUOTE_KEY/);
+  assert.doesNotMatch(index, /id="landingQuote"/);
+  assert.match(main, /const LANDING_DURATION_MS = 0/);
   assert.match(main, /landingView\.hidden = true/);
   assert.match(styles, /#landingView\.landing-shell \{[\s\S]*background: #121b22;/);
   assert.match(styles, /#landingView \.landing-quote/);

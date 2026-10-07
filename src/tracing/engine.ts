@@ -1,25 +1,42 @@
+import { underpaint } from './underpaint';
+import { geometricHypot } from './geometry-math';
 /** Independent implementation of researched mechanisms plus explicitly marked adapters.
  * Evidence and scope: docs/TRACING-RESEARCH-MAP.md. No target binary is loaded.
  */
-export interface TraceOptions { colors: number; tolerance: number; minArea: number; smooth: boolean; removeWhite: boolean }
+import { cleanTransitionMixtures, mergeSmallEdgeRegions, transitionDefaults, type TransitionDiagnostics } from './transition-mixtures';
+import { evaluateSvgScene, sceneAllows } from './scene-quality';
+import { balanceStrokeCurvature, regularizeStroke, fairStrokeCurvature, strokeRoughness, flattenStroke } from './stroke-regularizer';
+export interface TraceOptions { colors: number; tolerance: number; minArea: number; smooth: boolean; removeWhite: boolean; whiteMode?: 'none' | 'background' | 'all' }
 export interface TraceResult { svg: string; colors: string[]; paths: number; contours: number; segments: number; width: number; height: number; diagnostics: TraceDiagnostics }
-export interface TraceDiagnostics { unitFragments: number; merges: number; swaps: number; puncturedCorners: number; tangentRefits: number; rasterSteps: number; rasterEnergyBefore: number; rasterEnergyAfter: number; smallAreaConstraints: number; guardedFits: number; fitDeviationBefore: number; fitDeviationAfter: number; mergedTransitionRegions: number; reassignedTransitionPixels: number; straightSpans: number; compactedCurvePairs: number }
+export interface TraceDiagnostics extends TransitionDiagnostics { underpaintPairs: number; underpaintPaths: number; sharedFairingCandidates: number; sharedFairingAccepted: number; sharedFairingRoughnessBefore: number; sharedFairingRoughnessAfter: number; unitFragments: number; merges: number; swaps: number; puncturedCorners: number; tangentRefits: number; rasterSteps: number; rasterEnergyBefore: number; rasterEnergyAfter: number; smallAreaConstraints: number; guardedFits: number; fitDeviationBefore: number; fitDeviationAfter: number; mergedTransitionRegions: number; reassignedTransitionPixels: number; straightSpans: number; compactedCurvePairs: number; protectedDetailPixels: number; qualityRefits: number; qualitySkipped: number; finalRasterBefore: number; finalRasterAfter: number; ellipses: number; sceneErrorBefore: number; sceneErrorAfter: number; sceneDetailBefore: number; sceneDetailAfter: number; sceneEdgeBefore: number; sceneEdgeAfter: number; sceneCandidateError: number; globalCandidates: number; globalAccepted: number; regularizedChains: number; protectedDetailCandidates: number; detailProtectionAccepted: number }
 type Point = [number, number];
 type RGB = [number, number, number];
 type Curve = { from: Point; to: Point; controls?: [Point, Point] };
 type Edge = { a: number; b: number; right: number; left: number; chain: number; forward: boolean };
 type Chain = { curves: Curve[] };
 type Measurement = { target: Point; normal: Point; weight: number };
-type Loop = { data: string; area: number; nodes: Point[]; segments: number };
+type Loop = { refs: { chain: number; forward: boolean }[]; area: number; nodes: Point[] };
 type Region = { label: number; seed: number; loops: Loop[] };
-type RasterField = { width: number; height: number; observed: Uint8ClampedArray; predicted: Float64Array };
+type RasterField = { width: number; height: number; observed: Uint8ClampedArray; predicted: Float64Array | Float32Array };
 type RasterChain = { field: RasterField; difference: number[] };
 const distance2 = (a: number[], b: number[]) => a.reduce((sum, v, i) => sum + (v - b[i]) ** 2, 0);
 const mix = (a: Point, b: Point, t: number): Point => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
-const unit = (a: Point, b: Point): Point => { const d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [(b[0] - a[0]) / d, (b[1] - a[1]) / d]; };
+const unit = (a: Point, b: Point): Point => { const d = geometricHypot(b[0] - a[0], b[1] - a[1]) || 1; return [(b[0] - a[0]) / d, (b[1] - a[1]) / d]; };
 const dot = (a: Point, b: Point) => a[0] * b[0] + a[1] * b[1];
 const fmt = (n: number) => String(Math.round(n * 1000) / 1000);
 const xy = (p: Point) => `${fmt(p[0])} ${fmt(p[1])}`;
+
+// Ported from mini-vectorizer's PerceptualColor: palette decisions use Oklab;
+// RGB remains the space for antialias mixture reconstruction.
+export function perceptualColor(rgb: number[]): RGB {
+  const [r, g, b] = rgb.map(c => { const v = c / 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+  const l = Math.cbrt(.4122214708 * r + .5363325363 * g + .0514459929 * b);
+  const m = Math.cbrt(.2119034982 * r + .6806995451 * g + .1073969566 * b);
+  const s = Math.cbrt(.0883024619 * r + .2817188376 * g + .6299787005 * b);
+  return [255 * (.2104542553 * l + .7936177850 * m - .0040720468 * s),
+    255 * (1.9779984951 * l - 2.4285922050 * m + .4505937099 * s),
+    255 * (.0259040371 * l + .7827717662 * m - .8086757660 * s)];
+}
 
 // [R4-FIT] Recovered fixed-end solver and branch costs, phase4-findings §2–3.
 // Coordinates and sample density are supplied by our contour pipeline.
@@ -205,7 +222,7 @@ export function pixelEdgeGradient(a: Point, b: Point, x: number, y: number) {
 // h1/h2 count original steps. Collapsed segments use an independent finite guard.
 export function angularPrior(a: Point, b: Point, c: Point, h1 = 1, h2 = 1, lengthWeight = 0.25) {
   const u: Point = [b[0] - a[0], b[1] - a[1]], v: Point = [c[0] - b[0], c[1] - b[1]];
-  const lu = Math.hypot(...u), lv = Math.hypot(...v);
+  const lu = geometricHypot(...u), lv = geometricHypot(...v);
   if (lu < 1e-8 || lv < 1e-8 || h1 <= 0 || h2 <= 0) return { energy: Infinity, gradient: [[0, 0], [0, 0], [0, 0]] as Point[] };
   const nu: Point = [u[0] / lu, u[1] / lu], nv: Point = [v[0] / lv, v[1] / lv];
   const cosine = Math.max(-1, Math.min(1, dot(nu, nv))), bend = Math.sqrt(2 - 2 * cosine + 0.001), length = lv / h2 - lu / h1;
@@ -269,12 +286,13 @@ export function coverageObjective(raw: Point[], field: RasterField, difference: 
     for (let i = 0; i < predicted.length; i++) energy += 0.5 * (predicted[i] - observed[i]) ** 2;
     return { energy, gradient: withGradient ? differentiate(points, predicted) : [], predicted };
   };
-  return { evaluate, differentiate, commit: (prediction: Float64Array) => indices.forEach((id, i) => field.predicted.set(prediction.subarray(i * 4, i * 4 + 4), id * 4)), indices };
+  return { evaluate, differentiate, commit: (prediction: Float64Array) => indices.forEach((id, i) => field.predicted.set(prediction.subarray(i * 4, i * 4 + 4), id * 4)), indices, base, observed, xs, ys, raw, difference, field };
 }
 
-// [APPROX-PALETTE] Histogram, seeds and RGB weights are independently chosen.
+// [APPROX-PALETTE] Histogram and seeds remain independent adapters;
+// Oklab assignment and RGB centroid updates follow mini-vectorizer.
 
-function quantize(rgba: Uint8ClampedArray, count: number) {
+export function quantize(rgba: Uint8ClampedArray, count: number) {
   const bins = new Map<number, { sum: RGB; count: number }>();
   for (let i = 0; i < rgba.length; i += 4) {
     if (rgba[i + 3] < 128) continue;
@@ -285,18 +303,21 @@ function quantize(rgba: Uint8ClampedArray, count: number) {
     bins.set(key, bin);
   }
   const samples = [...bins.entries()].map(([key, bin]) => ({ key, n: bin.count, color: bin.sum.map(v => v / bin.count) as RGB }));
+  const labs = new Map(samples.map(sample => [sample.key, perceptualColor(sample.color)]));
   if (!samples.length) throw new Error('Gambar sepenuhnya transparan. Pilih gambar dengan bidang berwarna.');
   samples.sort((a, b) => b.n - a.n || a.key - b.key);
   const palette: RGB[] = [[...samples[0].color]];
+  let perceptual = palette.map(perceptualColor);
   while (palette.length < Math.min(count, samples.length)) {
     let best = -1, score = 0;
     for (let i = 0; i < samples.length; i++) {
-      const d = Math.min(...palette.map(p => distance2(p, samples[i].color)));
+      const d = Math.min(...perceptual.map(p => distance2(p, labs.get(samples[i].key)!)));
       const weighted = d * samples[i].n;
       if (weighted > score) { best = i; score = weighted; }
     }
     if (best < 0 || score < 1) break;
     palette.push([...samples[best].color]);
+    perceptual.push(labs.get(samples[best].key)!);
   }
   const assignments = new Int16Array(32768).fill(-1);
   for (let pass = 0; pass < 12; pass++) {
@@ -304,19 +325,20 @@ function quantize(rgba: Uint8ClampedArray, count: number) {
     let changed = false;
     for (const sample of samples) {
       let best = 0, cost = Infinity;
-      palette.forEach((p, k) => { const d = distance2(p, sample.color); if (d < cost) { cost = d; best = k; } });
+      perceptual.forEach((p, k) => { const d = distance2(p, labs.get(sample.key)!); if (d < cost) { cost = d; best = k; } });
       if (assignments[sample.key] !== best) changed = true;
       assignments[sample.key] = best;
       for (let c = 0; c < 3; c++) sums[best][c] += sample.color[c] * sample.n;
       sums[best][3] += sample.n;
     }
     palette.forEach((p, k) => { if (sums[k][3]) for (let c = 0; c < 3; c++) p[c] = sums[k][c] / sums[k][3]; });
+    perceptual = palette.map(perceptualColor);
     if (!changed) break;
   }
   // Assign once more to the final centers, rather than the centers from the previous pass.
   for (const sample of samples) {
     let best = 0, cost = Infinity;
-    palette.forEach((p, k) => { const d = distance2(p, sample.color); if (d < cost) { cost = d; best = k; } });
+    perceptual.forEach((p, k) => { const d = distance2(p, labs.get(sample.key)!); if (d < cost) { cost = d; best = k; } });
     assignments[sample.key] = best;
   }
   const labels = new Int16Array(rgba.length / 4).fill(-1);
@@ -327,20 +349,70 @@ function quantize(rgba: Uint8ClampedArray, count: number) {
   return { palette, labels };
 }
 
+/** Train on coherent fills so JPEG edge mixtures cannot consume artwork colors. */
+export function quantizeFlatInteriors(rgba: Uint8ClampedArray, count: number, width: number, height: number) {
+  const stable = new Uint8ClampedArray(rgba); let foreground = 0, stableForeground = 0;
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const at = (y * width + x) * 4; if (rgba[at + 3] < 128) continue;
+    const ink = Math.min(rgba[at], rgba[at + 1], rgba[at + 2]) < 240;
+    if (ink) foreground++; let support = 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+      const q = (ny * width + nx) * 4;
+      const error = (rgba[at] - rgba[q]) ** 2 + (rgba[at + 1] - rgba[q + 1]) ** 2 + (rgba[at + 2] - rgba[q + 2]) ** 2;
+      if (rgba[q + 3] >= 240 && error <= 144) support++;
+    }
+    if (support < 8) stable[at + 3] = 0; else if (ink) stableForeground++;
+  }
+  if (foreground < 64 || stableForeground < foreground * .6) return { ...quantize(rgba, count), flatInteriors: false };
+  const q = quantize(stable, count);
+  for (let p = 0; p < q.labels.length; p++) {
+    if (rgba[p * 4 + 3] < 128) { q.labels[p] = -1; continue; }
+    let best = Infinity, label = 0;
+    for (let c = 0; c < q.palette.length; c++) {
+      const color = q.palette[c], error = (rgba[p * 4] - color[0]) ** 2 + (rgba[p * 4 + 1] - color[1]) ** 2 + (rgba[p * 4 + 2] - color[2]) ** 2;
+      if (error < best) { best = error; label = c; }
+    }
+    q.labels[p] = label;
+  }
+  return { ...q, flatInteriors: true };
+}
+
 // Near-identical palette centers and colors found only in narrow transition
 // bands fragment otherwise smooth boundaries. Keep real interior colors and
 // isolated high-contrast details; the requested count is an upper bound.
 // [APPROX-SEGMENTATION] Our palette/interior support heuristic, not PixelSegmenter cost.
-function compactPalette(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number, minArea: number) {
+export function compactPalette(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number, minArea: number, protectedColors: boolean[] = [], flatInteriors = false) {
+  const perceptual = palette.map(perceptualColor);
+  const shared = palette.map(() => new Int32Array(palette.length)), sourceInteriors = new Int32Array(palette.length);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const at = y * width + x, a = labels[at]; if (a < 0) continue;
+    if (!flatInteriors && x > 0 && x + 1 < width && y > 0 && y + 1 < height && rgba[at * 4 + 3] === 255 &&
+        (rgba[at * 4] - palette[a][0]) ** 2 + (rgba[at * 4 + 1] - palette[a][1]) ** 2 + (rgba[at * 4 + 2] - palette[a][2]) ** 2 <= 144) {
+      let same = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (labels[at + dy * width + dx] === a) same++;
+      if (same >= 8) sourceInteriors[a]++;
+    }
+    for (const q of [x + 1 < width ? at + 1 : -1, y + 1 < height ? at + width : -1]) {
+      if (q < 0) continue; const b = labels[q];
+      if (b >= 0 && a !== b) { shared[a][b]++; shared[b][a]++; }
+    }
+  }
   const populations = new Int32Array(palette.length);
   for (const label of labels) if (label >= 0) populations[label]++;
   const representative = palette.map((_, i) => i);
   const order = palette.map((_, i) => i).sort((a, b) => populations[b] - populations[a]);
   for (let rank = 0; rank < order.length; rank++) {
     const i = order[rank];
+    if (protectedColors[i]) continue;
     for (const j of order.slice(0, rank)) {
       if (representative[j] !== j) continue;
-      if (distance2(palette[i], palette[j]) <= 18 ** 2) { representative[i] = j; break; }
+      const a = perceptual[i], b = perceptual[j], d = distance2(a, b);
+      const ca = Math.hypot(a[1], a[2]), cb = Math.hypot(b[1], b[2]);
+      const sameHue = ca > 8 && cb > 8 && a[1] * b[1] + a[2] * b[2] >= .985 * ca * cb;
+      let duplicate = flatInteriors ? distance2(palette[i], palette[j]) <= 324 : d <= 324 || minArea >= 4 && shared[i][j] >= 8 && d <= 625 && sameHue;
+      if (!flatInteriors && sourceInteriors[i] >= Math.max(8, minArea * 2) && sourceInteriors[j] >= Math.max(8, minArea * 2) && distance2(palette[i], palette[j]) > 324) duplicate = false;
+      if (duplicate) { representative[i] = j; break; }
     }
   }
   for (let i = 0; i < labels.length; i++) if (labels[i] >= 0) labels[i] = representative[labels[i]];
@@ -352,7 +424,7 @@ function compactPalette(rgba: Uint8ClampedArray, labels: Int16Array, palette: RG
     if (same >= 8) interiors[label]++;
   }
   const stable = order.filter(i => representative[i] === i && interiors[i] >= Math.max(4, minArea));
-  const retained = order.filter(i => representative[i] === i && (stable.includes(i) || !stable.some(j => distance2(palette[i], palette[j]) <= 96 ** 2)));
+  const retained = order.filter(i => representative[i] === i && (protectedColors[i] || stable.includes(i) || !stable.some(j => distance2(perceptual[i], perceptual[j]) <= 96 ** 2)));
   if (retained.length < 2 || retained.length === palette.length) return;
   const compact = retained.map(i => palette[i]);
   for (let i = 0; i < labels.length; i++) {
@@ -369,7 +441,7 @@ function compactPalette(rgba: Uint8ClampedArray, labels: Int16Array, palette: RG
 
 // [ADAPTER-PALETTE-INTERIOR] Estimate existing colors from coherent source
 // interiors, excluding antialias mixtures. This is not VM's palette objective.
-export function refinePaletteInteriors(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number) {
+export function refinePaletteInteriors(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number, protectedColors: boolean[] = []) {
   const sums = palette.map(() => [0, 0, 0, 0]);
   for (let y = 1; y + 1 < height; y++) for (let x = 1; x + 1 < width; x++) {
     const p = y * width + x, label = labels[p], offset = p * 4;
@@ -386,7 +458,7 @@ export function refinePaletteInteriors(rgba: Uint8ClampedArray, labels: Int16Arr
   }
   let adjusted = 0;
   palette.forEach((color, k) => {
-    if (sums[k][3] < 8) return;
+    if (protectedColors[k] || sums[k][3] < 8) return;
     const candidate = sums[k].slice(0, 3).map(v => v / sums[k][3]) as RGB;
     // Ignore shifts within the same source-coherence radius; these can
     // perturb an already useful palette and move thin antialiased boundaries.
@@ -409,7 +481,7 @@ export function refinePaletteInteriors(rgba: Uint8ClampedArray, labels: Int16Arr
 // JPEG and antialiased edges contain mixtures of the two neighboring colors.
 // Global nearest-color assignment can turn that mixture into an unrelated third
 // palette color. Only replace locally unsupported transition pixels, never alpha.
-function refineTransitions(rgba: Uint8ClampedArray, labels: Int16Array, width: number, height: number, palette: RGB[]) {
+export function refineTransitions(rgba: Uint8ClampedArray, labels: Int16Array, width: number, height: number, palette: RGB[]) {
   const result = new Int16Array(labels), counts = new Uint8Array(palette.length);
   const paletteDistance = palette.map(a => palette.map(b => distance2(a, b)));
   for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
@@ -447,8 +519,9 @@ function refineTransitions(rgba: Uint8ClampedArray, labels: Int16Array, width: n
 }
 
 // [APPROX-SEGMENTATION] Region-area and shared-border heuristic; VM thresholds unknown.
-function cleanRegions(labels: Int16Array, width: number, height: number, minArea: number, palette: RGB[], rgba?: Uint8ClampedArray) {
+export function cleanRegions(labels: Int16Array, width: number, height: number, minArea: number, palette: RGB[], rgba?: Uint8ClampedArray) {
   if (minArea <= 1) return;
+  const perceptual = palette.map(perceptualColor);
   const visited = new Uint8Array(labels.length);
   const queue = new Int32Array(labels.length);
   for (let seed = 0; seed < labels.length; seed++) {
@@ -470,7 +543,7 @@ function cleanRegions(labels: Int16Array, width: number, height: number, minArea
     let replacement = color, best = -Infinity;
     for (const [label, border] of neighbors) {
       if (label < 0) continue;
-      const score = border / (1 + Math.sqrt(distance2(palette[color], palette[label])));
+      const score = border / (1 + Math.sqrt(distance2(perceptual[color], perceptual[label])));
       if (score > best) { best = score; replacement = label; }
     }
     if (replacement === color && neighbors.has(-1)) replacement = -1;
@@ -497,51 +570,84 @@ function cleanRegions(labels: Int16Array, width: number, height: number, minArea
 
 // [ADAPTER-REGION-MIXTURE] Conservative local hypothesis test, not the
 // unrecovered VM region merge cost. Ambiguous exact-color details are retained.
-export function cleanTransitionRegions(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number, minArea: number) {
+export function cleanTransitionRegions(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number, minArea: number, flatInteriors = false, diagnostics?: TransitionDiagnostics) {
   const stats = { mergedRegions: 0, reassignedPixels: 0 };
   if (minArea <= 1) return stats;
   const { ids, regions } = identifyRegions(labels, width, height);
-  const members: number[][] = regions.map(() => []), borders = regions.map(() => new Map<number, number>());
+  const sizes = new Int32Array(regions.length), offsets = new Int32Array(regions.length);
   const interior = new Uint8Array(regions.length);
   for (let p = 0; p < labels.length; p++) {
-    const id = ids[p], x = p % width, y = Math.floor(p / width); members[id].push(p);
-    for (const q of [x > 0 ? p - 1 : -1, x + 1 < width ? p + 1 : -1, y > 0 ? p - width : -1, y + 1 < height ? p + width : -1])
-      if (q >= 0 && ids[q] !== id) borders[id].set(ids[q], (borders[id].get(ids[q]) ?? 0) + 1);
+    const id = ids[p], x = p % width, y = Math.floor(p / width); sizes[id]++;
     if (x > 0 && x + 1 < width && y > 0 && y + 1 < height) {
       let same = 0;
       for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (ids[p + dy * width + dx] === id) same++;
       if (same >= 8) interior[id] = 1;
     }
   }
+  const members = regions.map((region, id) => region.label >= 0 && sizes[id] <= Math.max(16, minArea * 8) && !interior[id] ? new Int32Array(sizes[id]) : undefined);
+  const borders = members.map(pixels => pixels ? new Map<number, number>() : undefined);
+  for (let p = 0; p < labels.length; p++) {
+    const id = ids[p], pixels = members[id], border = borders[id]; if (!pixels || !border) continue;
+    pixels[offsets[id]++] = p;
+    const x = p % width, y = Math.floor(p / width);
+    for (const q of [x > 0 ? p - 1 : -1, x + 1 < width ? p + 1 : -1, y > 0 ? p - width : -1, y + 1 < height ? p + width : -1])
+      if (q >= 0 && ids[q] !== id) border.set(ids[q], (border.get(ids[q]) ?? 0) + 1);
+  }
   // Read immutable component identities; only large supported neighbors can be
   // replacement targets, so a proposal cannot target another candidate region.
   for (let id = 0; id < regions.length; id++) {
     const current = regions[id].label, pixels = members[id];
-    if (current < 0 || pixels.length > Math.max(16, minArea * 8) || interior[id]) continue;
-    const neighbors = [...borders[id]].filter(([other, border]) => regions[other].label >= 0 && border >= 2 && members[other].length > Math.max(32, minArea * 8, pixels.length * 4));
+    if (!pixels) continue;
+    const neighbors = [...borders[id]!].filter(([other, border]) => regions[other].label >= 0 && border >= 2 && sizes[other] > Math.max(32, minArea * 8, pixels.length * 4));
     let best = Infinity, proposal: number[] | undefined;
     for (let i = 0; i < neighbors.length; i++) for (let j = i + 1; j < neighbors.length; j++) {
       const la = regions[neighbors[i][0]].label, lb = regions[neighbors[j][0]].label;
       if (la === lb) continue;
       const a = palette[la], b = palette[lb], separation = distance2(a, b);
       if (separation < 4000) continue;
-      let mixtureError = 0, originalError = 0, valid = true;
+      let mixtureError = 0, originalError = 0, valid = true, outliers = 0;
       const replacements: number[] = [];
       for (const p of pixels) {
         if (rgba[p * 4 + 3] !== 255) { valid = false; break; }
         const color: RGB = [rgba[p * 4], rgba[p * 4 + 1], rgba[p * 4 + 2]];
-        const t = ((color[0] - a[0]) * (b[0] - a[0]) + (color[1] - a[1]) * (b[1] - a[1]) + (color[2] - a[2]) * (b[2] - a[2])) / separation;
+        const projected = ((color[0] - a[0]) * (b[0] - a[0]) + (color[1] - a[1]) * (b[1] - a[1]) + (color[2] - a[2]) * (b[2] - a[2])) / separation;
+        const t = Math.max(0, Math.min(1, projected));
         const residual = distance2(color, a.map((v, c) => v + (b[c] - v) * t));
-        if (t < 0.05 || t > 0.95 || residual > 300) { valid = false; break; }
+        if (projected < .05 || projected > (flatInteriors ? 1.1 : .95) || residual > (flatInteriors ? 4000 : 300)) { if (!flatInteriors) { valid = false; break; } outliers++; }
         mixtureError += residual; originalError += distance2(color, palette[current]);
         replacements.push(t < 0.5 ? la : lb);
       }
+      if (flatInteriors && outliers > Math.max(1, pixels.length * .1)) valid = false;
       // Do not erase true intermediate colors which already explain the source.
       if (valid && originalError > pixels.length * 64 && mixtureError + pixels.length * 25 < originalError && mixtureError < best) { best = mixtureError; proposal = replacements; }
     }
     if (proposal) { pixels.forEach((p, i) => { labels[p] = proposal![i]; }); stats.mergedRegions++; stats.reassignedPixels += pixels.length; }
   }
+  if (flatInteriors && diagnostics) {
+    const mixtures = cleanTransitionMixtures(rgba, labels, palette, width, height, diagnostics);
+    stats.mergedRegions += mixtures.mergedRegions; stats.reassignedPixels += mixtures.reassignedPixels;
+  }
   return stats;
+}
+
+/** Remove isolated shade labels only within a coherent hue family. */
+export function regularizeShadeLabels(labels: Int16Array, w: number, h: number, palette: RGB[]) {
+  const labs = palette.map(perceptualColor);
+  const shades = labs.map((a, i) => labs.map((b, j) => {
+    const ca = Math.hypot(a[1], a[2]), cb = Math.hypot(b[1], b[2]);
+    return i !== j && ca > 8 && cb > 8 && Math.abs(a[0] - b[0]) < 20 && a[1] * b[1] + a[2] * b[2] > .96 * ca * cb;
+  }));
+  const counts = new Uint8Array(palette.length);
+  for (let pass = 0; pass < 2; pass++) {
+    const result = new Int16Array(labels);
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+      const p = y * w + x, current = labels[p]; if (current < 0) continue; counts.fill(0);
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (dx || dy) { const label = labels[p + dy * w + dx]; if (label >= 0) counts[label]++; }
+      if (counts[current] > 2) continue;
+      for (let other = 0; other < counts.length; other++) if (counts[other] >= 5 && shades[current][other]) { result[p] = other; break; }
+    }
+    labels.set(result);
+  }
 }
 
 // Region identity allows nested shapes to be painted over their parent instead
@@ -564,6 +670,75 @@ function identifyRegions(labels: Int16Array, width: number, height: number) {
     }
   }
   return { ids, regions };
+}
+
+// mini-vectorizer DetailProtection: source-supported pairs and thin strokes,
+// captured before cleanup. Isolated specks remain eligible for removal.
+export function protectDetails(rgba: Uint8ClampedArray, labels: Int16Array, palette: RGB[], width: number, height: number) {
+  const original = labels.slice(), originalPalette = palette.map(p => [...p] as RGB);
+  const pixels = new Uint8Array(labels.length), thickness = new Uint8Array(labels.length);
+  const colors = palette.map(() => false);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const i = y * width + x, label = labels[i]; if (label < 0) continue;
+    thickness[i] = x === 0 || y === 0 || labels[i - 1] !== label || labels[i - width] !== label ? 1 : Math.min(3, thickness[i - 1] + 1, thickness[i - width] + 1);
+  }
+  for (let y = height - 1; y >= 0; y--) for (let x = width - 1; x >= 0; x--) {
+    const i = y * width + x, label = labels[i]; if (label < 0) continue;
+    thickness[i] = x === width - 1 || y === height - 1 || labels[i + 1] !== label || labels[i + width] !== label ? 1 : Math.min(thickness[i], thickness[i + 1] + 1, thickness[i + width] + 1);
+  }
+  const visited = new Uint8Array(labels.length), queue = new Int32Array(labels.length);
+  let total = 0;
+  for (let seed = 0; seed < labels.length; seed++) {
+    if (visited[seed] || labels[seed] < 0) continue;
+    const label = labels[seed]; let head = 0, tail = 1, support = 0, thickest = 0;
+    const borders = new Map<number, number>();
+    queue[0] = seed; visited[seed] = 1;
+    while (head < tail) {
+      const i = queue[head++], x = i % width, y = Math.floor(i / width);
+      thickest = Math.max(thickest, thickness[i]);
+      let error = 0; for (let c = 0; c < 3; c++) error += (rgba[i * 4 + c] - palette[label][c]) ** 2;
+      if (rgba[i * 4 + 3] >= 240 && error <= 144) support++;
+      for (const n of [x > 0 ? i - 1 : -1, x + 1 < width ? i + 1 : -1, y > 0 ? i - width : -1, y + 1 < height ? i + width : -1]) {
+        if (n >= 0 && labels[n] >= 0 && labels[n] !== label) borders.set(labels[n], (borders.get(labels[n]) ?? 0) + 1);
+        if (n >= 0 && !visited[n] && labels[n] === label) { visited[n] = 1; queue[tail++] = n; }
+      }
+    }
+    // Exclude a thin band explained by a mixture of two substantial adjacent
+    // colors before restoring details in the protected tracing candidate.
+    const adjacent = [...borders].filter(([, count]) => count >= 3).map(([color]) => color);
+    let mixture = false;
+    if (thickest <= 2) for (let a = 0; a < adjacent.length; a++) for (let b = a + 1; b < adjacent.length; b++) {
+      const p = palette[adjacent[a]], q = palette[adjacent[b]], color = palette[label], separation = distance2(p, q);
+      if (separation < 4000) continue;
+      const t = color.reduce((sum, v, c) => sum + (v - p[c]) * (q[c] - p[c]), 0) / separation;
+      if (t >= .05 && t <= .95 && color.reduce((sum, v, c) => sum + (v - p[c] - t * (q[c] - p[c])) ** 2, 0) <= 300) mixture = true;
+    }
+    if (!mixture && tail >= 2 && (tail <= 100 || thickest <= 2) && support >= Math.max(2, Math.ceil(tail * .65))) {
+      colors[label] = true; total += tail;
+      for (let j = 0; j < tail; j++) pixels[queue[j]] = 1;
+    }
+  }
+  const mask = () => palette.map(p => originalPalette.some((q, c) => colors[c] && distance2(p, q) < 1e-9));
+  const restore = () => {
+    const mapping = originalPalette.map(p => { let best = 0; for (let k = 1; k < palette.length; k++) if (distance2(p, palette[k]) < distance2(p, palette[best])) best = k; return best; });
+    for (let i = 0; i < labels.length; i++) if (pixels[i]) labels[i] = mapping[original[i]];
+  };
+  return { colors, mask, restore, total, pixels };
+}
+
+/** White is an export mask: retain opaque labels for shared-boundary fitting. */
+export function hiddenRegions(labels: Int16Array, palette: RGB[], regions: Region[], ids: Int32Array, width: number, height: number, mode: NonNullable<TraceOptions['whiteMode']>) {
+  const hidden = new Uint8Array(regions.length); if (mode === 'none') return hidden;
+  const white = palette.map(p => p.every(v => v >= 242));
+  if (mode === 'all') { regions.forEach((region, id) => { if (region.label >= 0 && white[region.label]) hidden[id] = 1; }); return hidden; }
+  const visited = new Uint8Array(labels.length), queue = new Int32Array(labels.length); let head = 0, tail = 0;
+  const add = (i: number) => { if (!visited[i] && labels[i] >= 0 && white[labels[i]]) { visited[i] = 1; queue[tail++] = i; } };
+  for (let i = 0; i < labels.length; i++) if (i < width || i >= labels.length - width || i % width === 0 || i % width === width - 1) add(i);
+  while (head < tail) {
+    const i = queue[head++], x = i % width, y = Math.floor(i / width); hidden[ids[i]] = 1;
+    if (x > 0) add(i - 1); if (x + 1 < width) add(i + 1); if (y > 0) add(i - width); if (y + 1 < height) add(i + width);
+  }
+  return hidden;
 }
 
 function containsPoint(nodes: Point[], p: Point) {
@@ -781,10 +956,9 @@ function optimizeContour(raw: Point[], initial: Point[], measurements: (Measurem
 
 // [ADAPTER-OPTIMIZER] Sequential projected descent, not VM's global conjugate
 // gradient schedule. Angular weight .3 and step limits are our calibration.
-function refineCoverage(raw: Point[], initial: Point[], corners: Set<number>, raster: RasterChain, diagnostics: TraceDiagnostics): Point[] {
+function refineCoverage(raw: Point[], initial: Point[], corners: Set<number>, raster: RasterChain, diagnostics: TraceDiagnostics, objective = coverageObjective(raw, raster.field, raster.difference)): Point[] {
   const closed = distance2(raw[0], raw[raw.length - 1]) === 0, count = raw.length - Number(closed);
   const targetArea = signedArea(raw), small = closed && Math.abs(targetArea) <= 7;
-  const objective = coverageObjective(raw, raster.field, raster.difference);
   let points = (small ? raw : initial).slice(0, count).map(p => [...p] as Point);
   const fixed = raw.slice(0, count).map((p, i) => corners.has(i) || (!closed && (i === 0 || i === count - 1)) || p[0] === 0 || p[1] === 0 || p[0] === raster.field.width || p[1] === raster.field.height);
   const prior = (p: Point[], gradient?: Point[]) => {
@@ -836,18 +1010,24 @@ function refineCoverage(raw: Point[], initial: Point[], corners: Set<number>, ra
 // [ADAPTER-STRAIGHT-SPANS] Long, monotone contour runs with subpixel
 // deviation become lines. Thresholds are ours, not recovered VM decisions.
 export function straightSpans(points: Point[], tolerance: number, corners = new Set<number>()) {
-  const strictBudget = Math.min(0.35, tolerance * 0.5), budget = 0.65, cuts = simplify(points, budget);
+  const strictBudget = Math.min(0.35, tolerance * 0.5), budget = 0.65;
+  const boundaries = [...new Set([0, points.length - 1, ...corners])].sort((a, b) => a - b), cuts = [0];
+  for (let k = 1; k < boundaries.length; k++) {
+    const start = boundaries[k - 1], end = boundaries[k];
+    for (const index of simplify(points.slice(start, end + 1), budget)) if (index > 0) cuts.push(start + index);
+  }
   const spans: { start: number; end: number; direction: Point; error: number }[] = [];
   for (let i = 1; i < cuts.length; i++) {
     const start = cuts[i - 1], end = cuts[i], a = points[start], b = points[end];
-    if (distance2(a, b) < 48 ** 2) continue;
+    const length2 = distance2(a, b); if (length2 < 144) continue;
     const direction = unit(a, b); let error = 0, previous = 0, valid = true;
     for (let j = start + 1; j <= end; j++) {
       const projection = dot([points[j][0] - a[0], points[j][1] - a[1]], direction);
       if (projection < previous - 1e-8 || (j < end && corners.has(j))) { valid = false; break; }
       previous = projection; error = Math.max(error, lineDistance2(points[j], a, b));
     }
-    if (valid && error > strictBudget ** 2) {
+    const localBudget = length2 < 2304 ? Math.min(.08, strictBudget) : strictBudget;
+    if (valid && error > localBudget ** 2) {
       // [ADAPTER-UI-LINE-NOISE] Relax only for oscillating subpixel noise,
       // not a consistent bow. Regress normal offsets against arc direction.
       const offsets = points.slice(start, end + 1).map(p => {
@@ -903,6 +1083,223 @@ export function regularizeShallowDents(points: Point[], corners = new Set<number
   return [...output, output[0]];
 }
 
+function ellipseSupported(e: number[], points: Point[]) {
+  if (e[2] <= 0 || e[3] <= 0) return false;
+  const cs = Math.cos(e[4]), sn = Math.sin(e[4]); let sum = 0, max = 0;
+  for (const p of points) {
+    const x = p[0] - e[0], y = p[1] - e[1], u = (x * cs + y * sn) / e[2], v = (-x * sn + y * cs) / e[3];
+    const gradient = 2 * Math.hypot(u / e[2], v / e[3]); if (gradient < 1e-9) return false;
+    const d = Math.abs(u * u + v * v - 1) / gradient; sum += d * d; max = Math.max(max, d);
+  }
+  return max <= .7 && Math.sqrt(sum / points.length) <= .3;
+}
+
+// Algebraic conic fit from mini-vectorizer CurveQuality. Only strongly
+// supported complete loops qualify for replacement with four cubic arcs.
+export function fitEllipse(points: Point[]): number[] | undefined {
+  const n = points.length - 1; if (n < 24) return;
+  let cx = 0, cy = 0; for (let i = 0; i < n; i++) { cx += points[i][0]; cy += points[i][1]; } cx /= n; cy /= n;
+  let scale = 0; for (let i = 0; i < n; i++) scale = Math.max(scale, Math.hypot(points[i][0] - cx, points[i][1] - cy)); if (scale < 3) return;
+  const matrix = Array.from({ length: 5 }, () => Array(6).fill(0) as number[]);
+  for (let i = 0; i < n; i++) {
+    const x = (points[i][0] - cx) / scale, y = (points[i][1] - cy) / scale, v = [x * x, x * y, y * y, x, y];
+    for (let j = 0; j < 5; j++) { matrix[j][5] += v[j]; for (let k = 0; k < 5; k++) matrix[j][k] += v[j] * v[k]; }
+  }
+  for (let k = 0; k < 5; k++) {
+    let pivot = k; for (let j = k + 1; j < 5; j++) if (Math.abs(matrix[j][k]) > Math.abs(matrix[pivot][k])) pivot = j;
+    [matrix[k], matrix[pivot]] = [matrix[pivot], matrix[k]];
+    let d = matrix[k][k]; if (Math.abs(d) < 1e-9) return;
+    for (let j = k; j < 6; j++) matrix[k][j] /= d;
+    for (let i = 0; i < 5; i++) if (i !== k) { d = matrix[i][k]; for (let j = k; j < 6; j++) matrix[i][j] -= d * matrix[k][j]; }
+  }
+  const a = matrix[0][5], b = matrix[1][5] / 2, c = matrix[2][5], d = matrix[3][5], f = matrix[4][5], det = a * c - b * b;
+  if (a <= 0 || c <= 0 || det <= 1e-8) return;
+  const x = (b * f - c * d) / (2 * det), y = (b * d - a * f) / (2 * det), constant = 1 + a * x * x + 2 * b * x * y + c * y * y;
+  const disc = Math.hypot(a - c, 2 * b), l1 = (a + c + disc) / 2, l2 = (a + c - disc) / 2;
+  if (l2 <= 0 || constant <= 0) return;
+  const result = [cx + x * scale, cy + y * scale, scale * Math.sqrt(constant / l1), scale * Math.sqrt(constant / l2), .5 * Math.atan2(2 * b, a - c)];
+  return ellipseSupported(result, points) ? result : undefined;
+}
+
+function ellipseCurves(e: number[], positive: boolean): Curve[] {
+  const sign = positive ? 1 : -1, k = .5522847498307936, curves: Curve[] = [];
+  const point = (x: number, y: number): Point => [e[0] + x * e[2] * Math.cos(e[4]) - y * e[3] * Math.sin(e[4]), e[1] + x * e[2] * Math.sin(e[4]) + y * e[3] * Math.cos(e[4])];
+  for (let i = 0; i < 4; i++) {
+    const t = i * Math.PI / 2 * sign, u = (i + 1) * Math.PI / 2 * sign;
+    const from = i ? curves[i - 1].to : point(1, 0), to = i === 3 ? curves[0].from : point(Math.cos(u), Math.sin(u));
+    curves.push({ from, to, controls: [point(Math.cos(t) - sign * k * Math.sin(t), Math.sin(t) + sign * k * Math.cos(t)), point(Math.cos(u) + sign * k * Math.sin(u), Math.sin(u) - sign * k * Math.cos(u))] });
+  }
+  return curves;
+}
+
+// Port of CurveQuality's signed scanline integration. Evaluate the actual
+// exported cubics, rather than only the contour points used to fit them.
+function finishCurves(raw: Point[], points: Point[], corners: Set<number>, initial: Curve[], raster: RasterChain, options: TraceOptions, diagnostics: TraceDiagnostics, objective: ReturnType<typeof coverageObjective>): Curve[] {
+  if (points.length > 6000 || objective.indices.length > 24000) { diagnostics.qualitySkipped++; return initial; }
+  const rows = new Map<number, number[]>();
+  objective.ys.forEach((y, i) => { const row = rows.get(y) ?? []; row.push(i); rows.set(y, row); });
+  const coverage = (polygon: Point[]) => {
+    const crossings = new Map<number, [number, number][]>();
+    for (let i = 0; i < polygon.length; i++) {
+      const a = polygon[i], b = polygon[(i + 1) % polygon.length]; if (Math.abs(a[1] - b[1]) < 1e-12) continue;
+      const first = Math.max(0, Math.ceil(Math.min(a[1], b[1]) * 4 - .5));
+      const last = Math.min(raster.field.height * 4, Math.ceil(Math.max(a[1], b[1]) * 4 - .5));
+      for (let row = first; row < last; row++) {
+        if (!rows.has(Math.floor(row / 4))) continue;
+        const y = (row + .5) / 4, x = a[0] + (y - a[1]) * (b[0] - a[0]) / (b[1] - a[1]);
+        const hits = crossings.get(row) ?? []; hits.push([x, a[1] > b[1] ? 1 : -1]); crossings.set(row, hits);
+      }
+    }
+    const result = new Float64Array(objective.indices.length);
+    for (const [row, pixels] of rows) for (let sample = 0; sample < 4; sample++) {
+      const hits = crossings.get(row * 4 + sample); if (!hits) continue; hits.sort((a, b) => a[0] - b[0]);
+      const integral = new Float64Array(hits.length), winding = new Int32Array(hits.length);
+      for (let j = 0; j < hits.length; j++) {
+        if (j) integral[j] = integral[j - 1] + winding[j - 1] * (hits[j][0] - hits[j - 1][0]);
+        winding[j] = (j ? winding[j - 1] : 0) + hits[j][1];
+      }
+      const at = (x: number) => { let lo = 0, hi = hits.length; while (lo < hi) { const mid = (lo + hi) >>> 1; if (hits[mid][0] <= x) lo = mid + 1; else hi = mid; } const i = lo - 1; return i < 0 ? 0 : integral[i] + winding[i] * (x - hits[i][0]); };
+      for (const i of pixels) result[i] += (at(objective.xs[i] + 1) - at(objective.xs[i])) / 4;
+    }
+    return result;
+  };
+  const flatten = flattenStroke;
+  const original = coverage(raw);
+  const energy = (curves: Curve[], commit = false) => {
+    const area = coverage(flatten(curves)), predicted = new Float64Array(objective.base); let sum = 0;
+    for (let i = 0; i < area.length; i++) for (let c = 0; c < 4; c++) {
+      const at = i * 4 + c; predicted[at] += (original[i] - area[i]) * raster.difference[c];
+      sum += .5 * (predicted[at] - objective.observed[at]) ** 2;
+    }
+    if (commit) objective.commit(predicted); return sum;
+  };
+  const intersects = (curves: Curve[]) => {
+    const p = flatten(curves), grid = new Map<string, number[]>(); let cells = 0;
+    const cross = (a: Point, b: Point, c: Point) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+    for (let i = 1; i < p.length; i++) {
+      const a = p[i - 1], b = p[i], x0 = Math.floor(Math.min(a[0], b[0]) / 8), x1 = Math.floor(Math.max(a[0], b[0]) / 8), y0 = Math.floor(Math.min(a[1], b[1]) / 8), y1 = Math.floor(Math.max(a[1], b[1]) / 8);
+      if ((cells += (x1 - x0 + 1) * (y1 - y0 + 1)) > 50000) return true;
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+        const key = `${x},${y}`, edges = grid.get(key) ?? [];
+        for (const j of edges) { if (j === i - 1 || distance2(p[0], p[p.length - 1]) < 1e-12 && j === 1 && i === p.length - 1) continue; const c = p[j - 1], d = p[j]; if (cross(a, b, c) * cross(a, b, d) < -1e-10 && cross(c, d, a) * cross(c, d, b) < -1e-10) return true; }
+        edges.push(i); grid.set(key, edges);
+      }
+    }
+    return false;
+  };
+  const closed = distance2(points[0], points[points.length - 1]) === 0, count = points.length - Number(closed);
+  const cuts = new Set([0, points.length - 1, ...corners]);
+  if (closed) { let far = 1; for (let i = 2; i < count; i++) if (distance2(points[0], points[i]) > distance2(points[0], points[far])) far = i; cuts.add(far); }
+  const sorted = [...cuts].sort((a, b) => a - b);
+  const refit = (tolerance: number) => {
+    const curves: Curve[] = [], tangent = (i: number) => { const r = Math.min(3, Math.floor((count - 1) / 2)); return unit(points[(i - r + count) % count], points[(i + r) % count]); };
+    for (let k = 1; k < sorted.length; k++) {
+      const start = sorted[k - 1], end = sorted[k]; if (end <= start) continue;
+      const left = corners.has(start % count) ? unit(points[start], points[start + 1]) : tangent(start % count);
+      const right = corners.has(end % count) ? unit(points[end - 1], points[end]) : tangent(end % count);
+      curves.push(...fitWithSharedTangents(points.slice(start, end + 1), tolerance, left, [-right[0], -right[1]]));
+    }
+    return curves;
+  };
+  const curvature = (curve: Curve, end: boolean) => {
+    if (!curve.controls) return 0;
+    const a = end ? curve.to : curve.from, b = curve.controls[end ? 1 : 0], c = curve.controls[end ? 0 : 1];
+    const dx = 3 * (b[0] - a[0]), dy = 3 * (b[1] - a[1]), ddx = 6 * (a[0] - 2 * b[0] + c[0]), ddy = 6 * (a[1] - 2 * b[1] + c[1]), length = Math.hypot(dx, dy);
+    return length < 1e-6 ? 0 : (end ? -1 : 1) * (dx * ddy - dy * ddx) / length ** 3;
+  };
+  const score = (value: number, curves: Curve[]) => {
+    let penalty = 0;
+    for (let i = 0; i < curves.length; i++) {
+      const a = curves[i], b = curves[(i + 1) % curves.length];
+      if (distance2(a.to, b.from) > 1e-12 || [...corners].some(j => distance2(points[j], a.to) < 1e-10)) continue;
+      penalty += Math.min(2, Math.abs(curvature(a, true) - curvature(b, false)) * Math.min(10, Math.sqrt(distance2(a.from, b.to))));
+    }
+    return value + .04 * curves.length + .02 * penalty;
+  };
+  let best = initial, value = energy(initial); const before = value;
+  diagnostics.finalRasterBefore += before;
+  const tolerance = Math.min(.65, options.tolerance, closed ? Math.max(.15, .04 * Math.sqrt(Math.abs(signedArea(points)))) : .65);
+  const accept = (candidate: Curve[]) => { const trial = energy(candidate); if (trial <= before * 1.02 + 1e-6 && score(trial, candidate) < score(value, best) && !intersects(candidate)) { best = candidate; value = trial; return true; } return false; };
+  for (const t of [Math.min(.2, tolerance), tolerance]) accept(refit(t));
+  if (closed && corners.size <= 2) {
+    const ellipse = fitEllipse(points);
+    if (ellipse) {
+      let e = ellipse, candidate = ellipseCurves(e, signedArea(points) > 0), trial = energy(candidate);
+      for (let pass = 0; pass < 3; pass++) for (let axis = 0; axis < 5; axis++) for (const direction of [-1, 1]) {
+        const next = [...e]; next[axis] += direction * (axis === 4 ? .0015 : .12) / 2 ** pass;
+        if (!ellipseSupported(next, points)) continue; const curves = ellipseCurves(next, signedArea(points) > 0), result = energy(curves);
+        if (result < trial) { e = next; candidate = curves; trial = result; }
+      }
+      if (accept(candidate)) diagnostics.ellipses++;
+    }
+  }
+  if (objective.indices.length <= 12000) {
+    const candidate = fairStrokeCurvature(best);
+    if (candidate !== best) {
+      diagnostics.sharedFairingCandidates++; const trial = energy(candidate);
+      if (trial <= value + 1e-9) {
+        diagnostics.sharedFairingAccepted++; diagnostics.sharedFairingRoughnessBefore += strokeRoughness(best); diagnostics.sharedFairingRoughnessAfter += strokeRoughness(candidate);
+        best = candidate; value = trial;
+      }
+    }
+  }
+  if (best !== initial) diagnostics.qualityRefits++;
+  diagnostics.finalRasterAfter += energy(best, true);
+  return best;
+}
+
+// A pointed cusp can occupy a two-pixel flat cap after rasterization. Keeping
+// both cap ends as corners exports a tiny rectangle instead of a single tip.
+// Only consolidate short straight caps with widening, convergent flanks;
+// parallel stroke ends and ordinary rectangle corners remain unchanged.
+export function consolidateRasterTips(raw: Point[], corners: Set<number>): Map<number, Point> {
+  const targets = new Map<number, Point>();
+  const closed = distance2(raw[0], raw[raw.length - 1]) === 0, count = raw.length - Number(closed);
+  if (!closed || count < 24 || Math.abs(signedArea(raw)) < 16) return targets;
+  const originalCorners = new Set(corners);
+  const consumed = new Set<number>();
+  for (let start = 0; start < count; start++) {
+    const direction = unit(raw[start], raw[(start + 1) % count]);
+    if (dot(direction, unit(raw[(start - 1 + count) % count], raw[start])) > .999) continue;
+    let span = 1;
+    while (span < count && dot(direction, unit(raw[(start + span) % count], raw[(start + span + 1) % count])) > .999) span++;
+    const end = (start + span) % count;
+    if (consumed.has(start) || consumed.has(end) || span > 3) continue;
+    const a = raw[start], b = raw[end], length = Math.sqrt(distance2(a, b));
+    if (length < .5 || length > 3) continue;
+    let straight = true;
+    for (let j = 1; j < span; j++) if (lineDistance2(raw[(start + j) % count], a, b) > 1e-10) straight = false;
+    if (!straight) continue;
+    const middle = mix(a, b, .5), radius = Math.min(6, Math.floor(count / 12));
+    const left = raw[(start - radius + count) % count], right = raw[(end + radius) % count];
+    if (dot(unit(middle, left), unit(middle, right)) < .25) continue;
+    const cap = unit(a, b), flankWidth = Math.abs(dot([right[0] - left[0], right[1] - left[1]], cap));
+    if (flankWidth < length + .75) continue;
+    // Flanks must straddle the cap; an off-center stair on a sloping edge
+    // must not be promoted to a tip.
+    if (Math.abs(dot([left[0] + right[0] - 2 * middle[0], left[1] + right[1] - 2 * middle[1]], cap)) > length + 1) continue;
+    const pivot = (start + Math.floor(span / 2)) % count;
+    for (let j = -2; j <= span + 2; j++) corners.delete((start + j + count) % count);
+    corners.add(pivot);
+    targets.set(pivot, middle); consumed.add(start); consumed.add(end);
+  }
+  // Only four pointed lobes with inset flanks qualify. A short cap on an arrow,
+  // rounded stroke or stair step must not become an invented sharp tip.
+  let sparkle = targets.size === 4;
+  const tips = [...targets.keys()].sort((a, b) => a - b), orientation = Math.sign(signedArea(raw));
+  if (sparkle) for (let k = 0; k < tips.length; k++) {
+    const from = tips[k], to = tips[(k + 1) % tips.length], span = (to - from + count) % count, a = targets.get(from)!, b = targets.get(to)!;
+    const length = Math.sqrt(distance2(a, b)); let inset = false;
+    for (let j = 1; j < span; j++) {
+      const p = raw[(from + j) % count], cross = (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+      if (cross * orientation > length * .75) { inset = true; break; }
+    }
+    if (!inset) { sparkle = false; break; }
+  }
+  if (!sparkle) { targets.clear(); corners.clear(); for (const corner of originalCorners) corners.add(corner); }
+  return targets;
+}
+
 function fitChain(raw: Point[], width: number, height: number, options: TraceOptions, diagnostics: TraceDiagnostics, measurements: (Measurement | undefined)[] = [], raster?: RasterChain): Curve[] {
   if (!options.smooth) {
     const cuts = simplify(raw, options.tolerance);
@@ -923,9 +1320,11 @@ function fitChain(raw: Point[], width: number, height: number, options: TraceOpt
     if (stableTurn && distance2(before, p) >= 4 && distance2(after, p) >= 4 && dot(unit(before, p), unit(p, after)) < 0.45) corners.add(i);
   }
   if (!closed) { corners.add(0); corners.add(raw.length - 1); }
+  const tipTargets = consolidateRasterTips(raw, corners);
   const weights = [1, 6, 15, 20, 15, 6, 1];
   const initial = raw.map((p, i): Point => {
     const index = i % count;
+    if (tipTargets.has(index)) return tipTargets.get(index)!;
     if (corners.has(index) || p[0] === 0 || p[1] === 0 || p[0] === width || p[1] === height) return p;
     const sum: Point = [0, 0]; let weight = 0;
     for (let j = -3; j <= 3; j++) {
@@ -942,7 +1341,8 @@ function fitChain(raw: Point[], width: number, height: number, options: TraceOpt
     return displacement > 0.75 ? mix(p, smoothed, 0.75 / displacement) : smoothed;
   });
   const warm = optimizeContour(raw, initial, measurements, corners, width, height);
-  const smoothed = raster ? refineCoverage(raw, warm, corners, raster, diagnostics) : warm;
+  const objective = raster ? coverageObjective(raw, raster.field, raster.difference) : undefined;
+  const smoothed = raster ? refineCoverage(raw, warm, corners, raster, diagnostics, objective) : warm;
   const points = regularizeShallowDents(smoothed, corners);
   // [R5-CORNER] Classify after smoothing, as in punctureCorners. Our single
   // constrained pass replaces VM's three-phase schedule (still an approximation).
@@ -998,25 +1398,41 @@ function fitChain(raw: Point[], width: number, height: number, options: TraceOpt
   }
   const compact = compactSmoothCurves(curves, [...corners].map(i => points[i]));
   diagnostics.compactedCurvePairs += curves.length - compact.length;
-  return compact;
+  return raster && objective ? finishCurves(raw, smoothed, corners, compact, raster, options, diagnostics, objective) : compact;
 }
 
-export function traceRaster(rgba: Uint8ClampedArray, width: number, height: number, options: TraceOptions, progress: (value: number, label: string) => void = () => {}): TraceResult {
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width * height > 1024 * 1024 || rgba.length !== width * height * 4) throw new Error('Ukuran raster tidak valid (maksimum 1024 × 1024 piksel).');
+function traceRasterRun(rgba: Uint8ClampedArray, width: number, height: number, options: TraceOptions, progress: (value: number, label: string) => void, protect: boolean, capture: (pixels: Uint8Array) => void): TraceResult {
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width * height > 2048 * 2048 || rgba.length !== width * height * 4) throw new Error('Ukuran raster tidak valid (maksimum 4 megapiksel).');
   if (!Number.isInteger(options.colors) || options.colors < 2 || options.colors > 16 || !Number.isFinite(options.tolerance) || options.tolerance < 0.1 || options.tolerance > 4 || !Number.isFinite(options.minArea) || options.minArea < 0 || options.minArea > 100) throw new Error('Pengaturan tracing tidak valid.');
+  const whiteMode = options.whiteMode ?? (options.removeWhite ? 'all' : 'none');
+  if (!['none', 'background', 'all'].includes(whiteMode)) throw new Error('Mode hapus putih tidak valid.');
   progress(10, 'Mencari palet warna…');
-  const diagnostics: TraceDiagnostics = { unitFragments: 0, merges: 0, swaps: 0, puncturedCorners: 0, tangentRefits: 0, rasterSteps: 0, rasterEnergyBefore: 0, rasterEnergyAfter: 0, smallAreaConstraints: 0, guardedFits: 0, fitDeviationBefore: 0, fitDeviationAfter: 0, mergedTransitionRegions: 0, reassignedTransitionPixels: 0, straightSpans: 0, compactedCurvePairs: 0 };
-  const { labels, palette } = quantize(rgba, options.colors);
+  const diagnostics: TraceDiagnostics = { ...transitionDefaults, underpaintPairs: 0, underpaintPaths: 0, sharedFairingCandidates: 0, sharedFairingAccepted: 0, sharedFairingRoughnessBefore: 0, sharedFairingRoughnessAfter: 0, unitFragments: 0, merges: 0, swaps: 0, puncturedCorners: 0, tangentRefits: 0, rasterSteps: 0, rasterEnergyBefore: 0, rasterEnergyAfter: 0, smallAreaConstraints: 0, guardedFits: 0, fitDeviationBefore: 0, fitDeviationAfter: 0, mergedTransitionRegions: 0, reassignedTransitionPixels: 0, straightSpans: 0, compactedCurvePairs: 0, protectedDetailPixels: 0, qualityRefits: 0, qualitySkipped: 0, finalRasterBefore: 0, finalRasterAfter: 0, ellipses: 0, sceneErrorBefore: 0, sceneErrorAfter: 0, sceneDetailBefore: 0, sceneDetailAfter: 0, sceneEdgeBefore: 0, sceneEdgeAfter: 0, sceneCandidateError: 0, globalCandidates: 0, globalAccepted: 0, regularizedChains: 0, protectedDetailCandidates: 0, detailProtectionAccepted: 0 };
+  const { labels, palette, flatInteriors } = options.smooth && options.colors >= 8 && options.minArea >= 4 && whiteMode === 'background'
+    ? quantizeFlatInteriors(rgba, options.colors, width, height) : { ...quantize(rgba, options.colors), flatInteriors: false };
+  const detailEvidence = options.smooth || options.minArea > 0 ? protectDetails(rgba, labels, palette, width, height) : undefined;
+  const detail = protect ? detailEvidence : undefined;
+  const detailPixels = detail?.pixels ?? new Uint8Array(labels.length);
+  capture(detailEvidence?.pixels ?? new Uint8Array(labels.length));
+  diagnostics.protectedDetailCandidates = detailEvidence?.total ?? 0;
+  diagnostics.protectedDetailPixels = detail?.total ?? 0;
   progress(30, 'Merapikan region…');
-  if (options.minArea > 0) compactPalette(rgba, labels, palette, width, height, options.minArea);
-  if (options.minArea > 0) refinePaletteInteriors(rgba, labels, palette, width, height);
-  if (options.minArea > 0) refineTransitions(rgba, labels, width, height, palette);
+  if (options.minArea > 0) compactPalette(rgba, labels, palette, width, height, options.minArea, detail?.colors, flatInteriors);
+  detail?.restore();
+  if (!flatInteriors) refinePaletteInteriors(rgba, labels, palette, width, height, detail?.mask());
+  refineTransitions(rgba, labels, width, height, palette);
+  if (flatInteriors) regularizeShadeLabels(labels, width, height, palette);
+  detail?.restore();
   cleanRegions(labels, width, height, options.minArea, palette, rgba);
-  const cleanup = cleanTransitionRegions(rgba, labels, palette, width, height, options.minArea);
+  detail?.restore();
+  const cleanup = cleanTransitionRegions(rgba, labels, palette, width, height, options.minArea, flatInteriors, diagnostics);
+  detail?.restore();
   diagnostics.mergedTransitionRegions = cleanup.mergedRegions;
   diagnostics.reassignedTransitionPixels = cleanup.reassignedPixels;
-  if (options.removeWhite) for (let i = 0; i < labels.length; i++) if (labels[i] >= 0 && palette[labels[i]].every(v => v >= 242)) labels[i] = -1;
+  if (flatInteriors && options.smooth && options.minArea >= 4) mergeSmallEdgeRegions(rgba, labels, palette, width, height, detail?.pixels ?? new Uint8Array(labels.length), diagnostics, perceptualColor);
   const { ids: regionIds, regions } = identifyRegions(labels, width, height);
+  if (regions.length > 2000) throw new Error('Gambar terlalu kompleks. Kurangi jumlah warna atau pilih resolusi 512 px.');
+  const hidden = hiddenRegions(labels, palette, regions, regionIds, width, height, whiteMode);
   progress(45, 'Menelusuri batas warna…');
   const stride = width + 1, edges: Edge[] = [], adjacency = new Map<number, number[]>();
   // [R5-GRID] Different neighbor labels create grid boundary nodes/edges.
@@ -1054,13 +1470,13 @@ export function traceRaster(rgba: Uint8ClampedArray, width: number, height: numb
     return { normal, target: [midpoint[0] + shift * normal[0], midpoint[1] + shift * normal[1]], weight: 1 / (1 + (right.residual + left.residual) / 128) };
   };
   const color = (label: number) => label < 0 ? [0, 0, 0, 0] : [...palette[label].map(v => v / 255), 1];
-  const field: RasterField = { width, height, observed: rgba, predicted: new Float64Array(rgba.length) };
+  const field: RasterField = { width, height, observed: rgba, predicted: new Float32Array(rgba.length) };
   if (options.smooth) labels.forEach((label, i) => field.predicted.set(color(label), i * 4));
   const chains: Chain[] = [];
   const walkChain = (edgeId: number, start: number) => {
     const seed = edges[edgeId], forward = seed.a === start;
     const left = color(forward ? seed.left : seed.right), right = color(forward ? seed.right : seed.left);
-    const raster = options.smooth && !options.removeWhite ? { field, difference: left.map((v, i) => v - right[i]) } : undefined;
+    const raster = options.smooth ? { field, difference: left.map((v, i) => v - right[i]) } : undefined;
     const nodes: Point[] = [[start % stride, Math.floor(start / stride)]];
     const measurements: (Measurement | undefined)[] = [];
     let current = start;
@@ -1125,24 +1541,15 @@ export function traceRaster(rgba: Uint8ClampedArray, width: number, height: numb
       const ref = loop[(start + i) % loop.length];
       if (refs[refs.length - 1]?.chain !== ref.chain) refs.push(ref);
     }
-    let data = '', segments = 0;
-    for (const ref of refs) {
-      const curves = ref.forward ? chains[ref.chain].curves : [...chains[ref.chain].curves].reverse().map(c => ({ from: c.to, to: c.from, controls: c.controls ? [c.controls[1], c.controls[0]] as [Point, Point] : undefined }));
-      for (const curve of curves) {
-        if (!data) data = `M${xy(curve.from)}`;
-        data += curve.controls ? `C${xy(curve.controls[0])} ${xy(curve.controls[1])} ${xy(curve.to)}` : `L${xy(curve.to)}`;
-        segments++;
-      }
-    }
     const edge = edges[seed], x = edge.a % stride, y = Math.floor(edge.a / stride);
     const horizontal = edge.b === edge.a + 1;
     const pixel = forward ? (horizontal ? y * width + x : y * width + x - 1) : (horizontal ? (y - 1) * width + x : y * width + x);
-    regions[regionIds[pixel]].loops.push({ data: data + 'Z', area: area / 2, nodes, segments });
+    regions[regionIds[pixel]].loops.push({ refs, area: area / 2, nodes });
   }
   const colors = palette.map(p => '#' + p.map(v => Math.round(v).toString(16).padStart(2, '0')).join(''));
-  const transparentSeeds = regions.filter(r => r.label < 0).map(r => [r.seed % width + 0.5, Math.floor(r.seed / width) + 0.5] as Point);
+  const transparentSeeds = regions.filter((r, id) => r.label < 0 || hidden[id]).map(r => [r.seed % width + 0.5, Math.floor(r.seed / width) + 0.5] as Point);
   // [ADAPTER-SVG] Our area-sorted underpainting/transparent-hole export policy.
-  const layers = regions.filter(r => r.label >= 0).map(region => {
+  const layers = regions.filter((r, id) => r.label >= 0 && !hidden[id]).map(region => {
     const outer = region.loops.filter(loop => loop.area > 0);
     // Filling a colored hole provides underpaint for its child shapes. Keep the
     // hole whenever it contains transparency, including transparency in a child.
@@ -1157,8 +1564,73 @@ export function traceRaster(rgba: Uint8ClampedArray, width: number, height: numb
   if (!layers.length) throw new Error('Tidak ada bidang tersisa. Nonaktifkan hapus putih atau kurangi pembersihan bintik.');
   const visibleColors = [...new Set(layers.map(layer => layer.color))];
   const contours = layers.reduce((sum, layer) => sum + layer.loops.length, 0);
-  const segments = layers.reduce((sum, layer) => sum + layer.loops.reduce((n, loop) => n + loop.segments, 0), 0);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${layers.map(layer => `<path fill="${layer.color}" fill-rule="evenodd" d="${layer.loops.map(loop => loop.data).join('')}"/>`).join('')}</svg>`;
+  const exportGeometry = (geometry: Chain[]): TraceResult => {
+    let segments = 0;
+    const paths = layers.map(layer => {
+      const data = layer.loops.map(loop => {
+        let d = '';
+        for (const ref of loop.refs) {
+          const curves = ref.forward ? geometry[ref.chain].curves : [...geometry[ref.chain].curves].reverse().map(c => ({ from: c.to, to: c.from, controls: c.controls ? [c.controls[1], c.controls[0]] as [Point, Point] : undefined }));
+          for (const c of curves) { if (!d) d = `M${xy(c.from)}`; d += c.controls ? `C${xy(c.controls[0])} ${xy(c.controls[1])} ${xy(c.to)}` : `L${xy(c.to)}`; segments++; }
+        }
+        return d + 'Z';
+      }).join('');
+      return `<path fill="${layer.color}" fill-rule="evenodd" d="${data}"/>`;
+    }).join('');
+    return { svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${paths}</svg>`, colors: visibleColors, paths: layers.length, contours, segments, width, height, diagnostics };
+  };
+  progress(90, 'Memeriksa kualitas SVG…');
+  let result = exportGeometry(chains);
+  const before = evaluateSvgScene(result.svg, rgba, width, height, whiteMode !== 'none', detailPixels);
+  diagnostics.sceneErrorBefore = diagnostics.sceneErrorAfter = before.error;
+  diagnostics.sceneDetailBefore = diagnostics.sceneDetailAfter = before.detailError;
+  diagnostics.sceneEdgeBefore = diagnostics.sceneEdgeAfter = before.edgeError;
+  if (options.smooth) {
+    let bestError = before.error, selected = false;
+    const adapter = { fit: fitWithSharedTangents, compact: compactSmoothCurves };
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const candidate = chains.map(chain => ({ curves: attempt === 0 ? regularizeStroke(chain.curves, adapter) : balanceStrokeCurvature(chain.curves, attempt === 1 ? .5 : .15) }));
+      const changed = candidate.filter((chain, i) => chain.curves !== chains[i].curves).length;
+      if (!changed) continue;
+      diagnostics.globalCandidates++;
+      const proposed = exportGeometry(candidate), after = evaluateSvgScene(proposed.svg, rgba, width, height, whiteMode !== 'none', detailPixels);
+      diagnostics.sceneCandidateError = after.error;
+      if (sceneAllows(before, after) && (!selected || after.error < bestError)) {
+        result = proposed; selected = true; bestError = after.error; diagnostics.globalAccepted++; diagnostics.regularizedChains = changed;
+        diagnostics.sceneErrorAfter = after.error; diagnostics.sceneDetailAfter = after.detailError; diagnostics.sceneEdgeAfter = after.edgeError;
+      }
+    }
+  }
   progress(100, 'Tracing selesai');
-  return { svg, colors: visibleColors, paths: layers.length, contours, segments, width, height, diagnostics };
+  return result;
+}
+
+function traceRasterGeometry(rgba: Uint8ClampedArray, width: number, height: number, options: TraceOptions, progress: (value: number, label: string) => void = () => {}): TraceResult {
+  let detailPixels: Uint8Array | undefined;
+  const compareDetails = options.smooth;
+  let baseline: TraceResult;
+  try { baseline = traceRasterRun(rgba, width, height, options, (v, label) => progress(Math.round(v * (compareDetails ? .7 : 1)), label), !options.smooth, pixels => { detailPixels = pixels; }); }
+  catch (error) {
+    // Cleanup can remove every foreground component before a baseline SVG
+    // exists. Recover only when source-supported details were captured.
+    if (!compareDetails || !detailPixels?.some(Boolean) || !(error instanceof Error) || !error.message.includes('Tidak ada bidang tersisa')) throw error;
+    const recovered = traceRasterRun(rgba, width, height, options, (v, label) => progress(70 + Math.round(v * .3), label), true, () => {});
+    recovered.diagnostics.detailProtectionAccepted = 1;
+    return recovered;
+  }
+  if (!compareDetails || !detailPixels?.some(Boolean)) { progress(100, 'Tracing selesai'); return baseline; }
+  let candidate: TraceResult;
+  try { candidate = traceRasterRun(rgba, width, height, options, (v, label) => progress(70 + Math.round(v * .3), label), true, () => {}); }
+  catch (error) { if (error instanceof Error && error.message.includes('terlalu kompleks')) { progress(100, 'Tracing selesai'); return baseline; } throw error; }
+  if (candidate.paths > baseline.paths * 1.25 + 2 || candidate.segments > baseline.segments * 1.25 + 10 || candidate.diagnostics.sceneErrorAfter > baseline.diagnostics.sceneErrorAfter * 1.005 + 1e-9) return baseline;
+  const removed = (options.whiteMode ?? (options.removeWhite ? 'all' : 'none')) !== 'none';
+  const oldScene = evaluateSvgScene(baseline.svg, rgba, width, height, removed, detailPixels), newScene = evaluateSvgScene(candidate.svg, rgba, width, height, removed, detailPixels);
+  if (!sceneAllows(oldScene, newScene)) return baseline;
+  candidate.diagnostics.detailProtectionAccepted = 1;
+  return candidate;
+}
+
+export function traceRaster(rgba: Uint8ClampedArray, width: number, height: number, options: TraceOptions, progress: (value: number, label: string) => void = () => {}): TraceResult {
+  const result = traceRasterGeometry(rgba, width, height, options, progress);
+  return options.smooth ? underpaint(result) : result;
 }

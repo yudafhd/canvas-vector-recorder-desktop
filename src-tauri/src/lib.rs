@@ -3,6 +3,7 @@ mod color_picker;
 mod license;
 mod recorder;
 mod target_platform;
+mod tracing_batch;
 
 use recorder::RecorderStore;
 use serde::{Deserialize, Serialize};
@@ -91,7 +92,10 @@ pub fn run() {
             commands::export_svg,
             commands::save_svg,
             commands::save_svg_asset,
+            commands::render_tracing_export,
             commands::save_tracing_svg,
+            commands::save_tracing_eps,
+            commands::save_tracing_batch,
             commands::save_eps,
             commands::save_eps_asset,
             commands::clear_surfaces,

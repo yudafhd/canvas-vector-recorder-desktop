@@ -1,6 +1,6 @@
 import './styles.css';
 import packageJson from '../package.json';
-import { invoke } from '@tauri-apps/api/core';
+import { invoke, isTauri } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { check } from '@tauri-apps/plugin-updater';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -32,6 +32,7 @@ import {
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import { initDiscover } from './discover';
 import { initTracing } from './tracing/page';
+import { initModeSelection } from './mode-selection';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgAsset, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -83,7 +84,8 @@ function handleRefreshShortcut(event: KeyboardEvent): void {
 
 const landingView = $('landingView');
 const landingStatus = $('landingStatus');
-const landingQuote = $('landingQuote');
+const modeSelectionView = $('modeSelectionView');
+let modeSelection: ReturnType<typeof initModeSelection>;
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
@@ -118,9 +120,9 @@ let targetOpen = false;
 const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
-type MainTab = 'recorder' | 'target' | 'tracing';
+type MainTab = 'home' | 'recorder' | 'target' | 'tracing';
 const MAX_TARGET_TABS = 5;
-let activeMainTab: MainTab = 'recorder';
+let activeMainTab: MainTab = 'home';
 let activeTargetId: string | null = null;
 let targetTabs: TargetTabInfo[] = [];
 let detectedAssets: CanvasDetection[] = [];
@@ -170,7 +172,7 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
   '16:9': { width: 16, height: 9 },
 };
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
-const LANDING_DURATION_MS = 8_000;
+const LANDING_DURATION_MS = 0;
 const LANDING_QUOTES = [
   ['Tidak ada yang akan berhasil kecuali kamu mulai mengerjakannya.', 'Maya Angelou'],
   ['Rintangan bagi tindakan justru memajukan tindakan. Yang menghalangi jalan menjadi jalan.', 'Marcus Aurelius'],
@@ -392,7 +394,7 @@ const LANDING_QUOTES = [
   ['Percayalah pada proses kreatifmu; intuisi sering kali lebih tahu daripada logika semata.', 'Henri Cartier-Bresson'],
   ['Semesta selalu berpihak pada mereka yang tidak pernah berhenti berusaha.', 'Paulo Coelho'],
 ] as const;
-const LAST_LANDING_QUOTE_KEY = 'canvas-vector-recorder.last-landing-quote.v1';
+
 const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
 const UPDATE_CHECK_INTERVAL_MS = 3 * 60 * 60 * 1000;
 let artworkScale = 1;
@@ -449,6 +451,12 @@ function applyTheme(dark: boolean): void {
   button.title = label;
   button.setAttribute('aria-label', label);
   button.setAttribute('aria-pressed', String(dark));
+  const menuButton = $<HTMLButtonElement>('modeThemeToggle');
+  if (menuButton) {
+    setIconButtonContent(menuButton, dark ? 'sun' : 'moon', 'Tema');
+    menuButton.setAttribute('aria-label', label);
+    menuButton.setAttribute('aria-pressed', String(dark));
+  }
 }
 
 function loadTheme(): void {
@@ -459,16 +467,6 @@ function loadTheme(): void {
 
 function persistTheme(): void {
   try { localStorage.setItem(THEME_STORAGE_KEY, darkMode ? 'dark' : 'light'); } catch (_) { /* Storage may be disabled by the host. */ }
-}
-
-function showRandomLandingQuote(): void {
-  let previousIndex = -1;
-  try { previousIndex = Number(sessionStorage.getItem(LAST_LANDING_QUOTE_KEY)); } catch (_) { /* Storage may be disabled by the host. */ }
-  let index = Math.floor(Math.random() * LANDING_QUOTES.length);
-  if (LANDING_QUOTES.length > 1 && index === previousIndex) index = (index + 1) % LANDING_QUOTES.length;
-  const [quote, attribution] = LANDING_QUOTES[index];
-  landingQuote.textContent = `“${quote}” — ${attribution}`;
-  try { sessionStorage.setItem(LAST_LANDING_QUOTE_KEY, String(index)); } catch (_) { /* Storage may be disabled by the host. */ }
 }
 
 let currentMotivationQuoteIndex = -1;
@@ -601,6 +599,7 @@ function closeTargetTabFromUi(tabId: string): void {
 }
 
 function cycleTargetTab(): void {
+  if (activeMainTab === 'home' || activeMainTab === 'tracing') return;
   if (!targetTabs.length) return;
   const currentIndex = targetTabs.findIndex(tab => tab.id === activeTargetId);
   const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % targetTabs.length;
@@ -617,9 +616,7 @@ function renderTargetTabs(state: TargetTabsState): void {
     ? `Maksimal ${MAX_TARGET_TABS} tab target.`
     : 'Buka tab target baru';
   targetMainTabs.replaceChildren();
-  targetMainTabs.hidden = !targetTabs.length;
   targetTabsCount.textContent = `${targetTabs.length}/${MAX_TARGET_TABS}`;
-  targetTabsCount.hidden = !targetTabs.length;
   targetTabs.forEach((tab, index) => {
     const wrapper = document.createElement('span');
     wrapper.className = 'target-tab-wrap';
@@ -675,23 +672,36 @@ function renderTargetTabs(state: TargetTabsState): void {
     targetMainTabs.append(wrapper);
   });
   updateOpenTargetButton();
+  updateMainNavigation();
   if (activeMainTab === 'target' && activeTargetId) {
     targetMainTitle.textContent = targetTabs.find(tab => tab.id === activeTargetId)?.title || 'Target';
     setMainTab('target');
   }
 }
 
+function updateMainNavigation(): void {
+  const online = activeMainTab === 'recorder' || activeMainTab === 'target';
+  recorderMainTab.hidden = !online;
+  $('newTargetMainTab').hidden = !online;
+  targetMainTabs.hidden = !online || !targetTabs.length;
+  targetTabsCount.hidden = !online || !targetTabs.length;
+}
+
 function setMainTab(tab: MainTab): void {
   activeMainTab = tab;
+  const showHome = tab === 'home';
   const showTarget = tab === 'target' && targetOpen && Boolean(activeTargetId);
   const showTracing = tab === 'tracing';
   if (showTracing && !tracingInitialized) { initTracing(tracingView); tracingInitialized = true; }
-  workspaceView.hidden = showTarget || showTracing;
+  modeSelectionView.hidden = !showHome;
+  mainTabs.hidden = showHome;
+  updateMainNavigation();
+  workspaceView.hidden = showHome || showTarget || showTracing;
   tracingView.hidden = !showTracing;
   targetView.hidden = !showTarget;
   targetView.classList.toggle('mac-target-view', isMac && showTarget);
-  recorderMainTab.classList.toggle('active', !showTarget && !showTracing);
-  recorderMainTab.setAttribute('aria-selected', String(!showTarget && !showTracing));
+  recorderMainTab.classList.toggle('active', !showHome && !showTarget && !showTracing);
+  recorderMainTab.setAttribute('aria-selected', String(!showHome && !showTarget && !showTracing));
   tracingMainTab.classList.toggle('active', showTracing);
   tracingMainTab.setAttribute('aria-selected', String(showTracing));
   targetTabs.forEach(target => {
@@ -1166,6 +1176,7 @@ function settingValidationError(): string | null {
   if (!Number.isFinite(minPixels) || minPixels <= 0) return 'Min MP harus lebih besar dari 0.';
   if (!Number.isFinite(maxPixels) || maxPixels <= 0) return 'Max MP harus lebih besar dari 0.';
   if (maxPixels <= minPixels) return 'Max MP harus lebih besar daripada Min MP.';
+  if (minPixels < 15 || maxPixels > 65) return 'Adobe Stock memerlukan artboard 15?65 MP.';
   if (ratio !== 'custom') return null;
   const width = Number($<HTMLInputElement>('customRatioWidth').value);
   const height = Number($<HTMLInputElement>('customRatioHeight').value);
@@ -1687,6 +1698,7 @@ function scheduleThumbnailRefresh(items: CanvasDetection[]): void {
 
 function renderLicense(s: LicenseStatus): void {
   if (s.valid) {
+    modeSelection.setEnabled(true);
     discoverControl?.setEnabled(true);
     landingView.hidden = true;
     activationView.hidden = true;
@@ -1694,6 +1706,8 @@ function renderLicense(s: LicenseStatus): void {
     setMainTab(activeMainTab);
     setAutomaticUpdateChecks(true);
   } else {
+    modeSelection.setEnabled(false);
+    modeSelectionView.hidden = true;
     discoverControl?.setEnabled(false);
     setAutomaticUpdateChecks(false);
     landingView.hidden = false;
@@ -1711,6 +1725,8 @@ async function loadLicense(): Promise<void> {
   landingStatus.textContent = 'Memeriksa lisensi…';
   try { renderLicense(await licenseStatus()); }
   catch (error) {
+    modeSelection.setEnabled(false);
+    modeSelectionView.hidden = true;
     discoverControl?.setEnabled(false);
     setAutomaticUpdateChecks(false);
     landingView.hidden = false;
@@ -2064,10 +2080,14 @@ async function closeTarget(): Promise<void> {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  modeSelection = initModeSelection(modeSelectionView, mode => {
+    setMainTab(mode === 'online' ? 'recorder' : 'tracing');
+    const heading = (mode === 'online' ? workspaceView : tracingView).querySelector<HTMLElement>('h1');
+    if (heading) { heading.tabIndex = -1; heading.focus(); }
+  }, () => { applyTheme(!darkMode); persistTheme(); });
   renderIcons();
   discoverControl = initDiscover(count => showDownloadToast(`${count} kabar baru dari Mahes. Buka Discover untuk melihatnya.`));
   window.addEventListener('keydown', handleRefreshShortcut);
-  showRandomLandingQuote();
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
@@ -2088,6 +2108,10 @@ document.addEventListener('DOMContentLoaded', () => {
     finally { activationForm.removeAttribute('aria-busy'); if (activationSubmit) { activationSubmit.disabled = false; activationSubmit.classList.remove('is-loading'); activationSubmit.textContent = 'Aktivasi sekarang'; } }
   });
   recorderMainTab.addEventListener('click', () => setMainTab('recorder'));
+  $('homeMainTab').addEventListener('click', () => {
+    setMainTab('home');
+    $<HTMLButtonElement>('onlineTracingChoice').focus();
+  });
   tracingMainTab.addEventListener('click', () => setMainTab('tracing'));
   $('remindMeButton').addEventListener('click', () => openMotivationModal());
   $('closeMotivationModal').addEventListener('click', () => closeMotivationModal());
@@ -2312,16 +2336,24 @@ document.addEventListener('DOMContentLoaded', () => {
   $('downloadToast').addEventListener('click', () => {
     $('downloadToast').hidden = true;
   });
-  void listen<CanvasDetection[]>('canvases-updated', event => {
-    renderCanvases(event.payload, { generateThumbnails: false });
-    scheduleThumbnailRefresh(event.payload);
-  });
-  void listen<SvgAsset[]>('svgs-updated', event => renderSvgAssets(event.payload));
-  void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
-  void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
-  void listen('target-closed', () => { targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); setMainTab('recorder'); });
+  if (isTauri()) {
+    void listen<CanvasDetection[]>('canvases-updated', event => {
+      renderCanvases(event.payload, { generateThumbnails: false });
+      scheduleThumbnailRefresh(event.payload);
+    });
+    void listen<SvgAsset[]>('svgs-updated', event => renderSvgAssets(event.payload));
+    void listen<TargetTabsState>('target-tabs-updated', event => renderTargetTabs(event.payload));
+    void listen<string>('recorder-error', event => status(workspaceStatus, event.payload, 'error'));
+    void listen('target-closed', () => { const wasTarget = activeMainTab === 'target'; targetOpen = false; activeTargetId = null; renderTargetTabs({ active_id: null, tabs: [] }); updateOpenTargetButton(); currentSession = null; resetDetectedSurfaces(); if (wasTarget) setMainTab('recorder'); });
+  } else {
+    landingView.hidden = true;
+    activationView.hidden = true;
+    mainTabs.hidden = false;
+    modeSelection.setEnabled(true);
+    setMainTab('home');
+  }
   window.addEventListener('beforeunload', persistSettingsSilently);
   window.setTimeout(() => {
-    void loadLicense();
+    if (isTauri()) void loadLicense();
   }, LANDING_DURATION_MS);
 });

@@ -252,10 +252,12 @@ pub fn save_svg(
     save_directory: Option<String>,
 ) -> Result<String, AppError> {
     let data = canvas_or_error(&state, &canvas_id)?;
-    let (svg, _) = recorder::svg::build(&data, &settings.unwrap_or_default());
+    let (svg, (width, height, _)) = recorder::svg::build(&data, &settings.unwrap_or_default());
     let filename = filename.as_deref().unwrap_or("vectorized-result.svg");
+    check_stock_artboard(width, height)?;
     let directory = export_directory(&app, save_directory.as_deref())?;
     let path = unique_download_path(&directory, &safe_svg_filename(&filename));
+    if svg.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
 }
@@ -271,44 +273,129 @@ pub fn save_svg_asset(
     save_directory: Option<String>,
 ) -> Result<String, AppError> {
     let asset = svg_asset_with_markup(&state, &svg_id, source_markup)?;
-    let (svg, _) = recorder::svg_asset::build_for_export(&asset, &settings.unwrap_or_default());
+    let (svg, (width, height, _)) = recorder::svg_asset::build_for_export(&asset, &settings.unwrap_or_default());
+    check_stock_artboard(width, height)?;
     let directory = export_directory(&app, save_directory.as_deref())?;
     let path = unique_download_path(&directory, &safe_svg_filename(filename.as_deref().unwrap_or(&asset.filename)));
+    if svg.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().to_string())
 }
 
+/// Use the exact Online SVG/EPS layout and serializers for Offline exports.
+#[tauri::command]
+pub fn render_tracing_export(svg: String, settings: MicrostockSettings, format: String, title: String) -> Result<String, AppError> {
+    if svg.len() > 20 * 1024 * 1024 { return Err(AppError::PayloadTooLarge); }
+    validate_tracing_svg(&svg)?;
+    if !settings.min_pixels.is_finite() || !settings.max_pixels.is_finite() || settings.min_pixels < 15_000_000.0 || settings.max_pixels > 65_000_000.0 || settings.max_pixels <= settings.min_pixels {
+        return Err(AppError::InvalidEvent("Artboard harus 15-65 MP".into()));
+    }
+    let document = roxmltree::Document::parse(&svg).map_err(|_| AppError::InvalidEvent("SVG tidak valid".into()))?;
+    let root = document.root_element();
+    let box_values: Vec<f64> = root.attribute("viewBox").unwrap_or("").split_whitespace().filter_map(|v| v.parse().ok()).collect();
+    if box_values.len() != 4 || box_values.iter().any(|v| !v.is_finite()) || box_values[0] != 0.0 || box_values[1] != 0.0 || box_values[2] <= 0.0 || box_values[3] <= 0.0 {
+        return Err(AppError::InvalidEvent("ViewBox tracing tidak valid".into()));
+    }
+    let paths: Vec<_> = root.children().filter(|n| n.is_element()).collect();
+    let markup = format!("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\">{}</svg>", box_values[2], box_values[3], box_values[2], box_values[3], paths.iter().map(|n| &svg[n.range()]).collect::<String>());
+    let asset = recorder::svg_asset::SvgAsset { svg_id: "offline-trace".into(), width: box_values[2], height: box_values[3], shapes: paths.len(), filename: "offline-trace.svg".into(), markup, revision: 0 };
+    let title = title.replace(['\r', '\n'], " ");
+    let (output, (width, height, _)) = match format.as_str() {
+        "svg" => recorder::svg_asset::build_for_export(&asset, &settings),
+        "eps" => recorder::eps::build_svg_asset_eps(&asset, &settings, &title),
+        _ => return Err(AppError::InvalidEvent("Format ekspor tidak valid".into())),
+    };
+    check_stock_artboard(width, height)?;
+    let area = width as f64 * height as f64;
+    if area < settings.min_pixels || area > settings.max_pixels { return Err(AppError::InvalidEvent("Rasio artboard tidak dapat memenuhi rentang MP yang dipilih".into())); }
+    if output.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
+    Ok(output)
+}
+
 /// Save the local tracing page's generated path-only SVG using the existing export convention.
 #[tauri::command]
-pub fn save_tracing_svg(app: AppHandle, svg: String, filename: String) -> Result<String, AppError> {
+pub fn save_tracing_svg(app: AppHandle, svg: String, filename: String, settings: Option<MicrostockSettings>) -> Result<String, AppError> {
     if svg.len() > 20 * 1024 * 1024 {
         return Err(AppError::PayloadTooLarge);
     }
-    validate_tracing_svg(&svg)?;
+    let svg = if let Some(settings) = settings { render_tracing_export(svg, settings, "svg".into(), filename.clone())? } else { validate_tracing_svg(&svg)?; svg };
     let directory = export_directory(&app, None)?;
     let path = unique_download_path(&directory, &safe_svg_filename(&filename));
+    if svg.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
     std::fs::write(&path, svg).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
 }
 
-fn validate_tracing_svg(svg: &str) -> Result<(), AppError> {
+#[tauri::command]
+pub fn save_tracing_eps(
+    app: AppHandle,
+    svg: Option<String>,
+    bytes: Option<Vec<u8>>,
+    filename: String,
+) -> Result<String, AppError> {
+    let directory = export_directory(&app, None)?;
+    let raw_filename = if filename.ends_with(".eps") {
+        filename
+    } else {
+        format!("{}.eps", filename.trim_end_matches(".svg"))
+    };
+    let safe_filename = safe_eps_filename(&raw_filename);
+    let data: Vec<u8> = if let Some(b) = bytes {
+        if b.len() > 45_000_000 {
+            return Err(AppError::PayloadTooLarge);
+        }
+        b
+    } else if let Some(s) = svg {
+        if s.len() > 20 * 1024 * 1024 {
+            return Err(AppError::PayloadTooLarge);
+        }
+        recorder::eps::build_tracing_eps(&s, &safe_filename)?
+    } else {
+        return Err(AppError::InvalidEvent("Payload kosong".into()));
+    };
+    let path = unique_download_path(&directory, &safe_filename);
+    if data.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
+    std::fs::write(&path, data).map_err(|error| AppError::Storage(error.to_string()))?;
+    Ok(path.to_string_lossy().into_owned())
+}
+
+#[tauri::command]
+pub async fn save_tracing_batch(app: AppHandle, entries: Vec<crate::tracing_batch::BatchEntry>) -> Result<String, AppError> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let zip = crate::tracing_batch::make_zip(&entries)?;
+        let directory = export_directory(&app, None)?;
+        let is_eps = entries.first().map(|e| e.filename.ends_with(".eps")).unwrap_or(false);
+        let zip_name = if is_eps { "tracing-batch-eps.zip" } else { "tracing-batch.zip" };
+        let path = unique_download_path(&directory, zip_name);
+        std::fs::write(&path, zip).map_err(|error| AppError::Storage(error.to_string()))?;
+        Ok(path.to_string_lossy().into_owned())
+    }).await.map_err(|error| AppError::Storage(error.to_string()))?
+}
+
+pub(crate) fn validate_tracing_svg(svg: &str) -> Result<(), AppError> {
     let document = roxmltree::Document::parse(svg)
         .map_err(|_| AppError::InvalidEvent("SVG tracing tidak valid".into()))?;
     let root = document.root_element();
     if root.tag_name().name() != "svg" || root.tag_name().namespace() != Some("http://www.w3.org/2000/svg") {
         return Err(AppError::InvalidEvent("Dokumen harus berupa SVG".into()));
     }
+    let mut clips = std::collections::HashSet::new();
+    let mut references = Vec::new();
     for node in root.descendants().filter(|node| node.is_element()) {
         if node.tag_name().namespace() != Some("http://www.w3.org/2000/svg") {
             return Err(AppError::InvalidEvent("Namespace SVG tidak diizinkan".into()));
         }
         let allowed: &[&str] = match node.tag_name().name() {
             "svg" if node == root => &["width", "height", "viewBox"],
-            "path" => &["fill", "fill-rule", "d"],
-            _ => return Err(AppError::InvalidEvent("SVG tracing hanya boleh berisi path".into())),
+            "defs" if node.parent_element() == Some(root) => &[],
+            "clipPath" if node.parent_element().is_some_and(|p| p.has_tag_name("defs")) => &["id", "clipPathUnits"],
+            "path" if node.parent_element() == Some(root) => &["fill", "fill-rule", "d", "clip-path"],
+            "path" if node.parent_element().is_some_and(|p| p.has_tag_name("clipPath")) => &["clip-rule", "d"],
+            _ => return Err(AppError::InvalidEvent("Elemen SVG tracing tidak diizinkan".into())),
         };
         for attribute in node.attributes() {
-            if attribute.namespace().is_some() || !allowed.contains(&attribute.name()) || attribute.value().contains("url(") {
+            if attribute.namespace().is_some() || !allowed.contains(&attribute.name())
+                || (attribute.name() != "clip-path" && attribute.value().contains("url(")) {
                 return Err(AppError::InvalidEvent("Atribut SVG tracing tidak diizinkan".into()));
             }
             if attribute.name() == "fill" {
@@ -318,6 +405,29 @@ fn validate_tracing_svg(svg: &str) -> Result<(), AppError> {
                 }
             }
         }
+        if node.has_tag_name("clipPath") {
+            let id = node.attribute("id").unwrap_or("");
+            if id.is_empty() || !id.bytes().all(|b| b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_'))
+                || !clips.insert(id) || node.attribute("clipPathUnits").is_some_and(|v| v != "userSpaceOnUse")
+                || !node.children().any(|child| child.is_element()) {
+                return Err(AppError::InvalidEvent("Definisi clip tracing tidak valid".into()));
+            }
+        }
+        if node.has_tag_name("path") && node.parent_element().is_some_and(|p| p.has_tag_name("clipPath")) {
+            if node.attribute("clip-rule").is_some_and(|v| v != "nonzero")
+                || node.attribute("d").and_then(recorder::eps::path_to_postscript).is_none() {
+                return Err(AppError::InvalidEvent("Path clip tracing tidak valid".into()));
+            }
+        }
+        if let Some(reference) = node.attribute("clip-path") {
+            let id = reference.strip_prefix("url(#").and_then(|v| v.strip_suffix(')'))
+                .filter(|v| !v.is_empty() && v.bytes().all(|b| b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_')))
+                .ok_or_else(|| AppError::InvalidEvent("Referensi clip tracing tidak valid".into()))?;
+            references.push(id);
+        }
+    }
+    if references.iter().any(|id| !clips.contains(id)) {
+        return Err(AppError::InvalidEvent("Clip tracing tidak tersedia".into()));
     }
     Ok(())
 }
@@ -327,6 +437,52 @@ mod tracing_export_tests {
     use super::validate_tracing_svg;
 
     #[test]
+    fn clipped_underpaint_survives_export_layout_and_batch() {
+        let source = r##"<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"><defs><clipPath id="seam" clipPathUnits="userSpaceOnUse"><path clip-rule="nonzero" d="M1 1L7 1L7 7L1 7ZM3 3L3 5L5 5L5 3Z"/></clipPath></defs><path fill="#ff0000" fill-rule="evenodd" clip-path="url(#seam)" d="M0 0L8 0L8 8L0 8Z"/></svg>"##;
+        let mut settings = super::MicrostockSettings::default();
+        settings.ratio = "4:5".into();
+        settings.artwork_scale = 1.3;
+        settings.transparent_background = true;
+        let svg = super::render_tracing_export(source.into(), settings.clone(), "svg".into(), "clipped".into()).unwrap();
+        let eps = super::render_tracing_export(source.into(), settings.clone(), "eps".into(), "clipped".into()).unwrap();
+        assert!(svg.contains("clip-path=\"url(#seam)\""));
+        assert!(svg.contains("<clipPath id=\"seam\""));
+        assert_eq!(eps.matches("clip\nnewpath\n").count(), 1);
+        assert_eq!(eps.matches("setrgbcolor").count(), 1);
+        assert!(eps.contains("3 3 moveto\n3 5 lineto\n5 5 lineto\n5 3 lineto\nclosepath\nclip\n"));
+        assert!(eps.find(" scale\n").unwrap() < eps.find("clip\n").unwrap());
+        let zip = crate::tracing_batch::make_zip(&[crate::tracing_batch::BatchEntry {
+            filename: "clipped.svg".into(), svg: source.into(), bytes: None, settings: Some(settings),
+        }]).unwrap();
+        assert!(String::from_utf8_lossy(&zip).contains("clip-path=\"url(#seam)\""));
+    }
+
+    #[test]
+    fn offline_exports_share_online_artboard_background_and_scale() {
+        let source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"2400\" height=\"2400\" viewBox=\"0 0 32 32\"><path fill=\"#ff0000\" d=\"M0 0L32 0L0 32Z\"/></svg>";
+        let mut settings = super::MicrostockSettings::default();
+        settings.ratio = "4:5".into();
+        settings.artwork_scale = 0.8;
+        for transparent in [false, true] {
+            settings.transparent_background = transparent;
+            let svg = super::render_tracing_export(source.into(), settings.clone(), "svg".into(), "test".into()).unwrap();
+            let eps = super::render_tracing_export(source.into(), settings.clone(), "eps".into(), "test".into()).unwrap();
+            let (w, h, _) = crate::recorder::validator::artboard(32.0, 32.0, &settings);
+            assert_eq!(w * 5, h * 4);
+            assert!(svg.contains(&format!("viewBox=\"0 0 {w} {h}\"")));
+            assert!(eps.contains(&format!("%%BoundingBox: 0 0 {w} {h}")));
+            assert_eq!(svg.contains("background-color"), !transparent);
+            assert_eq!(eps.contains("% Background"), !transparent);
+            assert!(eps.contains("1 0 0 setrgbcolor"));
+            assert!(!eps.contains("<?xpacket"));
+            let scale = w as f64 * 0.9 / 32.0 * 0.8;
+            assert!(eps.contains(&format!("{} {} scale", crate::recorder::transform::f(scale), crate::recorder::transform::f(scale))));
+        }
+        settings.min_pixels = 1_000_000.0;
+        assert!(super::render_tracing_export(source.into(), settings, "svg".into(), "test".into()).is_err());
+    }
+
+    #[test]
     fn accepts_generated_paths_and_rejects_active_or_external_content() {
         let wrap = |content: &str| format!("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\">{content}</svg>");
         assert!(validate_tracing_svg(&wrap("<path fill=\"#ffc107\" fill-rule=\"evenodd\" d=\"M0 0L32 0L0 32Z\"/>")).is_ok());
@@ -334,6 +490,28 @@ mod tracing_export_tests {
             assert!(validate_tracing_svg(&wrap(invalid)).is_err());
         }
         assert!(validate_tracing_svg("not xml").is_err());
+    }
+
+    #[test]
+    fn accepts_only_local_generated_clip_definitions() {
+        let wrap = |content: &str| format!("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 8 8\">{content}</svg>");
+        let defs = r#"<defs><clipPath id="seam" clipPathUnits="userSpaceOnUse"><path clip-rule="nonzero" d="M1 1L7 1L7 7Z"/></clipPath></defs>"#;
+        let painted = r##"<path fill="#ff0000" clip-path="url(#seam)" d="M0 0L8 0L8 8Z"/>"##;
+        assert!(validate_tracing_svg(&wrap(&format!("{painted}{defs}"))).is_ok());
+        for invalid in [
+            painted.to_string(),
+            format!("{defs}{defs}{painted}"),
+            format!("{defs}{}", painted.replace("url(#seam)", "url(https://example.com/clip)")),
+            format!("{defs}{}", painted.replace("url(#seam)", "url(#missing)")),
+            format!("{}{painted}", defs.replace("userSpaceOnUse", "objectBoundingBox")),
+            format!("{}{painted}", defs.replace("nonzero", "evenodd")),
+            format!("{}{painted}", defs.replace("<path", "<path onload=\"alert(1)\"")),
+            format!("{}{painted}", defs.replace("M1 1L7 1L7 7Z", "invalid path")),
+            "<defs><path d=\"M0 0L8 8\"/></defs>".into(),
+            "<defs><clipPath id=\"seam\"><use href=\"https://example.com/x\"/></clipPath></defs>".into(),
+        ] {
+            assert!(validate_tracing_svg(&wrap(&invalid)).is_err(), "{invalid}");
+        }
     }
 }
 
@@ -349,10 +527,12 @@ pub fn save_eps(
     let data = canvas_or_error(&state, &canvas_id)?;
     let raw_filename = filename.as_deref().unwrap_or("vectorized-result.eps");
     let safe_filename = safe_eps_filename(raw_filename);
-    let (eps, _) =
+    let (eps, (width, height, _)) =
         recorder::eps::build_canvas_eps(&data, &settings.unwrap_or_default(), &safe_filename);
+    check_stock_artboard(width, height)?;
     let directory = export_directory(&app, save_directory.as_deref())?;
     let path = unique_download_path(&directory, &safe_filename);
+    if eps.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
     std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().into_owned())
 }
@@ -370,12 +550,21 @@ pub fn save_eps_asset(
     let asset = svg_asset_with_markup(&state, &svg_id, source_markup)?;
     let raw_filename = filename.as_deref().unwrap_or(&asset.filename);
     let safe_filename = safe_eps_filename(raw_filename);
-    let (eps, _) =
+    let (eps, (width, height, _)) =
         recorder::eps::build_svg_asset_eps(&asset, &settings.unwrap_or_default(), &safe_filename);
+    check_stock_artboard(width, height)?;
     let directory = export_directory(&app, save_directory.as_deref())?;
     let path = unique_download_path(&directory, &safe_filename);
+    if eps.len() > 45_000_000 { return Err(AppError::PayloadTooLarge); }
     std::fs::write(&path, eps).map_err(|error| AppError::Storage(error.to_string()))?;
     Ok(path.to_string_lossy().to_string())
+}
+
+fn check_stock_artboard(width: u64, height: u64) -> Result<(), AppError> {
+    if !(15_000_000..=65_000_000).contains(&width.saturating_mul(height)) {
+        return Err(AppError::InvalidEvent("Adobe Stock memerlukan artboard 15?65 MP. Sesuaikan ukuran atau rasio artboard.".into()));
+    }
+    Ok(())
 }
 
 fn export_directory(app: &AppHandle, selected: Option<&str>) -> Result<PathBuf, AppError> {

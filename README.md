@@ -10,7 +10,13 @@ Generator di Rust mengeluarkan SVG standalone dengan namespace, artboard rasio/m
 
 ## Halaman Tracing
 
-Tab **Tracing** di sebelah Recorder mengubah PNG/JPG/WebP lokal menjadi SVG dengan path yang dapat diedit. Pilih gambar, atur jumlah warna dan detail, lalu tekan **Mulai tracing**. Pratinjau asli/vektor mendukung zoom; **Simpan SVG** menyimpan ke Downloads di Tauri atau mengunduh file di browser. Hasil tetap tersedia saat berpindah tab. Mengubah pengaturan menandai hasil lama tidak berlaku; proses bisa dibatalkan.
+**Pengaturan ekspor global** di Offline mengatur rasio artboard (termasuk custom), Min/Max MP, skala artwork, dan hapus atau pertahankan latar putih. Pengaturan tersimpan dan berlaku untuk SVG/EPS satu item serta ZIP batch. Ekspor desktop memakai pembentuk SVG/EPS Online yang sama, dengan artwork dipusatkan dan margin 10%. Hapus latar putih hanya membuang putih yang terhubung ke tepi gambar; detail putih di dalam artwork dipertahankan. Bila pilihan latar berbeda dari hasil tracing, ekspor memproses ulang gambar dengan pilihan tersebut. Batas artboard 15–65 MP dan file 45 MB tetap diperiksa. Ekstrak ZIP sebelum mengunggah ke Adobe Stock.
+
+Menu awal menyediakan **Tracing online** untuk membuka Recorder Canvas/SVG dari situs dan **Tracing offline** untuk mengubah PNG/JPG/WebP lokal menjadi SVG. Offline dimulai dari daftar gambar; buka item untuk melihat editor dengan mode Auto atau Manual dan pengaturan per gambar. Pratinjau asli/vektor mendukung zoom dan panel pengaturan dapat ditutup. **Simpan SVG** mengekspor hasil satu item; **Ekspor ZIP** menyimpan hasil antrean. Tombol **Menu** kembali ke pilihan mode tanpa menghapus antrean, pengaturan, atau hasil. Mengubah pengaturan menandai hasil lama tidak berlaku; proses bisa dibatalkan.
+
+Menu dan tracing offline memakai warna serta layout yang terinspirasi Material 3, tema terang/gelap, indikator fokus keyboard, dan animasi singkat yang mengikuti `prefers-reduced-motion`.
+
+Daftar gambar menampilkan thumbnail sumber (maks. 384 px) dan hasil SVG, status per item, palet, serta ukuran hasil. Pilih tampilan daftar/kartu, cari nama file, atau filter status. Pilihan tampilan tersimpan di perangkat; pencarian dan filter hanya mengubah gambar yang ditampilkan. Thumbnail dibuat berurutan dan URL pratinjau dilepas ketika item atau hasilnya dihapus.
 
 Mesin mandiri di `src/tracing/engine.ts` berjalan dalam Web Worker: pengelompokan warna, pembersihan region kecil, penelusuran batas bersama, lalu penyederhanaan garis/fitting Bézier. Batas yang sama hanya difit sekali dan dipakai kedua bidang dengan arah berlawanan. Ini implementasi awal yang diinformasikan riset; belum merupakan reproduksi mesin Vector Magic atau keputusan merge/swap-nya. Detail implementasi dan pengujian ada di [catatan tracing](docs/TRACING.md).
 
@@ -27,7 +33,7 @@ npm run tauri:dev
 
 Environment lisensi dibaca pada saat build Rust. Salin `.env.example` menjadi `.env`; build Rust dan generator lisensi akan membacanya otomatis, sementara environment shell memiliki prioritas lebih tinggi. Jangan commit `.env` atau key. `LICENSE_PRODUCT_CODE` wajib diisi dan harus sama saat membuat token maupun build aplikasi. Versi aplikasi dikelola dari `package.json` dan konfigurasi Tauri, bukan dari `.env`.
 
-Saat startup, aplikasi menampilkan landing screen selama 2 detik sebelum memeriksa lisensi dan membuka activation screen atau workspace. UI menggunakan Plus Jakarta Sans variable font yang dibundel lokal di `src/assets/fonts`, sehingga tidak membutuhkan koneksi internet untuk memuat font.
+Saat startup, aplikasi langsung memeriksa lisensi, lalu menampilkan aktivasi atau pilihan mode tracing. Tidak ada jeda splash tambahan atau kutipan motivasi saat startup. UI menggunakan Plus Jakarta Sans variable font yang dibundel lokal di `src/assets/fonts`, sehingga tidak membutuhkan koneksi internet untuk memuat font.
 
 ## Tauri updater
 
