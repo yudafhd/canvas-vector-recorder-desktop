@@ -73,7 +73,7 @@
 .trace-thumb-placeholder, .trace-vector-placeholder { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--m3-muted); font-weight: 400; font-size: 10px; text-align: center; }
 .trace-thumb-placeholder svg, .trace-vector-placeholder svg { width: 20px; height: 20px; opacity: .65; }
 .trace-thumb-tag { position: absolute; left: 4px; top: 4px; padding: 2px 4px; border: 1px solid var(--m3-outline-variant); border-radius: 4px; font-size: 9px; font-weight: 600; color: var(--m3-muted); background: var(--m3-surface-low); letter-spacing: .04em; }
-.trace-thumb-open { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 3px; padding: 6px 3px; background: #211934e8; color: #fff; font-size: 10px; opacity: 0; transform: translateY(8px); transition: opacity 180ms ease, transform 180ms ease; }
+.trace-thumb-open { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 3px; padding: 6px 3px; background: rgba(32, 33, 36, 0.92); color: #fff; font-size: 10px; opacity: 0; transform: translateY(8px); transition: opacity 180ms ease, transform 180ms ease; }
 .trace-batch-thumbnail:hover .trace-thumb-open, .trace-batch-thumbnail:focus-visible .trace-thumb-open { opacity: 1; transform: translateY(0); }
 .trace-batch-body { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
 .trace-item-topline { display: flex; align-items: center; gap: 6px; }
