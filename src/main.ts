@@ -684,6 +684,7 @@ function setMainTab(tab: MainTab): void {
   workspaceView.hidden = showTarget;
   targetView.hidden = !showTarget;
   targetView.classList.toggle('mac-target-view', isMac && showTarget);
+  targetView.classList.toggle('windows-target-view', isWindows && showTarget);
   recorderMainTab.classList.toggle('active', !showTarget);
   recorderMainTab.setAttribute('aria-selected', String(!showTarget));
   targetTabs.forEach(target => {
@@ -2072,7 +2073,7 @@ async function closeTarget(): Promise<void> {
   updateOpenTargetButton();
   currentSession = null;
   resetDetectedSurfaces();
-  status(workspaceStatus, 'Target ditutup. Detected direset.');
+  status(workspaceStatus, 'Target ditutup.');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2083,6 +2084,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
+  if (isWindows) targetView.classList.add('windows-target-view');
   mainTabs.hidden = !(isWindows || isMac);
   if (isWindows || isMac) setMainTab('recorder');
   const activationForm = $<HTMLFormElement>('activationForm');
