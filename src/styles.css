@@ -36,12 +36,12 @@
   --gemini-accent: #1a73e8;
   --gemini-purple: var(--gemini-blue);
   --gemini-pink: var(--gemini-cyan);
-  --gemini-gradient: linear-gradient(135deg, #1a73e8 0%, #00b4d8 35%, #34a853 70%, #fbbc04 100%);
-  --gemini-gradient-hover: linear-gradient(135deg, #1557b0 0%, #0096c7 35%, #2d9249 70%, #f59e0b 100%);
-  --gemini-gradient-soft: linear-gradient(135deg, rgba(26, 115, 232, 0.12) 0%, rgba(0, 229, 255, 0.14) 40%, rgba(52, 168, 83, 0.12) 100%);
-  --gemini-glow: 0 -2px 12px rgba(52, 168, 83, 0.35), 2px -2px 16px rgba(0, 229, 255, 0.3), 4px 0 20px rgba(26, 115, 232, 0.25);
-  --gemini-glow-intense: 0 -3px 18px rgba(52, 168, 83, 0.55), 3px -3px 22px rgba(0, 229, 255, 0.5), 6px 0 26px rgba(26, 115, 232, 0.35);
-  --gemini-glow-subtle: 0 0 16px -2px rgba(0, 229, 255, 0.35);
+  --gemini-gradient: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+  --gemini-gradient-hover: linear-gradient(135deg, #1967d2 0%, #1557b0 100%);
+  --gemini-gradient-soft: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(0, 229, 255, 0.12) 100%);
+  --gemini-glow: 0 4px 14px -2px rgba(26, 115, 232, 0.35), 0 0 12px -2px rgba(0, 229, 255, 0.2);
+  --gemini-glow-intense: 0 4px 20px -1px rgba(26, 115, 232, 0.5), 0 0 18px -1px rgba(0, 229, 255, 0.35);
+  --gemini-glow-subtle: 0 2px 10px rgba(26, 115, 232, 0.2), 0 0 10px rgba(0, 229, 255, 0.15);
 
   /* Google Gemini Aurora tokens (Mode AI) */
   --gemini-aurora-gold: #fbbc04;
@@ -87,13 +87,13 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   border-color: transparent;
   border-radius: 16px;
   font-weight: 600;
-  box-shadow: 0 4px 16px -2px rgba(52, 168, 83, 0.35);
+  box-shadow: 0 3px 12px -2px rgba(26, 115, 232, 0.4);
 }
 .primary:hover {
   color: #ffffff;
   background: var(--gemini-gradient-hover);
   border-color: transparent;
-  box-shadow: var(--gemini-glow);
+  box-shadow: 0 4px 18px -2px rgba(26, 115, 232, 0.5), 0 0 12px -2px rgba(0, 229, 255, 0.25);
   transform: translateY(-1px);
 }
 .primary:active {
@@ -216,7 +216,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   display: block;
   width: 36%;
   height: 100%;
-  background: var(--gemini-gradient);
+  background: var(--gemini-aurora-gradient);
   border-radius: inherit;
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
   transform: translateX(-110%);
@@ -292,8 +292,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 #activationView #activationForm textarea { min-height: 126px; line-height: 1.45; resize: vertical; }
 #activationView #activationForm input::placeholder, #activationView #activationForm textarea::placeholder { color: var(--m3-muted); }
 #activationView .activation-help { margin: -6px 0 0; color: var(--m3-muted); font-size: 12px; line-height: 1.45; }
-#activationView .activation-submit { width: 100%; min-height: 48px; margin-top: 3px; padding: 11px 20px; border-radius: 16px; font-size: 14px; background: var(--gemini-gradient); color: #fff; border: 0; box-shadow: 0 4px 16px -2px rgba(52, 168, 83, 0.35); }
-#activationView .activation-submit:hover:not(:disabled) { background: var(--gemini-gradient-hover); box-shadow: var(--gemini-glow); }
+#activationView .activation-submit { width: 100%; min-height: 48px; margin-top: 3px; padding: 11px 20px; border-radius: 16px; font-size: 14px; font-weight: 600; background: var(--gemini-gradient); color: #fff; border: 0; box-shadow: 0 4px 14px -2px rgba(26, 115, 232, 0.4); }
+#activationView .activation-submit:hover:not(:disabled) { background: var(--gemini-gradient-hover); box-shadow: 0 6px 20px -2px rgba(26, 115, 232, 0.5), 0 0 14px -2px rgba(0, 229, 255, 0.25); }
 #activationView .activation-submit:disabled { color: var(--m3-on-primary); background: var(--m3-outline); border-color: transparent; opacity: .7; }
 #activationView .activation-submit.is-loading::after { display: inline-block; width: 13px; height: 13px; margin-left: 9px; vertical-align: -2px; content: ""; border: 2px solid #ffffff66; border-top-color: #fff; border-radius: 50%; animation: activation-spin .7s linear infinite; }
 #activationView #activationStatus { min-height: 0; margin: 19px 0 0; line-height: 1.45; overflow-wrap: anywhere; }
@@ -467,7 +467,7 @@ h2 { font-size: 13px; font-weight: 600; margin-bottom: 11px; }
 @keyframes pulse-dot { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); } 40% { opacity: 1; transform: scale(1.25); } }
 .motivation-loading-label { margin: 0; color: var(--m3-muted); font-size: 13px; font-weight: 550; letter-spacing: 0.01em; }
 .motivation-progress-track { width: 190px; height: 4px; background: var(--m3-surface-high); border-radius: 999px; overflow: hidden; }
-.motivation-progress-fill { width: 0%; height: 100%; background: var(--gemini-gradient); border-radius: inherit; box-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+.motivation-progress-fill { width: 0%; height: 100%; background: var(--gemini-aurora-gradient); border-radius: inherit; box-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
 .motivation-progress-fill.animate { animation: motivation-progress-anim 3s linear forwards; }
 @keyframes motivation-progress-anim { from { width: 0%; } to { width: 100%; } }
 .motivation-shuffle-btn.is-loading .lucide { animation: motivation-spin 1s linear infinite; }
@@ -662,6 +662,7 @@ input[type="range"]:active::-webkit-slider-thumb {
   white-space: nowrap;
   min-height: 36px;
   font-size: 13px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -669,12 +670,12 @@ input[type="range"]:active::-webkit-slider-thumb {
   background: var(--gemini-gradient);
   color: #ffffff;
   border: 0;
-  box-shadow: 0 4px 16px -2px rgba(52, 168, 83, 0.35);
+  box-shadow: 0 3px 12px -2px rgba(26, 115, 232, 0.4);
   transition: all 180ms ease;
 }
 .download-button:hover {
   background: var(--gemini-gradient-hover);
-  box-shadow: var(--gemini-glow);
+  box-shadow: 0 4px 18px -2px rgba(26, 115, 232, 0.5), 0 0 12px -2px rgba(0, 229, 255, 0.25);
   transform: translateY(-1px);
 }
 .download-chevron { width: 14px; height: 14px; transition: transform .18s ease; }
@@ -785,12 +786,12 @@ a:hover { color: var(--gemini-cyan, #00e5ff); }
   --gemini-blue: #8ab4f8;
   --gemini-purple: var(--gemini-blue);
   --gemini-pink: var(--gemini-cyan);
-  --gemini-gradient: linear-gradient(135deg, #4285f4 0%, #00e5ff 35%, #34a853 70%, #fbbc04 100%);
-  --gemini-gradient-hover: linear-gradient(135deg, #669df6 0%, #38bdf8 35%, #4ade80 70%, #fcd34d 100%);
-  --gemini-gradient-soft: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(0, 229, 255, 0.2) 40%, rgba(52, 168, 83, 0.2) 100%);
-  --gemini-glow: 0 -2px 14px rgba(52, 168, 83, 0.45), 2px -2px 18px rgba(0, 229, 255, 0.4), 4px 0 24px rgba(66, 133, 244, 0.3);
-  --gemini-glow-intense: 0 -4px 22px rgba(52, 168, 83, 0.6), 3px -3px 26px rgba(0, 229, 255, 0.55), 6px 0 30px rgba(66, 133, 244, 0.45);
-  --gemini-glow-subtle: 0 0 18px -2px rgba(0, 229, 255, 0.35);
+  --gemini-gradient: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+  --gemini-gradient-hover: linear-gradient(135deg, #1967d2 0%, #1557b0 100%);
+  --gemini-gradient-soft: linear-gradient(135deg, rgba(66, 133, 244, 0.18) 0%, rgba(0, 229, 255, 0.14) 100%);
+  --gemini-glow: 0 4px 16px -2px rgba(66, 133, 244, 0.4), 0 0 14px -2px rgba(0, 229, 255, 0.25);
+  --gemini-glow-intense: 0 4px 24px -1px rgba(66, 133, 244, 0.55), 0 0 20px -1px rgba(0, 229, 255, 0.35);
+  --gemini-glow-subtle: 0 2px 12px rgba(66, 133, 244, 0.25), 0 0 10px rgba(0, 229, 255, 0.18);
 
   /* Google Gemini Aurora tokens (Mode AI) */
   --gemini-aurora-gold: #fbbc04;
@@ -839,7 +840,7 @@ a:hover { color: var(--gemini-cyan, #00e5ff); }
 :root[data-theme="dark"] #landingView .landing-title { color: #e8eaed; }
 :root[data-theme="dark"] #landingView .landing-loading { border-color: #3c4043; }
 :root[data-theme="dark"] #landingView .landing-progress { background: #3c4043; }
-:root[data-theme="dark"] #landingView .landing-progress span { background: var(--gemini-gradient); box-shadow: var(--gemini-glow); }
+:root[data-theme="dark"] #landingView .landing-progress span { background: var(--gemini-aurora-gradient); box-shadow: 0 0 12px rgba(0, 229, 255, 0.6); }
 :root[data-theme="dark"] .brand p, :root[data-theme="dark"] .muted { color: #bdc1c6; }
 :root[data-theme="dark"] .brand-link { color: #8ab4f8; }
 :root[data-theme="dark"] .brand-link:hover { color: var(--gemini-cyan); text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
@@ -944,4 +945,4 @@ a:hover { color: var(--gemini-cyan, #00e5ff); }
 :root[data-theme="dark"] .pulse-dot { background: #24d6ff; box-shadow: 0 0 8px #24d6ff; }
 :root[data-theme="dark"] .motivation-loading-label { color: #94a3b8; }
 :root[data-theme="dark"] .motivation-progress-track { background: #3c4043; }
-:root[data-theme="dark"] .motivation-progress-fill { background: var(--gemini-gradient); box-shadow: 0 0 12px rgba(0, 229, 255, 0.6); }
+:root[data-theme="dark"] .motivation-progress-fill { background: var(--gemini-aurora-gradient); box-shadow: 0 0 12px rgba(0, 229, 255, 0.6); }
