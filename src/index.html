@@ -5,8 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Canvas Vector Recorder</title>
-  <link rel="icon" type="image/png" href="./assets/brand/recorder-brand.png">
-  <link rel="preload" as="image" href="./assets/brand/recorder-brand.png">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="preload" as="image" href="./assets/brand/recorder-brand.svg">
+  <link rel="stylesheet" href="./camera-loader.css">
   <style>
     html,
     body,
@@ -22,88 +23,6 @@
       background: #121b22;
     }
 
-    #landingView.landing-shell {
-      box-sizing: border-box;
-      display: grid;
-      place-items: center;
-      width: 100%;
-      max-width: none;
-      height: 100%;
-      min-height: 100%;
-      margin: 0;
-      padding: 40px 24px;
-      overflow: hidden;
-      color: #f3f6fa;
-      background: #121b22;
-    }
-
-    #landingView .landing-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: min(100%, 420px);
-      text-align: center;
-    }
-
-    #landingView .landing-mark {
-      display: block;
-      width: 96px;
-      height: 96px;
-      object-fit: cover;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    }
-
-    #landingView .landing-brand-header {
-      margin: 18px 0 0;
-    }
-
-    #landingView .landing-app-title {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 600;
-      color: #f0f4f8;
-      letter-spacing: -0.01em;
-    }
-
-    #landingView .landing-loading {
-      width: 100%;
-      margin-top: 22px;
-    }
-
-    #landingView .landing-status {
-      margin: 0;
-      color: #8a9ba8;
-      font: 600 11px/1.2 "Plus Jakarta Sans", system-ui, sans-serif;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    #landingView .landing-progress {
-      width: 130px;
-      height: 3px;
-      margin: 10px auto 0;
-      overflow: hidden;
-      background: #263440;
-      border-radius: 999px;
-    }
-
-    #landingView .landing-progress span {
-      display: block;
-      width: 36%;
-      height: 100%;
-      background: #087dcc;
-      border-radius: inherit;
-    }
-
-    #landingView .landing-quote {
-      max-width: 380px;
-      min-height: 2.8em;
-      margin: 28px 0 0;
-      color: #9bb0c1;
-      font: italic 13.5px/1.6 "Plus Jakarta Sans", system-ui, sans-serif;
-      letter-spacing: .01em;
-    }
   </style>
 </head>
 
@@ -111,23 +30,20 @@
   <main id="app">
     <section id="landingView" class="view landing-shell" aria-label="Memuat Canvas Vector Recorder">
       <div class="landing-content">
-        <img class="landing-mark" src="./assets/brand/recorder-brand.png" alt="Canvas Vector Recorder">
+        <div id="landingRecorder" class="landing-recorder" aria-hidden="true"></div>
         <div class="landing-brand-header">
           <h1 class="landing-app-title">Canvas Vector Recorder</h1>
         </div>
         <div class="landing-loading">
           <p id="landingStatus" class="landing-status" role="status" aria-live="polite">Memuat…</p>
-          <div class="landing-progress" role="progressbar" aria-label="Menyiapkan workspace"><span></span></div>
         </div>
-        <p id="landingQuote" class="landing-quote" aria-live="polite">Langkah kecil hari ini membentuk hasil besar esok
-          hari.</p>
       </div>
     </section>
 
     <section id="activationView" class="view activation-shell" hidden>
       <div class="activation-card">
         <div class="activation-brand">
-          <img class="brand-icon" src="./assets/brand/recorder-brand.png" alt="">
+          <img class="brand-icon" src="./assets/brand/recorder-brand.svg" alt="">
           <span class="eyebrow">CANVAS VECTOR RECORDER</span>
         </div>
         <div class="activation-copy">
@@ -164,7 +80,7 @@
     <section id="workspaceView" class="view workspace-shell" hidden>
       <header class="topbar">
         <div class="brand">
-          <img class="brand-icon" src="./assets/brand/recorder-brand.png" alt="">
+          <img class="brand-icon" src="./assets/brand/recorder-brand.svg" alt="">
           <div>
             <div class="brand-title-row">
               <h1>Canvas Vector Recorder</h1>
@@ -198,14 +114,23 @@
           <section class="sidebar-section">
             <h2 class="section-label">TARGET URL</h2>
             <div class="target-row">
-              <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
+              <div class="target-input-wrap">
+                <input id="targetUrl" type="url" placeholder="https://example.com" autocomplete="off">
+                <div class="target-input-actions">
+                  <button id="pasteTargetUrl" class="target-action-btn" type="button" title="Tempel URL dari clipboard"
+                    aria-label="Tempel URL dari clipboard"><i data-lucide="clipboard-paste"
+                      aria-hidden="true"></i></button>
+                  <button id="clearTargetUrl" class="target-action-btn" type="button" title="Hapus teks URL"
+                    aria-label="Hapus teks URL" hidden><i data-lucide="x" aria-hidden="true"></i></button>
+                </div>
+              </div>
               <button id="openTarget" class="primary" type="button" title="Buka window target"
                 aria-label="Buka window target"><i data-lucide="external-link"
                   aria-hidden="true"></i><span>Buka</span></button>
               <button id="closeTarget" type="button"><i data-lucide="x"
                   aria-hidden="true"></i><span>Tutup</span></button>
             </div>
-            <div id="workspaceStatus" class="status status-box" role="status" />
+            <div id="workspaceStatus" class="status status-box" role="status"></div>
           </section>
 
           <div class="panel-divider"></div>
@@ -269,10 +194,9 @@
                     aria-label="Atur ukuran aset">
                 </div>
                 <div class="background-settings">
-                  <label class="check-label"><input id="removeAssetColors" type="checkbox"> Hapus warna asli dari
-                    aset</label>
+                  <label class="check-label"><input id="removeAssetColors" type="checkbox"> Hapus warna asli dari objek</label>
                   <div id="assetColorControls" class="asset-color-controls" hidden>
-                    <label class="color-label">Warna yang dihapus
+                    <label class="color-label">
                       <span class="color-picker-row">
                         <input id="assetRemovalColor" type="color" value="#ffffff"
                           aria-label="Pilih warna yang dihapus">
@@ -287,7 +211,7 @@
                   </div>
                   <label class="check-label"><input id="applyBackgroundColor" type="checkbox"> Terapkan warna
                     background</label>
-                  <label id="backgroundColorControls" class="color-label" hidden>Warna background
+                  <label id="backgroundColorControls" class="color-label" hidden>
                     <span class="color-picker-row">
                       <input id="backgroundColor" type="color" value="#ffffff" aria-label="Pilih warna background">
                       <input id="backgroundColorHex" type="text" value="#FFFFFF" maxlength="7" inputmode="text"
@@ -296,31 +220,6 @@
                         aria-label="Ambil warna dari layar"><i data-lucide="pipette" aria-hidden="true"></i></button>
                     </span>
                   </label>
-                  <div class="object-eraser-setting">
-                    <div class="object-eraser-header">
-                      <label class="check-label"><input id="enableObjectEraser" type="checkbox"> Hapus Objek</label>
-                      <span id="eraserMarkedCount" class="badge eraser-badge" hidden>0 ditandai</span>
-                    </div>
-                    <div id="objectEraserControls" class="object-eraser-controls" hidden>
-                      <p class="field-help">Klik area objek pada preview untuk menandai area yang ingin dihapus. Lalu
-                        klik tombol hapus.</p>
-                      <div class="object-eraser-actions">
-                        <button id="eraseMarkedObjects" class="eraser-action-button danger" type="button" disabled
-                          title="Hapus objek yang ditandai">
-                          <i data-lucide="trash-2" aria-hidden="true"></i><span>Hapus Objek</span>
-                        </button>
-                        <button id="clearMarkedObjects" class="eraser-action-button secondary" type="button" disabled
-                          title="Batal menandai objek">
-                          <i data-lucide="x" aria-hidden="true"></i><span>Batal Tandai</span>
-                        </button>
-                        <button id="restoreErasedObjects" class="eraser-action-button restore" type="button" hidden
-                          title="Kembalikan objek yang telah dihapus">
-                          <i data-lucide="rotate-ccw" aria-hidden="true"></i><span id="restoreErasedLabel">Pulihkan
-                            objek terhapus</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -331,6 +230,20 @@
           <header class="preview-header">
             <h2 id="previewTitle">Preview</h2>
             <div class="preview-tools" aria-label="Kontrol preview">
+              <div class="preview-eraser-actions" role="group" aria-label="Aksi hapus objek">
+                <button id="eraseMarkedObjects" class="preview-tool-eraser" type="button" aria-pressed="false"
+                  title="Pilih objek yang akan dihapus">
+                  <i data-lucide="trash-2" aria-hidden="true"></i><span>Hapus Objek</span>
+                </button>
+                <button id="clearMarkedObjects" class="preview-tool-eraser-secondary" type="button" hidden disabled
+                  title="Batal menandai objek" aria-label="Batal tandai">
+                  <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+                <button id="restoreErasedObjects" class="preview-tool-eraser-secondary" type="button" hidden disabled
+                  title="Kembalikan objek yang telah dihapus" aria-label="Pulihkan objek terhapus">
+                  <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                </button>
+              </div>
               <label class="check-label preview-tool-wireframe" title="Tampilkan wireframe / outline vektor">
                 <input id="wireframePreview" type="checkbox">
                 <span>Wireframe</span>
@@ -428,7 +341,7 @@
           <button id="closeTargetMainTab" type="button"><i data-lucide="x" aria-hidden="true"></i><span>Tutup
               tab</span></button>
         </div>
-        <iframe id="targetFrame" title="Target page" referrerpolicy="no-referrer"></iframe>
+        <div id="targetViewport" aria-hidden="true"></div>
       </div>
     </section>
   </main>

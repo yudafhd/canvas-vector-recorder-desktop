@@ -1,0 +1,53 @@
+/* Paint the startup shell before JavaScript mounts the animated SVG. */
+#landingView.landing-shell {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 40px 24px;
+  overflow: hidden;
+  color: #f3f6fa;
+  background: #121b22;
+  font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+}
+#landingView[hidden] { display: none !important; }
+#landingView .landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 420px);
+  text-align: center;
+}
+#landingView .landing-recorder {
+  display: block;
+  width: 196px;
+  height: 147px;
+  overflow: visible;
+  transform-origin: 50% 94%;
+}
+#landingView .landing-recorder > svg { display: block; width: 100%; height: 100%; }
+#landingView .landing-brand-header { margin: 20px 0 0; }
+#landingView .landing-app-title {
+  margin: 0;
+  color: #f0f4f8;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.015em;
+}
+#landingView .landing-loading { width: 100%; margin-top: 20px; }
+#landingView .landing-status {
+  margin: 0;
+  color: #9baab5;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}

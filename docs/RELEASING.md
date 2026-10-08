@@ -27,6 +27,8 @@ Public key updater sudah tersimpan di `src-tauri/tauri.conf.json`. Simpan privat
    - `package.json`
    - `src-tauri/Cargo.toml`
    - `src-tauri/tauri.conf.json`
+
+   Perbarui juga `package-lock.json` dan `src-tauri/Cargo.lock` agar versi paket utama tetap sesuai.
 2. Pastikan perubahan rilis sudah masuk ke commit/branch yang akan dirilis.
 3. Jalankan pengujian lokal:
    ```bash
@@ -34,7 +36,7 @@ Public key updater sudah tersimpan di `src-tauri/tauri.conf.json`. Simpan privat
    ```
    Pengujian ini menjalankan typecheck frontend (`tsc --noEmit`), test frontend (`node --test tests/bridge.test.mjs`), dan test Rust (`cargo test`).
 
-Workflow GitHub Actions akan memverifikasi konsistensi ketiga nomor versi tersebut. Untuk pemicu dengan tag, nama tag wajib berformat `v<versi>` (misalnya versi `1.1.8` harus menggunakan tag `v1.1.8`).
+Workflow GitHub Actions akan memverifikasi konsistensi ketiga nomor versi tersebut. Untuk pemicu dengan tag, nama tag wajib berformat `v<versi>` (misalnya versi `1.1.9` harus menggunakan tag `v1.1.9`).
 
 ## Menjalankan rilis
 
@@ -45,11 +47,11 @@ Pilih salah satu dari dua cara berikut:
 Push tag versi ke GitHub:
 
 ```bash
-git tag v1.1.8
-git push origin v1.1.8
+git tag v1.1.9
+git push origin v1.1.9
 ```
 
-Ganti `1.1.8` dengan nomor versi yang telah diselaraskan di ketiga file versi di atas.
+Ganti `1.1.9` dengan nomor versi yang telah diselaraskan di ketiga file versi di atas.
 
 ### 2. Secara Manual (Workflow Dispatch)
 

@@ -1,7 +1,7 @@
 use crate::{
     license,
     recorder::{self, events::RecorderEvent, svg_asset::{SvgAsset, SvgAssetInput}, validator::MicrostockSettings},
-    target_platform, AppError, AppState, TargetState, TargetTab,
+    target_platform, AppError, AppState, CanvasEmitAction, TargetState, TargetTab,
 };
 use serde::Serialize;
 use std::path::{Path, PathBuf};
@@ -99,17 +99,52 @@ pub fn record_canvas_events(
     recorder.record(&session_id, events)?;
     drop(recorder);
 
-    let should_emit = {
-        let mut last = state.last_emit.lock().map_err(|_| AppError::State)?;
-        if last.elapsed() >= std::time::Duration::from_millis(500) {
-            *last = std::time::Instant::now();
-            true
-        } else {
-            false
-        }
+    let action = {
+        state
+            .canvas_emit
+            .lock()
+            .map_err(|_| AppError::State)?
+            .after_record(std::time::Instant::now())
     };
-    if should_emit {
-        let canvases = state.recorder.lock().map_err(|_| AppError::State)?.list();
+    match action {
+        CanvasEmitAction::Now => emit_canvas_update(&app, &state)?,
+        CanvasEmitAction::After(delay) => {
+            std::thread::spawn(move || {
+                std::thread::sleep(delay);
+                let state = app.state::<AppState>();
+                if let Ok(mut throttle) = state.canvas_emit.lock() {
+                    throttle.finish_scheduled(std::time::Instant::now());
+                }
+                let _ = emit_canvas_update(&app, &state);
+            });
+        }
+        CanvasEmitAction::Wait => {}
+    }
+    Ok(())
+}
+
+#[tauri::command]
+pub fn report_recorder_error(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    session_id: String,
+    message: String,
+) -> Result<(), AppError> {
+    let recorder = state.recorder.lock().map_err(|_| AppError::State)?;
+    if recorder.active_session.as_deref() != Some(&session_id) {
+        return Err(AppError::InvalidSession);
+    }
+    if message.len() > 1024 { return Err(AppError::PayloadTooLarge); }
+    drop(recorder);
+    app.emit("recorder-error", message).map_err(|e| AppError::Window(e.to_string()))
+}
+
+fn emit_canvas_update(app: &AppHandle, state: &AppState) -> Result<(), AppError> {
+    let canvases = {
+        let recorder = state.recorder.lock().map_err(|_| AppError::State)?;
+        recorder.active_session.as_ref().map(|_| recorder.list())
+    };
+    if let Some(canvases) = canvases {
         let _ = app.emit("canvases-updated", canvases);
     }
     Ok(())

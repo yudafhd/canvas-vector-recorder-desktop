@@ -11,7 +11,7 @@ commands.allow = [
 [[permission]]
 identifier = "allow-record-canvas-events"
 description = "Target WebView may submit bounded canvas events and captured SVG assets."
-commands.allow = ["record_canvas_events", "record_svg_asset"]
+commands.allow = ["record_canvas_events", "record_svg_asset", "report_recorder_error"]
 
 [[permission]]
 identifier = "allow-target-tab-commands"

@@ -30,7 +30,80 @@ pub struct TargetState {
 pub struct AppState {
     pub recorder: Mutex<RecorderStore>,
     pub target: Mutex<TargetState>,
-    pub last_emit: Mutex<std::time::Instant>,
+    pub(crate) canvas_emit: Mutex<CanvasEmitState>,
+}
+
+pub(crate) struct CanvasEmitState {
+    last: std::time::Instant,
+    scheduled: bool,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum CanvasEmitAction {
+    Now,
+    After(std::time::Duration),
+    Wait,
+}
+
+impl Default for CanvasEmitState {
+    fn default() -> Self {
+        Self {
+            last: std::time::Instant::now() - std::time::Duration::from_millis(500),
+            scheduled: false,
+        }
+    }
+}
+
+impl CanvasEmitState {
+    const INTERVAL: std::time::Duration = std::time::Duration::from_millis(500);
+
+    pub(crate) fn after_record(&mut self, now: std::time::Instant) -> CanvasEmitAction {
+        if self.scheduled {
+            return CanvasEmitAction::Wait;
+        }
+        let elapsed = now.saturating_duration_since(self.last);
+        if elapsed >= Self::INTERVAL {
+            self.last = now;
+            CanvasEmitAction::Now
+        } else {
+            self.scheduled = true;
+            CanvasEmitAction::After(Self::INTERVAL - elapsed)
+        }
+    }
+
+    pub(crate) fn finish_scheduled(&mut self, now: std::time::Instant) {
+        self.last = now;
+        self.scheduled = false;
+    }
+}
+
+#[cfg(test)]
+mod canvas_emit_tests {
+    use super::{CanvasEmitAction, CanvasEmitState};
+    use std::time::{Duration, Instant};
+
+    #[test]
+    fn final_batch_gets_a_trailing_update() {
+        let start = Instant::now();
+        let mut throttle = CanvasEmitState {
+            last: start - Duration::from_millis(500),
+            scheduled: false,
+        };
+        assert_eq!(throttle.after_record(start), CanvasEmitAction::Now);
+        assert_eq!(
+            throttle.after_record(start + Duration::from_millis(100)),
+            CanvasEmitAction::After(Duration::from_millis(400))
+        );
+        assert_eq!(
+            throttle.after_record(start + Duration::from_millis(250)),
+            CanvasEmitAction::Wait
+        );
+        throttle.finish_scheduled(start + Duration::from_millis(500));
+        assert_eq!(
+            throttle.after_record(start + Duration::from_millis(550)),
+            CanvasEmitAction::After(Duration::from_millis(450))
+        );
+    }
 }
 
 #[derive(Debug, Error, Serialize)]
@@ -74,13 +147,14 @@ pub fn run() {
         .manage(AppState {
             recorder: Mutex::new(RecorderStore::default()),
             target: Mutex::new(TargetState::default()),
-            last_emit: Mutex::new(std::time::Instant::now()),
+            canvas_emit: Mutex::new(CanvasEmitState::default()),
         })
         .invoke_handler(tauri::generate_handler![
             commands::start_recording,
             commands::pick_screen_color,
             commands::stop_recording,
             commands::record_canvas_events,
+            commands::report_recorder_error,
             commands::record_svg_asset,
             commands::list_canvases,
             commands::list_svg_assets,

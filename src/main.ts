@@ -8,6 +8,8 @@ import {
   Bell,
   Check,
   ChevronDown,
+  ClipboardPaste,
+  Copy,
   Download,
   DownloadCloud,
   ExternalLink,
@@ -31,10 +33,11 @@ import {
 } from 'lucide';
 import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import { initDiscover } from './discover';
+import { initRecorderLoader } from './recorder-loader';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgAsset, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
-const lucideIcons = { Bell, Check, ChevronDown, Download, DownloadCloud, ExternalLink, FolderOpen, Globe, Lightbulb, Moon, MonitorPlay, Pencil, Pipette, Plus, RefreshCw, RotateCw, RotateCcw, Settings2, Sparkles, Sun, Trash2, X };
+const lucideIcons = { Bell, Check, ChevronDown, ClipboardPaste, Copy, Download, DownloadCloud, ExternalLink, FolderOpen, Globe, Lightbulb, Moon, MonitorPlay, Pencil, Pipette, Plus, RefreshCw, RotateCw, RotateCcw, Settings2, Sparkles, Sun, Trash2, X };
 let discoverControl: ReturnType<typeof initDiscover> | null = null;
 
 function iconPlaceholder(name: string): HTMLElement {
@@ -82,7 +85,6 @@ function handleRefreshShortcut(event: KeyboardEvent): void {
 
 const landingView = $('landingView');
 const landingStatus = $('landingStatus');
-const landingQuote = $('landingQuote');
 const activationView = $('activationView');
 const workspaceView = $('workspaceView');
 const mainTabs = $('mainTabs');
@@ -90,7 +92,7 @@ const recorderMainTab = $<HTMLButtonElement>('recorderMainTab');
 const targetMainTabs = $('targetMainTabs');
 const targetTabsCount = $('targetTabsCount');
 const targetView = $('targetView');
-const targetFrame = $<HTMLIFrameElement>('targetFrame');
+const targetViewport = $('targetViewport');
 const targetMainTitle = $('targetMainTitle');
 const closeTargetMainTab = $<HTMLButtonElement>('closeTargetMainTab');
 const activationStatus = $('activationStatus');
@@ -111,6 +113,7 @@ let selectedCanvas: string | null = null;
 let selectedSvg: string | null = null;
 let lastSvg: SvgResult | null = null;
 let targetOpen = false;
+let workspaceStatusTimer: ReturnType<typeof setTimeout> | null = null;
 const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -133,7 +136,6 @@ const svgColors = new Map<string, { revision: number; colors: string[] }>();
 const canvasColorRequests = new Set<string>();
 type AssetTab = 'canvas' | 'svg';
 let activeAssetTab: AssetTab = 'canvas';
-let thumbnailGeneration = 0;
 const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
 const thumbnailJobs = new Map<string, string>();
@@ -168,7 +170,7 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
 };
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
 const LANDING_DURATION_MS = 8_000;
-const LANDING_QUOTES = [
+const MOTIVATION_QUOTES = [
   ['Tidak ada yang akan berhasil kecuali kamu mulai mengerjakannya.', 'Maya Angelou'],
   ['Rintangan bagi tindakan justru memajukan tindakan. Yang menghalangi jalan menjadi jalan.', 'Marcus Aurelius'],
   ['Sendiri kita dapat melakukan sedikit; bersama kita dapat melakukan banyak.', 'Helen Keller'],
@@ -389,7 +391,6 @@ const LANDING_QUOTES = [
   ['Percayalah pada proses kreatifmu; intuisi sering kali lebih tahu daripada logika semata.', 'Henri Cartier-Bresson'],
   ['Semesta selalu berpihak pada mereka yang tidak pernah berhenti berusaha.', 'Paulo Coelho'],
 ] as const;
-const LAST_LANDING_QUOTE_KEY = 'canvas-vector-recorder.last-landing-quote.v1';
 const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
 const UPDATE_CHECK_INTERVAL_MS = 3 * 60 * 60 * 1000;
 let artworkScale = 1;
@@ -436,6 +437,16 @@ function updateOpenTargetButton(): void {
   }
 }
 
+function syncTargetUrlActions(): void {
+  const input = $<HTMLInputElement>('targetUrl');
+  if (!input) return;
+  const hasText = Boolean(input.value.trim());
+  const pasteBtn = $<HTMLButtonElement>('pasteTargetUrl');
+  const clearBtn = $<HTMLButtonElement>('clearTargetUrl');
+  if (pasteBtn) pasteBtn.hidden = hasText;
+  if (clearBtn) clearBtn.hidden = !hasText;
+}
+
 function applyTheme(dark: boolean): void {
   darkMode = dark;
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
@@ -456,16 +467,6 @@ function loadTheme(): void {
 
 function persistTheme(): void {
   try { localStorage.setItem(THEME_STORAGE_KEY, darkMode ? 'dark' : 'light'); } catch (_) { /* Storage may be disabled by the host. */ }
-}
-
-function showRandomLandingQuote(): void {
-  let previousIndex = -1;
-  try { previousIndex = Number(sessionStorage.getItem(LAST_LANDING_QUOTE_KEY)); } catch (_) { /* Storage may be disabled by the host. */ }
-  let index = Math.floor(Math.random() * LANDING_QUOTES.length);
-  if (LANDING_QUOTES.length > 1 && index === previousIndex) index = (index + 1) % LANDING_QUOTES.length;
-  const [quote, attribution] = LANDING_QUOTES[index];
-  landingQuote.textContent = `“${quote}” — ${attribution}`;
-  try { sessionStorage.setItem(LAST_LANDING_QUOTE_KEY, String(index)); } catch (_) { /* Storage may be disabled by the host. */ }
 }
 
 let currentMotivationQuoteIndex = -1;
@@ -543,12 +544,12 @@ function triggerNewMotivationQuoteWithLoading(): void {
     motivationLoadingTimer = null;
     isMotivationLoading = false;
 
-    let nextIndex = Math.floor(Math.random() * LANDING_QUOTES.length);
-    if (LANDING_QUOTES.length > 1 && nextIndex === currentMotivationQuoteIndex) {
-      nextIndex = (nextIndex + 1) % LANDING_QUOTES.length;
+    let nextIndex = Math.floor(Math.random() * MOTIVATION_QUOTES.length);
+    if (MOTIVATION_QUOTES.length > 1 && nextIndex === currentMotivationQuoteIndex) {
+      nextIndex = (nextIndex + 1) % MOTIVATION_QUOTES.length;
     }
     currentMotivationQuoteIndex = nextIndex;
-    const [quote, attribution] = LANDING_QUOTES[nextIndex];
+    const [quote, attribution] = MOTIVATION_QUOTES[nextIndex];
 
     if (loadingState) loadingState.hidden = true;
     if (quoteBox) {
@@ -567,9 +568,9 @@ function openMotivationModal(): void {
   const modal = $<HTMLElement>('motivationModal');
   resetMotivationLoadingState();
   if (currentMotivationQuoteIndex < 0) {
-    currentMotivationQuoteIndex = Math.floor(Math.random() * LANDING_QUOTES.length);
+    currentMotivationQuoteIndex = Math.floor(Math.random() * MOTIVATION_QUOTES.length);
   }
-  const [quote, attribution] = LANDING_QUOTES[currentMotivationQuoteIndex];
+  const [quote, attribution] = MOTIVATION_QUOTES[currentMotivationQuoteIndex];
   applyMotivationQuote(quote, attribution, false);
   modal.hidden = false;
   modal.removeAttribute('hidden');
@@ -707,7 +708,7 @@ function setMainTab(tab: MainTab): void {
 
 function syncTargetViewBounds(): void {
   if ((!isWindows && !isMac) || targetView.hidden) return;
-  const bounds = targetFrame.getBoundingClientRect();
+  const bounds = targetViewport.getBoundingClientRect();
   void invoke('resize_target_view', {
     x: bounds.left,
     y: bounds.top,
@@ -716,8 +717,20 @@ function syncTargetViewBounds(): void {
   }).catch(() => undefined);
 }
 
-function status(element: HTMLElement, message: string, tone: 'idle' | 'success' | 'error' = 'idle'): void {
-  element.textContent = message; element.className = `status ${tone}`;
+function status(element: HTMLElement, message: string, tone: 'idle' | 'success' | 'error' = 'idle', persistent = false): void {
+  if (element === workspaceStatus && workspaceStatusTimer) {
+    clearTimeout(workspaceStatusTimer);
+    workspaceStatusTimer = null;
+  }
+  element.textContent = message;
+  element.classList.remove('idle', 'success', 'error');
+  element.classList.add(tone);
+  if (element === workspaceStatus && message && tone !== 'error' && !persistent) {
+    workspaceStatusTimer = setTimeout(() => {
+      element.textContent = '';
+      workspaceStatusTimer = null;
+    }, 4500);
+  }
 }
 
 function errorMessage(error: unknown): string {
@@ -809,13 +822,12 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
     setIconButtonContent(button, 'refresh-cw', 'Memeriksa update…', false);
   }
   try {
-    if (showProgress) status(workspaceStatus, 'Memeriksa update…');
+    if (showProgress) status(workspaceStatus, 'Memeriksa update…', 'idle', true);
     const update = await check({ timeout: 15_000 });
     if (!update) {
       setUpdateAvailable(false);
       if (showProgress) {
         showUpdatePrompt('Aplikasi sudah terbaru', `Anda sudah menggunakan Canvas Vector Recorder v${packageJson.version}.`);
-        status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
       }
       return;
     }
@@ -828,12 +840,12 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
       await update.downloadAndInstall(event => {
         if (event.event === 'Started') {
           downloadedBytes = 0;
-          status(workspaceStatus, 'Menyiapkan download update…');
+          status(workspaceStatus, 'Menyiapkan download update…', 'idle', true);
         } else if (event.event === 'Progress') {
           downloadedBytes += event.data.chunkLength;
-          status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`);
+          status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`, 'idle', true);
         } else if (event.event === 'Finished') {
-          status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
+          status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success', true);
         }
       });
     });
@@ -995,7 +1007,7 @@ function renderAssetColorList(): void {
   if (!colors?.length) {
     const message = document.createElement('span');
     message.className = 'muted';
-    message.textContent = !assetId ? 'Pilih aset untuk menerapkan warna dan melihat paletnya.' : colors ? 'Tidak ada warna yang dapat dipilih.' : 'Memuat warna aset…';
+    message.textContent = !assetId ? 'Gunakan pipet warna untuk memilih warna dari objek' : colors ? 'Tidak ada warna yang dapat dipilih.' : 'Memuat warna aset…';
     container.append(message);
     return;
   }
@@ -1035,34 +1047,33 @@ function updateObjectEraserUI(): void {
   const erasedSet = assetId ? erasedElementsByAsset.get(assetId) : undefined;
   const erasedCount = erasedSet ? erasedSet.size : 0;
 
-  const markedBadge = $('eraserMarkedCount');
-  if (markedBadge) {
-    markedBadge.hidden = markedCount === 0;
-    markedBadge.textContent = `${markedCount} ditandai`;
-  }
-
   const eraseBtn = $<HTMLButtonElement>('eraseMarkedObjects');
   if (eraseBtn) {
-    eraseBtn.disabled = markedCount === 0;
+    eraseBtn.setAttribute('aria-pressed', String(objectEraserActive));
+    eraseBtn.title = !objectEraserActive ? 'Pilih objek yang akan dihapus'
+      : markedCount > 0 ? `Hapus ${markedCount} objek yang ditandai` : 'Keluar dari mode Hapus Objek';
     const eraseLabel = eraseBtn.querySelector('span');
     if (eraseLabel) eraseLabel.textContent = markedCount > 0 ? `Hapus Objek (${markedCount})` : 'Hapus Objek';
   }
 
   const clearBtn = $<HTMLButtonElement>('clearMarkedObjects');
-  if (clearBtn) clearBtn.disabled = markedCount === 0;
+  if (clearBtn) {
+    clearBtn.hidden = markedCount === 0;
+    clearBtn.disabled = markedCount === 0;
+  }
 
   const restoreBtn = $<HTMLButtonElement>('restoreErasedObjects');
-  const restoreLabel = $('restoreErasedLabel');
-  if (restoreBtn && restoreLabel) {
+  if (restoreBtn) {
     restoreBtn.hidden = erasedCount === 0;
-    restoreLabel.textContent = `Pulihkan (${erasedCount} terhapus)`;
+    restoreBtn.disabled = erasedCount === 0;
+    const restoreText = `Pulihkan ${erasedCount} objek terhapus`;
+    restoreBtn.title = restoreText;
+    restoreBtn.setAttribute('aria-label', restoreText);
   }
 }
 
 function toggleObjectEraserMode(enabled: boolean): void {
   objectEraserActive = enabled;
-  const controls = $('objectEraserControls');
-  if (controls) controls.hidden = !enabled;
   const stage = $('previewStage');
   if (stage) stage.classList.toggle('eraser-mode', enabled);
   if (!enabled && markedElements.size > 0) {
@@ -1291,6 +1302,7 @@ function loadPersistedSettings(): void {
     artworkScale = Math.round(Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, stored.artworkScale)) * 100) / 100;
   }
   if (typeof stored.targetUrl === 'string') $<HTMLInputElement>('targetUrl').value = stored.targetUrl;
+  syncTargetUrlActions();
   saveDirectory = typeof stored.saveDirectory === 'string' && stored.saveDirectory.trim() ? stored.saveDirectory : null;
   updateSaveDirectoryDisplay();
   filenameOverrides = {};
@@ -1657,6 +1669,8 @@ function svgThumbnailKey(item: SvgAsset): string {
   return [item.svg_id, item.revision, item.markup.length].join('|');
 }
 
+const thumbnailLoadingHtml = '<span class="thumbnail-spinner" role="status" aria-label="Memuat thumbnail"></span>';
+
 function canvasListKey(items: CanvasDetection[]): string {
   return [selectedCanvas, ...items
     .filter(item => item.shapes > 0 || item.gap_fillers > 0)
@@ -1758,19 +1772,15 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
   if (!filtered.length) {
     if (!listChanged) return;
     renderedCanvasListKey = nextListKey;
-    canvasList.innerHTML = '<p class="muted">Belum ada Canvas. Buka target dan tunggu asset dimuat.</p>';
+    canvasList.innerHTML = '<p class="muted">Belum ada Canvas.</p>';
     return;
   }
   if (!listChanged) {
-    if (generateThumbnails) {
-      const generation = ++thumbnailGeneration;
-      void loadThumbnails(filtered, generation);
-    }
+    if (generateThumbnails) void loadThumbnails(filtered);
     return;
   }
   renderedCanvasListKey = nextListKey;
-  const generation = generateThumbnails ? ++thumbnailGeneration : thumbnailGeneration;
-  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : '<span>Memuat thumbnail…</span>'}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
+  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailKeys.get(item.canvas_id) === thumbnailKey(item) && thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : thumbnailLoadingHtml}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
   canvasList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     const nextCanvas = item.dataset.canvas || null;
     if (nextCanvas !== selectedCanvas) {
@@ -1787,7 +1797,7 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
     renderAssetColorList();
     renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
-  if (generateThumbnails) void loadThumbnails(filtered, generation);
+  if (generateThumbnails) void loadThumbnails(filtered);
 }
 
 function renderSvgAssets(items: SvgAsset[]): void {
@@ -1803,10 +1813,10 @@ function renderSvgAssets(items: SvgAsset[]): void {
   });
   updateAssetTabs();
   if (!items.length) {
-    svgList.innerHTML = '<p class="muted">Belum ada SVG. Tunggu hasil vectorisasi tampil di target.</p>';
+    svgList.innerHTML = '<p class="muted">Belum ada SVG.</p>';
     return;
   }
-  svgList.innerHTML = items.map(item => `<div class="canvas-item${item.svg_id === selectedSvg ? ' selected' : ''}" data-svg="${item.svg_id}"><div class="canvas-thumb" data-thumb-svg="${item.svg_id}">${svgThumbnailUrls.has(item.svg_id) ? `<img src="${svgThumbnailUrls.get(item.svg_id)}" alt="Thumbnail ${escapeHtml(item.filename)}">` : '<span>Memuat thumbnail…</span>'}</div><strong>${escapeHtml(item.filename)}</strong><small>${Math.round(item.width)}×${Math.round(item.height)} · ${item.shapes} elemen · revisi ${item.revision}</small></div>`).join('');
+  svgList.innerHTML = items.map(item => `<div class="canvas-item${item.svg_id === selectedSvg ? ' selected' : ''}" data-svg="${item.svg_id}"><div class="canvas-thumb" data-thumb-svg="${item.svg_id}">${svgThumbnailKeys.get(item.svg_id) === svgThumbnailKey(item) && svgThumbnailUrls.has(item.svg_id) ? `<img src="${svgThumbnailUrls.get(item.svg_id)}" alt="Thumbnail ${escapeHtml(item.filename)}">` : thumbnailLoadingHtml}</div><strong>${escapeHtml(item.filename)}</strong><small>${Math.round(item.width)}×${Math.round(item.height)} · ${item.shapes} elemen · revisi ${item.revision}</small></div>`).join('');
   svgList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     const nextSvg = item.dataset.svg || null;
     if (nextSvg !== selectedSvg) {
@@ -1846,16 +1856,18 @@ function loadSvgThumbnails(items: SvgAsset[]): void {
   });
 }
 
-async function loadThumbnails(items: CanvasDetection[], generation: number): Promise<void> {
-  const itemsToLoad = items.filter(item => thumbnailKeys.get(item.canvas_id) !== thumbnailKey(item) && !thumbnailJobs.has(item.canvas_id));
+async function loadThumbnails(items: CanvasDetection[]): Promise<void> {
+  const itemsToLoad = items.filter(item => !(thumbnailKeys.get(item.canvas_id) === thumbnailKey(item) && thumbnailUrls.has(item.canvas_id)) && thumbnailJobs.get(item.canvas_id) !== thumbnailKey(item));
   await Promise.all(itemsToLoad.map(async item => {
     const itemKey = thumbnailKey(item);
     thumbnailJobs.set(item.canvas_id, itemKey);
+    const loadingSlot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
+    if (loadingSlot && !loadingSlot.querySelector('.thumbnail-spinner')) loadingSlot.innerHTML = thumbnailLoadingHtml;
     try {
       const result = await invoke<SvgResult>('generate_svg', { canvasId: item.canvas_id, settings: settings(item.canvas_id) });
       const url = URL.createObjectURL(new Blob([result.svg], { type: 'image/svg+xml' }));
       const current = detectedAssets.find(asset => asset.canvas_id === item.canvas_id);
-      if (generation !== thumbnailGeneration || !current || thumbnailKey(current) !== itemKey) { URL.revokeObjectURL(url); return; }
+      if (!current || thumbnailKey(current) !== itemKey) { URL.revokeObjectURL(url); return; }
       const previousUrl = thumbnailUrls.get(item.canvas_id);
       if (previousUrl && previousUrl !== url) URL.revokeObjectURL(previousUrl);
       thumbnailUrls.set(item.canvas_id, url);
@@ -1864,7 +1876,8 @@ async function loadThumbnails(items: CanvasDetection[], generation: number): Pro
       if (slot) { const image = document.createElement('img'); image.src = url; image.alt = 'Thumbnail Canvas'; slot.replaceChildren(image); }
     } catch (_) {
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
-      if (slot && generation === thumbnailGeneration && !thumbnailUrls.has(item.canvas_id)) slot.textContent = 'Preview tidak tersedia';
+      const current = detectedAssets.find(asset => asset.canvas_id === item.canvas_id);
+      if (slot && current && thumbnailKey(current) === itemKey && !(thumbnailKeys.get(item.canvas_id) === itemKey && thumbnailUrls.has(item.canvas_id))) slot.textContent = 'Preview tidak tersedia';
     } finally {
       if (thumbnailJobs.get(item.canvas_id) === itemKey) thumbnailJobs.delete(item.canvas_id);
     }
@@ -1899,6 +1912,8 @@ function resetDetectedSurfaces(): void {
   previewFilenameOverride = null;
   detectedAssets = [];
   detectedSvgAssets = [];
+  canvasList.innerHTML = '<p class="muted">Belum ada Canvas.</p>';
+  svgList.innerHTML = '<p class="muted">Belum ada SVG.</p>';
   removedColorsByAsset.clear();
   pendingRemovalColor = null;
   canvasColors.clear();
@@ -2000,7 +2015,6 @@ async function renderPreview(request: number): Promise<void> {
     $('previewTitle').textContent = 'Vector Preview'; updateFilenameDisplay();
     $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
     $('exportSvg').removeAttribute('disabled');
-    status(workspaceStatus, 'vektor ditemukan.', 'success');
     return;
   }
   const canvasId = selectedCanvas;
@@ -2020,7 +2034,7 @@ async function renderPreview(request: number): Promise<void> {
   $('previewTitle').textContent = 'Preview SVG'; updateFilenameDisplay();
   $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
   $('exportSvg').removeAttribute('disabled');
-  status(workspaceStatus, result.error || 'SVG siap dipreview.', result.error ? 'idle' : 'success');
+  if (result.error) status(workspaceStatus, result.error);
 }
 
 async function openTarget(): Promise<void> {
@@ -2034,10 +2048,10 @@ async function openTarget(): Promise<void> {
   try {
     const url = $<HTMLInputElement>('targetUrl').value.trim();
     try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
+    status(workspaceStatus, '');
     if (targetOpen) {
       await invoke('open_target_tab', { url });
       setMainTab('target');
-      status(workspaceStatus, 'Target baru dibuka.', 'success');
       return;
     }
     await invoke('clear_recording');
@@ -2056,7 +2070,6 @@ async function openTarget(): Promise<void> {
     closeFilenameEditor();
     updateFilenameDisplay();
     await refreshCanvases();
-    status(workspaceStatus, 'Perekam aktif di background.', 'success');
   } finally {
     openTargetInProgress = false;
     buttons[0].disabled = false;
@@ -2073,14 +2086,14 @@ async function closeTarget(): Promise<void> {
   updateOpenTargetButton();
   currentSession = null;
   resetDetectedSurfaces();
-  status(workspaceStatus, 'Target ditutup.');
+  status(workspaceStatus, '');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initRecorderLoader($('landingRecorder'));
   renderIcons();
   discoverControl = initDiscover(count => showDownloadToast(`${count} kabar baru dari Mahes. Buka Discover untuk melihatnya.`));
   window.addEventListener('keydown', handleRefreshShortcut);
-  showRandomLandingQuote();
   loadTheme();
   loadPersistedSettings();
   updateOpenTargetButton();
@@ -2127,15 +2140,45 @@ document.addEventListener('DOMContentLoaded', () => {
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('newTargetMainTab').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('closeTarget').addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  const pasteTargetUrlBtn = $<HTMLButtonElement>('pasteTargetUrl');
+  pasteTargetUrlBtn.addEventListener('click', async () => {
+    const input = $<HTMLInputElement>('targetUrl');
+    try {
+      const text = await navigator.clipboard.readText();
+      const clean = text ? text.trim() : '';
+      if (!clean) {
+        status(workspaceStatus, 'Clipboard kosong atau tidak berisi teks.', 'idle');
+        input.focus();
+        return;
+      }
+      input.value = clean;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+      syncTargetUrlActions();
+      status(workspaceStatus, '');
+    } catch (error) {
+      status(workspaceStatus, `Gagal membaca clipboard: ${errorMessage(error)}`, 'error');
+      input.focus();
+    }
+  });
+  $('clearTargetUrl').addEventListener('click', () => {
+    const input = $<HTMLInputElement>('targetUrl');
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+    syncTargetUrlActions();
+    status(workspaceStatus, '');
+  });
+  syncTargetUrlActions();
   $('refreshSurfacesButton').addEventListener('click', () => refreshCanvases().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('canvasAssetTab').addEventListener('click', () => { activeAssetTab = 'canvas'; updateAssetTabs(); });
   $('svgAssetTab').addEventListener('click', () => { activeAssetTab = 'svg'; updateAssetTabs(); });
   $('clearSurfacesButton').addEventListener('click', async () => {
     try {
+      status(workspaceStatus, '');
       await invoke('clear_surfaces');
       resetDetectedSurfaces();
       await refreshCanvases();
-      status(workspaceStatus, 'Daftar Canvas dan SVG dibersihkan.', 'success');
     } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
   });
   $('ratio').addEventListener('change', () => {
@@ -2255,16 +2298,20 @@ document.addEventListener('DOMContentLoaded', () => {
   $('wireframePreview')?.addEventListener('change', event => {
     toggleWireframeMode(Boolean((event.currentTarget as HTMLInputElement).checked));
   });
-  $('enableObjectEraser').addEventListener('change', event => {
-    toggleObjectEraserMode((event.currentTarget as HTMLInputElement).checked);
+  $('eraseMarkedObjects').addEventListener('click', () => {
+    if (!objectEraserActive) toggleObjectEraserMode(true);
+    else if (markedElements.size > 0) void eraseMarkedObjects();
+    else toggleObjectEraserMode(false);
   });
-  $('eraseMarkedObjects').addEventListener('click', () => { void eraseMarkedObjects(); });
   $('clearMarkedObjects').addEventListener('click', clearMarkedObjects);
   $('restoreErasedObjects').addEventListener('click', () => { void restoreErasedObjects(); });
   $('artworkScaleSlider').addEventListener('input', event => {
     setArtworkScaleValue(Number((event.currentTarget as HTMLInputElement).value));
   });
-  $('targetUrl').addEventListener('input', () => persistSettingsSilently());
+  $('targetUrl').addEventListener('input', () => {
+    syncTargetUrlActions();
+    persistSettingsSilently();
+  });
   $('exportSvg').addEventListener('click', event => {
     event.stopPropagation();
     toggleDownloadMenu();
