@@ -893,13 +893,18 @@ pub(crate) fn target_script(
     };
     let bridge = include_str!("../../src/recorder-bridge.js");
     let target_controls = include_str!("../../src/target-controls.js");
+    let context_menu_policy = if cfg!(debug_assertions) {
+        ""
+    } else {
+        include_str!("../../src/disable-context-menu.js")
+    };
     let target_mode = if cfg!(target_os = "windows") || cfg!(target_os = "macos") {
         "multi-window"
     } else {
         "tabbed-window"
     };
     Ok(format!(
-        "window.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode};\n{target_controls}\n{bridge}",
+        "{context_menu_policy}\nwindow.__CVR_SESSION_TOKEN__ = {token}; window.__CVR_TARGET_TAB_ID__ = {tab_token}; window.__CVR_TARGET_TABS__ = {tabs}; window.__CVR_TARGET_MODE__ = {target_mode};\n{target_controls}\n{bridge}",
         target_mode = serde_json::to_string(target_mode)
             .map_err(|e| AppError::InvalidEvent(e.to_string()))?
     ))
