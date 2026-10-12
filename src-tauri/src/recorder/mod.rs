@@ -1,10 +1,12 @@
 pub mod canvas;
+mod clear;
 pub mod eps;
 pub mod events;
 pub mod path;
 pub mod svg;
 pub mod svg_asset;
 pub mod transform;
+mod tiles;
 pub mod validator;
 
 use crate::AppError;
@@ -114,7 +116,29 @@ impl RecorderStore {
             .sessions
             .get_mut(session_id)
             .ok_or(AppError::InvalidSession)?;
-        if session.event_count + events.len() > MAX_EVENTS {
+        // Validate the whole batch before applying it. A lost response can
+        // resend an accepted batch; old sequence numbers are acknowledgments,
+        // while a gap must still be rejected.
+        let mut sequences = session.last_sequences.clone();
+        let mut new_events = 0;
+        for event in &events {
+            if event.session_id != session_id || event.sequence == 0 {
+                return Err(AppError::InvalidSequence);
+            }
+            let frame = event.frame_id.as_deref().unwrap_or("main");
+            let last = sequences.get(frame).copied().unwrap_or(0);
+            if event.sequence <= last { continue; }
+            if event.sequence != last + 1 { return Err(AppError::InvalidSequence); }
+            if event.event_type == "path_command" {
+                let command = event.command.as_ref().filter(|_| event.path_id.is_some())
+                    .ok_or_else(|| AppError::InvalidEvent("missing path command".into()))?;
+                PathData::default().command(&command.command_type, &command.args)
+                    .map_err(AppError::InvalidEvent)?;
+            }
+            sequences.insert(frame.to_string(), event.sequence);
+            new_events += 1;
+        }
+        if session.event_count + new_events > MAX_EVENTS {
             return Err(AppError::EventLimit);
         }
         for event in events {
@@ -123,9 +147,7 @@ impl RecorderStore {
             }
             let frame_id = event.frame_id.as_deref().unwrap_or("main").to_string();
             let last_sequence = session.last_sequences.get(&frame_id).copied().unwrap_or(0);
-            if event.sequence != last_sequence + 1 {
-                return Err(AppError::InvalidSequence);
-            }
+            if event.sequence <= last_sequence { continue; }
             session.last_sequences.insert(frame_id, event.sequence);
             session.event_count += 1;
             if event.event_type == "session_end" {
@@ -134,7 +156,20 @@ impl RecorderStore {
             }
             if event.event_type == "path_created" {
                 if let Some(id) = &event.path_id {
-                    session.paths.entry(id.clone()).or_default();
+                    let seed = match event.value.as_ref() {
+                        Some(serde_json::Value::String(d)) if d.len() <= 500_000 => PathData {
+                            d: d.clone(),
+                            current: None,
+                        },
+                        Some(serde_json::Value::Object(value)) => value
+                            .get("source_path_id")
+                            .and_then(|source| source.as_str())
+                            .and_then(|source| session.paths.get(source))
+                            .cloned()
+                            .unwrap_or_default(),
+                        _ => PathData::default(),
+                    };
+                    session.paths.entry(id.clone()).or_insert(seed);
                 }
             }
             if event.event_type == "path_command" {
@@ -142,6 +177,29 @@ impl RecorderStore {
                     let path = session.paths.entry(id.clone()).or_default();
                     if path.command(&command.command_type, &command.args).is_err() {
                         return Err(AppError::InvalidEvent("invalid path command".into()));
+                    }
+                }
+            }
+            if event.event_type == "path_append" {
+                if let (Some(id), Some(source)) = (
+                    event.path_id.as_ref(),
+                    event.value.as_ref().and_then(|value| value.get("source_path_id")).and_then(|value| value.as_str()),
+                ) {
+                    if let Some(source_path) = session.paths.get(source).cloned() {
+                        if !source_path.d.is_empty() {
+                            let transform = event.transform.unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
+                            let appended = if transform == [1.0, 0.0, 0.0, 1.0, 0.0, 0.0] {
+                                Some(source_path.d)
+                            } else {
+                                kurbo::BezPath::from_svg(&source_path.d).ok().map(|mut path| {
+                                    path.apply_affine(kurbo::Affine::new(transform));
+                                    path.to_svg()
+                                })
+                            };
+                            if let Some(d) = appended {
+                                session.paths.entry(id.clone()).or_default().push(&d);
+                            }
+                        }
                     }
                 }
             }
@@ -158,10 +216,8 @@ impl RecorderStore {
             if let Some(canvas) = session.canvases.get_mut(&key) {
                 if event.event_type != "path_command" {
                     if let Some(path_id) = &event.path_id {
-                        if !canvas.paths.contains_key(path_id) {
-                            if let Some(path) = session.paths.get(path_id) {
-                                canvas.paths.insert(path_id.clone(), path.clone());
-                            }
+                        if let Some(path) = session.paths.get(path_id) {
+                            canvas.paths.insert(path_id.clone(), path.clone());
                         }
                     }
                 }
@@ -175,27 +231,23 @@ impl RecorderStore {
             .sessions
             .values()
             .flat_map(|session| {
-                session
-                    .canvases
-                    .values()
-                    .filter(|canvas| {
-                        canvas.visible
-                            && canvas.width >= MIN_LISTED_CANVAS_EDGE
-                            && canvas.height >= MIN_LISTED_CANVAS_EDGE
-                    })
-                    .map(|canvas| CanvasDetection {
-                        canvas_id: canvas.canvas_id.clone(),
-                        width: canvas.width,
-                        height: canvas.height,
-                        revision: canvas.revision,
-                        shapes: canvas.shapes.len(),
-                        gap_fillers: canvas.gap_fillers.len(),
-                        errors: canvas.errors,
-                        state: if session.ended {
-                            "ENDED".into()
-                        } else {
-                            "RECORDING".into()
-                        },
+                tiles::groups(&session.canvases)
+                    .into_iter()
+                    .filter(|group| group.iter().any(|canvas| canvas.visible)
+                        && group.iter().all(|canvas| canvas.width >= MIN_LISTED_CANVAS_EDGE
+                            && canvas.height >= MIN_LISTED_CANVAS_EDGE))
+                    .map(|group| {
+                        let result = tiles::merged(&group);
+                        CanvasDetection {
+                            canvas_id: result.canvas_id,
+                            width: result.width,
+                            height: result.height,
+                            revision: group.iter().map(|canvas| canvas.revision).sum(),
+                            shapes: result.shapes.len(),
+                            gap_fillers: result.gap_fillers.len(),
+                            errors: result.errors,
+                            state: if session.ended { "ENDED".into() } else { "RECORDING".into() },
+                        }
                     })
             })
             .collect::<Vec<_>>();
@@ -244,7 +296,9 @@ impl RecorderStore {
     pub fn canvas(&self, id: &str) -> Option<CanvasResult> {
         self.sessions
             .values()
-            .find_map(|s| s.canvases.get(id).map(CanvasState::result))
+            .find_map(|session| tiles::groups(&session.canvases).into_iter()
+                .find(|group| group.iter().any(|canvas| canvas.canvas_id == id))
+                .map(|group| tiles::merged(&group)))
     }
     pub fn active(&self) -> Option<&SessionState> {
         self.active_session
@@ -297,14 +351,54 @@ mod tests {
         assert!(store
             .record(&id, vec![event(&id, 1, "session_start")])
             .is_ok());
-        assert!(matches!(
-            store.record(&id, vec![event(&id, 1, "session_start")]),
-            Err(AppError::InvalidSequence)
-        ));
+        assert!(store.record(&id, vec![event(&id, 1, "session_start")]).is_ok());
+        assert_eq!(store.active().unwrap().event_count, 1);
+        assert!(matches!(store.record(&id, vec![event(&id, 3, "session_start")]), Err(AppError::InvalidSequence)));
         assert!(matches!(
             store.record("other", vec![event("other", 1, "session_start")]),
             Err(AppError::InvalidSession)
         ));
+    }
+
+    #[test]
+    fn retried_batches_do_not_duplicate_paints_and_invalid_batches_are_atomic() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let mut fill = event(&id, 2, "fill_rect");
+        fill.args = Some(vec![0.0, 0.0, 10.0, 10.0]);
+        let batch = vec![event(&id, 1, "canvas_created"), fill.clone()];
+        store.record(&id, batch.clone()).unwrap();
+        store.record(&id, batch).unwrap();
+        assert_eq!(store.canvas("canvas-1").unwrap().shapes.len(), 1);
+        assert_eq!(store.active().unwrap().event_count, 2);
+        fill.sequence = 3;
+        let invalid = event(&id, 5, "fill_rect");
+        assert!(store.record(&id, vec![fill.clone(), invalid]).is_err());
+        assert_eq!(store.active().unwrap().event_count, 2);
+        store.record(&id, vec![fill]).unwrap();
+        assert_eq!(store.canvas("canvas-1").unwrap().shapes.len(), 2);
+    }
+
+    #[test]
+    fn mutable_path2d_refreshes_future_paints_without_changing_earlier_paints() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let mut path = event(&id, 2, "path_created");
+        path.canvas_id = None;
+        path.path_id = Some("mutable".into());
+        path.value = Some(json!("M 0 0 L 10 0 L 10 10"));
+        let mut fill = event(&id, 3, "fill");
+        fill.path_id = path.path_id.clone();
+        let mut change = event(&id, 4, "path_command");
+        change.canvas_id = None;
+        change.path_id = path.path_id.clone();
+        change.command = Some(events::PathCommand { command_type: "line_to".into(), args: vec![0.0, 20.0] });
+        let mut second_fill = fill.clone();
+        second_fill.sequence = 5;
+        store.record(&id, vec![event(&id, 1, "canvas_created"), path, fill, change, second_fill]).unwrap();
+        let result = store.canvas("canvas-1").unwrap();
+        assert_eq!(result.shapes[0].d, "M 0 0 L 10 0 L 10 10 Z");
+        assert_eq!(result.shapes[1].d, "M 0 0 L 10 0 L 10 10 L 0 20 Z");
     }
     #[test]
     fn paths_are_reconstructed_into_canvas_results() {
@@ -329,6 +423,62 @@ mod tests {
         fill.fill_style = Some("#fff".into());
         store.record(&id, vec![fill]).unwrap();
         assert_eq!(store.canvas("canvas-1").unwrap().shapes.len(), 1);
+    }
+
+    #[test]
+    fn svg_path2d_constructor_and_copy_are_recorded() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let d = "M 10 10 L 90 10 L 90 90 Z";
+        let mut original = event(&id, 2, "path_created");
+        original.canvas_id = None;
+        original.path_id = Some("original".into());
+        original.value = Some(json!(d));
+        let mut copy = event(&id, 3, "path_created");
+        copy.canvas_id = None;
+        copy.path_id = Some("copy".into());
+        copy.value = Some(json!({ "source_path_id": "original" }));
+        let mut combined = event(&id, 4, "path_created");
+        combined.canvas_id = None;
+        combined.path_id = Some("combined".into());
+        let mut append = event(&id, 5, "path_append");
+        append.canvas_id = None;
+        append.path_id = Some("combined".into());
+        append.value = Some(json!({ "source_path_id": "copy" }));
+        let mut fill = event(&id, 6, "fill");
+        fill.path_id = Some("combined".into());
+        store
+            .record(&id, vec![event(&id, 1, "canvas_created"), original, copy, combined, append, fill])
+            .unwrap();
+        let result = store.canvas("canvas-1").unwrap();
+        assert_eq!(result.errors, 0);
+        assert_eq!(result.shapes.len(), 1);
+        assert_eq!(result.shapes[0].d, d);
+    }
+
+    #[test]
+    fn transformed_path2d_append_keeps_shifted_geometry() {
+        let mut store = RecorderStore::default();
+        let id = store.start();
+        let mut source = event(&id, 2, "path_created");
+        source.canvas_id = None;
+        source.path_id = Some("leaf".into());
+        source.value = Some(json!("M0 0 L10 0 L0 10 Z"));
+        let mut target = event(&id, 3, "path_created");
+        target.canvas_id = None;
+        target.path_id = Some("branch".into());
+        let mut append = event(&id, 4, "path_append");
+        append.canvas_id = None;
+        append.path_id = Some("branch".into());
+        append.value = Some(json!({ "source_path_id": "leaf" }));
+        append.transform = Some([0.0, 1.0, -1.0, 0.0, 100.0, 200.0]);
+        let mut fill = event(&id, 5, "fill");
+        fill.path_id = Some("branch".into());
+        store.record(&id, vec![event(&id, 1, "canvas_created"), source, target, append, fill]).unwrap();
+        let result = store.canvas("canvas-1").unwrap();
+        assert_eq!(result.errors, 0);
+        let path = kurbo::BezPath::from_svg(&result.shapes[0].d).unwrap();
+        assert!(matches!(path.elements()[0], kurbo::PathEl::MoveTo(point) if point.x == 100.0 && point.y == 200.0));
     }
 
     #[test]

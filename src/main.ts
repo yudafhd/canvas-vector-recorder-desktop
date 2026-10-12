@@ -8,6 +8,8 @@ import {
   Bell,
   Check,
   ChevronDown,
+  ClipboardPaste,
+  Copy,
   Download,
   DownloadCloud,
   ExternalLink,
@@ -33,10 +35,18 @@ import { activateLicense, licenseStatus, normalizedEmail } from './license';
 import { initDiscover } from './discover';
 import { initTracing } from './tracing/page';
 import { initModeSelection } from './mode-selection';
+import { initRecorderLoader } from './recorder-loader';
 import type { CanvasDetection, LicenseStatus, MicrostockSettings, SvgAsset, SvgResult, StartRecordingResult, TargetTabInfo, TargetTabsState } from './types';
 
+if (import.meta.env.PROD) {
+  window.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, { capture: true });
+}
+
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
-const lucideIcons = { Bell, Check, ChevronDown, Download, DownloadCloud, ExternalLink, FolderOpen, Globe, Lightbulb, Moon, MonitorPlay, Pencil, Pipette, Plus, RefreshCw, RotateCw, RotateCcw, Settings2, Sparkles, Sun, Trash2, X };
+const lucideIcons = { Bell, Check, ChevronDown, ClipboardPaste, Copy, Download, DownloadCloud, ExternalLink, FolderOpen, Globe, Lightbulb, Moon, MonitorPlay, Pencil, Pipette, Plus, RefreshCw, RotateCw, RotateCcw, Settings2, Sparkles, Sun, Trash2, X };
 let discoverControl: ReturnType<typeof initDiscover> | null = null;
 
 function iconPlaceholder(name: string): HTMLElement {
@@ -96,7 +106,7 @@ let tracingInitialized = false;
 const targetMainTabs = $('targetMainTabs');
 const targetTabsCount = $('targetTabsCount');
 const targetView = $('targetView');
-const targetFrame = $<HTMLIFrameElement>('targetFrame');
+const targetViewport = $('targetViewport');
 const targetMainTitle = $('targetMainTitle');
 const closeTargetMainTab = $<HTMLButtonElement>('closeTargetMainTab');
 const activationStatus = $('activationStatus');
@@ -117,6 +127,7 @@ let selectedCanvas: string | null = null;
 let selectedSvg: string | null = null;
 let lastSvg: SvgResult | null = null;
 let targetOpen = false;
+let workspaceStatusTimer: ReturnType<typeof setTimeout> | null = null;
 const isWindows = /Windows/i.test(navigator.userAgent);
 const isMac = /Macintosh|Mac OS X/i.test(navigator.userAgent);
 let downloadToastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -139,7 +150,6 @@ const svgColors = new Map<string, { revision: number; colors: string[] }>();
 const canvasColorRequests = new Set<string>();
 type AssetTab = 'canvas' | 'svg';
 let activeAssetTab: AssetTab = 'canvas';
-let thumbnailGeneration = 0;
 const thumbnailUrls = new Map<string, string>();
 const thumbnailKeys = new Map<string, string>();
 const thumbnailJobs = new Map<string, string>();
@@ -173,227 +183,227 @@ const PRESET_RATIO_DIMENSIONS: Record<string, { width: number; height: number }>
   '16:9': { width: 16, height: 9 },
 };
 const DEFAULT_CUSTOM_RATIO = { width: 1, height: 1 };
-const LANDING_DURATION_MS = 0;
-const LANDING_QUOTES = [
-  ['Tidak ada yang akan berhasil kecuali kamu mulai mengerjakannya.', 'Maya Angelou'],
-  ['Rintangan bagi tindakan justru memajukan tindakan. Yang menghalangi jalan menjadi jalan.', 'Marcus Aurelius'],
-  ['Sendiri kita dapat melakukan sedikit; bersama kita dapat melakukan banyak.', 'Helen Keller'],
-  ['Hidup seperti mengendarai sepeda. Agar seimbang, kamu harus terus bergerak.', 'Albert Einstein'],
-  ['Pendidikan adalah senjata paling ampuh untuk mengubah dunia.', 'Nelson Mandela'],
-  ['Tidak ada yang perlu ditakuti dalam hidup; yang perlu dilakukan adalah memahaminya.', 'Marie Curie'],
-  ['Ketika seluruh dunia diam, satu suara pun bisa menjadi kuat.', 'Malala Yousafzai'],
-  ['Masa depan bergantung pada apa yang kamu lakukan hari ini.', 'Mahatma Gandhi'],
-  ['Satu-satunya cara melakukan pekerjaan hebat adalah mencintai pekerjaan itu.', 'Steve Jobs'],
-  ['Kesempatan tidak terjadi begitu saja. Kamulah yang menciptakannya.', 'Chris Grosser'],
-  ['Mulailah dari tempatmu berada. Gunakan yang kamu punya. Lakukan yang kamu bisa.', 'Arthur Ashe'],
-  ['Keberhasilan adalah jumlah dari upaya kecil yang diulang setiap hari.', 'Robert Collier'],
-  ['Tidak pernah terlambat untuk menjadi dirimu yang seharusnya.', 'George Eliot'],
-  ['Keunggulan bukan tindakan, melainkan kebiasaan.', 'Will Durant'],
-  ['Kebahagiaan hidupmu bergantung pada kualitas pikiranmu.', 'Marcus Aurelius'],
-  ['Tidak ada yang bisa meredupkan cahaya yang bersinar dari dalam diri.', 'Maya Angelou'],
-  ['Keberanian adalah harga yang dituntut kehidupan untuk memberi kedamaian.', 'Amelia Earhart'],
-  ['Tugas kita bukan melihat samar di kejauhan, tetapi melakukan yang jelas di dekat kita.', 'Thomas Carlyle'],
-  ['Kita menjadi apa yang kita lakukan berulang kali.', 'Aristoteles'],
-  ['Bersikaplah setia pada hal-hal kecil, karena di sanalah kekuatanmu berada.', 'Bunda Teresa'],
-  ['Mimpi tidak bekerja kecuali kamu bekerja.', 'John C. Maxwell'],
-  ['Kegagalan hanyalah kesempatan untuk memulai lagi dengan lebih cerdas.', 'Henry Ford'],
-  ['Jangan berhenti ketika lelah; berhentilah ketika selesai.', 'Marilyn Monroe'],
-  ['Jika kamu mengubah cara memandang sesuatu, sesuatu yang kamu pandang ikut berubah.', 'Wayne Dyer'],
-  ['Keberhasilan bukan akhir, kegagalan bukan kehancuran; keberanian untuk melanjutkanlah yang penting.', 'Winston Churchill'],
-  ['Lakukan satu hal setiap hari yang membuatmu takut.', 'Eleanor Roosevelt'],
-  ['Harapan adalah hal berbulu yang bertengger di jiwa.', 'Emily Dickinson'],
-  ['Jalani hidup yang telah kamu bayangkan dengan penuh keyakinan.', 'Henry David Thoreau'],
-  ['Tidak ada pencapaian besar tanpa antusiasme.', 'Ralph Waldo Emerson'],
-  ['Wajahilah matahari, dan bayangan akan jatuh di belakangmu.', 'Walt Whitman'],
-  ['Kita adalah apa yang kita yakini.', 'C. S. Lewis'],
-  ['Hidup bukan soal menemukan dirimu; hidup soal menciptakan dirimu.', 'George Bernard Shaw'],
-  ['Jadilah dirimu sendiri; orang lain sudah ada yang memiliki.', 'Oscar Wilde'],
-  ['Rahasia untuk maju adalah memulai.', 'Mark Twain'],
-  ['Keraguan kita hari ini dapat membatasi pencapaian kita esok hari.', 'William Shakespeare'],
-  ['Tidak ada yang baik atau buruk, pikiranlah yang membuatnya demikian.', 'William Shakespeare'],
-  ['Jangan biarkan apa yang tidak bisa kamu lakukan mengganggu apa yang bisa kamu lakukan.', 'John Wooden'],
-  ['Sukses adalah kemampuan untuk berpindah dari kegagalan ke kegagalan tanpa kehilangan semangat.', 'Winston Churchill'],
-  ['Apa yang kamu lakukan berbicara begitu keras hingga aku tak mendengar apa yang kamu katakan.', 'Ralph Waldo Emerson'],
-  ['Jika ingin mengangkat dirimu, angkatlah orang lain.', 'Booker T. Washington'],
-  ['Kita tidak dapat memecahkan masalah dengan cara pikir yang sama saat menciptakannya.', 'Albert Einstein'],
-  ['Jangan menilai setiap hari dari panenmu, melainkan dari benih yang kamu tanam.', 'Robert Louis Stevenson'],
-  ['Jika kamu dapat memimpikannya, kamu dapat mewujudkannya.', 'Walt Disney'],
-  ['Kamu tidak harus hebat untuk memulai, tetapi harus memulai untuk menjadi hebat.', 'Zig Ziglar'],
-  ['Satu-satunya batas untuk pencapaian esok adalah keraguan hari ini.', 'Franklin D. Roosevelt'],
-  ['Hidup adalah petualangan berani atau bukan apa-apa.', 'Helen Keller'],
-  ['Jangan menunggu. Waktunya tidak akan pernah benar-benar tepat.', 'Napoleon Hill'],
-  ['Seseorang yang tidak pernah salah berarti tidak pernah mencoba hal baru.', 'Albert Einstein'],
-  ['Semua impian dapat terwujud jika kita berani mengejarnya.', 'Walt Disney'],
-  ['Kesulitan sering menyiapkan orang biasa untuk takdir luar biasa.', 'C. S. Lewis'],
-  ['Belajarlah dari kemarin, hiduplah untuk hari ini, berharaplah untuk esok.', 'Albert Einstein'],
-  ['Saat kamu tahu lebih baik, lakukan lebih baik.', 'Maya Angelou'],
-  ['Keberanian dimulai dengan hadir dan membiarkan diri terlihat.', 'Brené Brown'],
-  ['Apa pun yang dapat dipikirkan dan diyakini pikiran, dapat dicapai.', 'Napoleon Hill'],
-  ['Buatlah setiap hari menjadi karya agungmu.', 'John Wooden'],
-  ['Semakin keras kamu bekerja untuk sesuatu, semakin besar rasanya saat berhasil.', 'Cristiano Ronaldo'],
-  ['Jangan biarkan kemarin mengambil terlalu banyak hari ini.', 'Will Rogers'],
-  ['Masa depan adalah milik mereka yang percaya pada keindahan mimpi mereka.', 'Eleanor Roosevelt'],
-  ['Kamu lebih berani daripada yang kamu kira, lebih kuat daripada yang terlihat, dan lebih cerdas dari yang kamu pikirkan.', 'A. A. Milne'],
-  ['Tidak ada jalan pintas menuju tempat mana pun yang layak dituju.', 'Beverly Sills'],
-  ['Kamu tidak pernah terlalu tua untuk menetapkan tujuan baru.', 'C. S. Lewis'],
-  ['Satu tindakan kebaikan dapat menyalakan senyum di banyak hati.', 'William Wordsworth'],
-  ['Hidup menyusut atau mengembang sebanding dengan keberanian seseorang.', 'Anaïs Nin'],
-  ['Jadilah perubahan yang ingin kamu lihat di dunia.', 'Mahatma Gandhi'],
-  ['Ubah lukamu menjadi kebijaksanaan.', 'Oprah Winfrey'],
-  ['Jangan pernah menyerah pada sesuatu yang tidak bisa kamu lewati sehari tanpa memikirkannya.', 'Winston Churchill'],
-  ['Kamu tidak bisa kembali dan mengubah awal, tetapi bisa mulai sekarang dan mengubah akhir.', 'C. S. Lewis'],
-  ['Bekerjalah dengan gembira dan nikmati apa yang kamu lakukan.', 'Earl Nightingale'],
-  ['Masa depan dimulai hari ini, bukan besok.', 'Paus Yohanes Paulus II'],
-  ['Setiap ahli pernah menjadi pemula.', 'Helen Hayes'],
-  ['Keberhasilan paling sering datang kepada mereka yang terlalu sibuk untuk mencarinya.', 'Henry David Thoreau'],
-  ['Kamu kehilangan seratus persen peluang yang tidak kamu ambil.', 'Wayne Gretzky'],
-  ['Bukan gunung yang kita taklukkan, melainkan diri kita sendiri.', 'Edmund Hillary'],
-  ['Usahakan menjadi bernilai, bukan sekadar sukses.', 'Albert Einstein'],
-  ['Kamu tidak harus melihat seluruh tangga; cukup ambil langkah pertama.', 'Martin Luther King Jr.'],
-  ['Untuk mencapai hal besar, kita harus bermimpi sekaligus bertindak.', 'Anatole France'],
-  ['Satu-satunya perjalanan yang mustahil adalah yang tidak pernah kamu mulai.', 'Tony Robbins'],
-  ['Lakukan yang terbaik sampai kamu tahu lebih baik. Setelah itu, lakukan lebih baik.', 'Maya Angelou'],
-  ['Jadilah begitu baik hingga mereka tidak bisa mengabaikanmu.', 'Steve Martin'],
-  ['Yang terpenting adalah terus bertanya.', 'Albert Einstein'],
-  ['Kesempurnaan tercapai bukan saat tak ada lagi yang ditambah, melainkan saat tak ada lagi yang bisa diambil.', 'Antoine de Saint-Exupéry'],
-  ['Jika ada kesempatan tidak mengetuk, bangunlah pintu.', 'Milton Berle'],
-  ['Semua yang pernah kamu inginkan ada di sisi lain dari rasa takut.', 'George Addair'],
-  ['Sukses adalah menyukai diri sendiri, pekerjaanmu, dan caramu mengerjakannya.', 'Maya Angelou'],
-  ['Kamu selalu lebih kuat daripada yang kamu kira.', 'A. A. Milne'],
-  ['Hal besar dilakukan melalui rangkaian hal kecil yang disatukan.', 'Vincent van Gogh'],
-  ['Yang membuatmu unik kemungkinan besar akan membuatmu sukses.', 'William Arruda'],
-  ['Percayalah bahwa kamu bisa, dan kamu sudah setengah jalan.', 'Theodore Roosevelt'],
-  ['Tidak ada yang mustahil bagi hati yang mau.', 'John Heywood'],
-  ['Bukan panjangnya hidup, melainkan kedalaman hidup yang penting.', 'Ralph Waldo Emerson'],
-  ['Kita harus menerima kekecewaan terbatas, tetapi tidak pernah kehilangan harapan tak terbatas.', 'Martin Luther King Jr.'],
-  ['Jangan menunggu pemimpin; lakukan sendiri, orang ke orang.', 'Bunda Teresa'],
-  ['Yang kita lakukan sekarang bergema dalam keabadian.', 'Marcus Aurelius'],
-  ['Teruslah berenang.', 'Dory, Finding Nemo'],
-  ['Lakukan, atau jangan lakukan. Tidak ada sekadar mencoba.', 'Yoda, The Empire Strikes Back'],
-  ['Mengapa kita jatuh? Agar kita dapat belajar untuk bangkit lagi.', 'Alfred, Batman Begins'],
+const LANDING_DURATION_MS = 8_000;
+const MOTIVATION_QUOTES = [
+  ['Tidak ada yang akan berhasil kecuali kamu mulai mengerjakannya', 'Maya Angelou'],
+  ['Rintangan bagi tindakan justru memajukan tindakan. Yang menghalangi jalan menjadi jalan', 'Marcus Aurelius'],
+  ['Sendiri kita dapat melakukan sedikit; bersama kita dapat melakukan banyak', 'Helen Keller'],
+  ['Hidup seperti mengendarai sepeda. Agar seimbang, kamu harus terus bergerak', 'Albert Einstein'],
+  ['Pendidikan adalah senjata paling ampuh untuk mengubah dunia', 'Nelson Mandela'],
+  ['Tidak ada yang perlu ditakuti dalam hidup; yang perlu dilakukan adalah memahaminya', 'Marie Curie'],
+  ['Ketika seluruh dunia diam, satu suara pun bisa menjadi kuat', 'Malala Yousafzai'],
+  ['Masa depan bergantung pada apa yang kamu lakukan hari ini', 'Mahatma Gandhi'],
+  ['Satu-satunya cara melakukan pekerjaan hebat adalah mencintai pekerjaan itu', 'Steve Jobs'],
+  ['Kesempatan tidak terjadi begitu saja. Kamulah yang menciptakannya', 'Chris Grosser'],
+  ['Mulailah dari tempatmu berada. Gunakan yang kamu punya. Lakukan yang kamu bisa', 'Arthur Ashe'],
+  ['Keberhasilan adalah jumlah dari upaya kecil yang diulang setiap hari', 'Robert Collier'],
+  ['Tidak pernah terlambat untuk menjadi dirimu yang seharusnya', 'George Eliot'],
+  ['Keunggulan bukan tindakan, melainkan kebiasaan', 'Will Durant'],
+  ['Kebahagiaan hidupmu bergantung pada kualitas pikiranmu', 'Marcus Aurelius'],
+  ['Tidak ada yang bisa meredupkan cahaya yang bersinar dari dalam diri', 'Maya Angelou'],
+  ['Keberanian adalah harga yang dituntut kehidupan untuk memberi kedamaian', 'Amelia Earhart'],
+  ['Tugas kita bukan melihat samar di kejauhan, tetapi melakukan yang jelas di dekat kita', 'Thomas Carlyle'],
+  ['Kita menjadi apa yang kita lakukan berulang kali', 'Aristoteles'],
+  ['Bersikaplah setia pada hal-hal kecil, karena di sanalah kekuatanmu berada', 'Bunda Teresa'],
+  ['Mimpi tidak bekerja kecuali kamu bekerja', 'John C. Maxwell'],
+  ['Kegagalan hanyalah kesempatan untuk memulai lagi dengan lebih cerdas', 'Henry Ford'],
+  ['Jangan berhenti ketika lelah; berhentilah ketika selesai', 'Marilyn Monroe'],
+  ['Jika kamu mengubah cara memandang sesuatu, sesuatu yang kamu pandang ikut berubah', 'Wayne Dyer'],
+  ['Keberhasilan bukan akhir, kegagalan bukan kehancuran; keberanian untuk melanjutkanlah yang penting', 'Winston Churchill'],
+  ['Lakukan satu hal setiap hari yang membuatmu takut', 'Eleanor Roosevelt'],
+  ['Harapan adalah hal berbulu yang bertengger di jiwa', 'Emily Dickinson'],
+  ['Jalani hidup yang telah kamu bayangkan dengan penuh keyakinan', 'Henry David Thoreau'],
+  ['Tidak ada pencapaian besar tanpa antusiasme', 'Ralph Waldo Emerson'],
+  ['Wajahilah matahari, dan bayangan akan jatuh di belakangmu', 'Walt Whitman'],
+  ['Kita adalah apa yang kita yakini', 'C. S. Lewis'],
+  ['Hidup bukan soal menemukan dirimu; hidup soal menciptakan dirimu', 'George Bernard Shaw'],
+  ['Jadilah dirimu sendiri; orang lain sudah ada yang memiliki', 'Oscar Wilde'],
+  ['Rahasia untuk maju adalah memulai', 'Mark Twain'],
+  ['Keraguan kita hari ini dapat membatasi pencapaian kita esok hari', 'William Shakespeare'],
+  ['Tidak ada yang baik atau buruk, pikiranlah yang membuatnya demikian', 'William Shakespeare'],
+  ['Jangan biarkan apa yang tidak bisa kamu lakukan mengganggu apa yang bisa kamu lakukan', 'John Wooden'],
+  ['Sukses adalah kemampuan untuk berpindah dari kegagalan ke kegagalan tanpa kehilangan semangat', 'Winston Churchill'],
+  ['Apa yang kamu lakukan berbicara begitu keras hingga aku tak mendengar apa yang kamu katakan', 'Ralph Waldo Emerson'],
+  ['Jika ingin mengangkat dirimu, angkatlah orang lain', 'Booker T. Washington'],
+  ['Kita tidak dapat memecahkan masalah dengan cara pikir yang sama saat menciptakannya', 'Albert Einstein'],
+  ['Jangan menilai setiap hari dari panenmu, melainkan dari benih yang kamu tanam', 'Robert Louis Stevenson'],
+  ['Jika kamu dapat memimpikannya, kamu dapat mewujudkannya', 'Walt Disney'],
+  ['Kamu tidak harus hebat untuk memulai, tetapi harus memulai untuk menjadi hebat', 'Zig Ziglar'],
+  ['Satu-satunya batas untuk pencapaian esok adalah keraguan hari ini', 'Franklin D. Roosevelt'],
+  ['Hidup adalah petualangan berani atau bukan apa-apa', 'Helen Keller'],
+  ['Jangan menunggu. Waktunya tidak akan pernah benar-benar tepat', 'Napoleon Hill'],
+  ['Seseorang yang tidak pernah salah berarti tidak pernah mencoba hal baru', 'Albert Einstein'],
+  ['Semua impian dapat terwujud jika kita berani mengejarnya', 'Walt Disney'],
+  ['Kesulitan sering menyiapkan orang biasa untuk takdir luar biasa', 'C. S. Lewis'],
+  ['Belajarlah dari kemarin, hiduplah untuk hari ini, berharaplah untuk esok', 'Albert Einstein'],
+  ['Saat kamu tahu lebih baik, lakukan lebih baik', 'Maya Angelou'],
+  ['Keberanian dimulai dengan hadir dan membiarkan diri terlihat', 'Brené Brown'],
+  ['Apa pun yang dapat dipikirkan dan diyakini pikiran, dapat dicapai', 'Napoleon Hill'],
+  ['Buatlah setiap hari menjadi karya agungmu', 'John Wooden'],
+  ['Semakin keras kamu bekerja untuk sesuatu, semakin besar rasanya saat berhasil', 'Cristiano Ronaldo'],
+  ['Jangan biarkan kemarin mengambil terlalu banyak hari ini', 'Will Rogers'],
+  ['Masa depan adalah milik mereka yang percaya pada keindahan mimpi mereka', 'Eleanor Roosevelt'],
+  ['Kamu lebih berani daripada yang kamu kira, lebih kuat daripada yang terlihat, dan lebih cerdas dari yang kamu pikirkan', 'A. A. Milne'],
+  ['Tidak ada jalan pintas menuju tempat mana pun yang layak dituju', 'Beverly Sills'],
+  ['Kamu tidak pernah terlalu tua untuk menetapkan tujuan baru', 'C. S. Lewis'],
+  ['Satu tindakan kebaikan dapat menyalakan senyum di banyak hati', 'William Wordsworth'],
+  ['Hidup menyusut atau mengembang sebanding dengan keberanian seseorang', 'Anaïs Nin'],
+  ['Jadilah perubahan yang ingin kamu lihat di dunia', 'Mahatma Gandhi'],
+  ['Ubah lukamu menjadi kebijaksanaan', 'Oprah Winfrey'],
+  ['Jangan pernah menyerah pada sesuatu yang tidak bisa kamu lewati sehari tanpa memikirkannya', 'Winston Churchill'],
+  ['Kamu tidak bisa kembali dan mengubah awal, tetapi bisa mulai sekarang dan mengubah akhir', 'C. S. Lewis'],
+  ['Bekerjalah dengan gembira dan nikmati apa yang kamu lakukan', 'Earl Nightingale'],
+  ['Masa depan dimulai hari ini, bukan besok', 'Paus Yohanes Paulus II'],
+  ['Setiap ahli pernah menjadi pemula', 'Helen Hayes'],
+  ['Keberhasilan paling sering datang kepada mereka yang terlalu sibuk untuk mencarinya', 'Henry David Thoreau'],
+  ['Kamu kehilangan seratus persen peluang yang tidak kamu ambil', 'Wayne Gretzky'],
+  ['Bukan gunung yang kita taklukkan, melainkan diri kita sendiri', 'Edmund Hillary'],
+  ['Usahakan menjadi bernilai, bukan sekadar sukses', 'Albert Einstein'],
+  ['Kamu tidak harus melihat seluruh tangga; cukup ambil langkah pertama', 'Martin Luther King Jr'],
+  ['Untuk mencapai hal besar, kita harus bermimpi sekaligus bertindak', 'Anatole France'],
+  ['Satu-satunya perjalanan yang mustahil adalah yang tidak pernah kamu mulai', 'Tony Robbins'],
+  ['Lakukan yang terbaik sampai kamu tahu lebih baik. Setelah itu, lakukan lebih baik', 'Maya Angelou'],
+  ['Jadilah begitu baik hingga mereka tidak bisa mengabaikanmu', 'Steve Martin'],
+  ['Yang terpenting adalah terus bertanya', 'Albert Einstein'],
+  ['Kesempurnaan tercapai bukan saat tak ada lagi yang ditambah, melainkan saat tak ada lagi yang bisa diambil', 'Antoine de Saint-Exupéry'],
+  ['Jika ada kesempatan tidak mengetuk, bangunlah pintu', 'Milton Berle'],
+  ['Semua yang pernah kamu inginkan ada di sisi lain dari rasa takut', 'George Addair'],
+  ['Sukses adalah menyukai diri sendiri, pekerjaanmu, dan caramu mengerjakannya', 'Maya Angelou'],
+  ['Kamu selalu lebih kuat daripada yang kamu kira', 'A. A. Milne'],
+  ['Hal besar dilakukan melalui rangkaian hal kecil yang disatukan', 'Vincent van Gogh'],
+  ['Yang membuatmu unik kemungkinan besar akan membuatmu sukses', 'William Arruda'],
+  ['Percayalah bahwa kamu bisa, dan kamu sudah setengah jalan', 'Theodore Roosevelt'],
+  ['Tidak ada yang mustahil bagi hati yang mau', 'John Heywood'],
+  ['Bukan panjangnya hidup, melainkan kedalaman hidup yang penting', 'Ralph Waldo Emerson'],
+  ['Kita harus menerima kekecewaan terbatas, tetapi tidak pernah kehilangan harapan tak terbatas', 'Martin Luther King Jr'],
+  ['Jangan menunggu pemimpin; lakukan sendiri, orang ke orang', 'Bunda Teresa'],
+  ['Yang kita lakukan sekarang bergema dalam keabadian', 'Marcus Aurelius'],
+  ['Teruslah berenang', 'Dory, Finding Nemo'],
+  ['Lakukan, atau jangan lakukan. Tidak ada sekadar mencoba', 'Yoda, The Empire Strikes Back'],
+  ['Mengapa kita jatuh? Agar kita dapat belajar untuk bangkit lagi', 'Alfred, Batman Begins'],
   ['Ke tak terhingga dan melampauinya!', 'Buzz Lightyear, Toy Story'],
-  ['Harapan adalah hal yang baik, mungkin yang terbaik; dan hal baik tidak pernah mati.', 'Andy Dufresne, The Shawshank Redemption'],
-  ['Raih hari ini. Jadikan hidupmu luar biasa.', 'John Keating, Dead Poets Society'],
-  ['Optimisme adalah keyakinan yang menuntun pada pencapaian; tanpa harapan, tak ada yang dapat dilakukan.', 'Helen Keller'],
-  ['Seni adalah kebohongan yang membuat kita menyadari kebenaran.', 'Pablo Picasso'],
-  ['Setiap anak adalah seniman. Masalahnya adalah bagaimana tetap menjadi seniman setelah dewasa.', 'Pablo Picasso'],
-  ['Kesederhanaan adalah kecanggihan tertinggi.', 'Leonardo da Vinci'],
-  ['Detail menciptakan kesempurnaan, dan kesempurnaan bukanlah hal sepele.', 'Leonardo da Vinci'],
-  ['Warna adalah tempat di mana otak kita dan alam semesta bertemu.', 'Paul Klee'],
-  ['Sebuah garis adalah titik yang berjalan-jalan.', 'Paul Klee'],
-  ['Kreativitas membutuhkan keberanian untuk melepaskan kepastian.', 'Erich Fromm'],
-  ['Desain bukan hanya seperti apa bentuknya dan bagaimana rasanya. Desain adalah bagaimana ia bekerja.', 'Steve Jobs'],
-  ['Jangan takut akan kesempurnaan, kamu tidak akan pernah mencapainya.', 'Salvador Dalí'],
-  ['Kami tidak membuat kesalahan, kami hanya memiliki kecelakaan kecil yang menyenangkan.', 'Bob Ross'],
-  ['Seni menghapus debu kehidupan sehari-hari dari jiwa.', 'Pablo Picasso'],
-  ['Bakat adalah ketertarikan yang diiringi dengan banyak latihan.', 'Bob Ross'],
-  ['Desain yang baik adalah desain yang sesedikit mungkin.', 'Dieter Rams'],
-  ['Jadilah mata air yang jernih, yang memberi kehidupan pada sekitarnya.', 'B.J. Habibie'],
-  ['Hanya mereka yang berani gagal besar yang dapat mencapai keberhasilan besar.', 'Robert F. Kennedy'],
-  ['Bermimpilah setinggi langit, jika engkau jatuh, engkau akan jatuh di antara bintang-bintang.', 'Soekarno'],
-  ['Lawan rasa takutmu dengan ilmu dan persiapan.', 'B.J. Habibie'],
-  ['Terkadang satu karya sederhana bernilai lebih dari ribuan kata rumit.', 'Paul Rand'],
-  ['Seni sejati adalah ekspresi dari jiwa yang paling dalam.', 'Georgia O’Keeffe'],
-  ['Kreativitas adalah kecerdasan yang sedang bersenang-senang.', 'Albert Einstein'],
-  ['Perjalanan seribu mil dimulai dengan satu langkah.', 'Lao Tzu'],
-  ['Apa yang kamu cari sedang mencarimu.', 'Rumi'],
-  ['Jangan berduka. Apa pun yang hilang darimu akan kembali dalam bentuk yang lain.', 'Rumi'],
-  ['Bila kamu ingin tahu masa depanmu, lihatlah apa yang kamu lakukan sekarang.', 'Buddha'],
-  ['Kita menderita lebih sering dalam imajinasi daripada dalam kenyataan.', 'Seneca'],
-  ['Bukan karena perkara itu sulit kita tidak berani, melainkan karena kita tidak berani perkara itu menjadi sulit.', 'Seneca'],
-  ['Kendalikan pikiranmu atau pikiranmu yang akan mengendalikanmu.', 'Horace'],
-  ['Habis gelap terbitlah terang.', 'R. A. Kartini'],
-  ['Banyak hal yang bisa menjatuhkanmu, tapi satu-satunya hal yang benar-benar dapat menjatuhkanmu adalah sikapmu sendiri.', 'R. A. Kartini'],
-  ['Hidup adalah karya seni yang paling bernilai, lukislah dengan warna terbaikmu.', 'Oliver Wendell Holmes'],
-  ['Imajinasi adalah awal dari penciptaan.', 'George Bernard Shaw'],
-  ['Seni tidak pernah selesai, hanya ditinggalkan saat waktunya tepat.', 'Leonardo da Vinci'],
-  ['Gaya datang dan pergi. Desain yang baik adalah bahasa, bukan sekadar gaya.', 'Massimo Vignelli'],
-  ['Cintailah prosesnya, maka hasilnya akan mengikuti.', 'John Wooden'],
-  ['Hanya ada satu cara untuk menghindari kritik: tidak melakukan apa-apa, tidak mengatakan apa-apa, dan tidak menjadi apa-apa.', 'Aristoteles'],
-  ['Keberanian bukanlah ketiadaan rasa takut, melainkan kemenangan atas rasa takut tersebut.', 'Nelson Mandela'],
-  ['Jangan biarkan suara pendapat orang lain menenggelamkan suara hatimu sendiri.', 'Steve Jobs'],
-  ['Kreativitas menuntut kita untuk berani melihat dunia dari sudut yang berbeda.', 'Henri Matisse'],
-  ['Selalu ada bunga bagi mereka yang ingin melihatnya.', 'Henri Matisse'],
-  ['Waktu yang kamu nikmati untuk dibuang bukanlah waktu yang terbuang.', 'Marthe Troly-Curtin'],
-  ['Sebuah lukisan tidak pernah benar-benar selesai; ia hanya berhenti di tempat-tempat yang menarik.', 'Paul Gardner'],
-  ['Semakin banyak kamu membaca, semakin banyak hal yang kamu ketahui.', 'Dr. Seuss'],
-  ['Jadikan karyamu sebagai warisan yang menginspirasi generasi berikutnya.', 'Walt Disney'],
-  ['Ketekunan mengalahkan bakat ketika bakat tidak bekerja tekun.', 'Tim Notke'],
-  ['Fokuslah pada kemajuan, bukan kesempurnaan.', 'Bill Phillips'],
-  ['Bukan kecepatan yang terpenting, melainkan arah yang benar.', 'Mahatma Gandhi'],
-  ['Di tengah setiap kesulitan selalu tersimpan peluang emas.', 'Albert Einstein'],
-  ['Jadilah seperti pohon yang rindang, yang tetap memberi buah meski dilempari batu.', 'Ali bin Abi Thalib'],
-  ['Masa depanmu diciptakan oleh apa yang kamu kerjakan hari ini, bukan besok.', 'Robert Kiyosaki'],
-  ['Seni adalah garis di sekeliling pikiranmu.', 'Gustav Klimt'],
-  ['Warna adalah kekuatan yang langsung memengaruhi jiwa.', 'Wassily Kandinsky'],
-  ['Seni tidak mereproduksi apa yang terlihat; melainkan membuat kita melihat.', 'Paul Klee'],
-  ['Jangan berpikir tentang membuat seni, lakukan saja. Biarkan orang lain memutuskan apakah itu bagus atau buruk.', 'Andy Warhol'],
-  ['Aku memimpikan lukisanku dan kemudian aku melukis mimpiku.', 'Vincent van Gogh'],
-  ['Seni bukanlah apa yang kamu lihat, melainkan apa yang kamu buat orang lain lihat.', 'Edgar Degas'],
-  ['Bagi saya, melukis adalah cara untuk melupakan kehidupan.', 'Claude Monet'],
-  ['Batu itu sudah memiliki patung di dalamnya, tugas pematung hanyalah membuang bagian yang tidak perlu.', 'Michelangelo'],
-  ['Pada akhirnya, kita hanya menyesali peluang yang tidak kita ambil.', 'Lewis Carroll'],
-  ['Masa depan milik mereka yang menyiapkan diri hari ini.', 'Malcolm X'],
-  ['Imajinasi lebih penting daripada pengetahuan. Pengetahuan terbatas, sedangkan imajinasi merangkul dunia.', 'Albert Einstein'],
-  ['Segala sesuatu memiliki keindahan, tetapi tidak semua orang melihatnya.', 'Konfusius'],
-  ['Pikiran yang telah diperluas oleh sebuah ide baru tidak akan pernah kembali ke ukuran aslinya.', 'Oliver Wendell Holmes'],
-  ['Di suatu tempat, sesuatu yang luar biasa sedang menunggu untuk ditemukan.', 'Carl Sagan'],
-  ['Jika kamu ingin menemukan rahasia alam semesta, berpikirlah dalam hal energi, frekuensi, dan getaran.', 'Nikola Tesla'],
-  ['Kita adalah jembatan antara apa yang ada dan apa yang mungkin.', 'Richard Feynman'],
-  ['Mereka yang tahu cara berpikir tidak membutuhkan guru.', 'Jiddu Krishnamurti'],
-  ['Cinta dan karya adalah dua pilar kemanusiaan kita.', 'Sigmund Freud'],
-  ['Jangan menjelaskan filosofimu, wujudkanlah.', 'Epictetus'],
-  ['Tidak ada hal hebat yang diciptakan secara tiba-tiba.', 'Epictetus'],
-  ['Kekayaan sejati bukanlah memiliki banyak harta, melainkan memiliki sedikit keinginan.', 'Epictetus'],
-  ['Keheningan adalah sumber kekuatan yang besar.', 'Lao Tzu'],
-  ['Kuasailah dirimu sebelum mencoba menguasai dunia.', 'Platon'],
-  ['Kemuliaan terbesar dalam hidup bukanlah tidak pernah jatuh, melainkan bangkit setiap kali kita jatuh.', 'Nelson Mandela'],
-  ['Ing ngarsa sung tulada, ing madya mangun karsa, tut wuri handayani.', 'Ki Hajar Dewantara'],
-  ['Terkadang yang paling berani kita lakukan adalah terus melangkah di hari esok.', 'Mary Anne Radmacher'],
-  ['Hidup yang tidak diuji tidak layak untuk dijalani.', 'Socrates'],
-  ['Di balik setiap karya besar selalu ada ribuan jam latihan sunyi.', 'Malcolm Gladwell'],
-  ['Orang boleh pandai setinggi langit, tapi selama ia tidak menulis, ia akan hilang di dalam masyarakat dan dari sejarah.', 'Pramoedya Ananta Toer'],
-  ['Berbuatlah untuk sebuah tujuan, bukan semata untuk sebuah pujian.', 'Buya Hamka'],
-  ['Kemudi hidupmu ada di tanganmu sendiri, bukan pada ombak yang menerpamu.', 'Buya Hamka'],
-  ['Hidup hanya sekali, hiduplah yang berarti.', 'Chairil Anwar'],
-  ['Ide tidak akan bekerja kecuali kamu melakukannya.', 'Robin Sharma'],
-  ['Bekerjalah seakan-akan kamu tidak butuh uang, mencintailah seakan-akan kamu tidak pernah tersakiti.', 'Satchel Paige'],
-  ['Desain adalah kecerdasan yang dibuat kasat mata.', 'Alina Wheeler'],
-  ['Kenali aturannya seperti seorang profesional, sehingga kamu bisa melanggarnya seperti seorang seniman.', 'Pablo Picasso'],
-  ['Ruang kosong pada desain sama pentingnya dengan elemen yang terisi.', 'Jan Tschichold'],
-  ['Tipografi adalah suara dari kata-kata yang tertulis.', 'Erik Spiekermann'],
-  ['Bentuk mengikuti fungsi.', 'Louis Sullivan'],
-  ['Arsitektur adalah musik yang dibekukan.', 'Johann Wolfgang von Goethe'],
-  ['Mencoba dan gagal jauh lebih berharga daripada tidak pernah berani mencoba.', 'Theodore Roosevelt'],
-  ['Kreativitas bukan menemukan hal baru, melainkan menghubungkan hal-hal yang sudah ada dengan cara baru.', 'Steve Jobs'],
-  ['Kesabaran itu pahit, tetapi buahnya manis.', 'Aristoteles'],
-  ['Jangan pernah membatasi dirimu karena imajinasi orang lain yang terbatas.', 'Mae Jemison'],
-  ['Bakat adalah benih; kerja keras adalah air dan sinar matahari yang menumbuhkannya.', 'Stephen King'],
-  ['Setiap goresan adalah cerminan dari jiwamu.', 'Frida Kahlo'],
-  ['Lakukan apa yang bisa kamu lakukan, dengan apa yang kamu miliki, di mana pun kamu berada.', 'Theodore Roosevelt'],
-  ['Waktu terbaik untuk menanam pohon adalah dua puluh tahun yang lalu. Waktu terbaik kedua adalah sekarang.', 'Pepatah'],
-  ['Keberhasilan adalah kemampuan melewati kegagalan demi kegagalan tanpa kehilangan antusiasme.', 'Winston Churchill'],
-  ['Jalan terjal sering kali menuntun pada pemandangan yang paling indah.', 'Pepatah'],
-  ['Satu-satunya batasan bagi masa depan kita adalah keraguan kita hari ini.', 'Franklin D. Roosevelt'],
-  ['Jadilah pendengar yang baik; telingamu tidak akan pernah membuatmu mendapat masalah.', 'Frank Tyger'],
-  ['Dunia ini ibarat buku, dan mereka yang tidak bepergian hanya membaca satu halaman.', 'Agustinus'],
-  ['Keindahan dimulai pada saat kamu memutuskan untuk menjadi dirimu sendiri.', 'Coco Chanel'],
-  ['Kejujuran pada karyamu adalah bentuk estetika tertinggi.', 'Saul Bass'],
-  ['Hanya mereka yang berani melangkah terlalu jauh yang bisa tahu seberapa jauh seseorang bisa melangkah.', 'T. S. Eliot'],
-  ['Belajar tanpa berpikir adalah sia-sia, berpikir tanpa belajar adalah bahaya.', 'Konfusius'],
-  ['Lilin tidak akan kehilangan sinarnya hanya karena menyalakan lilin yang lain.', 'James Keller'],
-  ['Hal-hal terbaik dan terindah di dunia tidak dapat dilihat atau disentuh, melainkan dirasakan dengan hati.', 'Helen Keller'],
-  ['Masa depan tidak menunggu siapa pun; kita yang harus menjemputnya.', 'Pramoedya Ananta Toer'],
-  ['Karyamu akan mengisi sebagian besar hidupmu, maka pastikan itu adalah karya yang kamu banggakan.', 'Steve Jobs'],
-  ['Kemenangan sejati adalah menaklukkan kemalasan diri sendiri.', 'Platon'],
-  ['Setiap pencapaian besar dulunya dianggap mustahil.', 'Nelson Mandela'],
-  ['Buatlah sesuatu yang ingin kamu gunakan sendiri.', 'Paul Graham'],
-  ['Di balik kesederhanaan terdapat kedalaman makna yang tak terbatas.', 'Lao Tzu'],
-  ['Ketika kamu menyukai apa yang kamu kerjakan, kamu tidak akan pernah merasa sedang bekerja.', 'Konfusius'],
-  ['Lukisan adalah puisi yang terlihat tanpa suara.', 'Leonardo da Vinci'],
-  ['Bintang tidak bisa bersinar tanpa kegelapan di sekitarnya.', 'D.H. Sidebottom'],
-  ['Percayalah pada proses kreatifmu; intuisi sering kali lebih tahu daripada logika semata.', 'Henri Cartier-Bresson'],
-  ['Semesta selalu berpihak pada mereka yang tidak pernah berhenti berusaha.', 'Paulo Coelho'],
+  ['Harapan adalah hal yang baik, mungkin yang terbaik; dan hal baik tidak pernah mati', 'Andy Dufresne, The Shawshank Redemption'],
+  ['Raih hari ini. Jadikan hidupmu luar biasa', 'John Keating, Dead Poets Society'],
+  ['Optimisme adalah keyakinan yang menuntun pada pencapaian; tanpa harapan, tak ada yang dapat dilakukan', 'Helen Keller'],
+  ['Seni adalah kebohongan yang membuat kita menyadari kebenaran', 'Pablo Picasso'],
+  ['Setiap anak adalah seniman. Masalahnya adalah bagaimana tetap menjadi seniman setelah dewasa', 'Pablo Picasso'],
+  ['Kesederhanaan adalah kecanggihan tertinggi', 'Leonardo da Vinci'],
+  ['Detail menciptakan kesempurnaan, dan kesempurnaan bukanlah hal sepele', 'Leonardo da Vinci'],
+  ['Warna adalah tempat di mana otak kita dan alam semesta bertemu', 'Paul Klee'],
+  ['Sebuah garis adalah titik yang berjalan-jalan', 'Paul Klee'],
+  ['Kreativitas membutuhkan keberanian untuk melepaskan kepastian', 'Erich Fromm'],
+  ['Desain bukan hanya seperti apa bentuknya dan bagaimana rasanya. Desain adalah bagaimana ia bekerja', 'Steve Jobs'],
+  ['Jangan takut akan kesempurnaan, kamu tidak akan pernah mencapainya', 'Salvador Dalí'],
+  ['Kami tidak membuat kesalahan, kami hanya memiliki kecelakaan kecil yang menyenangkan', 'Bob Ross'],
+  ['Seni menghapus debu kehidupan sehari-hari dari jiwa', 'Pablo Picasso'],
+  ['Bakat adalah ketertarikan yang diiringi dengan banyak latihan', 'Bob Ross'],
+  ['Desain yang baik adalah desain yang sesedikit mungkin', 'Dieter Rams'],
+  ['Jadilah mata air yang jernih, yang memberi kehidupan pada sekitarnya', 'B.J. Habibie'],
+  ['Hanya mereka yang berani gagal besar yang dapat mencapai keberhasilan besar', 'Robert F. Kennedy'],
+  ['Bermimpilah setinggi langit, jika engkau jatuh, engkau akan jatuh di antara bintang-bintang', 'Soekarno'],
+  ['Lawan rasa takutmu dengan ilmu dan persiapan', 'B.J. Habibie'],
+  ['Terkadang satu karya sederhana bernilai lebih dari ribuan kata rumit', 'Paul Rand'],
+  ['Seni sejati adalah ekspresi dari jiwa yang paling dalam', 'Georgia O’Keeffe'],
+  ['Kreativitas adalah kecerdasan yang sedang bersenang-senang', 'Albert Einstein'],
+  ['Perjalanan seribu mil dimulai dengan satu langkah', 'Lao Tzu'],
+  ['Apa yang kamu cari sedang mencarimu', 'Rumi'],
+  ['Jangan berduka. Apa pun yang hilang darimu akan kembali dalam bentuk yang lain', 'Rumi'],
+  ['Bila kamu ingin tahu masa depanmu, lihatlah apa yang kamu lakukan sekarang', 'Buddha'],
+  ['Kita menderita lebih sering dalam imajinasi daripada dalam kenyataan', 'Seneca'],
+  ['Bukan karena perkara itu sulit kita tidak berani, melainkan karena kita tidak berani perkara itu menjadi sulit', 'Seneca'],
+  ['Kendalikan pikiranmu atau pikiranmu yang akan mengendalikanmu', 'Horace'],
+  ['Habis gelap terbitlah terang', 'R. A. Kartini'],
+  ['Banyak hal yang bisa menjatuhkanmu, tapi satu-satunya hal yang benar-benar dapat menjatuhkanmu adalah sikapmu sendiri', 'R. A. Kartini'],
+  ['Hidup adalah karya seni yang paling bernilai, lukislah dengan warna terbaikmu', 'Oliver Wendell Holmes'],
+  ['Imajinasi adalah awal dari penciptaan', 'George Bernard Shaw'],
+  ['Seni tidak pernah selesai, hanya ditinggalkan saat waktunya tepat', 'Leonardo da Vinci'],
+  ['Gaya datang dan pergi. Desain yang baik adalah bahasa, bukan sekadar gaya', 'Massimo Vignelli'],
+  ['Cintailah prosesnya, maka hasilnya akan mengikuti', 'John Wooden'],
+  ['Hanya ada satu cara untuk menghindari kritik: tidak melakukan apa-apa, tidak mengatakan apa-apa, dan tidak menjadi apa-apa', 'Aristoteles'],
+  ['Keberanian bukanlah ketiadaan rasa takut, melainkan kemenangan atas rasa takut tersebut', 'Nelson Mandela'],
+  ['Jangan biarkan suara pendapat orang lain menenggelamkan suara hatimu sendiri', 'Steve Jobs'],
+  ['Kreativitas menuntut kita untuk berani melihat dunia dari sudut yang berbeda', 'Henri Matisse'],
+  ['Selalu ada bunga bagi mereka yang ingin melihatnya', 'Henri Matisse'],
+  ['Waktu yang kamu nikmati untuk dibuang bukanlah waktu yang terbuang', 'Marthe Troly-Curtin'],
+  ['Sebuah lukisan tidak pernah benar-benar selesai; ia hanya berhenti di tempat-tempat yang menarik', 'Paul Gardner'],
+  ['Semakin banyak kamu membaca, semakin banyak hal yang kamu ketahui', 'Dr. Seuss'],
+  ['Jadikan karyamu sebagai warisan yang menginspirasi generasi berikutnya', 'Walt Disney'],
+  ['Ketekunan mengalahkan bakat ketika bakat tidak bekerja tekun', 'Tim Notke'],
+  ['Fokuslah pada kemajuan, bukan kesempurnaan', 'Bill Phillips'],
+  ['Bukan kecepatan yang terpenting, melainkan arah yang benar', 'Mahatma Gandhi'],
+  ['Di tengah setiap kesulitan selalu tersimpan peluang emas', 'Albert Einstein'],
+  ['Jadilah seperti pohon yang rindang, yang tetap memberi buah meski dilempari batu', 'Ali bin Abi Thalib'],
+  ['Masa depanmu diciptakan oleh apa yang kamu kerjakan hari ini, bukan besok', 'Robert Kiyosaki'],
+  ['Seni adalah garis di sekeliling pikiranmu', 'Gustav Klimt'],
+  ['Warna adalah kekuatan yang langsung memengaruhi jiwa', 'Wassily Kandinsky'],
+  ['Seni tidak mereproduksi apa yang terlihat; melainkan membuat kita melihat', 'Paul Klee'],
+  ['Jangan berpikir tentang membuat seni, lakukan saja. Biarkan orang lain memutuskan apakah itu bagus atau buruk', 'Andy Warhol'],
+  ['Aku memimpikan lukisanku dan kemudian aku melukis mimpiku', 'Vincent van Gogh'],
+  ['Seni bukanlah apa yang kamu lihat, melainkan apa yang kamu buat orang lain lihat', 'Edgar Degas'],
+  ['Bagi saya, melukis adalah cara untuk melupakan kehidupan', 'Claude Monet'],
+  ['Batu itu sudah memiliki patung di dalamnya, tugas pematung hanyalah membuang bagian yang tidak perlu', 'Michelangelo'],
+  ['Pada akhirnya, kita hanya menyesali peluang yang tidak kita ambil', 'Lewis Carroll'],
+  ['Masa depan milik mereka yang menyiapkan diri hari ini', 'Malcolm X'],
+  ['Imajinasi lebih penting daripada pengetahuan. Pengetahuan terbatas, sedangkan imajinasi merangkul dunia', 'Albert Einstein'],
+  ['Segala sesuatu memiliki keindahan, tetapi tidak semua orang melihatnya', 'Konfusius'],
+  ['Pikiran yang telah diperluas oleh sebuah ide baru tidak akan pernah kembali ke ukuran aslinya', 'Oliver Wendell Holmes'],
+  ['Di suatu tempat, sesuatu yang luar biasa sedang menunggu untuk ditemukan', 'Carl Sagan'],
+  ['Jika kamu ingin menemukan rahasia alam semesta, berpikirlah dalam hal energi, frekuensi, dan getaran', 'Nikola Tesla'],
+  ['Kita adalah jembatan antara apa yang ada dan apa yang mungkin', 'Richard Feynman'],
+  ['Mereka yang tahu cara berpikir tidak membutuhkan guru', 'Jiddu Krishnamurti'],
+  ['Cinta dan karya adalah dua pilar kemanusiaan kita', 'Sigmund Freud'],
+  ['Jangan menjelaskan filosofimu, wujudkanlah', 'Epictetus'],
+  ['Tidak ada hal hebat yang diciptakan secara tiba-tiba', 'Epictetus'],
+  ['Kekayaan sejati bukanlah memiliki banyak harta, melainkan memiliki sedikit keinginan', 'Epictetus'],
+  ['Keheningan adalah sumber kekuatan yang besar', 'Lao Tzu'],
+  ['Kuasailah dirimu sebelum mencoba menguasai dunia', 'Platon'],
+  ['Kemuliaan terbesar dalam hidup bukanlah tidak pernah jatuh, melainkan bangkit setiap kali kita jatuh', 'Nelson Mandela'],
+  ['Ing ngarsa sung tulada, ing madya mangun karsa, tut wuri handayani', 'Ki Hajar Dewantara'],
+  ['Terkadang yang paling berani kita lakukan adalah terus melangkah di hari esok', 'Mary Anne Radmacher'],
+  ['Hidup yang tidak diuji tidak layak untuk dijalani', 'Socrates'],
+  ['Di balik setiap karya besar selalu ada ribuan jam latihan sunyi', 'Malcolm Gladwell'],
+  ['Orang boleh pandai setinggi langit, tapi selama ia tidak menulis, ia akan hilang di dalam masyarakat dan dari sejarah', 'Pramoedya Ananta Toer'],
+  ['Berbuatlah untuk sebuah tujuan, bukan semata untuk sebuah pujian', 'Buya Hamka'],
+  ['Kemudi hidupmu ada di tanganmu sendiri, bukan pada ombak yang menerpamu', 'Buya Hamka'],
+  ['Hidup hanya sekali, hiduplah yang berarti', 'Chairil Anwar'],
+  ['Ide tidak akan bekerja kecuali kamu melakukannya', 'Robin Sharma'],
+  ['Bekerjalah seakan-akan kamu tidak butuh uang, mencintailah seakan-akan kamu tidak pernah tersakiti', 'Satchel Paige'],
+  ['Desain adalah kecerdasan yang dibuat kasat mata', 'Alina Wheeler'],
+  ['Kenali aturannya seperti seorang profesional, sehingga kamu bisa melanggarnya seperti seorang seniman', 'Pablo Picasso'],
+  ['Ruang kosong pada desain sama pentingnya dengan elemen yang terisi', 'Jan Tschichold'],
+  ['Tipografi adalah suara dari kata-kata yang tertulis', 'Erik Spiekermann'],
+  ['Bentuk mengikuti fungsi', 'Louis Sullivan'],
+  ['Arsitektur adalah musik yang dibekukan', 'Johann Wolfgang von Goethe'],
+  ['Mencoba dan gagal jauh lebih berharga daripada tidak pernah berani mencoba', 'Theodore Roosevelt'],
+  ['Kreativitas bukan menemukan hal baru, melainkan menghubungkan hal-hal yang sudah ada dengan cara baru', 'Steve Jobs'],
+  ['Kesabaran itu pahit, tetapi buahnya manis', 'Aristoteles'],
+  ['Jangan pernah membatasi dirimu karena imajinasi orang lain yang terbatas', 'Mae Jemison'],
+  ['Bakat adalah benih; kerja keras adalah air dan sinar matahari yang menumbuhkannya', 'Stephen King'],
+  ['Setiap goresan adalah cerminan dari jiwamu', 'Frida Kahlo'],
+  ['Lakukan apa yang bisa kamu lakukan, dengan apa yang kamu miliki, di mana pun kamu berada', 'Theodore Roosevelt'],
+  ['Waktu terbaik untuk menanam pohon adalah dua puluh tahun yang lalu. Waktu terbaik kedua adalah sekarang', 'Pepatah'],
+  ['Keberhasilan adalah kemampuan melewati kegagalan demi kegagalan tanpa kehilangan antusiasme', 'Winston Churchill'],
+  ['Jalan terjal sering kali menuntun pada pemandangan yang paling indah', 'Pepatah'],
+  ['Satu-satunya batasan bagi masa depan kita adalah keraguan kita hari ini', 'Franklin D. Roosevelt'],
+  ['Jadilah pendengar yang baik; telingamu tidak akan pernah membuatmu mendapat masalah', 'Frank Tyger'],
+  ['Dunia ini ibarat buku, dan mereka yang tidak bepergian hanya membaca satu halaman', 'Agustinus'],
+  ['Keindahan dimulai pada saat kamu memutuskan untuk menjadi dirimu sendiri', 'Coco Chanel'],
+  ['Kejujuran pada karyamu adalah bentuk estetika tertinggi', 'Saul Bass'],
+  ['Hanya mereka yang berani melangkah terlalu jauh yang bisa tahu seberapa jauh seseorang bisa melangkah', 'T. S. Eliot'],
+  ['Belajar tanpa berpikir adalah sia-sia, berpikir tanpa belajar adalah bahaya', 'Konfusius'],
+  ['Lilin tidak akan kehilangan sinarnya hanya karena menyalakan lilin yang lain', 'James Keller'],
+  ['Hal-hal terbaik dan terindah di dunia tidak dapat dilihat atau disentuh, melainkan dirasakan dengan hati', 'Helen Keller'],
+  ['Masa depan tidak menunggu siapa pun; kita yang harus menjemputnya', 'Pramoedya Ananta Toer'],
+  ['Karyamu akan mengisi sebagian besar hidupmu, maka pastikan itu adalah karya yang kamu banggakan', 'Steve Jobs'],
+  ['Kemenangan sejati adalah menaklukkan kemalasan diri sendiri', 'Platon'],
+  ['Setiap pencapaian besar dulunya dianggap mustahil', 'Nelson Mandela'],
+  ['Buatlah sesuatu yang ingin kamu gunakan sendiri', 'Paul Graham'],
+  ['Di balik kesederhanaan terdapat kedalaman makna yang tak terbatas', 'Lao Tzu'],
+  ['Ketika kamu menyukai apa yang kamu kerjakan, kamu tidak akan pernah merasa sedang bekerja', 'Konfusius'],
+  ['Lukisan adalah puisi yang terlihat tanpa suara', 'Leonardo da Vinci'],
+  ['Bintang tidak bisa bersinar tanpa kegelapan di sekitarnya', 'D.H. Sidebottom'],
+  ['Percayalah pada proses kreatifmu; intuisi sering kali lebih tahu daripada logika semata', 'Henri Cartier-Bresson'],
+  ['Semesta selalu berpihak pada mereka yang tidak pernah berhenti berusaha', 'Paulo Coelho'],
 ] as const;
 
 const THEME_STORAGE_KEY = 'canvas-vector-recorder.theme.v1';
@@ -433,13 +443,23 @@ function updateOpenTargetButton(): void {
   const button = $<HTMLButtonElement>('openTarget');
   if (targetOpen) {
     setIconButtonContent(button, 'plus', 'Buka tab baru');
-    button.title = 'Buka URL sebagai tab target baru.';
+    button.title = 'Buka URL sebagai tab target baru';
     button.setAttribute('aria-label', 'Buka tab target baru');
   } else {
     setIconButtonContent(button, 'external-link', 'Buka');
     button.title = 'Buka window target';
     button.setAttribute('aria-label', 'Buka window target');
   }
+}
+
+function syncTargetUrlActions(): void {
+  const input = $<HTMLInputElement>('targetUrl');
+  if (!input) return;
+  const hasText = Boolean(input.value.trim());
+  const pasteBtn = $<HTMLButtonElement>('pasteTargetUrl');
+  const clearBtn = $<HTMLButtonElement>('clearTargetUrl');
+  if (pasteBtn) pasteBtn.hidden = hasText;
+  if (clearBtn) clearBtn.hidden = !hasText;
 }
 
 function applyTheme(dark: boolean): void {
@@ -474,6 +494,62 @@ let currentMotivationQuoteIndex = -1;
 let motivationLoadingTimer: number | null = null;
 let isMotivationLoading = false;
 const MOTIVATION_LOADING_DURATION_MS = 3_000;
+
+function initBrandFlip(): void {
+  const flip = $('brandFlip');
+  const brandFace = $('brandLabelFace');
+  const quoteFace = $('brandQuoteFace');
+  let quoteIndex = Math.floor(Math.random() * MOTIVATION_QUOTES.length);
+  const QUOTE_DURATION_MS = 8_000;
+  const BRAND_DURATION_MS = 60 * 60 * 1_000;
+  let timer: number | null = null;
+  let quotePending = true;
+  const updateQuote = () => {
+    const [quote, author] = MOTIVATION_QUOTES[quoteIndex];
+    $('brandQuoteText').textContent = `${quote} - ${author}`;
+    $('brandQuoteText').title = `${quote} - ${author}`;
+  };
+  const showFace = (showingQuote: boolean) => {
+    flip.classList.toggle('is-quote', showingQuote);
+    brandFace.inert = showingQuote;
+    quoteFace.inert = !showingQuote;
+    brandFace.setAttribute('aria-hidden', String(showingQuote));
+    quoteFace.setAttribute('aria-hidden', String(!showingQuote));
+  };
+  const showPendingQuote = () => {
+    if (!quotePending || document.hidden || !landingView.hidden || !activationView.hidden
+      || workspaceView.hidden || flip.matches(':focus-within')) return;
+    quotePending = false;
+    updateQuote();
+    quoteIndex = (quoteIndex + 1) % MOTIVATION_QUOTES.length;
+    showFace(true);
+    timer = window.setTimeout(() => {
+      showFace(false);
+      timer = window.setTimeout(() => {
+        timer = null;
+        quotePending = true;
+        showPendingQuote();
+      }, BRAND_DURATION_MS);
+    }, QUOTE_DURATION_MS);
+  };
+  // Prepare the quote before the workspace appears; start its 8 seconds once visible.
+  updateQuote();
+  showFace(true);
+  const observer = new MutationObserver(showPendingQuote);
+  for (const view of [workspaceView, landingView, activationView]) {
+    observer.observe(view, { attributes: true, attributeFilter: ['hidden'] });
+  }
+  document.addEventListener('visibilitychange', showPendingQuote);
+  const onFocusOut = () => queueMicrotask(showPendingQuote);
+  flip.addEventListener('focusout', onFocusOut);
+  showPendingQuote();
+  window.addEventListener('beforeunload', () => {
+    if (timer !== null) window.clearTimeout(timer);
+    observer.disconnect();
+    document.removeEventListener('visibilitychange', showPendingQuote);
+    flip.removeEventListener('focusout', onFocusOut);
+  }, { once: true });
+}
 
 function applyMotivationQuote(quote: string, author: string, animate = false): void {
   const quoteText = $<HTMLElement>('motivationQuoteText');
@@ -545,12 +621,12 @@ function triggerNewMotivationQuoteWithLoading(): void {
     motivationLoadingTimer = null;
     isMotivationLoading = false;
 
-    let nextIndex = Math.floor(Math.random() * LANDING_QUOTES.length);
-    if (LANDING_QUOTES.length > 1 && nextIndex === currentMotivationQuoteIndex) {
-      nextIndex = (nextIndex + 1) % LANDING_QUOTES.length;
+    let nextIndex = Math.floor(Math.random() * MOTIVATION_QUOTES.length);
+    if (MOTIVATION_QUOTES.length > 1 && nextIndex === currentMotivationQuoteIndex) {
+      nextIndex = (nextIndex + 1) % MOTIVATION_QUOTES.length;
     }
     currentMotivationQuoteIndex = nextIndex;
-    const [quote, attribution] = LANDING_QUOTES[nextIndex];
+    const [quote, attribution] = MOTIVATION_QUOTES[nextIndex];
 
     if (loadingState) loadingState.hidden = true;
     if (quoteBox) {
@@ -569,9 +645,9 @@ function openMotivationModal(): void {
   const modal = $<HTMLElement>('motivationModal');
   resetMotivationLoadingState();
   if (currentMotivationQuoteIndex < 0) {
-    currentMotivationQuoteIndex = Math.floor(Math.random() * LANDING_QUOTES.length);
+    currentMotivationQuoteIndex = Math.floor(Math.random() * MOTIVATION_QUOTES.length);
   }
-  const [quote, attribution] = LANDING_QUOTES[currentMotivationQuoteIndex];
+  const [quote, attribution] = MOTIVATION_QUOTES[currentMotivationQuoteIndex];
   applyMotivationQuote(quote, attribution, false);
   modal.hidden = false;
   modal.removeAttribute('hidden');
@@ -727,7 +803,7 @@ function setMainTab(tab: MainTab): void {
 
 function syncTargetViewBounds(): void {
   if ((!isWindows && !isMac) || targetView.hidden) return;
-  const bounds = targetFrame.getBoundingClientRect();
+  const bounds = targetViewport.getBoundingClientRect();
   void invoke('resize_target_view', {
     x: bounds.left,
     y: bounds.top,
@@ -736,8 +812,20 @@ function syncTargetViewBounds(): void {
   }).catch(() => undefined);
 }
 
-function status(element: HTMLElement, message: string, tone: 'idle' | 'success' | 'error' = 'idle'): void {
-  element.textContent = message; element.className = `status ${tone}`;
+function status(element: HTMLElement, message: string, tone: 'idle' | 'success' | 'error' = 'idle', persistent = false): void {
+  if (element === workspaceStatus && workspaceStatusTimer) {
+    clearTimeout(workspaceStatusTimer);
+    workspaceStatusTimer = null;
+  }
+  element.textContent = message;
+  element.classList.remove('idle', 'success', 'error');
+  element.classList.add(tone);
+  if (element === workspaceStatus && message && tone !== 'error' && !persistent) {
+    workspaceStatusTimer = setTimeout(() => {
+      element.textContent = '';
+      workspaceStatusTimer = null;
+    }, 4500);
+  }
 }
 
 function errorMessage(error: unknown): string {
@@ -748,7 +836,7 @@ function errorMessage(error: unknown): string {
     if (typeof value.message === 'string') return value.message;
     const entries = Object.entries(value);
     if (entries.length === 1) return errorMessage(entries[0][1]);
-    try { return JSON.stringify(error); } catch (_) { return 'Terjadi kesalahan yang tidak diketahui.'; }
+    try { return JSON.stringify(error); } catch (_) { return 'Terjadi kesalahan yang tidak diketahui'; }
   }
   return String(error);
 }
@@ -780,7 +868,7 @@ function setAutomaticUpdateChecks(enabled: boolean): void {
 function closeUpdatePrompt(cancelled = false): void {
   updatePrompt.hidden = true;
   pendingUpdateInstaller = null;
-  if (cancelled) status(workspaceStatus, 'Update tersedia. Anda dapat menginstalnya kapan saja.');
+  if (cancelled) status(workspaceStatus, 'Update tersedia. Anda dapat menginstalnya kapan saja');
 }
 
 function showUpdatePrompt(title: string, description: string, installer: (() => Promise<void>) | null = null): void {
@@ -829,13 +917,12 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
     setIconButtonContent(button, 'refresh-cw', 'Memeriksa update…', false);
   }
   try {
-    if (showProgress) status(workspaceStatus, 'Memeriksa update…');
+    if (showProgress) status(workspaceStatus, 'Memeriksa update…', 'idle', true);
     const update = await check({ timeout: 15_000 });
     if (!update) {
       setUpdateAvailable(false);
       if (showProgress) {
         showUpdatePrompt('Aplikasi sudah terbaru', `Anda sudah menggunakan Canvas Vector Recorder v${packageJson.version}.`);
-        status(workspaceStatus, 'Aplikasi sudah versi terbaru.', 'success');
       }
       return;
     }
@@ -843,17 +930,17 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
     setUpdateAvailable(true);
     if (automatic) return;
     const notes = update.body?.trim();
-    showUpdatePrompt(`Update ${update.version} tersedia`, notes ? `Catatan:\n${notes.slice(0, 500)}` : 'Versi baru siap diunduh dan diinstal.', async () => {
+    showUpdatePrompt(`Update ${update.version} tersedia`, notes ? `Catatan:\n${notes.slice(0, 500)}` : 'Versi baru siap diunduh dan diinstal', async () => {
       let downloadedBytes = 0;
       await update.downloadAndInstall(event => {
         if (event.event === 'Started') {
           downloadedBytes = 0;
-          status(workspaceStatus, 'Menyiapkan download update…');
+          status(workspaceStatus, 'Menyiapkan download update…', 'idle', true);
         } else if (event.event === 'Progress') {
           downloadedBytes += event.data.chunkLength;
-          status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`);
+          status(workspaceStatus, `Mengunduh update… ${Math.round(downloadedBytes / 1024)} KB`, 'idle', true);
         } else if (event.event === 'Finished') {
-          status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan.', 'success');
+          status(workspaceStatus, 'Update berhasil diinstal. Buka ulang aplikasi untuk menyelesaikan', 'success', true);
         }
       });
     });
@@ -861,7 +948,7 @@ async function checkForUpdates({ automatic = false }: UpdateCheckOptions = {}): 
     const message = errorMessage(error);
     if (!automatic) {
       if (/valid release JSON|latest\.json|release/i.test(message)) {
-        status(workspaceStatus, 'Belum ada release updater yang dipublish di GitHub.', 'idle');
+        status(workspaceStatus, 'Belum ada release updater yang dipublish di GitHub', 'idle');
       } else {
         status(workspaceStatus, `Gagal memeriksa update: ${message}`, 'error');
       }
@@ -965,7 +1052,7 @@ function selectedSvgSourceMarkup(): string | null {
   const erased = erasedElementsByAsset.get(asset.svg_id);
   if (!removed?.size && !erased?.size) return null;
   const document = svgAssetDocument(asset.markup);
-  if (!document) throw new Error('SVG sumber tidak dapat dibaca untuk memproses aset.');
+  if (!document) throw new Error('SVG sumber tidak dapat dibaca untuk memproses aset');
   const root = document.documentElement as unknown as SVGSVGElement;
   if (erased?.size) {
     let index = 0;
@@ -1015,7 +1102,7 @@ function renderAssetColorList(): void {
   if (!colors?.length) {
     const message = document.createElement('span');
     message.className = 'muted';
-    message.textContent = !assetId ? 'Pilih aset untuk menerapkan warna dan melihat paletnya.' : colors ? 'Tidak ada warna yang dapat dipilih.' : 'Memuat warna aset…';
+    message.textContent = !assetId ? 'Gunakan pipet warna untuk memilih warna dari objek' : colors ? 'Tidak ada warna yang dapat dipilih' : 'Memuat warna aset…';
     container.append(message);
     return;
   }
@@ -1055,34 +1142,33 @@ function updateObjectEraserUI(): void {
   const erasedSet = assetId ? erasedElementsByAsset.get(assetId) : undefined;
   const erasedCount = erasedSet ? erasedSet.size : 0;
 
-  const markedBadge = $('eraserMarkedCount');
-  if (markedBadge) {
-    markedBadge.hidden = markedCount === 0;
-    markedBadge.textContent = `${markedCount} ditandai`;
-  }
-
   const eraseBtn = $<HTMLButtonElement>('eraseMarkedObjects');
   if (eraseBtn) {
-    eraseBtn.disabled = markedCount === 0;
+    eraseBtn.setAttribute('aria-pressed', String(objectEraserActive));
+    eraseBtn.title = !objectEraserActive ? 'Pilih objek yang akan dihapus'
+      : markedCount > 0 ? `Hapus ${markedCount} objek yang ditandai` : 'Keluar dari mode Hapus Objek';
     const eraseLabel = eraseBtn.querySelector('span');
     if (eraseLabel) eraseLabel.textContent = markedCount > 0 ? `Hapus Objek (${markedCount})` : 'Hapus Objek';
   }
 
   const clearBtn = $<HTMLButtonElement>('clearMarkedObjects');
-  if (clearBtn) clearBtn.disabled = markedCount === 0;
+  if (clearBtn) {
+    clearBtn.hidden = markedCount === 0;
+    clearBtn.disabled = markedCount === 0;
+  }
 
   const restoreBtn = $<HTMLButtonElement>('restoreErasedObjects');
-  const restoreLabel = $('restoreErasedLabel');
-  if (restoreBtn && restoreLabel) {
+  if (restoreBtn) {
     restoreBtn.hidden = erasedCount === 0;
-    restoreLabel.textContent = `Pulihkan (${erasedCount} terhapus)`;
+    restoreBtn.disabled = erasedCount === 0;
+    const restoreText = `Pulihkan ${erasedCount} objek terhapus`;
+    restoreBtn.title = restoreText;
+    restoreBtn.setAttribute('aria-label', restoreText);
   }
 }
 
 function toggleObjectEraserMode(enabled: boolean): void {
   objectEraserActive = enabled;
-  const controls = $('objectEraserControls');
-  if (controls) controls.hidden = !enabled;
   const stage = $('previewStage');
   if (stage) stage.classList.toggle('eraser-mode', enabled);
   if (!enabled && markedElements.size > 0) {
@@ -1090,7 +1176,7 @@ function toggleObjectEraserMode(enabled: boolean): void {
   }
   updateObjectEraserUI();
   if (enabled) {
-    status(workspaceStatus, 'Mode Hapus Objek aktif. Klik area objek pada preview untuk menandai.', 'success');
+    status(workspaceStatus, 'Mode Hapus Objek aktif. Klik area objek pada preview untuk menandai', 'success');
   }
 }
 
@@ -1159,7 +1245,7 @@ async function restoreErasedObjects(): Promise<void> {
   updateObjectEraserUI();
 
   await refreshPreview();
-  status(workspaceStatus, 'Semua objek yang dihapus berhasil dipulihkan.', 'success');
+  status(workspaceStatus, 'Semua objek yang dihapus berhasil dipulihkan', 'success');
 }
 
 async function loadCanvasColors(canvasId: string): Promise<void> {
@@ -1195,8 +1281,8 @@ function settingValidationError(): string | null {
   if (ratio !== 'custom') return null;
   const width = Number($<HTMLInputElement>('customRatioWidth').value);
   const height = Number($<HTMLInputElement>('customRatioHeight').value);
-  if (!Number.isInteger(width) || width < 1 || width > 10_000) return 'Lebar rasio custom harus berupa bilangan bulat 1–10.000.';
-  if (!Number.isInteger(height) || height < 1 || height > 10_000) return 'Tinggi rasio custom harus berupa bilangan bulat 1–10.000.';
+  if (!Number.isInteger(width) || width < 1 || width > 10_000) return 'Lebar rasio custom harus berupa bilangan bulat 1–10.000';
+  if (!Number.isInteger(height) || height < 1 || height > 10_000) return 'Tinggi rasio custom harus berupa bilangan bulat 1–10.000';
   return null;
 }
 
@@ -1312,6 +1398,7 @@ function loadPersistedSettings(): void {
     artworkScale = Math.round(Math.min(ARTWORK_SCALE_MAX, Math.max(ARTWORK_SCALE_MIN, stored.artworkScale)) * 100) / 100;
   }
   if (typeof stored.targetUrl === 'string') $<HTMLInputElement>('targetUrl').value = stored.targetUrl;
+  syncTargetUrlActions();
   saveDirectory = typeof stored.saveDirectory === 'string' && stored.saveDirectory.trim() ? stored.saveDirectory : null;
   updateSaveDirectoryDisplay();
   filenameOverrides = {};
@@ -1438,7 +1525,7 @@ async function performVectorDownload(format: 'svg' | 'eps'): Promise<void> {
 function normalizedFilename(value: string): string | null {
   const trimmed = value.trim().split(/[\\/]/).pop()?.trim() || '';
   const safe = trimmed.replace(/[\u0000-\u001f<>:"/\\|?*]/g, '_');
-  if (!safe || safe === '.' || safe === '..') return null;
+  if (!safe || safe === '' || safe === '.') return null;
   return /\.svg$/i.test(safe) ? safe : `${safe}.svg`;
 }
 
@@ -1479,7 +1566,7 @@ function openFilenameEditor(): void {
 function commitFilenameEdit(): void {
   const filename = normalizedFilename($<HTMLInputElement>('previewFilenameInput').value);
   if (!filename) {
-    status(workspaceStatus, 'Nama file tidak boleh kosong.', 'error');
+    status(workspaceStatus, 'Nama file tidak boleh kosong', 'error');
     return;
   }
   previewFilenameOverride = filename;
@@ -1652,7 +1739,7 @@ function chooseAssetRemovalColor(value: string): void {
   const assetId = selectedCanvas || selectedSvg;
   if (!assetId || !selectedAssetColors()?.length) {
     pendingRemovalColor = color;
-    status(workspaceStatus, assetId ? 'Warna siap. Menunggu palet aset.' : 'Warna siap. Pilih aset untuk menerapkan penghapusan.');
+    status(workspaceStatus, assetId ? 'Warna siap. Menunggu palet aset' : 'Warna siap. Pilih aset untuk menerapkan penghapusan');
     return;
   }
   pendingRemovalColor = null;
@@ -1677,6 +1764,8 @@ function thumbnailKey(item: CanvasDetection): string {
 function svgThumbnailKey(item: SvgAsset): string {
   return [item.svg_id, item.revision, item.markup.length].join('|');
 }
+
+const thumbnailLoadingHtml = '<span class="thumbnail-spinner" role="status" aria-label="Memuat thumbnail"></span>';
 
 function canvasListKey(items: CanvasDetection[]): string {
   return [selectedCanvas, ...items
@@ -1729,13 +1818,13 @@ function renderLicense(s: LicenseStatus): void {
     discoverControl?.setEnabled(false);
     setAutomaticUpdateChecks(false);
     landingView.hidden = false;
-    landingStatus.textContent = s.message || 'Lisensi belum aktif. Silakan aktivasi untuk melanjutkan.';
+    landingStatus.textContent = s.message || 'Lisensi belum aktif. Silakan aktivasi untuk melanjutkan';
     workspaceView.hidden = true;
     tracingView.hidden = true;
     mainTabs.hidden = true;
     targetView.hidden = true;
     activationView.hidden = false;
-    status(activationStatus, s.message || 'Lisensi belum aktif.', 'error');
+    status(activationStatus, s.message || 'Lisensi belum aktif', 'error');
   }
 }
 
@@ -1780,19 +1869,15 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
   if (!filtered.length) {
     if (!listChanged) return;
     renderedCanvasListKey = nextListKey;
-    canvasList.innerHTML = '<p class="muted">Belum ada Canvas. Buka target dan tunggu asset dimuat.</p>';
+    canvasList.innerHTML = '<p class="muted">Belum ada Canvas.</p>';
     return;
   }
   if (!listChanged) {
-    if (generateThumbnails) {
-      const generation = ++thumbnailGeneration;
-      void loadThumbnails(filtered, generation);
-    }
+    if (generateThumbnails) void loadThumbnails(filtered);
     return;
   }
   renderedCanvasListKey = nextListKey;
-  const generation = generateThumbnails ? ++thumbnailGeneration : thumbnailGeneration;
-  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : '<span>Memuat thumbnail…</span>'}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
+  canvasList.innerHTML = filtered.map(item => `<div class="canvas-item${item.canvas_id === selectedCanvas ? ' selected' : ''}" data-canvas="${item.canvas_id}"><div class="canvas-thumb" data-thumb-canvas="${item.canvas_id}">${thumbnailKeys.get(item.canvas_id) === thumbnailKey(item) && thumbnailUrls.has(item.canvas_id) ? `<img src="${thumbnailUrls.get(item.canvas_id)}" alt="Thumbnail Canvas">` : thumbnailLoadingHtml}</div><strong>Canvas · ${item.canvas_id}</strong><small>${item.width}×${item.height} · ${item.shapes} shapes · ${item.gap_fillers} strokes · ${item.errors} errors</small></div>`).join('');
   canvasList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     const nextCanvas = item.dataset.canvas || null;
     if (nextCanvas !== selectedCanvas) {
@@ -1809,7 +1894,7 @@ function renderCanvases(items: CanvasDetection[], options: { generateThumbnails?
     renderAssetColorList();
     renderCanvases(detectedAssets); refreshPreview().catch(error => status(workspaceStatus, errorMessage(error), 'error'));
   }));
-  if (generateThumbnails) void loadThumbnails(filtered, generation);
+  if (generateThumbnails) void loadThumbnails(filtered);
 }
 
 function renderSvgAssets(items: SvgAsset[]): void {
@@ -1825,10 +1910,10 @@ function renderSvgAssets(items: SvgAsset[]): void {
   });
   updateAssetTabs();
   if (!items.length) {
-    svgList.innerHTML = '<p class="muted">Belum ada SVG. Tunggu hasil vectorisasi tampil di target.</p>';
+    svgList.innerHTML = '<p class="muted">Belum ada SVG.</p>';
     return;
   }
-  svgList.innerHTML = items.map(item => `<div class="canvas-item${item.svg_id === selectedSvg ? ' selected' : ''}" data-svg="${item.svg_id}"><div class="canvas-thumb" data-thumb-svg="${item.svg_id}">${svgThumbnailUrls.has(item.svg_id) ? `<img src="${svgThumbnailUrls.get(item.svg_id)}" alt="Thumbnail ${escapeHtml(item.filename)}">` : '<span>Memuat thumbnail…</span>'}</div><strong>${escapeHtml(item.filename)}</strong><small>${Math.round(item.width)}×${Math.round(item.height)} · ${item.shapes} elemen · revisi ${item.revision}</small></div>`).join('');
+  svgList.innerHTML = items.map(item => `<div class="canvas-item${item.svg_id === selectedSvg ? ' selected' : ''}" data-svg="${item.svg_id}"><div class="canvas-thumb" data-thumb-svg="${item.svg_id}">${svgThumbnailKeys.get(item.svg_id) === svgThumbnailKey(item) && svgThumbnailUrls.has(item.svg_id) ? `<img src="${svgThumbnailUrls.get(item.svg_id)}" alt="Thumbnail ${escapeHtml(item.filename)}">` : thumbnailLoadingHtml}</div><strong>${escapeHtml(item.filename)}</strong><small>${Math.round(item.width)}×${Math.round(item.height)} · ${item.shapes} elemen · revisi ${item.revision}</small></div>`).join('');
   svgList.querySelectorAll<HTMLElement>('.canvas-item').forEach(item => item.addEventListener('click', () => {
     const nextSvg = item.dataset.svg || null;
     if (nextSvg !== selectedSvg) {
@@ -1868,16 +1953,18 @@ function loadSvgThumbnails(items: SvgAsset[]): void {
   });
 }
 
-async function loadThumbnails(items: CanvasDetection[], generation: number): Promise<void> {
-  const itemsToLoad = items.filter(item => thumbnailKeys.get(item.canvas_id) !== thumbnailKey(item) && !thumbnailJobs.has(item.canvas_id));
+async function loadThumbnails(items: CanvasDetection[]): Promise<void> {
+  const itemsToLoad = items.filter(item => !(thumbnailKeys.get(item.canvas_id) === thumbnailKey(item) && thumbnailUrls.has(item.canvas_id)) && thumbnailJobs.get(item.canvas_id) !== thumbnailKey(item));
   await Promise.all(itemsToLoad.map(async item => {
     const itemKey = thumbnailKey(item);
     thumbnailJobs.set(item.canvas_id, itemKey);
+    const loadingSlot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
+    if (loadingSlot && !loadingSlot.querySelector('.thumbnail-spinner')) loadingSlot.innerHTML = thumbnailLoadingHtml;
     try {
       const result = await invoke<SvgResult>('generate_svg', { canvasId: item.canvas_id, settings: settings(item.canvas_id) });
       const url = URL.createObjectURL(new Blob([result.svg], { type: 'image/svg+xml' }));
       const current = detectedAssets.find(asset => asset.canvas_id === item.canvas_id);
-      if (generation !== thumbnailGeneration || !current || thumbnailKey(current) !== itemKey) { URL.revokeObjectURL(url); return; }
+      if (!current || thumbnailKey(current) !== itemKey) { URL.revokeObjectURL(url); return; }
       const previousUrl = thumbnailUrls.get(item.canvas_id);
       if (previousUrl && previousUrl !== url) URL.revokeObjectURL(previousUrl);
       thumbnailUrls.set(item.canvas_id, url);
@@ -1886,7 +1973,8 @@ async function loadThumbnails(items: CanvasDetection[], generation: number): Pro
       if (slot) { const image = document.createElement('img'); image.src = url; image.alt = 'Thumbnail Canvas'; slot.replaceChildren(image); }
     } catch (_) {
       const slot = Array.from(canvasList.querySelectorAll<HTMLElement>('[data-thumb-canvas]')).find(element => element.dataset.thumbCanvas === item.canvas_id);
-      if (slot && generation === thumbnailGeneration && !thumbnailUrls.has(item.canvas_id)) slot.textContent = 'Preview tidak tersedia';
+      const current = detectedAssets.find(asset => asset.canvas_id === item.canvas_id);
+      if (slot && current && thumbnailKey(current) === itemKey && !(thumbnailKeys.get(item.canvas_id) === itemKey && thumbnailUrls.has(item.canvas_id))) slot.textContent = 'Preview tidak tersedia';
     } finally {
       if (thumbnailJobs.get(item.canvas_id) === itemKey) thumbnailJobs.delete(item.canvas_id);
     }
@@ -1921,6 +2009,8 @@ function resetDetectedSurfaces(): void {
   previewFilenameOverride = null;
   detectedAssets = [];
   detectedSvgAssets = [];
+  canvasList.innerHTML = '<p class="muted">Belum ada Canvas.</p>';
+  svgList.innerHTML = '<p class="muted">Belum ada SVG.</p>';
   removedColorsByAsset.clear();
   pendingRemovalColor = null;
   canvasColors.clear();
@@ -2022,7 +2112,6 @@ async function renderPreview(request: number): Promise<void> {
     $('previewTitle').textContent = 'Vector Preview'; updateFilenameDisplay();
     $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
     $('exportSvg').removeAttribute('disabled');
-    status(workspaceStatus, 'vektor ditemukan.', 'success');
     return;
   }
   const canvasId = selectedCanvas;
@@ -2042,7 +2131,7 @@ async function renderPreview(request: number): Promise<void> {
   $('previewTitle').textContent = 'Preview SVG'; updateFilenameDisplay();
   $('artboardSize').textContent = `${result.stats.artboard.width}×${result.stats.artboard.height}`;
   $('exportSvg').removeAttribute('disabled');
-  status(workspaceStatus, result.error || 'SVG siap dipreview.', result.error ? 'idle' : 'success');
+  if (result.error) status(workspaceStatus, result.error);
 }
 
 async function openTarget(): Promise<void> {
@@ -2055,11 +2144,11 @@ async function openTarget(): Promise<void> {
   buttons.forEach(button => { button.disabled = true; });
   try {
     const url = $<HTMLInputElement>('targetUrl').value.trim();
-    try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://.', 'error'); return; }
+    try { const parsed = new URL(url); if (!/^https?:$/.test(parsed.protocol)) throw new Error(); } catch { status(workspaceStatus, 'URL tidak valid. Gunakan http:// atau https://', 'error'); return; }
+    status(workspaceStatus, '');
     if (targetOpen) {
       await invoke('open_target_tab', { url });
       setMainTab('target');
-      status(workspaceStatus, 'Target baru dibuka.', 'success');
       return;
     }
     await invoke('clear_recording');
@@ -2078,7 +2167,6 @@ async function openTarget(): Promise<void> {
     closeFilenameEditor();
     updateFilenameDisplay();
     await refreshCanvases();
-    status(workspaceStatus, 'Perekam aktif di background.', 'success');
   } finally {
     openTargetInProgress = false;
     buttons[0].disabled = false;
@@ -2095,7 +2183,7 @@ async function closeTarget(): Promise<void> {
   updateOpenTargetButton();
   currentSession = null;
   resetDetectedSurfaces();
-  status(workspaceStatus, 'Target ditutup. Detected direset.');
+  status(workspaceStatus, '');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2104,6 +2192,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const heading = (mode === 'online' ? workspaceView : tracingView).querySelector<HTMLElement>('h1');
     if (heading) { heading.tabIndex = -1; heading.focus(); }
   }, () => { applyTheme(!darkMode); persistTheme(); });
+  initBrandFlip();
+  initRecorderLoader($('landingRecorder'));
   renderIcons();
   discoverControl = initDiscover(count => showDownloadToast(`${count} kabar baru dari Mahes. Buka Discover untuk melihatnya.`));
   window.addEventListener('keydown', handleRefreshShortcut);
@@ -2121,7 +2211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     status(activationStatus, 'Memvalidasi dan mengaktifkan perangkat…');
     try {
       const activated = await activateLicense(email, code);
-      if (!activated.valid) throw new Error(activated.message || 'Aktivasi tidak menyimpan lisensi.');
+      if (!activated.valid) throw new Error(activated.message || 'Aktivasi tidak menyimpan lisensi');
       renderLicense(activated);
     }
     catch (error) { const message = errorMessage(error); status(activationStatus, message, 'error'); copyError.hidden = false; copyError.onclick = () => navigator.clipboard.writeText(message); }
@@ -2157,15 +2247,45 @@ document.addEventListener('DOMContentLoaded', () => {
   $('openTarget').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('newTargetMainTab').addEventListener('click', () => openTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('closeTarget').addEventListener('click', () => closeTarget().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
+  const pasteTargetUrlBtn = $<HTMLButtonElement>('pasteTargetUrl');
+  pasteTargetUrlBtn.addEventListener('click', async () => {
+    const input = $<HTMLInputElement>('targetUrl');
+    try {
+      const text = await navigator.clipboard.readText();
+      const clean = text ? text.trim() : '';
+      if (!clean) {
+        status(workspaceStatus, 'Clipboard kosong atau tidak berisi teks', 'idle');
+        input.focus();
+        return;
+      }
+      input.value = clean;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+      syncTargetUrlActions();
+      status(workspaceStatus, '');
+    } catch (error) {
+      status(workspaceStatus, `Gagal membaca clipboard: ${errorMessage(error)}`, 'error');
+      input.focus();
+    }
+  });
+  $('clearTargetUrl').addEventListener('click', () => {
+    const input = $<HTMLInputElement>('targetUrl');
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+    syncTargetUrlActions();
+    status(workspaceStatus, '');
+  });
+  syncTargetUrlActions();
   $('refreshSurfacesButton').addEventListener('click', () => refreshCanvases().catch(error => status(workspaceStatus, errorMessage(error), 'error')));
   $('canvasAssetTab').addEventListener('click', () => { activeAssetTab = 'canvas'; updateAssetTabs(); });
   $('svgAssetTab').addEventListener('click', () => { activeAssetTab = 'svg'; updateAssetTabs(); });
   $('clearSurfacesButton').addEventListener('click', async () => {
     try {
+      status(workspaceStatus, '');
       await invoke('clear_surfaces');
       resetDetectedSurfaces();
       await refreshCanvases();
-      status(workspaceStatus, 'Daftar Canvas dan SVG dibersihkan.', 'success');
     } catch (error) { status(workspaceStatus, errorMessage(error), 'error'); }
   });
   $('ratio').addEventListener('change', () => {
@@ -2238,7 +2358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveDirectory = null;
     updateSaveDirectoryDisplay();
     persistSettingsSilently();
-    status(workspaceStatus, 'Lokasi simpan dikembalikan ke Downloads.', 'success');
+    status(workspaceStatus, 'Lokasi simpan dikembalikan ke Downloads', 'success');
   });
   const previewStage = $('previewStage');
   previewStage.addEventListener('pointerdown', event => {
@@ -2285,16 +2405,20 @@ document.addEventListener('DOMContentLoaded', () => {
   $('wireframePreview')?.addEventListener('change', event => {
     toggleWireframeMode(Boolean((event.currentTarget as HTMLInputElement).checked));
   });
-  $('enableObjectEraser').addEventListener('change', event => {
-    toggleObjectEraserMode((event.currentTarget as HTMLInputElement).checked);
+  $('eraseMarkedObjects').addEventListener('click', () => {
+    if (!objectEraserActive) toggleObjectEraserMode(true);
+    else if (markedElements.size > 0) void eraseMarkedObjects();
+    else toggleObjectEraserMode(false);
   });
-  $('eraseMarkedObjects').addEventListener('click', () => { void eraseMarkedObjects(); });
   $('clearMarkedObjects').addEventListener('click', clearMarkedObjects);
   $('restoreErasedObjects').addEventListener('click', () => { void restoreErasedObjects(); });
   $('artworkScaleSlider').addEventListener('input', event => {
     setArtworkScaleValue(Number((event.currentTarget as HTMLInputElement).value));
   });
-  $('targetUrl').addEventListener('input', () => persistSettingsSilently());
+  $('targetUrl').addEventListener('input', () => {
+    syncTargetUrlActions();
+    persistSettingsSilently();
+  });
   $('exportSvg').addEventListener('click', event => {
     event.stopPropagation();
     toggleDownloadMenu();

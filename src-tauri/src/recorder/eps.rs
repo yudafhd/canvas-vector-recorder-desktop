@@ -517,13 +517,14 @@ pub fn build_canvas_eps(
     eps.push_str(&format!("{} {} translate\n", f(ox), f(oy)));
     eps.push_str(&format!("{} {} scale\n", f(scale), f(scale)));
 
-    let render_shape = |index: usize, shape: &super::canvas::Shape| -> Option<String> {
+    let render_shape = |index: usize, shape: &super::canvas::Shape, exclusions: &str| -> Option<String> {
         if settings.removes_element(&format!("shape-{}", index + 1)) { return None; }
         if settings.removes_color(&shape.fill) { return None; }
         let (r, g, b) = parse_color_rgb(&shape.fill)?;
         let path_ps = path_to_postscript(&shape.d)?;
         let mut block = String::new();
         block.push_str("gsave\n");
+        block.push_str(exclusions);
         if !is_identity_matrix(&shape.transform) {
             let [a, b_val, c, d, e_val, f_val] = shape.transform.0;
             block.push_str(&format!(
@@ -548,13 +549,14 @@ pub fn build_canvas_eps(
         Some(block)
     };
 
-    let render_stroke = |index: usize, stroke: &super::canvas::Stroke| -> Option<String> {
+    let render_stroke = |index: usize, stroke: &super::canvas::Stroke, exclusions: &str| -> Option<String> {
         if settings.removes_element(&format!("gap-filler-{}", index + 1)) { return None; }
         if settings.removes_color(&stroke.stroke) { return None; }
         let (r, g, b) = parse_color_rgb(&stroke.stroke)?;
         let path_ps = path_to_postscript(&stroke.d)?;
         let mut block = String::new();
         block.push_str("gsave\n");
+        block.push_str(exclusions);
         if !is_identity_matrix(&stroke.transform) {
             let [a, b_val, c, d, e_val, f_val] = stroke.transform.0;
             block.push_str(&format!(
@@ -578,32 +580,44 @@ pub fn build_canvas_eps(
 
     if data.operations.is_empty() {
         for (i, shape) in data.shapes.iter().enumerate() {
-            if let Some(code) = render_shape(i, shape) {
+            if let Some(code) = render_shape(i, shape, "") {
                 eps.push_str(&code);
             }
         }
         for (i, stroke) in data.gap_fillers.iter().enumerate() {
-            if let Some(code) = render_stroke(i, stroke) {
+            if let Some(code) = render_stroke(i, stroke, "") {
                 eps.push_str(&code);
             }
         }
     } else {
-        for operation in &data.operations {
+        // Earlier paints are clipped against later clears. Newly drawn
+        // layers are unaffected by clears that precede them.
+        let mut exclusions = vec![String::new(); data.operations.len()];
+        let mut later = String::new();
+        for (index, operation) in data.operations.iter().enumerate().rev() {
+            if let super::canvas::PaintOperation::Clear(region) = operation {
+                if let Some(code) = super::clear::eps_exclusion(region) { later.push_str(&code); }
+            } else {
+                exclusions[index] = later.clone();
+            }
+        }
+        for (position, operation) in data.operations.iter().enumerate() {
             match operation {
                 super::canvas::PaintOperation::Shape(index) => {
                     if let Some(shape) = data.shapes.get(*index) {
-                        if let Some(code) = render_shape(*index, shape) {
+                        if let Some(code) = render_shape(*index, shape, &exclusions[position]) {
                             eps.push_str(&code);
                         }
                     }
                 }
                 super::canvas::PaintOperation::Stroke(index) => {
                     if let Some(stroke) = data.gap_fillers.get(*index) {
-                        if let Some(code) = render_stroke(*index, stroke) {
+                        if let Some(code) = render_stroke(*index, stroke, &exclusions[position]) {
                             eps.push_str(&code);
                         }
                     }
                 }
+                super::canvas::PaintOperation::Clear(_) => {}
             }
         }
     }

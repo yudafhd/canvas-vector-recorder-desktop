@@ -318,6 +318,7 @@ fn build_details(data: &CanvasResult, settings: &MicrostockSettings) -> (String,
             stroke.transform.svg()
         )
     };
+    let mut clear_defs = String::new();
     let paint_order = if data.operations.is_empty() {
         data.shapes
             .iter()
@@ -331,11 +332,12 @@ fn build_details(data: &CanvasResult, settings: &MicrostockSettings) -> (String,
                     .filter(|(i, stroke)| !settings.removes_element(&format!("gap-filler-{}", i + 1)) && !settings.removes_color(&stroke.stroke))
                     .map(|(i, stroke)| render_stroke(i, stroke)),
             )
-            .collect::<Vec<_>>()
+            .collect::<Vec<_>>().join("\n")
     } else {
-        data.operations
-            .iter()
-            .filter_map(|operation| match operation {
+        let mut layers = String::new();
+        let mut clear_id = 0;
+        for operation in &data.operations {
+            let layer = match operation {
                 super::canvas::PaintOperation::Shape(index) => {
                     data.shapes
                         .get(*index)
@@ -347,10 +349,20 @@ fn build_details(data: &CanvasResult, settings: &MicrostockSettings) -> (String,
                     .get(*index)
                     .filter(|stroke| !settings.removes_element(&format!("gap-filler-{}", index + 1)) && !settings.removes_color(&stroke.stroke))
                     .map(|stroke| render_stroke(*index, stroke)),
-            })
-            .collect::<Vec<_>>()
-    }
-    .join("\n");
+                super::canvas::PaintOperation::Clear(region) => {
+                    clear_id += 1;
+                    clear_defs.push_str(&super::clear::svg_mask(region, clear_id, data));
+                    layers = format!("<g mask=\"url(#clear-{clear_id})\">\n{layers}</g>\n");
+                    None
+                }
+            };
+            if let Some(layer) = layer { layers.push_str(&layer); layers.push('\n'); }
+        }
+        layers
+    };
+    let background_layer = if clear_defs.is_empty() { background_layer } else {
+        format!("{background_layer}<defs>\n{clear_defs}</defs>\n")
+    };
     let svg = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\" color-interpolation=\"sRGB\">\n  <title>Editable vector artwork</title>\n{}  <g id=\"artwork-transform\" aria-label=\"Artwork transform\" transform=\"translate({} {}) scale({})\">\n    <g id=\"artwork\" aria-label=\"Artwork\">\n{}\n    </g>\n  </g>\n</svg>", width, height, width, height, background_layer, f(ox), f(oy), f(scale), paint_order);
     (svg, (width, height, ratio))
 }

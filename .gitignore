@@ -14,3 +14,4 @@ license-keys/
 *.key
 *.token
 licenses.html
+.DS_Store
