@@ -529,6 +529,30 @@ test('export compaction reduces redundant smooth cubics while keeping endpoint d
   assert.deepEqual(compactSmoothCurves(loop),loop);
 });
 
+test('run compaction measures against the original cubics and stops at protected joins', () => {
+  const mid = (a,b) => a.map((v,i)=>(v+b[i])/2);
+  const split = curve => {
+    const [c,d]=curve.controls, ac=mid(curve.from,c), cd=mid(c,d), db=mid(d,curve.to), left=mid(ac,cd), right=mid(cd,db), center=mid(left,right);
+    return [{from:curve.from,to:center,controls:[ac,left]},{from:center,to:curve.to,controls:[right,db]}];
+  };
+  const source={from:[0,0],to:[40,40],controls:[[16,0],[40,24]]};
+  let fragments=[source]; for(let i=0;i<3;i++)fragments=fragments.flatMap(split);
+  const original=structuredClone(fragments), result=compactSmoothCurves(fragments);
+  assert.ok(result.length<fragments.length/2, 'merge beyond a single pair per run');
+  assert.deepEqual(fragments,original);
+  assert.deepEqual(result[0].from,source.from);assert.deepEqual(result.at(-1).to,source.to);
+  const sample = c => Array.from({length:129},(_,i)=>{
+    const t=i/128,u=1-t;return [0,1].map(k=>u**3*c.from[k]+3*u*u*t*c.controls[0][k]+3*u*t*t*c.controls[1][k]+t**3*c.to[k]);
+  });
+  assert.ok(curveDeviation(result,fragments.flatMap(sample))<=.08);
+  assert.ok(curveDeviation(fragments,result.flatMap(sample))<=.08);
+  const protectedPoint=fragments[3].to, guarded=compactSmoothCurves(fragments,[protectedPoint]);
+  assert.ok(guarded.some(c=>JSON.stringify(c.to)===JSON.stringify(protectedPoint)));
+  assert.ok(guarded.some(c=>JSON.stringify(c.from)===JSON.stringify(protectedPoint)));
+  const reversed=fragments.toReversed().map(c=>({from:c.to,to:c.from,controls:c.controls.toReversed()}));
+  assert.ok(compactSmoothCurves(reversed).length<reversed.length/2);
+});
+
 
 test('shallow dent regularization protects corners, deep notches and open boundaries', () => {
   const make=depth=>{

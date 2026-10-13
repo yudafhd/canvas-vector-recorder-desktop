@@ -1,6 +1,5 @@
 import type { MicrostockSettings } from '../types';
 import type { BatchItem } from './batch';
-import { traceBatchFile } from './file-task';
 
 export interface GlobalExportSettings { minMp: number; maxMp: number; ratio: string; artworkScale: number; removeWhiteBackground: boolean }
 export const exportDefaults: GlobalExportSettings = { minMp: 15, maxMp: 65, ratio: 'source', artworkScale: 1, removeWhiteBackground: false };
@@ -15,15 +14,20 @@ export function onlineExportSettings(s: GlobalExportSettings): MicrostockSetting
   return { profile: 'adobe-stock', minPixels: s.minMp * 1e6, maxPixels: s.maxMp * 1e6, ratio: s.ratio, artworkScale: s.artworkScale, backgroundColor: '#ffffff', transparentBackground: s.removeWhiteBackground, removedColors: [], removedElements: [] };
 }
 
-/** Reprocess only when the export background differs from the completed trace. */
+function restoreWhiteArtboard(svg: string): string | null {
+  const root = svg.match(/<svg\b[^>]*>/)?.[0];
+  const values = root?.match(/\bviewBox="([^"]+)"/)?.[1].trim().split(/\s+/).map(Number);
+  if (!root || !values || values.length !== 4 || values.some(value => !Number.isFinite(value)) || values[2] <= 0 || values[3] <= 0) return null;
+  const [x, y, width, height] = values;
+  const background = `<path fill="#ffffff" fill-rule="evenodd" d="M${x} ${y}L${x + width} ${y}L${x + width} ${y + height}L${x} ${y + height}Z"/>`;
+  return svg.replace(root, `${root}${background}`);
+}
+
+/** Export the completed vector as-is; export settings only affect its artboard and background. */
 export async function exportSource(item: BatchItem, s: GlobalExportSettings): Promise<string> {
   validateExportSettings(s);
   if (!item.output) throw new Error('Jalankan tracing terlebih dahulu.');
-  const applied = item.output.auto?.options ?? item.config.options;
-  const whiteMode = s.removeWhiteBackground ? 'background' : 'none';
-  if ((applied.whiteMode ?? (applied.removeWhite ? 'all' : 'none')) === whiteMode) return item.output.result.svg;
-  const output = await traceBatchFile({ ...item, config: { mode: 'manual', resolution: item.output.auto?.resolution ?? item.config.resolution, options: { ...applied, whiteMode, removeWhite: s.removeWhiteBackground } } }, new AbortController().signal, () => {});
-  return output.result.svg;
+  return item.output.result.svg;
 }
 
 export function initGlobalExportSettings(root: HTMLElement): () => GlobalExportSettings {

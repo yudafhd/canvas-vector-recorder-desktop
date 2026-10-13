@@ -1,0 +1,62 @@
+{
+  "method": "Chrome SVG rasterization; independent normalization of artwork bounding boxes to JPG ink bounds; threshold 128; 2000x1465 comparison.",
+  "sourceDimensions": [
+    2400,
+    1792
+  ],
+  "sourceInkBounds": {
+    "x": 88,
+    "y": 91,
+    "width": 2229,
+    "height": 1633
+  },
+  "svgBounds": [
+    {
+      "x": 75.00881958007812,
+      "y": 77.44856262207031,
+      "width": 1901.9134521484375,
+      "height": 1393.565185546875
+    },
+    {
+      "x": 75.00881958007812,
+      "y": 77.44856262207031,
+      "width": 1901.9134521484375,
+      "height": 1393.565185546875
+    }
+  ],
+  "comparisonDimensions": [
+    2000,
+    1465
+  ],
+  "results": [
+    {
+      "variant": "before",
+      "inkIoU": 0.9713992302324663,
+      "inkAreaRatio": 1.0007527236123608,
+      "grayMAE": 2.9324621160409556,
+      "sourceEdgeGrayMAE": 10.882581076450709
+    },
+    {
+      "variant": "after",
+      "inkIoU": 0.9713791045300143,
+      "inkAreaRatio": 1.000705956760705,
+      "grayMAE": 2.931794880546075,
+      "sourceEdgeGrayMAE": 10.879297371020082
+    }
+  ],
+  "sourceSha256": "bf20b6b425ab23af6d108cc216fe160704360830b15900fe06d7ab27acdb40e3",
+  "traceOptions": {
+    "colors": 2,
+    "tolerance": 0.2,
+    "minArea": 12,
+    "smooth": true,
+    "removeWhite": true,
+    "whiteMode": "all"
+  },
+  "traceDimensions": [
+    2048,
+    1529
+  ],
+  "engineBeforeSha256": "f438a1a851ceea38350bfd4bf774941ff4a55b3f3c1166786904e5391d2dee91",
+  "engineAfterSha256": "4c20fdc7c624c0b353e6262f99042790f45b1770b1aa84106260aa86402e02af"
+}

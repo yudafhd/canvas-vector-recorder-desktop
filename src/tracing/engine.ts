@@ -5,7 +5,7 @@ import { geometricHypot } from './geometry-math';
  */
 import { cleanTransitionMixtures, mergeSmallEdgeRegions, transitionDefaults, type TransitionDiagnostics } from './transition-mixtures';
 import { evaluateSvgScene, sceneAllows } from './scene-quality';
-import { balanceStrokeCurvature, regularizeStroke, fairStrokeCurvature, strokeRoughness, flattenStroke } from './stroke-regularizer';
+import { balanceStrokeCurvature, regularizeStroke, fairStrokeCurvature, strokeRoughness, flattenStroke, strokeWithin } from './stroke-regularizer';
 export interface TraceOptions { colors: number; tolerance: number; minArea: number; smooth: boolean; removeWhite: boolean; whiteMode?: 'none' | 'background' | 'all' }
 export interface TraceResult { svg: string; colors: string[]; paths: number; contours: number; segments: number; width: number; height: number; diagnostics: TraceDiagnostics }
 export interface TraceDiagnostics extends TransitionDiagnostics { underpaintPairs: number; underpaintPaths: number; sharedFairingCandidates: number; sharedFairingAccepted: number; sharedFairingRoughnessBefore: number; sharedFairingRoughnessAfter: number; unitFragments: number; merges: number; swaps: number; puncturedCorners: number; tangentRefits: number; rasterSteps: number; rasterEnergyBefore: number; rasterEnergyAfter: number; smallAreaConstraints: number; guardedFits: number; fitDeviationBefore: number; fitDeviationAfter: number; mergedTransitionRegions: number; reassignedTransitionPixels: number; straightSpans: number; compactedCurvePairs: number; protectedDetailPixels: number; qualityRefits: number; qualitySkipped: number; finalRasterBefore: number; finalRasterAfter: number; ellipses: number; sceneErrorBefore: number; sceneErrorAfter: number; sceneDetailBefore: number; sceneDetailAfter: number; sceneEdgeBefore: number; sceneEdgeAfter: number; sceneCandidateError: number; globalCandidates: number; globalAccepted: number; regularizedChains: number; protectedDetailCandidates: number; detailProtectionAccepted: number }
@@ -848,10 +848,10 @@ function fitWithSharedTangents(points: Point[], tolerance: number, left: Point, 
   return [...fitWithSharedTangents(points.slice(0, split + 1), tolerance, left, [-tangent[0], -tangent[1]], depth + 1), ...fitWithSharedTangents(points.slice(split), tolerance, tangent, right, depth + 1)];
 }
 
-// [ADAPTER-EXPORT-COMPACTION] Pairwise refit of already smooth cubics.
+// [ADAPTER-EXPORT-COMPACTION] Bounded runs of already smooth cubics.
 // Does not alter researched merge cost. Lines and explicit corners are barriers.
 // Dense, bidirectional sampled guards are not a formal Hausdorff certificate.
-export function compactSmoothCurves(curves: Curve[], protectedPoints: Point[] = []) {
+export function compactSmoothCurves(curves: Curve[], protectedPoints: Point[] = [], tolerance = 0.08) {
   const flatten = (curve: Curve) => {
     const c = curve.controls!;
     const length = Math.sqrt(distance2(curve.from, c[0])) + Math.sqrt(distance2(c[0], c[1])) + Math.sqrt(distance2(c[1], curve.to));
@@ -860,19 +860,23 @@ export function compactSmoothCurves(curves: Curve[], protectedPoints: Point[] = 
   };
   const output: Curve[] = [];
   for (let i = 0; i < curves.length; i++) {
-    const a = curves[i], b = curves[i + 1];
-    if (!a.controls || !b?.controls || distance2(a.to, b.from) > 1e-12 || protectedPoints.some(p => distance2(p, a.to) < 1e-12)) { output.push(a); continue; }
-    const incoming = unit(a.controls[1], a.to), outgoing = unit(b.from, b.controls[0]);
-    if (dot(incoming, outgoing) < 0.9995 || distance2(a.from, b.to) < 4) { output.push(a); continue; }
-    const original = [...flatten(a), ...flatten(b).slice(1)];
-    // Bound work on long runs; this pass targets redundant local fragments.
-    if (original.length > 160) { output.push(a); continue; }
-    const left = unit(a.from, a.controls[0]), right = unit(b.to, b.controls[1]);
-    const candidate = fitWithSharedTangents(original, 0.08, left, right);
-    if (candidate.length !== 1 || !candidate[0].controls || curveDeviation(candidate, original) > 0.08 || curveDeviation([a, b], flatten(candidate[0])) > 0.08) { output.push(a); continue; }
-    // Only one pair at a time: no accumulated approximation error from merging
-    // previously merged candidates, and endpoint tangent directions stay fixed.
-    output.push(candidate[0]); i++;
+    const a = curves[i];
+    if (!a.controls) { output.push(a); continue; }
+    let winner = a, last = i;
+    const original = flatten(a);
+    for (let end = i + 1; end < Math.min(curves.length, i + 8); end++) {
+      const previous = curves[end - 1], b = curves[end];
+      if (!previous.controls || !b.controls || distance2(previous.to, b.from) > 1e-12 || protectedPoints.some(p => distance2(p, previous.to) < 1e-12)) break;
+      if (dot(unit(previous.controls[1], previous.to), unit(b.from, b.controls[0])) < 0.9995 || distance2(a.from, b.to) < 4) break;
+      original.push(...flatten(b).slice(1));
+      // Fit every proposal to the original run, never to a previous approximation.
+      // The spatial guards keep work bounded while checking both directions.
+      if (original.length > 512) break;
+      const candidate = fitWithSharedTangents(original, tolerance, unit(a.from, a.controls[0]), unit(b.to, b.controls[1]));
+      if (candidate.length !== 1 || !candidate[0].controls || !strokeWithin(candidate, original, tolerance) || !strokeWithin(curves.slice(i, end + 1), flatten(candidate[0]), tolerance)) break;
+      winner = candidate[0]; last = end;
+    }
+    output.push(winner); i = last;
   }
   return output;
 }
@@ -1190,11 +1194,18 @@ function finishCurves(raw: Point[], points: Point[], corners: Set<number>, initi
   const closed = distance2(points[0], points[points.length - 1]) === 0, count = points.length - Number(closed);
   const cuts = new Set([0, points.length - 1, ...corners]);
   if (closed) { let far = 1; for (let i = 2; i < count; i++) if (distance2(points[0], points[i]) > distance2(points[0], points[far])) far = i; cuts.add(far); }
+  const originalCuts = [...cuts].sort((a, b) => a - b);
+  // Offer a source-scored refit that retains recognized straight spans. Keep the
+  // unrestricted refit too: subpixel noise alone must not force a worse contour.
+  const lines = straightSpans(points, options.tolerance, cuts), lineTangents = new Map<number, Point>();
+  for (const line of lines) { cuts.add(line.start); cuts.add(line.end); lineTangents.set(line.start % count, line.direction); lineTangents.set(line.end % count, line.direction); }
   const sorted = [...cuts].sort((a, b) => a - b);
-  const refit = (tolerance: number) => {
-    const curves: Curve[] = [], tangent = (i: number) => { const r = Math.min(3, Math.floor((count - 1) / 2)); return unit(points[(i - r + count) % count], points[(i + r) % count]); };
-    for (let k = 1; k < sorted.length; k++) {
-      const start = sorted[k - 1], end = sorted[k]; if (end <= start) continue;
+  const refit = (tolerance: number, straighten = false) => {
+    const boundaries = straighten ? sorted : originalCuts;
+    const curves: Curve[] = [], tangent = (i: number) => { const r = Math.min(3, Math.floor((count - 1) / 2)); return (straighten ? lineTangents.get(i) : undefined) ?? unit(points[(i - r + count) % count], points[(i + r) % count]); };
+    for (let k = 1; k < boundaries.length; k++) {
+      const start = boundaries[k - 1], end = boundaries[k]; if (end <= start) continue;
+      if (straighten && lines.some(line => line.start <= start && line.end >= end)) { curves.push({ from: points[start], to: points[end] }); continue; }
       const left = corners.has(start % count) ? unit(points[start], points[start + 1]) : tangent(start % count);
       const right = corners.has(end % count) ? unit(points[end - 1], points[end]) : tangent(end % count);
       curves.push(...fitWithSharedTangents(points.slice(start, end + 1), tolerance, left, [-right[0], -right[1]]));
@@ -1221,6 +1232,9 @@ function finishCurves(raw: Point[], points: Point[], corners: Set<number>, initi
   const tolerance = Math.min(.65, options.tolerance, closed ? Math.max(.15, .04 * Math.sqrt(Math.abs(signedArea(points)))) : .65);
   const accept = (candidate: Curve[]) => { const trial = energy(candidate); if (trial <= before * 1.02 + 1e-6 && score(trial, candidate) < score(value, best) && !intersects(candidate)) { best = candidate; value = trial; return true; } return false; };
   for (const t of [Math.min(.2, tolerance), tolerance]) accept(refit(t));
+  if (lines.length) accept(refit(tolerance, true));
+  const compact = compactSmoothCurves(best, [...corners].map(i => points[i]), Math.min(.2, tolerance)), removed = best.length - compact.length;
+  if (removed > 0 && accept(compact)) diagnostics.compactedCurvePairs += removed;
   if (closed && corners.size <= 2) {
     const ellipse = fitEllipse(points);
     if (ellipse) {

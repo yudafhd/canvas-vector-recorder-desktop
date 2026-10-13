@@ -58,6 +58,14 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
     <button type="button" id="traceGlobalExportBtn" class="trace-button-tonal" title="Pengaturan ekspor global" aria-label="Pengaturan ekspor global">${icon('<line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="14" cy="21" r="2"/><circle cx="8" cy="14" r="2"/><circle cx="17" cy="7" r="2"/>')}<span>Pengaturan ekspor</span></button>
     <button type="button" id="traceBatchClear" class="trace-button-quiet">${icon('<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/>')}<span>Semua</span></button>
   </div>
+  <div id="traceBatchExportProgress" class="trace-batch-export-progress" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="trace-export-progress-spinner" aria-hidden="true"></span>
+    <div class="trace-export-progress-copy">
+      <strong id="traceBatchExportProgressTitle"></strong>
+      <span id="traceBatchExportProgressDetail"></span>
+      <div class="trace-export-progress-track" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
   <div class="trace-library-controls">
     <div id="traceBatchFilters" class="trace-filter-group" role="group" aria-label="Filter status gambar">
       <button type="button" data-filter="all" aria-pressed="true">Semua <span>0</span></button>
@@ -104,6 +112,9 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
 
   const $ = <T extends HTMLElement>(id: string) => root.querySelector<T>(`#${id}`)!;
   const files = $<HTMLInputElement>('traceBatchFiles'), add = $<HTMLButtonElement>('traceBatchAdd'), run = $<HTMLButtonElement>('traceBatchRun'), cancel = $<HTMLButtonElement>('traceBatchCancel'), exportButton = $<HTMLButtonElement>('traceBatchExport'), exportToggle = $<HTMLButtonElement>('traceBatchExportToggle'), exportMenu = $<HTMLElement>('traceBatchExportMenu'), exportSvg = $<HTMLButtonElement>('traceBatchExportSvg'), exportEps = $<HTMLButtonElement>('traceBatchExportEps'), clear = $<HTMLButtonElement>('traceBatchClear');
+  const exportProgress = $<HTMLElement>('traceBatchExportProgress');
+  const exportProgressTitle = $<HTMLElement>('traceBatchExportProgressTitle');
+  const exportProgressDetail = $<HTMLElement>('traceBatchExportProgressDetail');
   const emptyZone = $<HTMLElement>('traceBatchEmpty');
   const pickBtn = $<HTMLButtonElement>('traceBatchEmptyPick');
   const sampleBtn = $<HTMLButtonElement>('traceBatchEmptySample');
@@ -113,6 +124,7 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
   try { layout = localStorage.getItem('cvr-tracing-gallery-layout') === 'grid' ? 'grid' : 'list'; } catch { /* Host storage may be unavailable. */ }
 
   let restoring = true, saving = false, viewing = false, revision = 0;
+  let exportFormat: 'svg' | 'eps' | null = null;
   const rows = new Map<string, GalleryRow>();
   let thumbnailWork = Promise.resolve();
   const dispose = (row: GalleryRow) => {
@@ -241,6 +253,14 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
     const pending = queue.items.filter(item => item.status === 'pending' || item.status === 'processing').length;
     const success = queue.items.filter(item => item.status === 'success').length, error = queue.items.filter(item => item.status === 'error').length;
     run.disabled = locked || !queue.items.some(item => item.status === 'pending'); exportButton.disabled = exportToggle.disabled = locked || !success; cancel.hidden = !queue.running;
+    exportButton.classList.toggle('is-exporting', saving);
+    exportButton.setAttribute('aria-busy', String(saving));
+    exportButton.querySelector('span')!.textContent = saving ? `Menyiapkan ${exportFormat?.toUpperCase() ?? 'ZIP'}…` : 'Ekspor ZIP';
+    exportProgress.hidden = !saving;
+    if (saving) {
+      exportProgressTitle.textContent = `Mengekspor ${success} file ${exportFormat?.toUpperCase() ?? ''} ke ZIP`;
+      exportProgressDetail.textContent = 'Proses dapat memerlukan waktu untuk banyak gambar atau hasil yang kompleks.';
+    }
     $('traceBatchCount').textContent = restoring ? 'Memulihkan antrean…' : `${queue.items.length} gambar`;
     const counts: Record<string, number> = { all: queue.items.length, pending, success, error };
     root.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => { button.setAttribute('aria-pressed', String(button.dataset.filter === filter)); button.querySelector('span')!.textContent = String(counts[button.dataset.filter!]); });
@@ -313,26 +333,36 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
     try { entries = batchEntries(queue.items, format, false); } catch (error) { note(String(error)); return; }
     if (!entries.length) return;
     saving = true;
+    exportFormat = format;
     render();
     void (async () => {
       try {
         const settings = exportSettings();
         const successful = queue.items.filter(item => item.status === 'success' && item.output);
-        for (let i = 0; i < entries.length; i++) entries[i].svg = await exportSource(successful[i], settings);
+        for (let i = 0; i < entries.length; i++) {
+          exportProgressTitle.textContent = `Menyiapkan ${format.toUpperCase()} ${i + 1} dari ${entries.length}`;
+          exportProgressDetail.textContent = `Menggunakan vektor hasil tracing: ${successful[i].file.name}`;
+          entries[i].svg = await exportSource(successful[i], settings);
+        }
         if (format === 'eps') {
-          const payloadEntries: { filename: string; svg: string; bytes?: number[] }[] = [];
-          const zipEntries: { filename: string; svg: string; bytes?: Uint8Array }[] = [];
-          for (const entry of entries) {
-            const stem = entry.filename.replace(/\.[^.]+$/, '');
-            const epsBytes = new TextEncoder().encode(await renderExport(entry.svg, settings, 'eps', stem));
-            checkStockSize(epsBytes);
-            payloadEntries.push({ filename: entry.filename, svg: entry.svg, bytes: Array.from(epsBytes) });
-            zipEntries.push({ filename: entry.filename, svg: entry.svg, bytes: epsBytes });
-          }
           if (isTauri()) {
-            const path = await invoke<string>('save_tracing_batch', { entries: payloadEntries });
+            const nativeSettings = onlineExportSettings(settings);
+            exportProgressTitle.textContent = `Menyimpan ${entries.length} file EPS ke ZIP`;
+            exportProgressDetail.textContent = 'Membuat file EPS dan menyusun arsip ZIP…';
+            const path = await invoke<string>('save_tracing_batch', {
+              entries: entries.map(entry => ({ ...entry, settings: nativeSettings })),
+            });
             note(`ZIP hasil disimpan: ${path}. Ekstrak SVG/EPS sebelum upload ke Adobe Stock.`);
           } else {
+            const zipEntries: { filename: string; svg: string; bytes?: Uint8Array }[] = [];
+            for (let index = 0; index < entries.length; index++) {
+              const entry = entries[index];
+              exportProgressDetail.textContent = `Mengonversi file ${index + 1} dari ${entries.length}…`;
+              const stem = entry.filename.replace(/\.[^.]+$/, '');
+              const epsBytes = new TextEncoder().encode(await renderExport(entry.svg, settings, 'eps', stem));
+              checkStockSize(epsBytes);
+              zipEntries.push({ filename: entry.filename, svg: entry.svg, bytes: epsBytes });
+            }
             const bytes = batchZip(zipEntries);
             const url = URL.createObjectURL(new Blob([bytes], { type: 'application/zip' }));
             const link = document.createElement('a');
@@ -344,10 +374,18 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
           }
         } else {
           if (isTauri()) {
+            exportProgressTitle.textContent = `Menyimpan ${entries.length} file SVG ke ZIP`;
+            exportProgressDetail.textContent = 'Merender SVG dan menyusun arsip ZIP…';
             const path = await invoke<string>('save_tracing_batch', { entries: entries.map(entry => ({ ...entry, settings: onlineExportSettings(settings) })) });
             note(`ZIP hasil disimpan: ${path}. Ekstrak SVG/EPS sebelum upload ke Adobe Stock.`);
           } else {
-            for (const entry of entries) entry.svg = await renderExport(entry.svg, settings, 'svg', entry.filename);
+            for (let i = 0; i < entries.length; i++) {
+              exportProgressTitle.textContent = `Merender SVG ${i + 1} dari ${entries.length}`;
+              exportProgressDetail.textContent = entries[i].filename;
+              entries[i].svg = await renderExport(entries[i].svg, settings, 'svg', entries[i].filename);
+            }
+            exportProgressTitle.textContent = `Menyusun ZIP SVG (${entries.length} file)`;
+            exportProgressDetail.textContent = 'Menggabungkan hasil ekspor…';
             const bytes = batchZip(entries);
             const url = URL.createObjectURL(new Blob([bytes], { type: 'application/zip' }));
             const link = document.createElement('a');
@@ -362,6 +400,7 @@ export function initTracingBatch(root: HTMLElement, config: () => BatchConfig, p
         note(`Ekspor gagal: ${error instanceof Error ? error.message : String(error)}`);
       } finally {
         saving = false;
+        exportFormat = null;
         render();
       }
     })();

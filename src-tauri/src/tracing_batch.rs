@@ -70,13 +70,24 @@ pub fn make_zip(entries: &[BatchEntry]) -> Result<Vec<u8>, AppError> {
     let mut central = Vec::new();
     for entry in entries {
         let name = entry.filename.as_bytes();
+        let eps_rendered;
         let eps_buf;
         let svg_buf;
         let data: &[u8] = if let Some(b) = &entry.bytes {
             b.as_slice()
         } else if entry.filename.ends_with(".eps") {
-            eps_buf = crate::recorder::eps::build_tracing_eps(&entry.svg, &entry.filename)?;
-            eps_buf.as_slice()
+            if let Some(settings) = &entry.settings {
+                eps_rendered = crate::commands::render_tracing_export(
+                    entry.svg.clone(),
+                    settings.clone(),
+                    "eps".into(),
+                    entry.filename.clone(),
+                )?;
+                eps_rendered.as_bytes()
+            } else {
+                eps_buf = crate::recorder::eps::build_tracing_eps(&entry.svg, &entry.filename)?;
+                eps_buf.as_slice()
+            }
         } else if let Some(settings) = &entry.settings {
             svg_buf = crate::commands::render_tracing_export(entry.svg.clone(), settings.clone(), "svg".into(), entry.filename.clone())?;
             svg_buf.as_bytes()
